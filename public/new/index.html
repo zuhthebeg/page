@@ -168,7 +168,13 @@ async function submit(){
   try{
     const r=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+TOKEN},body:JSON.stringify({type:'create',spec})});
     const d=await r.json(); if(!r.ok)throw new Error(d.error||r.status);
-    poll(d.jobId);
+    $('status').innerHTML='';
+    $('rtitle').textContent='✅ 신청이 접수됐어요';
+    $('rurl').textContent='관리자 확인 후 정성껏 만들어 발행해드려요. 발행되면 여기에서 확인할 수 있어요.';
+    $('rlink').classList.add('hide');
+    $('result').classList.add('on');
+    UPLOADED.length=0; renderThumbs();
+    $('go').disabled=false; $('go').textContent='✦ 다시 신청하기';
   }catch(e){ $('status').textContent='접수 실패: '+e.message; $('go').disabled=false; }
 }
 

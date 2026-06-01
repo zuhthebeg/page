@@ -165,13 +165,14 @@ $('send').addEventListener('click', async ()=>{
   const request=$('req').value.trim(); if(!request && !UPLOADED.length) return;
   const imgs=UPLOADED.slice();
   $('send').disabled=true; addBubble('me',request+(imgs.length?` (사진 ${imgs.length}장)`:'')); $('req').value='';
-  addBubble('sys','요청을 접수했어요. 페이지를 수정하는 중이에요…');
+  addBubble('sys','요청 보내는 중…');
   try{
     const r=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+TOKEN},
       body:JSON.stringify({type:'edit',slug,request,images:imgs})});
     const d=await r.json(); if(!r.ok) throw new Error(d.error||r.status);
     UPLOADED.length=0; renderThumbs();
-    poll(d.jobId);
+    addBubble('sys','요청이 접수됐어요 ✅ 관리자 확인 후 반영됩니다. 잠시 뒤 페이지를 새로고침해 확인해주세요.');
+    $('send').disabled=false;
   }catch(e){ addBubble('sys','요청 실패: '+e.message); $('send').disabled=false; }
 });
 
