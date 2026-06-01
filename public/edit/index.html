@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>페이지 수정 · page.cocy.io</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root{--bg:#0b0b0d;--bg-2:#15151b;--bg-3:#1d1d25;--ink:#ece9e4;--ink-soft:#aaa6a0;--muted:#6f6b66;--accent:#c9a86a;--accent-2:#e9cd92;--line:rgba(236,233,228,.12);--ok:#7bbf7b;--err:#d98a8a}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -42,7 +43,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 <div id="gate" class="gate hide">
   <h1 id="gateTitle">로그인이 필요해요</h1>
   <p id="gateMsg">cocy 계정으로 로그인하면 내 페이지를 수정할 수 있어요.</p>
-  <a class="btn" id="gateBtn" href="https://relay.cocy.io/api/auth/google/signin">cocy 계정 로그인</a>
+  <div id="gbtn" style="display:flex;justify-content:center"></div>
 </div>
 
 <div id="app" class="hide" style="display:flex;flex-direction:column;height:100%">
@@ -92,7 +93,21 @@ function syncToken(){
     document.body.appendChild(f);
   });
 }
-function showGate(title,msg){ $('gate').classList.remove('hide'); $('app').classList.add('hide'); if(title)$('gateTitle').textContent=title; if(msg)$('gateMsg').textContent=msg; }
+const GCID='402340265805-ogo2c09qujqk6gape9oea7sfh8lsegln.apps.googleusercontent.com';
+function onCred(resp){
+  fetch('https://relay.cocy.io/api/auth/google/signin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({credential:resp.credential})})
+    .then(r=>r.json()).then(d=>{ if(d.token){ localStorage.setItem('cocy_auth_token',d.token); location.reload(); } else alert('로그인 실패: '+(d.error||'')); })
+    .catch(e=>alert('로그인 오류: '+e.message));
+}
+function renderLogin(){
+  if(window.google&&google.accounts&&google.accounts.id){
+    google.accounts.id.initialize({client_id:GCID,callback:onCred});
+    const el=$('gbtn'); el.innerHTML='';
+    google.accounts.id.renderButton(el,{theme:'filled_black',size:'large',text:'continue_with',shape:'pill'});
+    google.accounts.id.prompt();
+  } else setTimeout(renderLogin,300);
+}
+function showGate(title,msg){ $('gate').classList.remove('hide'); $('app').classList.add('hide'); if(title)$('gateTitle').textContent=title; if(msg)$('gateMsg').textContent=msg; renderLogin(); }
 function addBubble(cls,txt){ const b=document.createElement('div'); b.className='bubble '+cls; b.textContent=txt; $('log').appendChild(b); $('log').scrollTop=1e9; }
 
 let TOKEN=null;
