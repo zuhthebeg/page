@@ -36,6 +36,13 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .examples{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .examples span{font-size:.72rem;color:var(--ink-soft);border:1px solid var(--line);border-radius:20px;padding:4px 9px;cursor:pointer}
 .examples span:hover{border-color:var(--accent)}
+.attach{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:.82rem;color:var(--ink-soft);border:1px dashed var(--line);border-radius:8px;padding:8px 12px;cursor:pointer}
+.attach:hover{border-color:var(--accent);color:var(--accent-2)}
+.imgrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.imgrow .th{position:relative;width:54px;height:54px;border-radius:8px;background:#000 center/cover;border:1px solid var(--line)}
+.imgrow .th b{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--err);color:#fff;font-size:11px;line-height:18px;text-align:center;cursor:pointer;font-weight:400}
+.imgrow .th.up{opacity:.45}
+.hint{font-size:.72rem;color:var(--muted);margin-top:6px}
 </style>
 </head>
 <body>
@@ -64,6 +71,9 @@ button:disabled{opacity:.5;cursor:not-allowed}
         <div class="examples" id="ex">
           <span>더 고급스럽게</span><span>색을 따뜻하게</span><span>폰트 모던하게</span><span>섹션 하나 추가</span>
         </div>
+        <label class="attach">📎 사진 첨부<input type="file" id="file" accept="image/*" multiple hidden></label>
+        <div class="imgrow" id="thumbs"></div>
+        <div class="hint" id="imghint">사진은 압축해서 올라가요 · 5장까지 무료</div>
         <button id="send">수정 요청 보내기</button>
       </div>
     </div>
@@ -127,14 +137,40 @@ let TOKEN=null;
 
 $('ex').addEventListener('click',e=>{ if(e.target.tagName==='SPAN'){ $('req').value=($('req').value?$('req').value+', ':'')+e.target.textContent; }});
 
+// ----- 사진 첨부 (클라 압축 → R2 업로드) -----
+const UPLOADED=[];
+async function compress(file){
+  const img=await createImageBitmap(file); const max=1280; let w=img.width,h=img.height;
+  if(w>max||h>max){ const s=max/Math.max(w,h); w=Math.round(w*s); h=Math.round(h*s); }
+  const c=document.createElement('canvas'); c.width=w; c.height=h; c.getContext('2d').drawImage(img,0,0,w,h);
+  return await new Promise(r=>c.toBlob(r,'image/jpeg',0.72));
+}
+function renderThumbs(){ $('thumbs').innerHTML=UPLOADED.map((u,i)=>`<div class="th" style="background-image:url('${u}')"><b data-i="${i}">×</b></div>`).join(''); }
+$('thumbs').addEventListener('click',e=>{ if(e.target.tagName==='B'){ UPLOADED.splice(+e.target.dataset.i,1); renderThumbs(); }});
+$('file').addEventListener('change', async e=>{
+  const files=[...e.target.files]; e.target.value='';
+  for(const f of files){
+    if(UPLOADED.length>=5){ $('imghint').textContent='5장까지 무료예요 (6장+는 추후 유료).'; break; }
+    const ph=document.createElement('span');
+    try{
+      const blob=await compress(f);
+      const r=await fetch('/api/upload',{method:'POST',headers:{'Content-Type':'image/jpeg',Authorization:'Bearer '+TOKEN},body:blob});
+      const d=await r.json(); if(!r.ok) throw new Error(d.error||r.status);
+      UPLOADED.push(d.url); renderThumbs();
+    }catch(err){ $('imghint').textContent='업로드 실패: '+err.message; }
+  }
+});
+
 $('send').addEventListener('click', async ()=>{
-  const request=$('req').value.trim(); if(!request) return;
-  $('send').disabled=true; addBubble('me',request); $('req').value='';
+  const request=$('req').value.trim(); if(!request && !UPLOADED.length) return;
+  const imgs=UPLOADED.slice();
+  $('send').disabled=true; addBubble('me',request+(imgs.length?` (사진 ${imgs.length}장)`:'')); $('req').value='';
   addBubble('sys','요청을 접수했어요. 페이지를 수정하는 중이에요…');
   try{
     const r=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+TOKEN},
-      body:JSON.stringify({type:'edit',slug,request})});
+      body:JSON.stringify({type:'edit',slug,request,images:imgs})});
     const d=await r.json(); if(!r.ok) throw new Error(d.error||r.status);
+    UPLOADED.length=0; renderThumbs();
     poll(d.jobId);
   }catch(e){ addBubble('sys','요청 실패: '+e.message); $('send').disabled=false; }
 });

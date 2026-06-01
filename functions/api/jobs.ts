@@ -37,13 +37,14 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
   if (body.type === "edit") {
     const slug = String(body.slug || "");
     const request = String(body.request || "").trim();
+    const images = Array.isArray(body.images) ? body.images.filter((u: any) => typeof u === "string").slice(0, 10) : [];
     if (!slug || !request) return json({ error: "slug+request required" }, 400);
     const site = await ctx.env.page_db.prepare("SELECT owner_id FROM sites WHERE slug=?1").bind(slug).first<{ owner_id: string }>();
     if (!site) return json({ error: "site not found" }, 404);
     if (site.owner_id !== user.id) return json({ error: "not owner" }, 403);
     await ctx.env.page_db.prepare(
       "INSERT INTO jobs (id,type,status,owner_id,slug,payload_json,created_at,updated_at) VALUES (?1,'edit','pending',?2,?3,?4,?5,?5)"
-    ).bind(id, user.id, slug, JSON.stringify({ request }), now).run();
+    ).bind(id, user.id, slug, JSON.stringify({ request, images }), now).run();
     return json({ jobId: id, status: "pending" });
   }
 
