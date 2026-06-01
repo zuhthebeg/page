@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>나랑 결혼해줄래?</title>
+<meta name="description" content="너에게 묻고 싶은 단 하나의 질문." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="나랑 결혼해줄래?" />
+<meta property="og:description" content="누르면 알게 될 거야 ♥" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#1a0e16; --bg-2:#2a1320; --ink:#fbeef2; --ink-soft:#e3b9cb; --muted:#a87b8e;
+  --rose:#ff7eb0; --rose-2:#ff4f8b; --gold:#f4d39c; --line:rgba(255,126,176,.25);
+  --display:"Cormorant Garamond",serif; --kr:"Gowun Batang",serif; --body:"Noto Sans KR",sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:radial-gradient(130% 90% at 50% -10%,#3a1628,var(--bg) 60%);color:var(--ink);
+  font-family:var(--body);font-weight:300;min-height:100svh;overflow:hidden;-webkit-font-smoothing:antialiased}
+.hearts{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.hearts span{position:absolute;bottom:-30px;font-size:18px;animation:float linear infinite;opacity:.0}
+@keyframes float{10%{opacity:.9}100%{transform:translateY(-110vh) rotate(40deg);opacity:0}}
+
+section[data-block="hero"]{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:24px}
+.eyebrow{font-family:var(--display);font-style:italic;font-size:clamp(1.1rem,3vw,1.6rem);color:var(--gold);letter-spacing:.05em;margin-bottom:1.2rem}
+h1{font-family:var(--kr);font-weight:700;font-size:clamp(2.6rem,11vw,6rem);line-height:1.1;
+  background:linear-gradient(120deg,var(--rose),var(--gold) 60%,var(--rose-2));-webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 40px rgba(255,126,176,.25)}
+.note{color:var(--ink-soft);font-family:var(--kr);font-size:clamp(1rem,2.6vw,1.25rem);margin-top:1.4rem;max-width:24ch}
+.btns{margin-top:3rem;display:flex;gap:1.2rem;align-items:center;justify-content:center;position:relative;min-height:70px}
+button{font-family:var(--body);font-weight:500;font-size:1.05rem;padding:1rem 2.4rem;border-radius:50px;border:none;cursor:pointer;transition:transform .2s var(--ease),box-shadow .3s}
+#yes{background:linear-gradient(120deg,var(--rose),var(--rose-2));color:#fff;box-shadow:0 14px 36px -10px var(--rose-2)}
+#yes:hover{transform:scale(1.07)}
+#no{background:transparent;color:var(--ink-soft);border:1px solid var(--line)}
+
+/* YES 축하 오버레이 */
+section[data-block="answer"]{position:fixed;inset:0;z-index:5;display:none;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:24px;background:radial-gradient(130% 90% at 50% 30%,#4a1a30,var(--bg) 70%)}
+section[data-block="answer"].on{display:flex;animation:pop .7s var(--ease)}
+@keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+.answer h2{font-family:var(--kr);font-weight:700;font-size:clamp(2.4rem,10vw,5rem);
+  background:linear-gradient(120deg,var(--gold),var(--rose));-webkit-background-clip:text;background-clip:text;color:transparent}
+.answer p{font-family:var(--kr);color:var(--ink-soft);font-size:clamp(1.1rem,3vw,1.5rem);margin-top:1.4rem}
+.ring{font-size:3.2rem;margin-bottom:1rem;animation:spin 4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.confetti{position:fixed;inset:0;z-index:6;pointer-events:none;overflow:hidden}
+.confetti i{position:absolute;top:-20px;width:9px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.2}}
+</style>
+</head>
+<body>
+<div class="hearts" id="hearts"></div>
+
+<section data-block="hero">
+  <div class="eyebrow">2026 · 너에게</div>
+  <h1>나랑<br>결혼해줄래?</h1>
+  <p class="note">긴 말은 못 하겠고… 그냥 너랑 평생 같이 있고 싶어.</p>
+  <div class="btns">
+    <button id="yes">응, 좋아 ♥</button>
+    <button id="no">아니…</button>
+  </div>
+</section>
+
+<section data-block="answer" class="answer" id="answer">
+  <div class="ring">💍</div>
+  <h2>고마워, 사랑해!</h2>
+  <p>방금 세상에서 제일 행복한 사람이 됐어.</p>
+</section>
+
+<div class="confetti" id="confetti"></div>
+
+<script>
+// floating hearts
+const H=document.getElementById('hearts'),E=['💗','💖','💕','🤍','✨'];
+for(let i=0;i<18;i++){const s=document.createElement('span');s.textContent=E[i%E.length];
+  s.style.left=(Math.random()*100)+'%';s.style.animationDuration=(7+Math.random()*8)+'s';
+  s.style.animationDelay=(-Math.random()*10)+'s';s.style.fontSize=(14+Math.random()*22)+'px';H.appendChild(s);}
+
+// NO 버튼: 다가오면 도망
+const no=document.getElementById('no');
+function flee(){
+  const pad=20, w=no.offsetWidth, h=no.offsetHeight;
+  const x=pad+Math.random()*(innerWidth-w-pad*2);
+  const y=pad+Math.random()*(innerHeight-h-pad*2);
+  no.style.position='fixed'; no.style.left=x+'px'; no.style.top=y+'px';
+  no.style.transform='scale('+(0.82+Math.random()*0.15)+')';
+}
+no.addEventListener('mouseenter',flee);
+no.addEventListener('touchstart',e=>{e.preventDefault();flee();},{passive:false});
+no.addEventListener('click',e=>{e.preventDefault();flee();});
+
+// YES → 축하
+const yes=document.getElementById('yes'),ans=document.getElementById('answer'),cf=document.getElementById('confetti');
+yes.addEventListener('click',()=>{
+  ans.classList.add('on');
+  const cols=['#ff7eb0','#ff4f8b','#f4d39c','#ffffff','#ffb3d1'];
+  for(let i=0;i<120;i++){const p=document.createElement('i');p.style.left=Math.random()*100+'%';
+    p.style.background=cols[i%cols.length];p.style.animationDuration=(2+Math.random()*2.5)+'s';
+    p.style.animationDelay=(Math.random()*0.6)+'s';cf.appendChild(p);}
+  setTimeout(()=>cf.innerHTML='',5000);
+});
+</script>
+</body>
+</html>
