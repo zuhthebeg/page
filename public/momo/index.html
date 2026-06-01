@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>카페 모모 · MENU</title>
+<meta name="description" content="동네 골목 끝, 작은 로스터리 카페 모모. 직접 볶은 원두와 매일 굽는 디저트." />
+<link rel="canonical" href="https://page.cocy.io/momo" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://page.cocy.io/momo" />
+<meta property="og:title" content="카페 모모 · MENU" />
+<meta property="og:description" content="직접 볶은 원두와 매일 굽는 디저트. 골목 끝 작은 로스터리." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#fbf6ee; --bg-2:#f3e9da; --paper:#fffdf9;
+  --ink:#3a2b22; --ink-soft:#7c6657; --muted:#ab9582;
+  --accent:#b5612f; --accent-2:#6f7d54; --line:rgba(58,43,34,.16);
+  --display:"Cormorant Garamond",serif; --kr:"Gowun Batang",serif; --body:"Noto Sans KR",sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1); --pad:clamp(20px,5vw,60px);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+.mono{font-family:var(--display);text-transform:uppercase;letter-spacing:.34em;font-size:.72rem;color:var(--accent)}
+
+/* hero */
+section[data-block="hero"]{padding:14vh 0 8vh;text-align:center;background:radial-gradient(120% 70% at 50% -20%,var(--paper),transparent 60%)}
+.hero .mono{display:block;margin-bottom:1.2rem}
+.hero h1{font-family:var(--kr);font-weight:700;font-size:clamp(3rem,12vw,5.5rem);line-height:1;color:var(--ink)}
+.hero .tag{font-family:var(--display);font-style:italic;font-size:clamp(1.2rem,3vw,1.7rem);color:var(--ink-soft);margin-top:1.2rem}
+.hero .hours{margin-top:1.8rem;font-size:.9rem;color:var(--muted);letter-spacing:.04em}
+.bean{font-size:1.6rem;opacity:.6}
+
+/* menu */
+section[data-block="menu"]{padding:5vh 0}
+.cat{margin-bottom:3.4rem}
+.cat > h2{font-family:var(--display);font-weight:600;font-size:1.6rem;color:var(--accent);letter-spacing:.04em;
+  display:flex;align-items:center;gap:1rem;margin-bottom:1.6rem}
+.cat > h2::after{content:"";flex:1;height:1px;background:var(--line)}
+.item{display:flex;align-items:baseline;gap:.6rem;padding:.7rem 0}
+.item .nm{font-family:var(--kr);font-weight:700;font-size:1.08rem;color:var(--ink);white-space:nowrap}
+.item .nm small{font-family:var(--body);font-weight:300;color:var(--muted);font-size:.78rem;margin-left:.4rem;display:block;white-space:normal;margin-top:.1rem}
+.item .dots{flex:1;border-bottom:1px dotted var(--line);transform:translateY(-4px)}
+.item .pr{font-family:var(--display);font-size:1.15rem;color:var(--ink-soft);white-space:nowrap}
+.sig{display:inline-block;font-size:.62rem;font-family:var(--body);font-weight:500;color:#fff;background:var(--accent);
+  padding:.1rem .45rem;border-radius:20px;letter-spacing:.05em;vertical-align:middle;margin-left:.4rem}
+
+/* info */
+section[data-block="info"]{padding:7vh 0;border-top:1px solid var(--line)}
+.info-grid{display:grid;grid-template-columns:1fr;gap:1.6rem;text-align:center}
+@media(min-width:620px){.info-grid{grid-template-columns:repeat(3,1fr)}}
+.info-grid .b .mono{display:block;margin-bottom:.5rem;font-size:.6rem}
+.info-grid .b p{font-family:var(--kr);color:var(--ink);font-size:1rem}
+
+/* QR */
+section[data-block="qr"]{padding:8vh 0 4vh}
+.qr-card{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:2.6rem;text-align:center;
+  box-shadow:0 30px 60px -40px rgba(58,43,34,.5)}
+.qr-card .mono{display:block;margin-bottom:.4rem}
+.qr-card h3{font-family:var(--kr);font-weight:700;font-size:1.3rem;margin-bottom:.4rem}
+.qr-card p{color:var(--ink-soft);font-size:.88rem;margin-bottom:1.6rem}
+.qr-card img{width:200px;height:200px;border:10px solid #fff;border-radius:12px;box-shadow:0 0 0 1px var(--line)}
+.qr-card .url{margin-top:1.2rem;font-family:var(--display);font-size:1rem;color:var(--accent);letter-spacing:.06em}
+footer{padding:3rem var(--pad);text-align:center;border-top:1px solid var(--line)}
+footer .mono{color:var(--muted)}
+.reveal{opacity:0;transform:translateY(20px);transition:.9s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<section data-block="hero">
+  <div class="wrap hero">
+    <span class="mono">Roastery & Café</span>
+    <h1>카페 모모</h1>
+    <div class="tag">골목 끝, 매일 볶고 매일 굽는</div>
+    <div class="hours"><span class="bean">☕</span><br>매일 10:00 – 22:00 · 화요일 휴무</div>
+  </div>
+</section>
+
+<section data-block="menu">
+  <div class="wrap">
+
+    <div class="cat reveal">
+      <h2>Signature</h2>
+      <div class="item"><span class="nm">모모 라떼<span class="sig">시그니처</span><small>흑임자·연유, 모모만의 고소함</small></span><span class="dots"></span><span class="pr">6,500</span></div>
+      <div class="item"><span class="nm">소금 카라멜 콜드브루<small>12시간 저온추출 + 바다소금 폼</small></span><span class="dots"></span><span class="pr">6,000</span></div>
+      <div class="item"><span class="nm">대추 아인슈페너<small>국산 대추청, 따뜻하게도 가능</small></span><span class="dots"></span><span class="pr">6,800</span></div>
+    </div>
+
+    <div class="cat reveal">
+      <h2>Coffee</h2>
+      <div class="item"><span class="nm">에스프레소</span><span class="dots"></span><span class="pr">4,000</span></div>
+      <div class="item"><span class="nm">아메리카노 <small>HOT / ICE</small></span><span class="dots"></span><span class="pr">4,500</span></div>
+      <div class="item"><span class="nm">카페라떼</span><span class="dots"></span><span class="pr">5,000</span></div>
+      <div class="item"><span class="nm">바닐라빈 라떼</span><span class="dots"></span><span class="pr">5,800</span></div>
+    </div>
+
+    <div class="cat reveal">
+      <h2>Dessert</h2>
+      <div class="item"><span class="nm">바스크 치즈케이크<span class="sig">인기</span><small>매일 한정 수량</small></span><span class="dots"></span><span class="pr">6,500</span></div>
+      <div class="item"><span class="nm">수제 휘낭시에 <small>플레인 / 얼그레이</small></span><span class="dots"></span><span class="pr">3,500</span></div>
+      <div class="item"><span class="nm">계절 과일 타르트</span><span class="dots"></span><span class="pr">7,000</span></div>
+    </div>
+
+  </div>
+</section>
+
+<section data-block="info">
+  <div class="wrap info-grid">
+    <div class="b"><span class="mono">Hours</span><p>10:00 – 22:00<br>화요일 휴무</p></div>
+    <div class="b"><span class="mono">Place</span><p>서울 마포구<br>골목길 22, 1층</p></div>
+    <div class="b"><span class="mono">Call</span><p>02-123-4567</p></div>
+  </div>
+</section>
+
+<section data-block="qr">
+  <div class="wrap">
+    <div class="qr-card reveal">
+      <span class="mono">Table QR</span>
+      <h3>이 QR을 테이블에 붙여보세요</h3>
+      <p>손님이 스캔하면 바로 이 메뉴판으로 들어옵니다.</p>
+      <img alt="카페 모모 메뉴 QR" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data=https%3A%2F%2Fpage.cocy.io%2Fmomo" />
+      <div class="url">page.cocy.io/momo</div>
+    </div>
+  </div>
+</section>
+
+<footer><span class="mono">카페 모모 · made on page.cocy.io</span></footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.14});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
