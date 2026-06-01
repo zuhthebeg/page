@@ -1,0 +1,737 @@
+
+INSERT OR REPLACE INTO users (id,email,name,plan,gen_count,created_at)
+VALUES ('cocy-seed', NULL, 'cocy', 'free', 0, 1780319778150);
+
+INSERT OR REPLACE INTO versions (id,site_id,html,label,created_at)
+VALUES ('v-yang-1', 's-yang', '<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>양영일 · Chef Portfolio</title>
+<meta name="description" content="양영일 — 15년 경력의 다이닝 셰프. 메뉴 개발, 주방 운영, 시그니처 다이닝." />
+<link rel="canonical" href="https://cocy.io/portfolio/chef/yang" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://cocy.io/portfolio/chef/yang" />
+<meta property="og:title" content="양영일 · Chef Portfolio" />
+<meta property="og:description" content="양영일 — 15년 경력의 다이닝 셰프. 메뉴 개발, 주방 운영, 시그니처 다이닝." />
+<meta property="og:image" content="https://cocy.io/portfolio/chef/yang/https://raw.githubusercontent.com/zuhthebeg/portfolio/HEAD/chef/yang/assets/dishes/01-bisque.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&family=Noto+Serif+KR:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#0c0b0a;
+  --bg-2:#131110;
+  --bg-3:#1b1815;
+  --ink:#ece6da;
+  --ink-soft:#c4bcab;
+  --muted:#8c8475;
+  --brass:#c9a86a;
+  --brass-bright:#e9cd92;
+  --brass-deep:#a3854f;
+  --line:rgba(201,168,106,.22);
+  --line-soft:rgba(236,230,218,.10);
+  --shadow:0 30px 80px -30px rgba(0,0,0,.85);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --serif:"Cormorant Garamond",serif;
+  --serif-kr:"Noto Serif KR",serif;
+  --sans-kr:"Noto Sans KR",sans-serif;
+  --label:"Jost",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans-kr);
+  font-weight:300;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* grain overlay across whole page */
+body::after{
+  content:"";position:fixed;inset:0;z-index:9000;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns=''http://www.w3.org/2000/svg'' width=''160'' height=''160''%3E%3Cfilter id=''n''%3E%3CfeTurbulence type=''fractalNoise'' baseFrequency=''0.85'' numOctaves=''3'' stitchTiles=''stitch''/%3E%3C/filter%3E%3Crect width=''100%25'' height=''100%25'' filter=''url(%23n)''/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+::selection{background:var(--brass);color:#1a160e}
+
+/* ---------- type ---------- */
+.eyebrow{
+  font-family:var(--label);font-weight:400;text-transform:uppercase;
+  letter-spacing:.42em;font-size:.66rem;color:var(--brass);
+}
+.serif{font-family:var(--serif)}
+h1,h2,h3{font-weight:400;line-height:1.05;letter-spacing:-.01em}
+
+a{color:inherit;text-decoration:none}
+
+/* ---------- layout helpers ---------- */
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,72px)}
+section{position:relative}
+.reveal{opacity:0;transform:translateY(34px);transition:opacity 1.1s var(--ease),transform 1.1s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- nav ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px clamp(22px,5vw,72px);
+  transition:background .5s var(--ease),padding .5s var(--ease),border-color .5s;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{background:rgba(12,11,10,.72);backdrop-filter:blur(14px);padding-top:15px;padding-bottom:15px;border-color:var(--line-soft)}
+nav .brand{font-family:var(--serif);font-size:1.32rem;letter-spacing:.05em;display:flex;align-items:center;gap:.55em}
+nav .brand b{font-weight:500}
+nav .brand .dot{width:5px;height:5px;border-radius:50%;background:var(--brass);box-shadow:0 0 12px var(--brass)}
+nav .links{display:flex;gap:clamp(18px,2.4vw,40px);align-items:center}
+nav .links a{font-family:var(--label);font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);position:relative;padding:4px 0}
+nav .links a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:1px;background:var(--brass);transition:width .4s var(--ease)}
+nav .links a:hover{color:var(--ink)}
+nav .links a:hover::after{width:100%}
+nav .menu-btn{display:none;background:none;border:none;color:var(--ink);font-family:var(--label);letter-spacing:.2em;font-size:.74rem;text-transform:uppercase;cursor:pointer}
+@media(max-width:760px){
+  nav .links{display:none}
+  nav .menu-btn{display:block}
+}
+
+/* ---------- hero ---------- */
+.hero{min-height:100svh;display:flex;align-items:center;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(.25) brightness(.5) contrast(1.05);transform:scale(1.08);animation:slowzoom 18s var(--ease) forwards}
+@keyframes slowzoom{to{transform:scale(1)}}
+.hero-bg::after{content:"";position:absolute;inset:0;
+  background:
+   radial-gradient(120% 80% at 75% 30%,rgba(201,168,106,.10),transparent 60%),
+   linear-gradient(180deg,rgba(12,11,10,.55) 0%,rgba(12,11,10,.72) 45%,var(--bg) 100%),
+   linear-gradient(90deg,var(--bg) 0%,rgba(12,11,10,.2) 55%,transparent 100%);
+}
+.hero-inner{position:relative;z-index:2;width:100%}
+.hero .eyebrow{opacity:0;animation:fadeUp 1s var(--ease) .3s forwards}
+.hero h1{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(3.6rem,12vw,10.5rem);line-height:.92;margin:.18em 0 .1em;
+  letter-spacing:-.02em;
+}
+.hero h1 .ko{display:block;font-family:var(--serif-kr);font-weight:300;font-size:.42em;letter-spacing:.06em;color:var(--ink-soft);margin-bottom:.15em}
+.hero h1 .en{display:block;background:linear-gradient(180deg,var(--ink) 0%,var(--brass-deep) 160%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero h1 em{font-style:italic;color:var(--brass);font-weight:300}
+.hero .role{display:flex;align-items:center;gap:18px;margin-top:.6em;flex-wrap:wrap}
+.hero .role .ttl{font-family:var(--label);text-transform:uppercase;letter-spacing:.32em;font-size:.82rem;color:var(--ink-soft)}
+.hero .role .rule{flex:0 0 64px;height:1px;background:linear-gradient(90deg,var(--brass),transparent)}
+.hero .lede{max-width:46ch;margin-top:1.8em;color:var(--ink-soft);font-size:1.04rem;font-weight:300;line-height:1.85}
+.hero-anim>*{opacity:0;animation:fadeUp 1.05s var(--ease) forwards}
+.hero-anim>*:nth-child(1){animation-delay:.35s}
+.hero-anim>*:nth-child(2){animation-delay:.5s}
+.hero-anim>*:nth-child(3){animation-delay:.68s}
+.hero-anim>*:nth-child(4){animation-delay:.86s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.scrollcue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;animation:fadeUp 1s 1.3s forwards}
+.scrollcue span{font-family:var(--label);font-size:.6rem;letter-spacing:.34em;text-transform:uppercase;color:var(--muted)}
+.scrollcue .bar{width:1px;height:54px;background:linear-gradient(var(--brass),transparent);position:relative;overflow:hidden}
+.scrollcue .bar::after{content:"";position:absolute;top:-50%;left:0;width:100%;height:50%;background:var(--brass-bright);animation:drop 2.2s var(--ease) infinite}
+@keyframes drop{0%{top:-50%}60%,100%{top:120%}}
+
+/* ---------- section heading ---------- */
+.shead{display:flex;align-items:baseline;gap:20px;margin-bottom:clamp(38px,6vw,72px)}
+.shead .idx{font-family:var(--serif);font-style:italic;color:var(--brass);font-size:1.3rem}
+.shead h2{font-family:var(--serif);font-size:clamp(2.2rem,5.2vw,4rem);font-weight:300}
+.shead h2 .kr{font-family:var(--serif-kr);font-weight:300}
+.shead .line{flex:1;height:1px;background:var(--line);align-self:center;margin-bottom:.4em}
+
+/* ---------- profile ---------- */
+.profile{padding:clamp(90px,14vh,170px) 0;background:
+  linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%)}
+.profile-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(40px,7vw,110px);align-items:start}
+.profile .quote{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.32;color:var(--ink)}
+.profile .quote em{color:var(--brass);font-style:italic}
+.profile .quote .mark{display:block;font-size:3em;color:var(--brass);line-height:0;height:.4em;font-family:var(--serif)}
+.profile p{color:var(--ink-soft);margin-bottom:1.3em;font-size:1.02rem}
+.profile p strong{color:var(--ink);font-weight:500}
+.sig{margin-top:2.4em;font-family:var(--serif);font-style:italic;font-size:1.5rem;color:var(--brass)}
+.sig small{display:block;font-family:var(--label);font-style:normal;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:.7em}
+@media(max-width:820px){.profile-grid{grid-template-columns:1fr;gap:50px}}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:clamp(60px,9vw,110px)}
+.stat{background:var(--bg-2);padding:clamp(26px,4vw,46px) 26px;text-align:center}
+.stat .num{font-family:var(--serif);font-size:clamp(2.6rem,5vw,4.2rem);font-weight:300;color:var(--brass-bright);line-height:1}
+.stat .num small{font-size:.4em;color:var(--brass)}
+.stat .cap{font-family:var(--label);text-transform:uppercase;letter-spacing:.2em;font-size:.64rem;color:var(--muted);margin-top:.9em}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- signature ---------- */
+.signature{padding:clamp(90px,16vh,180px) 0;background:var(--bg-2);overflow:hidden}
+.sig-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(34px,5vw,70px);align-items:center}
+.sig-photo{position:relative;border-radius:3px;overflow:hidden;box-shadow:var(--shadow)}
+.sig-photo::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  box-shadow:inset 0 0 120px 24px rgba(0,0,0,.55);}
+.sig-photo::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns=''http://www.w3.org/2000/svg'' width=''120'' height=''120''%3E%3Cfilter id=''n''%3E%3CfeTurbulence type=''fractalNoise'' baseFrequency=''0.9'' numOctaves=''2''/%3E%3C/filter%3E%3Crect width=''100%25'' height=''100%25'' filter=''url(%23n)''/%3E%3C/svg%3E");}
+.sig-photo img{width:100%;height:100%;object-fit:cover;display:block;filter:contrast(1.06) saturate(1.05);transition:transform 1.4s var(--ease)}
+.sig-photo:hover img{transform:scale(1.05)}
+.sig-photo .badge{position:absolute;left:18px;top:18px;z-index:4;font-family:var(--label);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;
+  background:rgba(12,11,10,.6);border:1px solid var(--line);color:var(--brass);padding:8px 14px;backdrop-filter:blur(4px)}
+.sig-body .eyebrow{margin-bottom:1.1em;display:block}
+.sig-body h3{font-family:var(--serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:300;line-height:1.04}
+.sig-body h3 .kr{display:block;font-family:var(--serif-kr);font-size:.62em;color:var(--ink-soft);margin-top:.25em}
+.sig-body p{color:var(--ink-soft);margin-top:1.4em;font-size:1.01rem}
+.press{margin-top:1.8em;display:flex;flex-direction:column;gap:.7em}
+.press .row{display:flex;align-items:center;gap:14px;font-size:.92rem;color:var(--ink-soft)}
+.press .row b{font-family:var(--label);font-weight:500;letter-spacing:.06em;color:var(--brass);font-size:.78rem;text-transform:uppercase;border:1px solid var(--line);padding:4px 10px;white-space:nowrap}
+@media(max-width:820px){.sig-grid{grid-template-columns:1fr;gap:36px}}
+
+/* ---------- gallery ---------- */
+.gallery{padding:clamp(90px,14vh,170px) 0}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(14px,1.6vw,24px)}
+.dish{position:relative;overflow:hidden;border-radius:3px;cursor:pointer;background:var(--bg-3)}
+.dish.sp7{grid-column:span 7}.dish.sp5{grid-column:span 5}
+.dish.sp6{grid-column:span 6}.dish.sp4{grid-column:span 4}.dish.sp8{grid-column:span 8}
+.dish .ph{position:relative;overflow:hidden;height:100%}
+.dish img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:grayscale(.12) contrast(1.04) saturate(.96) brightness(.94);
+  transform:scale(1.02);transition:transform 1.3s var(--ease),filter 1.1s var(--ease)}
+.dish:hover img{transform:scale(1.09);filter:grayscale(0) contrast(1.08) saturate(1.12) brightness(1)}
+/* vignette */
+.dish .ph::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(8,7,6,.05) 0%,rgba(8,7,6,.0) 35%,rgba(8,7,6,.78) 100%);
+  transition:opacity .6s}
+/* grain */
+.dish .ph::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;opacity:.45;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns=''http://www.w3.org/2000/svg'' width=''100'' height=''100''%3E%3Cfilter id=''n''%3E%3CfeTurbulence type=''fractalNoise'' baseFrequency=''1'' numOctaves=''2''/%3E%3C/filter%3E%3Crect width=''100%25'' height=''100%25'' filter=''url(%23n)''/%3E%3C/svg%3E")}
+.dish .cap{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:clamp(18px,2vw,30px);
+  transform:translateY(14px);opacity:.86;transition:transform .7s var(--ease),opacity .6s}
+.dish:hover .cap{transform:none;opacity:1}
+.dish .cap .no{font-family:var(--label);font-size:.6rem;letter-spacing:.3em;color:var(--brass);text-transform:uppercase}
+.dish .cap .en{font-family:var(--serif);font-size:clamp(1.3rem,2.2vw,1.9rem);font-weight:400;line-height:1.06;margin-top:.2em}
+.dish .cap .kr{font-family:var(--serif-kr);font-size:.92rem;color:var(--ink-soft);margin-top:.25em;font-weight:300;
+  max-height:0;overflow:hidden;opacity:0;transition:max-height .6s var(--ease),opacity .5s,margin .5s}
+.dish:hover .cap .kr{max-height:60px;opacity:1;margin-top:.5em}
+.dish .corner{position:absolute;top:14px;right:14px;z-index:4;width:30px;height:30px;opacity:0;transform:rotate(-15deg) scale(.8);transition:.5s var(--ease)}
+.dish .corner::before,.dish .corner::after{content:"";position:absolute;background:var(--brass)}
+.dish .corner::before{top:0;left:50%;width:1px;height:100%;transform:translateX(-.5px)}
+.dish .corner::after{left:0;top:50%;height:1px;width:100%;transform:translateY(-.5px)}
+.dish:hover .corner{opacity:.9;transform:none}
+@media(max-width:820px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .dish.sp7,.dish.sp5,.dish.sp6,.dish.sp4,.dish.sp8{grid-column:span 1}
+  .dish{aspect-ratio:4/3}
+  .dish .cap .kr{max-height:60px;opacity:1;margin-top:.5em}
+}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+
+/* ---------- expertise ---------- */
+.expertise{padding:clamp(90px,14vh,170px) 0;background:var(--bg-2)}
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.exp{background:var(--bg);padding:clamp(34px,4vw,52px);transition:background .5s}
+.exp:hover{background:var(--bg-3)}
+.exp .n{font-family:var(--serif);font-style:italic;color:var(--brass);font-size:1.2rem}
+.exp h3{font-family:var(--serif);font-size:1.75rem;font-weight:400;margin:.5em 0 .2em}
+.exp h3 .kr{display:block;font-family:var(--serif-kr);font-size:.62em;color:var(--muted);font-weight:300;letter-spacing:.04em;margin-top:.4em}
+.exp ul{list-style:none;margin-top:1.6em}
+.exp li{position:relative;padding:.62em 0 .62em 22px;border-top:1px solid var(--line-soft);color:var(--ink-soft);font-size:.95rem}
+.exp li:first-child{border-top:none}
+.exp li::before{content:"";position:absolute;left:0;top:1.15em;width:6px;height:6px;border:1px solid var(--brass);transform:rotate(45deg)}
+@media(max-width:820px){.exp-grid{grid-template-columns:1fr}}
+
+/* ---------- career timeline ---------- */
+.career{padding:clamp(90px,14vh,170px) 0}
+.tl{position:relative;margin-top:20px}
+.tl::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:1px;background:linear-gradient(var(--line),transparent);left:clamp(86px,12vw,168px)}
+.tl-row{display:grid;grid-template-columns:clamp(86px,12vw,168px) 1fr;gap:clamp(28px,5vw,72px);padding:clamp(20px,3vw,34px) 0;position:relative;transition:.5s}
+.tl-row+.tl-row{border-top:1px solid var(--line-soft)}
+.tl-row .yr{font-family:var(--serif);font-style:italic;color:var(--brass);font-size:1.05rem;text-align:right;padding-top:.2em;white-space:nowrap;letter-spacing:.02em}
+.tl-row .dot{position:absolute;left:clamp(86px,12vw,168px);top:clamp(26px,3.6vw,40px);width:9px;height:9px;border-radius:50%;background:var(--bg);border:1px solid var(--brass);transform:translateX(-4.5px);transition:.5s}
+.tl-row:hover .dot{background:var(--brass);box-shadow:0 0 16px var(--brass)}
+.tl-row .body h3{font-family:var(--serif-kr);font-size:1.45rem;font-weight:500;line-height:1.2}
+.tl-row .body .role{font-family:var(--label);text-transform:uppercase;letter-spacing:.2em;font-size:.68rem;color:var(--brass);margin:.5em 0 .9em}
+.tl-row .body p{color:var(--ink-soft);font-size:.95rem;max-width:60ch}
+.tl-row .body .pts{list-style:none;max-width:62ch;display:grid;gap:.42em}
+.tl-row .body .pts li{position:relative;padding-left:18px;color:var(--ink-soft);font-size:.93rem;line-height:1.5}
+.tl-row .body .pts li::before{content:"";position:absolute;left:2px;top:.62em;width:5px;height:5px;border:1px solid var(--brass);transform:rotate(45deg)}
+.tl-row .body .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:1em}
+.tl-row .body .tags span{font-size:.78rem;color:var(--muted);border:1px solid var(--line-soft);padding:4px 11px;border-radius:40px}
+.tl-row:hover{padding-left:8px}
+@media(max-width:640px){
+  .tl::before{left:7px}
+  .tl-row{grid-template-columns:1fr;gap:6px;padding-left:28px}
+  .tl-row .yr{text-align:left}
+  .tl-row .dot{left:7px}
+}
+
+/* ---------- contact ---------- */
+.contact{padding:clamp(100px,18vh,200px) 0 clamp(60px,8vh,90px);background:linear-gradient(180deg,var(--bg) 0%,#080706 100%);text-align:center;position:relative;overflow:hidden}
+.contact::before{content:"";position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:120%;height:80%;
+  background:radial-gradient(50% 60% at 50% 50%,rgba(201,168,106,.10),transparent 70%);pointer-events:none}
+.contact .eyebrow{display:block;margin-bottom:1.4em}
+.contact h2{font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,7vw,6rem);line-height:1.02}
+.contact h2 em{font-style:italic;color:var(--brass)}
+.contact .mail{display:inline-flex;align-items:center;gap:14px;margin-top:1.1em;font-family:var(--serif);font-size:clamp(1.3rem,3vw,2rem);color:var(--ink);position:relative;padding-bottom:6px}
+.contact .mail::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--line);transition:background .4s}
+.contact .mail:hover::after{background:var(--brass-bright)}
+.contact .meta{margin-top:2.6em;display:flex;gap:clamp(20px,4vw,54px);justify-content:center;flex-wrap:wrap;color:var(--muted);font-family:var(--label);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase}
+.contact .meta a:hover{color:var(--brass)}
+footer{padding:34px 0;border-top:1px solid var(--line-soft);text-align:center}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+footer span{font-family:var(--label);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+footer .brass{color:var(--brass)}
+
+/* ---------- lightbox ---------- */
+.lb{position:fixed;inset:0;z-index:9500;background:rgba(6,5,4,.94);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .5s var(--ease);padding:5vw}
+.lb.open{opacity:1;pointer-events:auto}
+.lb-stage{position:relative;max-width:1000px;max-height:86vh;text-align:center;transform:scale(.96);transition:transform .6s var(--ease)}
+.lb.open .lb-stage{transform:none}
+.lb img{max-width:100%;max-height:74vh;object-fit:contain;box-shadow:var(--shadow);border:1px solid var(--line-soft)}
+.lb .lcap{margin-top:18px;font-family:var(--serif);font-size:1.5rem}
+.lb .lcap .kr{display:block;font-family:var(--serif-kr);font-size:.7em;color:var(--ink-soft);margin-top:.3em;font-weight:300}
+.lb-close{position:absolute;top:18px;right:24px;z-index:2;background:none;border:none;color:var(--ink);font-family:var(--label);letter-spacing:.2em;text-transform:uppercase;font-size:.8rem;cursor:pointer}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:none;border:1px solid var(--line);color:var(--ink);width:48px;height:48px;border-radius:50%;cursor:pointer;font-size:1.1rem;transition:.4s;display:flex;align-items:center;justify-content:center}
+.lb-nav:hover{background:var(--brass);color:#16120a;border-color:var(--brass)}
+.lb-prev{left:2vw}.lb-next{right:2vw}
+@media(max-width:760px){.lb-nav{display:none}}
+
+/* ---------- PDF save button ---------- */
+.pdf-fab{
+  position:fixed;right:clamp(16px,2.4vw,30px);bottom:clamp(16px,2.4vw,30px);z-index:1200;
+  display:inline-flex;align-items:center;gap:9px;cursor:pointer;
+  font-family:var(--label);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;
+  color:#1c1710;background:linear-gradient(135deg,var(--brass-bright),var(--brass));
+  border:1px solid rgba(255,255,255,.2);padding:13px 20px;border-radius:40px;
+  box-shadow:0 14px 34px -10px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.35);
+  transition:transform .4s var(--ease),box-shadow .4s var(--ease),filter .4s}
+.pdf-fab svg{flex:0 0 auto}
+.pdf-fab:hover{transform:translateY(-3px);filter:brightness(1.06);box-shadow:0 20px 44px -10px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.4)}
+.pdf-fab:active{transform:translateY(-1px)}
+@media(max-width:760px){.pdf-fab span{display:none}.pdf-fab{padding:13px;border-radius:50%}}
+
+/* ================= PRINT / PDF ================= */
+@media print{
+  /* light/white print palette — flips the whole var-driven theme to a clean
+     paper look so the PDF prints well on a normal printer */
+  :root{
+    --bg:#ffffff; --bg-2:#faf7f1; --bg-3:#f2ece0;
+    --ink:#1b1813; --ink-soft:#484136; --muted:#7c7464;
+    --brass:#9a7b3e; --brass-bright:#a8852f; --brass-deep:#7d6533;
+    --line:rgba(40,30,15,.22); --line-soft:rgba(0,0,0,.10);
+  }
+  @page{margin:12mm 12mm;background:#ffffff}
+  html,body{background:var(--bg)!important}
+  body{color:var(--ink);font-size:11pt;line-height:1.6;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    display:flex;flex-direction:column}
+  /* print-only section order: Expertise moves below Career to fill the
+     career-tail whitespace (live scroll order stays Profile→Expertise→Career) */
+  .hero{order:1}.profile{order:2}.career{order:3}.expertise{order:4}
+  .gallery{order:5}.contact{order:6}footer{order:7}
+  body::after{display:none!important}            /* grain */
+  nav,.scrollcue,.pdf-fab,.lb,.dish .corner{display:none!important}
+  .reveal{opacity:1!important;transform:none!important}
+  section{padding-top:14pt!important;padding-bottom:14pt!important;background:var(--bg)!important}
+  .wrap{max-width:none;padding:0 4mm}
+  .shead{margin-bottom:16pt;break-after:avoid}
+  .shead h2{font-size:22pt}
+  h2,h3{color:var(--ink)}
+
+  /* hero → compact title block */
+  .hero{min-height:auto!important;padding:6mm 0 10mm;display:block;page-break-after:avoid;background:var(--bg)!important}
+  .hero-bg{display:none!important}
+  .hero .hero-anim>*{opacity:1!important;animation:none!important;transform:none!important}
+  .hero h1{font-size:42pt;margin:.1em 0}
+  .hero h1 .ko{color:var(--ink-soft)}
+  .hero h1 .en{-webkit-text-fill-color:var(--brass-bright)!important;color:var(--brass-bright)!important;background:none!important}
+  .hero h1 em{color:var(--brass)}
+  .hero .role .ttl{color:var(--ink-soft)}
+  .hero .role .rule{background:var(--brass)}
+
+  /* profile */
+  .profile-grid{display:block}
+  .profile .quote{font-size:19pt;margin-bottom:14pt}
+  .profile p{font-size:10.5pt;break-inside:avoid}
+  .sig{margin-top:14pt}
+  .stats{margin-top:16pt;break-inside:avoid}
+  .stat .num{color:var(--brass-bright)}
+
+  /* ---- page structure ---- */
+  /* Career starts a fresh page; Expertise flows right after it (no break)
+     to fill the career-tail whitespace; Gallery gets its own page */
+  .career,.gallery{break-before:page}
+  .expertise{break-before:auto;padding-top:30pt!important}
+  .stat{break-inside:avoid}
+  .exp-grid{break-inside:avoid}      /* keep the 3 capability columns together */
+
+  /* expertise: force 3 columns (override mobile breakpoint), fit one page */
+  .exp-grid{grid-template-columns:repeat(3,1fr)!important}
+  .exp{padding:18pt 14pt;break-inside:avoid}
+  .exp .n{font-size:11pt}
+  .exp h3{font-size:15pt;color:var(--ink);margin:.45em 0 .1em}
+  .exp h3 .kr{font-size:.6em}
+  .exp ul{margin-top:11pt}
+  .exp li{padding:.46em 0 .46em 18px;font-size:9pt}
+
+  /* career: keep each role intact; rows flow across pages without splitting */
+  .shead{margin-bottom:12pt}
+  /* widen the year column + push the timeline rule/dot right so the date is
+     never clipped by the line (print needs fixed mm, not the live vw clamp) */
+  .tl::before{left:30mm!important}
+  .tl-row{break-inside:avoid;padding:8pt 0;gap:7mm;grid-template-columns:30mm 1fr!important}
+  .tl-row .yr{font-size:9pt;padding-right:3.5mm}
+  .tl-row .dot{top:12pt;left:30mm!important}
+  .tl-row .body h3{font-size:12pt;color:var(--ink)}
+  .tl-row .body .role{font-size:7.5pt;margin:.28em 0 .5em}
+  .tl-row .body .pts{gap:.18em;max-width:none}
+  .tl-row .body .pts li{font-size:8.5pt;padding-left:13px;line-height:1.4;color:var(--ink-soft)}
+  .tl-row .body .pts li::before{top:.5em;width:3.5px;height:3.5px}
+  .tl-row .body .tags{margin-top:.5em}
+  .tl-row .body .tags span{font-size:8pt;padding:2px 9px}
+
+  /* gallery: clean image grid, all 7 plates sized down and centred so the
+     grid + the contact CTA + footer all share the final page */
+  .gallery{padding-bottom:8pt!important}
+  .grid{grid-template-columns:1fr 1fr!important;gap:3mm;max-width:128mm;margin:0 auto}
+  .dish{break-inside:avoid;aspect-ratio:16/9;box-shadow:none;border:1px solid var(--line)}
+  .dish img{filter:none!important;transform:none!important}
+  .dish .ph::before,.dish .ph::after{display:none!important}     /* vignette + grain */
+  .dish .cap{position:absolute;transform:none;opacity:1;background:linear-gradient(transparent,rgba(8,7,6,.7));padding:8pt}
+  .dish .cap .no{color:#f0e3c4}
+
+  /* contact: compact CTA so it + the footer stay on the gallery page */
+  .contact{background:var(--bg)!important;page-break-inside:avoid;break-before:avoid;padding:26pt 0 8pt!important}
+  .contact::before{display:none!important}
+  .contact .eyebrow{margin-bottom:.6em}
+  .contact h2{font-size:24pt}
+  .contact h2 em,.contact .mail{color:var(--brass)}
+  .contact .mail{margin-top:.5em;font-size:13pt}
+  .contact .meta{margin-top:1em}
+  /* keep the slim copyright bar on the same page as the contact CTA */
+  footer{border-color:var(--line-soft);padding:10pt 0;break-inside:avoid;break-before:avoid}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#top" class="brand"><span class="dot"></span><span>양영일 <b>YANG</b></span></a>
+  <div class="links">
+    <a href="#profile">Profile</a>
+    <a href="#expertise">Expertise</a>
+    <a href="#career">Career</a>
+    <a href="#gallery">Cuisine</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button class="menu-btn" id="menuBtn">Menu</button>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero" id="top">
+  <div class="hero-bg"><img src="https://raw.githubusercontent.com/zuhthebeg/portfolio/HEAD/chef/yang/assets/dishes/01-bisque.jpg" alt="" /></div>
+  <div class="hero-inner wrap">
+    <div class="hero-anim">
+      <p class="eyebrow">Chef &nbsp;·&nbsp; Dining</p>
+      <h1>
+        <span class="ko">양영일</span>
+        <span class="en">Yang <em>Young-il</em></span>
+      </h1>
+      <div class="role">
+        <span class="rule"></span>
+        <span class="ttl">Chef &nbsp;/&nbsp; Culinary Director</span>
+      </div>
+    </div>
+  </div>
+  <div class="scrollcue"><span>Scroll</span><div class="bar"></div></div>
+</header>
+
+<!-- ===== PROFILE ===== -->
+<section class="profile" id="profile">
+  <div class="wrap reveal">
+    <div class="profile-grid">
+      <div>
+        <p class="eyebrow" style="margin-bottom:2.2em">01 — Philosophy</p>
+        <blockquote class="quote">
+          <span class="mark">“</span>
+          좋은 요리는 <em>화려함</em>이 아니라,<br>매일 같은 온도와 정확한 손끝에서<br>완성된다고 믿습니다.
+        </blockquote>
+        <div class="sig">Yang Young-il<small>Chef · 15 Years in the Kitchen</small></div>
+      </div>
+      <div>
+        <p>15년 이상의 조리 경력을 바탕으로 <strong>양식 · 퓨전 다이닝 · 그릴 · 파스타</strong> 분야에서 전문성을 쌓아온 셰프입니다. 메뉴 개발부터 식자재 관리, 원가 관리, 인력 운영 및 교육, 주방 시스템 구축까지 <strong>BOH 운영 전반</strong>을 책임져 왔습니다.</p>
+        <p>최근 <strong>이도청담</strong>에서는 Head Chef 공석 기간 약 6개월 동안 주방 운영 전반을 총괄하며 메뉴 개발, 직원 교육, 원가 관리와 조직 운영을 담당해 안정적인 매장 운영을 이끌었습니다.</p>
+        <p>이전 근무지 <strong>문득</strong>에서는 매출 250% 이상 성장과 2호점 오픈에 기여했으며, TV 프로그램에 소개된 시그니처 메뉴를 개발하는 등 기획에서 실행까지 메뉴를 책임지는 역량을 보유하고 있습니다.</p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="num">15<small>년</small></div><div class="cap">Culinary Experience</div></div>
+      <div class="stat"><div class="num">250<small>%</small></div><div class="cap">매출 성장 · 문득</div></div>
+      <div class="stat"><div class="num">7</div><div class="cap">Kitchens Led</div></div>
+      <div class="stat"><div class="num">2</div><div class="cap">TV 방영 시그니처</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERTISE ===== -->
+<section class="expertise" id="expertise">
+  <div class="wrap reveal">
+    <div class="shead">
+      <span class="idx">02</span>
+      <h2>Expertise <span class="kr">핵심 역량</span></h2>
+      <span class="line"></span>
+    </div>
+    <div class="exp-grid">
+      <div class="exp">
+        <span class="n">i</span>
+        <h3>Menu Development<span class="kr">메뉴 개발</span></h3>
+        <ul>
+          <li>시즌 · 코스요리 개발</li>
+          <li>A la Carte 메뉴 개발</li>
+          <li>한식 기반 퓨전 메뉴 개발</li>
+          <li>베버리지 및 주류 메뉴 개발</li>
+          <li>레시피 표준화 · 간소화</li>
+        </ul>
+      </div>
+      <div class="exp">
+        <span class="n">ii</span>
+        <h3>Kitchen Management<span class="kr">주방 운영</span></h3>
+        <ul>
+          <li>BOH 운영 총괄</li>
+          <li>식자재 및 재고 관리</li>
+          <li>원가 및 코스트 관리</li>
+          <li>발주 관리</li>
+          <li>조리 프로세스 개선</li>
+        </ul>
+      </div>
+      <div class="exp">
+        <span class="n">iii</span>
+        <h3>Leadership<span class="kr">조직 운영</span></h3>
+        <ul>
+          <li>직원 교육 · 신규 온보딩</li>
+          <li>조직 운영 및 스케줄 관리</li>
+          <li>파트별 업무 분배</li>
+          <li>파트 로테이션 시스템 구축</li>
+          <li>서비스 품질 관리</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CAREER ===== -->
+<section class="career" id="career">
+  <div class="wrap reveal">
+    <div class="shead">
+      <span class="idx">03</span>
+      <h2>Career <span class="kr">경력</span></h2>
+      <span class="line"></span>
+    </div>
+    <div class="tl" id="timeline"><!-- injected --></div>
+  </div>
+</section>
+
+<!-- ===== GALLERY ===== -->
+<section class="gallery" id="gallery">
+  <div class="wrap reveal">
+    <div class="shead">
+      <span class="idx">04</span>
+      <h2>The Cuisine <span class="kr">요리</span></h2>
+      <span class="line"></span>
+    </div>
+    <div class="grid" id="dishGrid"><!-- injected --></div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="contact" id="contact">
+  <div class="wrap reveal">
+    <span class="eyebrow">05 — Get in touch</span>
+    <h2>주방을 함께<br>이끌 <em>준비가</em> 되어있습니다.</h2>
+    <a class="mail" id="mailPrimary" href="#"></a>
+    <div class="meta">
+      <span>Seoul, Korea</span>
+      <a id="mailSecondary" href="#">Email</a>
+      <span>Chef · Available</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 <span class="brass">양영일</span> · Yang Young-il</span>
+    <span>Chef Portfolio</span>
+  </div>
+</footer>
+
+<!-- ===== PDF SAVE ===== -->
+<button class="pdf-fab" id="pdfFab" aria-label="PDF로 저장" onclick="window.print()">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 4 5-4"/><path d="M5 21h14"/></svg>
+  <span>PDF 저장</span>
+</button>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lb" id="lb">
+  <button class="lb-close" id="lbClose">Close ✕</button>
+  <button class="lb-nav lb-prev" id="lbPrev">‹</button>
+  <button class="lb-nav lb-next" id="lbNext">›</button>
+  <div class="lb-stage">
+    <img id="lbImg" src="" alt="" />
+    <div class="lcap"><span id="lbEn"></span><span class="kr" id="lbKr"></span></div>
+  </div>
+</div>
+
+<script>
+/* email assembled at runtime so Cloudflare''s edge obfuscation leaves it intact */
+(function(){
+  var user=["yang","01209"].join(""), domain=["naver","com"].join(".");
+  var addr=user+String.fromCharCode(64)+domain;
+  ["mailPrimary","mailSecondary"].forEach(function(id,i){
+    var el=document.getElementById(id);
+    if(!el)return;
+    el.href="mailto:"+addr;
+    if(i===0)el.textContent=addr;          // primary shows the address
+  });
+})();
+/* ============ DATA (템플릿화 지점: 이 배열만 교체하면 다른 셰프 포트폴리오로 재사용 가능) ============ */
+const DISHES = [
+  {img:"https://raw.githubusercontent.com/zuhthebeg/portfolio/HEAD/chef/yang/assets/dishes/01-bisque.jpg",      en:"Blue Crab Bisque",      kr:"꽃게 비스크 · 보리지 블로썸",        span:"sp7"},
+  {img:"https://raw.githubusercontent.com/zuhthebeg/portfolio/HEAD/chef/yang/assets/dishes/06-shellfish.jpg",   en:"Shellfish & Blossom",   kr:"조개와 뵈르블랑, 식용꽃",            span:"sp5"},
+  {img:"https://raw.githubusercontent.com/zuhthebeg/portfolio/HEAD/chef/yang/assets/dishes/02-herb-risotto.jpg",en:"Green Herb Risotto",    kr:"농어 구이를 올린 허브 리조또",       span:"sp5"},
+  {img:"https://raw.githubusercontent.com/zuhthebeg/portfolio/HEAD/chef/yang/assets/dishes/07-conchiglioni.jpg",en:"Conchiglioni Ragù",     kr:"라구를 채운 콘킬리오니",            span:"sp7"},
+  {img:"https://raw.githubusercontent.com/zuhthebeg/portfolio/HEAD/chef/yang/assets/dishes/05-herb-custard.jpg",en:"Herb Custard · Caviar", kr:"허브 커스터드와 캐비어",            span:"sp4"},
+  {img:"https://raw.githubusercontent.com/zuhthebeg/portfolio/HEAD/chef/yang/assets/dishes/04-endive.jpg",      en:"Endive & Gorgonzola",   kr:"벨지언 엔다이브, 고르곤졸라 크림",   span:"sp4"},
+  {img:"https://raw.githubusercontent.com/zuhthebeg/portfolio/HEAD/chef/yang/assets/dishes/03-tomahawk.jpg",    en:"Crusted Tomahawk",      kr:"크러스트 돈마호크 스테이크",         span:"sp4"},
+];
+
+const CAREER = [
+  {yr:"2025.01 — 2026.05", venue:"이도청담", role:"Sous Chef · Head Chef Acting",
+   points:[
+     "Head Chef 공석 약 6개월간 주방 운영 전반 총괄",
+     "BOH 운영 총괄 및 직원 섹션별 교육·업무 체계 구축",
+     "시즌별 메뉴 리뉴얼 진행 및 시즌 메뉴 기획",
+     "A la Carte 레시피 표준화 · 간소화",
+     "크리스마스 한정 코스 메뉴 개발",
+     "원가 · 식자재 사용량 관리 및 지출결의 등 관리업무",
+   ],
+   tags:["BOH 총괄","메뉴 리뉴얼","원가 관리","직원 교육"]},
+  {yr:"2024.09 — 2024.12", venue:"더펄바이그릴도하", role:"Chef",
+   points:[
+     "직원 포지션 재정비로 업무 효율 개선",
+     "파스타 · 사이드메뉴 품질 향상",
+     "그릴 · 후무스 파트 교육 진행",
+     "파트별 로테이션 시스템 구축",
+     "크리스마스 코스 메뉴 개발",
+   ],
+   tags:["조직 재정비","로테이션 시스템","코스 개발"]},
+  {yr:"2020.08 — 2024.08", venue:"문득", role:"Chef",
+   points:[
+     "크러스트 돈마호크 스테이크 개발 — SBS 생방송투데이 3291회 소개",
+     "꽃게 리조또 등 한식 접목 퓨전 메뉴 개발 — 당신의 일상을 밝히는가 81회 소개, 현재 시그니처 메뉴로 운영",
+     "매출 250% 이상 성장 및 2호점 오픈 기여",
+     "하이볼 · 베버리지 메뉴 개발로 객단가 상승 · 매출 증대",
+     "직원 교육 및 조직 운영",
+   ],
+   tags:["매출 250%↑","2호점 오픈","TV 시그니처","베버리지 개발"]},
+  {yr:"2019.01 — 2020.08", venue:"베리뜨", role:"Chef",
+   points:[
+     "고객층 분석을 통한 샐러드바 개선",
+     "중장년층 고객 유입 확대",
+     "파스타 레시피 및 조리 시스템 개선",
+     "허브 및 스탁 활용 메뉴 정비",
+   ],
+   tags:["메뉴 개선","고객층 확대"]},
+  {yr:"2017.03 — 2018.11", venue:"로쏘", role:"Owner Chef",
+   points:[
+     "오너 셰프로서 매장 운영 총괄",
+     "메뉴 개발",
+     "고객 관리",
+     "원가 관리",
+   ],
+   tags:["오너 셰프","매장 운영"]},
+  {yr:"2015.11 — 2017.11", venue:"엘리스타워 & 일마고", role:"CDP",
+   points:[
+     "복날 한정 삼계오일파스타 개발",
+     "시즌 프로모션 매출 향상",
+     "식전빵 스프레드 치즈 개발",
+     "테이크아웃 판매 증대",
+   ],
+   tags:["시즌 프로모션","신메뉴 개발"]},
+  {yr:"2013.05 — 2015.10", venue:"더테이블 & 세컨드테이블", role:"Commis",
+   points:[
+     "콜드파트 운영",
+     "식자재 신선도 관리",
+     "프렙 및 백업 시스템 수행",
+     "메뉴 개발 참여",
+   ],
+   tags:["콜드파트","프렙·백업"]},
+];
+
+/* ---------- render gallery ---------- */
+const grid = document.getElementById(''dishGrid'');
+DISHES.forEach((d,i)=>{
+  const el=document.createElement(''div'');
+  el.className=''dish ''+d.span;
+  el.innerHTML=`
+    <div class="ph">
+      <img src="${d.img}" alt="Plat ${String(i+1).padStart(2,''0'')}" loading="lazy" />
+      <span class="corner"></span>
+      <div class="cap">
+        <div class="no">Plat ${String(i+1).padStart(2,''0'')}</div>
+      </div>
+    </div>`;
+  el.addEventListener(''click'',()=>openLB(i));
+  grid.appendChild(el);
+});
+
+/* ---------- render timeline ---------- */
+const tl=document.getElementById(''timeline'');
+CAREER.forEach(c=>{
+  const row=document.createElement(''div'');
+  row.className=''tl-row'';
+  row.innerHTML=`
+    <div class="yr">${c.yr}</div>
+    <span class="dot"></span>
+    <div class="body">
+      <h3>${c.venue}</h3>
+      <div class="role">${c.role}</div>
+      <ul class="pts">${c.points.map(p=>`<li>${p}</li>`).join('''')}</ul>
+      <div class="tags">${c.tags.map(t=>`<span>${t}</span>`).join('''')}</div>
+    </div>`;
+  tl.appendChild(row);
+});
+
+/* ---------- nav scroll ---------- */
+const nav=document.getElementById(''nav'');
+addEventListener(''scroll'',()=>nav.classList.toggle(''scrolled'',scrollY>40),{passive:true});
+document.getElementById(''menuBtn'').addEventListener(''click'',()=>{
+  document.querySelector(''.links'')?.scrollIntoView();
+  location.hash=''#profile'';
+});
+
+/* ---------- reveal on scroll ---------- */
+const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add(''in'');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll(''.reveal'').forEach(el=>io.observe(el));
+
+/* ---------- lightbox ---------- */
+const lb=document.getElementById(''lb''),lbImg=document.getElementById(''lbImg''),
+  lbEn=document.getElementById(''lbEn''),lbKr=document.getElementById(''lbKr'');
+let cur=0;
+function openLB(i){cur=i;paint();lb.classList.add(''open'');document.body.style.overflow=''hidden'';}
+function closeLB(){lb.classList.remove(''open'');document.body.style.overflow='''';}
+function paint(){const d=DISHES[cur];lbImg.src=d.img;lbEn.textContent=''Plat ''+String(cur+1).padStart(2,''0'');lbKr.textContent='''';}
+function step(n){cur=(cur+n+DISHES.length)%DISHES.length;paint();}
+document.getElementById(''lbClose'').addEventListener(''click'',closeLB);
+document.getElementById(''lbPrev'').addEventListener(''click'',()=>step(-1));
+document.getElementById(''lbNext'').addEventListener(''click'',()=>step(1));
+lb.addEventListener(''click'',e=>{if(e.target===lb)closeLB()});
+addEventListener(''keydown'',e=>{if(!lb.classList.contains(''open''))return;
+  if(e.key===''Escape'')closeLB();if(e.key===''ArrowRight'')step(1);if(e.key===''ArrowLeft'')step(-1);});
+</script>
+</body>
+</html>
+', 'seed: chef/yang 이관', 1780319778150);
+
+INSERT OR REPLACE INTO sites
+ (id,slug,owner_id,vertical,title,description,cover_image,current_version_id,status,listed,view_count,created_at,updated_at,published_at)
+VALUES
+ ('s-yang', 'yang', 'cocy-seed', 'portfolio', '양영일 · Chef Portfolio', '15년 경력의 다이닝 셰프 — 메뉴 개발·주방 운영·시그니처 다이닝', 'https://raw.githubusercontent.com/zuhthebeg/portfolio/HEAD/chef/yang/assets/dishes/01-bisque.jpg', 'v-yang-1', 'published', 1, 0, 1780319778150, 1780319778150, 1780319778150);

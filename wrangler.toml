@@ -1,0 +1,19 @@
+name = "page-cocy"
+compatibility_date = "2026-06-01"
+pages_build_output_dir = "public"
+
+# D1 — 사이트/유저/버전 메타 (source of truth)
+[[d1_databases]]
+binding = "page_db"
+database_name = "page-db"
+database_id = "f3ff1948-56c1-436c-8483-0d23e98a7648"
+
+# KV — 발행된 렌더 HTML 핫캐시 (서빙 store)
+[[kv_namespaces]]
+binding = "page_cache"
+id = "5c8000c253a247538ff5b013f29bc31a"
+
+# R2 — 사용자 업로드/생성 이미지
+[[r2_buckets]]
+binding = "page_assets"
+bucket_name = "page-assets"

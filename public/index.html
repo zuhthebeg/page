@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>page.cocy.io — 나만의 특별한 페이지</title>
+<meta name="description" content="청첩장·메뉴판·포트폴리오. 뻔한 템플릿 말고, 당신만을 위해 만들어지는 단 하나의 페이지." />
+<meta property="og:title" content="page.cocy.io — 나만의 특별한 페이지" />
+<meta property="og:description" content="청첩장·메뉴판·포트폴리오. 당신만을 위해 만들어지는 단 하나의 페이지." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#0b0b0d; --bg-2:#131318; --ink:#ece9e4; --ink-soft:#aaa6a0; --muted:#6f6b66;
+  --accent:#c9a86a; --accent-2:#e9cd92; --line:rgba(236,233,228,.10);
+  --serif:"Cormorant Garamond",serif; --label:"Jost",sans-serif; --sans:"Noto Sans KR",sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.eyebrow{font-family:var(--label);text-transform:uppercase;letter-spacing:.4em;font-size:.66rem;color:var(--accent)}
+
+/* hero */
+header.hero{min-height:78vh;display:flex;flex-direction:column;justify-content:center;position:relative;
+  background:radial-gradient(120% 90% at 70% 0%,rgba(201,168,106,.10),transparent 60%),var(--bg)}
+.hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(2.6rem,7vw,5rem);line-height:1.05;margin:.5rem 0 1.2rem}
+.hero h1 em{font-style:italic;color:var(--accent-2)}
+.hero p{color:var(--ink-soft);font-size:1.05rem;max-width:30rem}
+.cta{display:inline-flex;align-items:center;gap:.6rem;margin-top:2rem;padding:.95rem 1.8rem;border:1px solid var(--accent);
+  color:var(--accent-2);font-family:var(--label);letter-spacing:.12em;text-transform:uppercase;font-size:.8rem;
+  border-radius:2px;transition:.4s var(--ease)}
+.cta:hover{background:var(--accent);color:#1a160e}
+
+/* verticals */
+.kinds{display:flex;gap:1.4rem;flex-wrap:wrap;margin-top:2.4rem}
+.kinds span{font-family:var(--serif);font-size:1.3rem;color:var(--muted)}
+.kinds span b{color:var(--ink);font-weight:500}
+
+/* gallery */
+section.gallery{padding:6rem 0 7rem;border-top:1px solid var(--line)}
+.gallery h2{font-family:var(--serif);font-size:2rem;font-weight:500;margin:.6rem 0 2.4rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.4rem}
+.card{display:block;background:var(--bg-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;transition:.4s var(--ease)}
+.card:hover{transform:translateY(-4px);border-color:var(--accent)}
+.card .cover{aspect-ratio:16/10;background:#1c1c22 center/cover no-repeat;display:flex;align-items:center;justify-content:center;color:var(--muted);font-family:var(--serif);font-size:1.4rem}
+.card .meta{padding:1rem 1.1rem}
+.card .tag{font-family:var(--label);text-transform:uppercase;letter-spacing:.2em;font-size:.6rem;color:var(--accent)}
+.card .meta h3{font-family:var(--serif);font-weight:500;font-size:1.25rem;margin:.3rem 0 .2rem}
+.card .meta p{font-size:.82rem;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empty{color:var(--muted);font-family:var(--serif);font-size:1.3rem;padding:3rem 0;text-align:center}
+footer{padding:3rem 0;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem;text-align:center}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">page.cocy.io</div>
+    <h1>당신만을 위한<br><em>단 하나의</em> 페이지</h1>
+    <p>뻔한 템플릿은 없습니다. 몇 가지 질문에 답하면, 당신의 분위기에 맞춰 매번 새로 그려진 페이지가 만들어집니다.</p>
+    <div class="kinds">
+      <span><b>청첩장</b></span><span><b>메뉴판</b></span><span><b>포트폴리오</b></span>
+    </div>
+    <a class="cta" href="/new">내 페이지 만들기 →</a>
+  </div>
+</header>
+
+<section class="gallery">
+  <div class="wrap">
+    <div class="eyebrow">Showcase</div>
+    <h2>이렇게 만들어졌어요</h2>
+    <div class="grid" id="grid"><div class="empty">불러오는 중…</div></div>
+  </div>
+</section>
+
+<footer><div class="wrap">made with care · page.cocy.io</div></footer>
+
+<script>
+(async () => {
+  const grid = document.getElementById('grid');
+  try {
+    const r = await fetch('/api/sites');
+    const { sites } = await r.json();
+    if (!sites || !sites.length) { grid.innerHTML = '<div class="empty">아직 공개된 페이지가 없어요. 첫 번째가 되어보세요.</div>'; return; }
+    grid.innerHTML = sites.map(s => `
+      <a class="card" href="/${s.slug}">
+        <div class="cover" ${s.cover_image ? `style="background-image:url('${s.cover_image}')"` : ''}>${s.cover_image ? '' : (s.title || s.slug)}</div>
+        <div class="meta">
+          <div class="tag">${s.vertical || 'page'}</div>
+          <h3>${s.title || s.slug}</h3>
+          <p>${s.description || ''}</p>
+        </div>
+      </a>`).join('');
+  } catch (e) {
+    grid.innerHTML = '<div class="empty">목록을 불러오지 못했어요.</div>';
+  }
+})();
+</script>
+</body>
+</html>
