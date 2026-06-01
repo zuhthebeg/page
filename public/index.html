@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root{
   --bg:#0b0b0d; --bg-2:#131318; --ink:#ece9e4; --ink-soft:#aaa6a0; --muted:#6f6b66;
@@ -25,46 +26,61 @@ a{color:inherit;text-decoration:none}
 .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
 .eyebrow{font-family:var(--label);text-transform:uppercase;letter-spacing:.4em;font-size:.66rem;color:var(--accent)}
 
+/* top bar */
+.bar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:linear-gradient(var(--bg),transparent)}
+.bar .logo{font-family:var(--serif);font-weight:600;font-size:1.15rem}
+.bar .right{display:flex;align-items:center;gap:12px}
+.bar .me{font-size:.8rem;color:var(--ink-soft)}
+.bar a.mk{font-family:var(--label);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--accent-2);border:1px solid var(--accent);border-radius:30px;padding:.5rem 1rem;transition:.3s}
+.bar a.mk:hover{background:var(--accent);color:#1a160e}
+#gbtn{transform:scale(.85);transform-origin:right center}
+
 /* hero */
 header.hero{min-height:78vh;display:flex;flex-direction:column;justify-content:center;position:relative;
   background:radial-gradient(120% 90% at 70% 0%,rgba(201,168,106,.10),transparent 60%),var(--bg)}
 .hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(2.6rem,7vw,5rem);line-height:1.05;margin:.5rem 0 1.2rem}
 .hero h1 em{font-style:italic;color:var(--accent-2)}
 .hero p{color:var(--ink-soft);font-size:1.05rem;max-width:30rem}
-.cta{display:inline-flex;align-items:center;gap:.6rem;margin-top:2rem;padding:.95rem 1.8rem;border:1px solid var(--accent);
-  color:var(--accent-2);font-family:var(--label);letter-spacing:.12em;text-transform:uppercase;font-size:.8rem;
-  border-radius:2px;transition:.4s var(--ease)}
+.cta{display:inline-flex;align-items:center;gap:.6rem;margin-top:2rem;padding:.95rem 1.8rem;border:1px solid var(--accent);color:var(--accent-2);font-family:var(--label);letter-spacing:.12em;text-transform:uppercase;font-size:.8rem;border-radius:2px;transition:.4s var(--ease)}
 .cta:hover{background:var(--accent);color:#1a160e}
 
-/* verticals */
-.kinds{display:flex;gap:1.4rem;flex-wrap:wrap;margin-top:2.4rem}
-.kinds span{font-family:var(--serif);font-size:1.3rem;color:var(--muted)}
-.kinds span b{color:var(--ink);font-weight:500}
-
 /* gallery */
-section.gallery{padding:6rem 0 7rem;border-top:1px solid var(--line)}
-.gallery h2{font-family:var(--serif);font-size:2rem;font-weight:500;margin:.6rem 0 2.4rem}
+section.gallery{padding:5rem 0 7rem;border-top:1px solid var(--line)}
+.gallery h2{font-family:var(--serif);font-size:2rem;font-weight:500;margin:.6rem 0 1.6rem}
+.cats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.4rem}
+.cats .c{font-family:var(--label);font-size:.78rem;letter-spacing:.05em;color:var(--ink-soft);border:1px solid var(--line);border-radius:30px;padding:.5rem 1rem;cursor:pointer;transition:.2s}
+.cats .c:hover{border-color:var(--accent)}
+.cats .c.on{background:var(--accent);color:#1a160e;border-color:var(--accent);font-weight:500}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.4rem}
-.card{display:block;background:var(--bg-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;transition:.4s var(--ease)}
+.card{position:relative;display:block;background:var(--bg-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;transition:.4s var(--ease)}
 .card:hover{transform:translateY(-4px);border-color:var(--accent)}
 .card .cover{aspect-ratio:16/10;background:#1c1c22 center/cover no-repeat;display:flex;align-items:center;justify-content:center;color:var(--muted);font-family:var(--serif);font-size:1.4rem}
 .card .meta{padding:1rem 1.1rem}
 .card .tag{font-family:var(--label);text-transform:uppercase;letter-spacing:.2em;font-size:.6rem;color:var(--accent)}
 .card .meta h3{font-family:var(--serif);font-weight:500;font-size:1.25rem;margin:.3rem 0 .2rem}
 .card .meta p{font-size:.82rem;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.empty{color:var(--muted);font-family:var(--serif);font-size:1.3rem;padding:3rem 0;text-align:center}
+.card .edit{position:absolute;top:10px;right:10px;background:rgba(11,11,13,.8);border:1px solid var(--accent);color:var(--accent-2);font-size:.72rem;border-radius:20px;padding:.35rem .8rem;backdrop-filter:blur(4px)}
+.card .edit:hover{background:var(--accent);color:#1a160e}
+.empty{color:var(--muted);font-family:var(--serif);font-size:1.3rem;padding:3rem 0;text-align:center;grid-column:1/-1}
 footer{padding:3rem 0;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem;text-align:center}
 </style>
 </head>
 <body>
+
+<div class="bar">
+  <a class="logo" href="/">page.cocy.io</a>
+  <div class="right">
+    <span class="me" id="me"></span>
+    <div id="gbtn"></div>
+    <a class="mk" href="/new">내 페이지 만들기</a>
+  </div>
+</div>
+
 <header class="hero">
   <div class="wrap">
     <div class="eyebrow">page.cocy.io</div>
     <h1>당신만을 위한<br><em>단 하나의</em> 페이지</h1>
     <p>뻔한 템플릿은 없습니다. 몇 가지 질문에 답하면, 당신의 분위기에 맞춰 매번 새로 그려진 페이지가 만들어집니다.</p>
-    <div class="kinds">
-      <span><b>청첩장</b></span><span><b>메뉴판</b></span><span><b>포트폴리오</b></span>
-    </div>
     <a class="cta" href="/new">내 페이지 만들기 →</a>
   </div>
 </header>
@@ -73,6 +89,7 @@ footer{padding:3rem 0;border-top:1px solid var(--line);color:var(--muted);font-s
   <div class="wrap">
     <div class="eyebrow">Showcase</div>
     <h2>이렇게 만들어졌어요</h2>
+    <div class="cats" id="cats"></div>
     <div class="grid" id="grid"><div class="empty">불러오는 중…</div></div>
   </div>
 </section>
@@ -80,25 +97,48 @@ footer{padding:3rem 0;border-top:1px solid var(--line);color:var(--muted);font-s
 <footer><div class="wrap">made with care · page.cocy.io</div></footer>
 
 <script>
-(async () => {
-  const grid = document.getElementById('grid');
-  try {
-    const r = await fetch('/api/sites');
-    const { sites } = await r.json();
-    if (!sites || !sites.length) { grid.innerHTML = '<div class="empty">아직 공개된 페이지가 없어요. 첫 번째가 되어보세요.</div>'; return; }
-    grid.innerHTML = sites.map(s => `
-      <a class="card" href="/${s.slug}">
-        <div class="cover" ${s.cover_image ? `style="background-image:url('${s.cover_image}')"` : ''}>${s.cover_image ? '' : (s.title || s.slug)}</div>
-        <div class="meta">
-          <div class="tag">${s.vertical || 'page'}</div>
-          <h3>${s.title || s.slug}</h3>
-          <p>${s.description || ''}</p>
-        </div>
-      </a>`).join('');
-  } catch (e) {
-    grid.innerHTML = '<div class="empty">목록을 불러오지 못했어요.</div>';
-  }
+const $=id=>document.getElementById(id);
+const GCID='315180918727-3d9rfmpa36r365qna9smdsvrod441jhd.apps.googleusercontent.com';
+const VLABEL={portfolio:'포트폴리오',wedding:'청첩장',menu:'메뉴판',memorial:'추모',proposal:'프로포즈/고백',profile:'프로필',etc:'기타'};
+function dec(t){ try{ return JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); }catch{return null;} }
+function onCred(r){ localStorage.setItem('page_id_token',r.credential); location.reload(); }
+
+let TOKEN=localStorage.getItem('page_id_token'); let P=TOKEN?dec(TOKEN):null;
+let MY=(P&&P.exp*1000>Date.now())?P.sub:null;
+if(MY){ $('me').textContent=(P.name||P.email||'로그인됨')+' · 내 페이지에 ✎ 편집'; }
+else { localStorage.removeItem('page_id_token'); renderLogin(); }
+function renderLogin(){ if(window.google&&google.accounts&&google.accounts.id){ google.accounts.id.initialize({client_id:GCID,callback:onCred}); google.accounts.id.renderButton($('gbtn'),{theme:'filled_black',size:'medium',text:'signin',shape:'pill'}); } else setTimeout(renderLogin,300); }
+
+let SITES=[], CAT='all';
+(async()=>{
+  try{ const r=await fetch('/api/sites'); SITES=(await r.json()).sites||[]; }catch{}
+  renderCats(); renderGrid();
 })();
+
+function renderCats(){
+  const present=[...new Set(SITES.map(s=>s.vertical))].filter(Boolean);
+  const cats=['all',...present];
+  $('cats').innerHTML=cats.map(c=>`<span class="c ${c===CAT?'on':''}" data-c="${c}">${c==='all'?'전체':(VLABEL[c]||c)}</span>`).join('');
+  $('cats').querySelectorAll('.c').forEach(el=>el.addEventListener('click',()=>{ CAT=el.dataset.c; renderCats(); renderGrid(); }));
+}
+function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function renderGrid(){
+  const rows=SITES.filter(s=>CAT==='all'||s.vertical===CAT);
+  if(!rows.length){ $('grid').innerHTML='<div class="empty">아직 페이지가 없어요. 첫 번째가 되어보세요.</div>'; return; }
+  $('grid').innerHTML=rows.map(s=>{
+    const mine=MY&&s.owner_id===MY;
+    const edit=mine?`<a class="edit" href="/edit/?slug=${encodeURIComponent(s.slug)}">✎ 편집</a>`:'';
+    return `<div class="card">
+      ${edit}
+      <a href="/${s.slug}"><div class="cover" ${s.cover_image?`style="background-image:url('${esc(s.cover_image)}')"`:''}>${s.cover_image?'':esc(s.title||s.slug)}</div></a>
+      <a href="/${s.slug}"><div class="meta">
+        <div class="tag">${VLABEL[s.vertical]||esc(s.vertical||'page')}</div>
+        <h3>${esc(s.title||s.slug)}</h3>
+        <p>${esc(s.description||'')}</p>
+      </div></a>
+    </div>`;
+  }).join('');
+}
 </script>
 </body>
 </html>

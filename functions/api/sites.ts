@@ -8,7 +8,7 @@ interface Env {
 export const onRequestGet: PagesFunction<Env> = async (ctx) => {
   const { results } = await ctx.env.page_db
     .prepare(
-      `SELECT slug, vertical, title, description, cover_image, view_count, published_at
+      `SELECT slug, vertical, title, description, cover_image, owner_id, view_count, published_at
          FROM sites
         WHERE status = 'published' AND listed = 1
         ORDER BY published_at DESC
