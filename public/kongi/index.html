@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>콩이를 기억하며 · 2009–2024</title>
+<meta name="description" content="15년을 함께한 골든리트리버 콩이를 위한 추모 공간. 사랑했고, 사랑하고, 사랑할 거야." />
+<link rel="canonical" href="https://page.cocy.io/kongi" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://page.cocy.io/kongi" />
+<meta property="og:title" content="콩이를 기억하며 · 2009–2024" />
+<meta property="og:description" content="15년을 함께한 우리 콩이. 무지개다리 너머에서도 행복하길." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#faf6ef; --bg-2:#f3ebe0; --bg-3:#efe5d6;
+  --ink:#4c4136; --ink-soft:#8a7c6c; --muted:#b6a896;
+  --accent:#c99a64; --accent-2:#9cb594; --line:rgba(76,65,54,.12);
+  --display:"Cormorant Garamond",serif; --kr:"Gowun Batang",serif; --body:"Noto Sans KR",sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1); --pad:clamp(20px,5vw,68px);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.9;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--accent-2);color:#fff}
+.wrap{max-width:760px;margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+.label{font-family:var(--display);font-style:italic;letter-spacing:.06em;font-size:1rem;color:var(--accent)}
+
+/* floating soft lights */
+.sky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.sky span{position:absolute;bottom:-40px;width:14px;height:14px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,154,100,.55),rgba(201,154,100,0));animation:rise linear infinite}
+@keyframes rise{to{transform:translateY(-115vh) translateX(30px);opacity:0}}
+section,footer{position:relative;z-index:1}
+
+/* hero */
+section[data-block="hero"]{min-height:96svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  background:radial-gradient(120% 70% at 50% -10%,#fffdf8,transparent 60%)}
+.paw{width:54px;height:54px;margin-bottom:2rem;opacity:.5}
+.hero .dates{font-family:var(--display);font-size:1.1rem;letter-spacing:.3em;color:var(--ink-soft);margin-bottom:1rem}
+.hero h1{font-family:var(--kr);font-weight:700;font-size:clamp(3.2rem,13vw,7rem);line-height:1;color:var(--ink);letter-spacing:.02em}
+.hero .sub{font-family:var(--display);font-style:italic;font-size:clamp(1.2rem,3vw,1.8rem);color:var(--accent);margin-top:1.6rem}
+.hero .rainbow{margin-top:2.2rem;color:var(--ink-soft);font-size:.95rem;max-width:24ch}
+
+/* story */
+section[data-block="about"]{padding:13vh 0}
+.about .label{display:block;text-align:center;margin-bottom:2.4rem}
+.about p{font-family:var(--kr);font-size:clamp(1.15rem,2.6vw,1.4rem);line-height:2.1;color:var(--ink);text-align:center}
+.about p+p{margin-top:1.6rem}
+.about p em{font-style:normal;color:var(--accent);font-weight:700}
+
+/* memories */
+section[data-block="gallery"]{padding:8vh 0}
+.gallery .label{display:block;text-align:center;margin-bottom:2.8rem}
+.mem{display:grid;grid-template-columns:1fr;gap:1.1rem}
+@media(min-width:680px){.mem{grid-template-columns:1fr 1fr}}
+.card{background:var(--bg-2);border:1px solid var(--line);border-radius:18px;padding:1.8rem 1.6rem;transition:.5s var(--ease)}
+.card:hover{transform:translateY(-5px);background:#fff;box-shadow:0 24px 50px -28px rgba(76,65,54,.35)}
+.card .emoji{font-size:1.5rem}
+.card h3{font-family:var(--kr);font-weight:700;font-size:1.2rem;margin:.5rem 0 .3rem;color:var(--ink)}
+.card p{font-size:.9rem;color:var(--ink-soft);line-height:1.7}
+
+/* timeline */
+section[data-block="moments"]{padding:11vh 0}
+.moments .label{display:block;text-align:center;margin-bottom:2.8rem}
+.tl{max-width:520px;margin:0 auto;border-left:1px solid var(--line);padding-left:2rem}
+.tl .it{position:relative;padding-bottom:2.2rem}
+.tl .it::before{content:"";position:absolute;left:calc(-2rem - 5px);top:.5rem;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.tl .it .y{font-family:var(--display);font-size:1.1rem;color:var(--accent);letter-spacing:.1em}
+.tl .it .d{font-family:var(--kr);font-size:1.1rem;color:var(--ink);margin-top:.2rem}
+.tl .it .x{color:var(--ink-soft);font-size:.88rem}
+
+/* message */
+section[data-block="contact"]{padding:14vh 0 11vh;text-align:center}
+.msg .quote{font-family:var(--kr);font-weight:700;font-size:clamp(1.5rem,4.5vw,2.4rem);line-height:1.6;color:var(--ink)}
+.msg .quote em{font-style:normal;color:var(--accent)}
+.msg .sign{font-family:var(--display);font-style:italic;font-size:1.2rem;color:var(--ink-soft);margin-top:2rem}
+footer{padding:3rem var(--pad);text-align:center;border-top:1px solid var(--line)}
+footer .label{font-size:.85rem;color:var(--muted)}
+
+.reveal{opacity:0;transform:translateY(22px);transition:1s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div class="sky" id="sky"></div>
+
+<section data-block="hero">
+  <svg class="paw" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="32" cy="44" rx="15" ry="12" fill="#c99a64"/>
+    <circle cx="14" cy="28" r="6" fill="#c99a64"/><circle cx="26" cy="20" r="6" fill="#c99a64"/>
+    <circle cx="38" cy="20" r="6" fill="#c99a64"/><circle cx="50" cy="28" r="6" fill="#c99a64"/>
+  </svg>
+  <div class="wrap">
+    <div class="dates">2009 — 2024</div>
+    <h1>콩이</h1>
+    <div class="sub">our golden, forever</div>
+    <p class="rainbow">15년의 봄과 겨울을 함께 걸어준 우리 콩이에게.</p>
+  </div>
+</section>
+
+<section data-block="about">
+  <div class="wrap about">
+    <span class="label">콩이를 소개합니다</span>
+    <p class="reveal">콩이는 작은 발로 우리 집에 들어와, <em>가장 큰 자리</em>를 차지한 골든리트리버였습니다.</p>
+    <p class="reveal">현관 소리만 들려도 꼬리부터 온몸으로 반겼고, 비 오는 날엔 꼭 무릎에 머리를 올리고 잠들었어요. 산책길의 모든 냄새를 사랑했고, 간식 앞에선 세상에서 제일 점잖은 척을 했죠.</p>
+    <p class="reveal">15년 동안 콩이는 우리에게 <em>매일 같은 사랑</em>을 가르쳐 주었습니다.</p>
+  </div>
+</section>
+
+<section data-block="gallery">
+  <div class="wrap gallery">
+    <span class="label">함께한 순간들</span>
+    <div class="mem">
+      <div class="card reveal"><div class="emoji">🌿</div><h3>아침 산책</h3><p>해 뜨기 전 그 골목, 너의 발걸음이 제일 신났지.</p></div>
+      <div class="card reveal"><div class="emoji">☔</div><h3>비 오는 오후</h3><p>창밖을 같이 보던 조용한 시간. 네 숨소리가 음악이었어.</p></div>
+      <div class="card reveal"><div class="emoji">🦴</div><h3>간식 시간</h3><p>점잖은 척하던 그 눈빛, 우린 늘 졌단다.</p></div>
+      <div class="card reveal"><div class="emoji">🛏️</div><h3>잠들기 전</h3><p>무릎에 머리를 올리던 너의 무게가, 가장 따뜻했어.</p></div>
+    </div>
+  </div>
+</section>
+
+<section data-block="moments">
+  <div class="wrap moments">
+    <span class="label">우리의 날들</span>
+    <div class="tl">
+      <div class="it reveal"><div class="y">2009</div><div class="d">처음 만난 날</div><div class="x">손바닥만 하던 네가 품에 안기던 날.</div></div>
+      <div class="it reveal"><div class="y">2013</div><div class="d">바다를 처음 본 날</div><div class="x">파도가 무서워 내 뒤에 숨었지.</div></div>
+      <div class="it reveal"><div class="y">2019</div><div class="d">조금 천천히 걷기 시작한 날</div><div class="x">그래도 산책은 하루도 거르지 않았어.</div></div>
+      <div class="it reveal"><div class="y">2024</div><div class="d">무지개다리를 건넌 날</div><div class="x">아프지 말고, 거기서도 실컷 뛰어놀아.</div></div>
+    </div>
+  </div>
+</section>
+
+<section data-block="contact">
+  <div class="wrap msg">
+    <p class="quote reveal">사랑했고, 사랑하고,<br><em>사랑할 거야.</em></p>
+    <div class="sign reveal">— 너의 가족이</div>
+  </div>
+</section>
+
+<footer><span class="label">콩이를 기억하며 · made with love on page.cocy.io</span></footer>
+
+<script>
+const sky=document.getElementById('sky');
+for(let i=0;i<14;i++){const s=document.createElement('span');s.style.left=(Math.random()*100)+'%';
+  s.style.animationDuration=(9+Math.random()*9)+'s';s.style.animationDelay=(-Math.random()*12)+'s';
+  s.style.transform='scale('+(.5+Math.random())+')';sky.appendChild(s);}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.16});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
