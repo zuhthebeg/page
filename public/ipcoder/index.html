@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>입코더 · 명함</title>
+<meta name="description" content="입코더 — B급만 모인 회사의 C급 인재. 돌려보는 3D 명함." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="입코더 · 명함" />
+<meta property="og:description" content="B급만 모인 회사의 C급 인재. 360도 돌아가는 명함." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg-1:#ffe9f0; --bg-2:#e9f0ff; --bg-3:#fff7e6;
+  --ink:#3b3550; --ink-soft:#7a738f; --muted:#a9a3ba;
+  --c-pink:#ff8fb8; --c-blue:#8fb8ff; --c-mint:#9fe6c8; --c-yellow:#ffd98f;
+  --display:"Jost",sans-serif; --kr:"Noto Sans KR",sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:var(--kr);color:var(--ink);
+  background:linear-gradient(135deg,var(--bg-1),var(--bg-2) 50%,var(--bg-3));
+  background-size:200% 200%;animation:bgshift 14s var(--ease) infinite;overflow:hidden;padding:24px}
+@keyframes bgshift{0%,100%{background-position:0 0}50%{background-position:100% 100%}}
+.eyebrow{font-family:var(--display);text-transform:uppercase;letter-spacing:.4em;font-size:.66rem;color:var(--ink-soft);margin-bottom:2.2rem}
+
+/* 3D 명함 */
+section[data-block="hero"]{display:flex;flex-direction:column;align-items:center}
+.stage{perspective:1400px;width:min(86vw,360px)}
+.scene{position:relative;width:100%;aspect-ratio:91/55;transform-style:preserve-3d;animation:spin 9s linear infinite;cursor:pointer}
+.scene.flip{animation:none;transform:rotateY(180deg);transition:transform .8s var(--ease)}
+.scene.front0{animation:none;transform:rotateY(0);transition:transform .8s var(--ease)}
+@keyframes spin{from{transform:rotateY(0)}to{transform:rotateY(360deg)}}
+.stage:hover .scene:not(.flip):not(.front0){animation-play-state:paused}
+.face{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  box-shadow:0 30px 60px -24px rgba(90,70,120,.45);padding:22px 24px;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.front{background:linear-gradient(135deg,#fff,#fdf3f8);border:1px solid rgba(255,143,184,.4)}
+.front::before{content:"";position:absolute;top:-40%;right:-20%;width:70%;height:160%;border-radius:50%;
+  background:radial-gradient(circle,rgba(143,184,255,.35),transparent 70%)}
+.front::after{content:"";position:absolute;bottom:-40%;left:-15%;width:60%;height:150%;border-radius:50%;
+  background:radial-gradient(circle,rgba(159,230,200,.4),transparent 70%)}
+.front .role{position:relative;font-family:var(--display);font-weight:600;letter-spacing:.06em;color:var(--c-pink);font-size:.74rem;text-transform:uppercase}
+.front h1{position:relative;font-weight:900;font-size:clamp(2rem,9vw,2.6rem);margin:.2rem 0 .9rem;letter-spacing:-.01em}
+.front .lines{position:relative;display:flex;flex-direction:column;gap:.28rem}
+.front .lines span{font-size:.86rem;color:var(--ink-soft);font-weight:500}
+.front .lines span b{color:var(--ink);font-weight:700}
+.back{background:linear-gradient(135deg,#6a5acd,#8f7bff);transform:rotateY(180deg);align-items:center;text-align:center}
+.back .b-eye{font-family:var(--display);letter-spacing:.3em;font-size:.6rem;color:rgba(255,255,255,.7);text-transform:uppercase;margin-bottom:.6rem}
+.back .b-main{color:#fff;font-weight:700;font-size:clamp(1.3rem,6vw,1.8rem);line-height:1.4}
+.hint{margin-top:2.4rem;color:var(--ink-soft);font-size:.82rem;text-align:center}
+.hint b{color:var(--ink)}
+.btns{margin-top:1.1rem;display:flex;gap:.6rem}
+.btns button{font-family:var(--kr);border:none;background:rgba(255,255,255,.7);color:var(--ink);border-radius:30px;padding:.5rem 1.1rem;font-size:.82rem;cursor:pointer;box-shadow:0 6px 16px -8px rgba(90,70,120,.4)}
+.btns button:hover{background:#fff}
+</style>
+</head>
+<body>
+<section data-block="hero">
+  <div class="eyebrow">Business Card</div>
+  <div class="stage">
+    <div class="scene" id="scene">
+      <div class="face front">
+        <span class="role">입코더 · Mouth Coder</span>
+        <h1>입코더</h1>
+        <div class="lines">
+          <span><b>B급</b>만 모인 회사의 <b>C급</b> 인재</span>
+          <span>돈은 어떻게 버는지 모르겠는 회사 소속</span>
+        </div>
+      </div>
+      <div class="face back">
+        <div>
+          <div class="b-eye">about me</div>
+          <div class="b-main">나<br>이런 사람이야</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hint"><b>마우스</b>를 올리면 멈추고, <b>탭/클릭</b>하면 뒤집혀요 · 명함 비율(91×55)이라 출력도 OK</div>
+  <div class="btns">
+    <button id="flipBtn">뒤집기 ⟲</button>
+    <button id="spinBtn">계속 돌리기 ↻</button>
+  </div>
+</section>
+
+<script>
+const scene=document.getElementById('scene');
+let flipped=false;
+function flip(){ flipped=!flipped; scene.classList.remove('front0'); scene.classList.toggle('flip',flipped); if(!flipped)scene.classList.add('front0'); }
+scene.addEventListener('click',flip);
+document.getElementById('flipBtn').addEventListener('click',flip);
+document.getElementById('spinBtn').addEventListener('click',()=>{ scene.classList.remove('flip','front0'); flipped=false; });
+</script>
+</body>
+</html>
