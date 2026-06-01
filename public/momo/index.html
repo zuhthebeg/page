@@ -124,7 +124,7 @@ footer .mono{color:var(--muted)}
       <span class="mono">Table QR</span>
       <h3>이 QR을 테이블에 붙여보세요</h3>
       <p>손님이 스캔하면 바로 이 메뉴판으로 들어옵니다.</p>
-      <img alt="카페 모모 메뉴 QR" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data=https%3A%2F%2Fpage.cocy.io%2Fmomo" />
+      <img alt="카페 모모 메뉴 QR" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data=https%3A%2F%2Fpage.cocy.io%2Fmomo%3Fvia%3Dqr" />
       <div class="url">page.cocy.io/momo</div>
     </div>
   </div>
@@ -133,6 +133,10 @@ footer .mono{color:var(--muted)}
 <footer><span class="mono">카페 모모 · made on page.cocy.io</span></footer>
 
 <script>
+// QR로 들어온 손님에겐 테이블 QR 섹션 숨김(사장이 보는 깨끗한 URL에서만 QR 노출 = 인쇄용)
+if(new URLSearchParams(location.search).get('via')==='qr'){
+  const q=document.querySelector('section[data-block="qr"]'); if(q) q.remove();
+}
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.14});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
