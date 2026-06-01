@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>페이지 수정 · page.cocy.io</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#0b0b0d;--bg-2:#15151b;--bg-3:#1d1d25;--ink:#ece9e4;--ink-soft:#aaa6a0;--muted:#6f6b66;--accent:#c9a86a;--accent-2:#e9cd92;--line:rgba(236,233,228,.12);--ok:#7bbf7b;--err:#d98a8a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",sans-serif;font-weight:300;height:100svh;display:flex;flex-direction:column}
+header{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
+header .t{font-family:"Cormorant Garamond",serif;font-size:1.3rem;font-weight:600}
+header .t small{font-family:"Noto Sans KR";font-weight:300;color:var(--muted);font-size:.78rem;margin-left:8px}
+header a{color:var(--accent-2);text-decoration:none;font-size:.85rem}
+.main{flex:1;display:flex;min-height:0}
+.preview{flex:1;border:none;background:#fff}
+.panel{width:min(360px,42vw);border-left:1px solid var(--line);display:flex;flex-direction:column;background:var(--bg-2)}
+.panel .head{padding:16px;border-bottom:1px solid var(--line)}
+.panel .head h2{font-family:"Cormorant Garamond",serif;font-size:1.2rem;font-weight:600}
+.panel .head p{color:var(--muted);font-size:.78rem;margin-top:4px}
+.log{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.bubble{padding:10px 13px;border-radius:12px;font-size:.88rem;line-height:1.55;max-width:90%}
+.bubble.me{align-self:flex-end;background:var(--accent);color:#1a160e}
+.bubble.sys{align-self:flex-start;background:var(--bg-3);color:var(--ink-soft)}
+.compose{padding:14px;border-top:1px solid var(--line)}
+textarea{width:100%;background:var(--bg-3);border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:11px;font-family:inherit;font-size:.9rem;resize:none;min-height:74px}
+button{margin-top:10px;width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--accent);color:#1a160e;font-weight:500;cursor:pointer;font-size:.9rem}
+button:disabled{opacity:.5;cursor:not-allowed}
+.gate{margin:auto;text-align:center;padding:40px;max-width:380px}
+.gate h1{font-family:"Cormorant Garamond",serif;font-size:1.8rem;font-weight:600;margin-bottom:10px}
+.gate p{color:var(--ink-soft);font-size:.9rem;margin-bottom:18px}
+.gate a.btn{display:inline-block;padding:.8rem 1.5rem;border:1px solid var(--accent);border-radius:8px;color:var(--accent-2);text-decoration:none}
+.hide{display:none!important}
+.examples{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.examples span{font-size:.72rem;color:var(--ink-soft);border:1px solid var(--line);border-radius:20px;padding:4px 9px;cursor:pointer}
+.examples span:hover{border-color:var(--accent)}
+</style>
+</head>
+<body>
+
+<div id="gate" class="gate hide">
+  <h1 id="gateTitle">로그인이 필요해요</h1>
+  <p id="gateMsg">cocy 계정으로 로그인하면 내 페이지를 수정할 수 있어요.</p>
+  <a class="btn" id="gateBtn" href="https://relay.cocy.io/api/auth/google/signin">cocy 계정 로그인</a>
+</div>
+
+<div id="app" class="hide" style="display:flex;flex-direction:column;height:100%">
+  <header>
+    <div class="t" id="ttl">페이지 수정<small id="slugLbl"></small></div>
+    <a id="openLink" target="_blank">새 탭에서 열기 ↗</a>
+  </header>
+  <div class="main">
+    <iframe class="preview" id="preview"></iframe>
+    <div class="panel">
+      <div class="head">
+        <h2>이렇게 바꿔줘</h2>
+        <p>말로 적으면 페이지를 수정해드려요. (비동기 — 잠시 뒤 반영)</p>
+      </div>
+      <div class="log" id="log"></div>
+      <div class="compose">
+        <textarea id="req" placeholder="예) 색을 좀 더 따뜻하게, 연락처에 인스타 추가해줘"></textarea>
+        <div class="examples" id="ex">
+          <span>더 고급스럽게</span><span>색을 따뜻하게</span><span>폰트 모던하게</span><span>섹션 하나 추가</span>
+        </div>
+        <button id="send">수정 요청 보내기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const qs = new URLSearchParams(location.search);
+const slug = qs.get('slug') || location.pathname.replace(/^\/edit\/?/,'').replace(/\/$/,'');
+const $ = id => document.getElementById(id);
+
+function decodeSub(tok){ try{ const p=JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); return p.sub||p.userId||null; }catch{return null;} }
+
+// cocy.io SSO 브리지로 토큰 가져오기
+function syncToken(){
+  return new Promise(res=>{
+    if(localStorage.getItem('cocy_auth_token')) return res(localStorage.getItem('cocy_auth_token'));
+    const f=document.createElement('iframe'); f.style.display='none'; f.src='https://cocy.io/auth-bridge.html';
+    const to=setTimeout(()=>{f.remove();res(null);},3500);
+    window.addEventListener('message',function h(e){
+      if(e.origin!=='https://cocy.io') return;
+      if(e.data.type==='AUTH_BRIDGE_READY') f.contentWindow.postMessage({type:'GET_AUTH_TOKEN'},'https://cocy.io');
+      if(e.data.type==='AUTH_TOKEN_RESPONSE'){ clearTimeout(to); window.removeEventListener('message',h);
+        if(e.data.accessToken) localStorage.setItem('cocy_auth_token',e.data.accessToken);
+        f.remove(); res(e.data.accessToken||null); }
+    });
+    document.body.appendChild(f);
+  });
+}
+function showGate(title,msg){ $('gate').classList.remove('hide'); $('app').classList.add('hide'); if(title)$('gateTitle').textContent=title; if(msg)$('gateMsg').textContent=msg; }
+function addBubble(cls,txt){ const b=document.createElement('div'); b.className='bubble '+cls; b.textContent=txt; $('log').appendChild(b); $('log').scrollTop=1e9; }
+
+let TOKEN=null;
+(async()=>{
+  if(!slug){ showGate('잘못된 접근','수정할 페이지를 찾을 수 없어요.'); return; }
+  TOKEN = await syncToken();
+  if(!TOKEN){ showGate(); return; }
+  const sub = decodeSub(TOKEN);
+  // 사이트 메타
+  let site; try{ site=await (await fetch('/api/site?slug='+encodeURIComponent(slug))).json(); }catch{}
+  if(!site || site.error){ showGate('페이지 없음','그런 슬러그의 페이지가 없어요.'); return; }
+  if(site.owner_id !== sub){ showGate('권한 없음','이 페이지의 소유자만 수정할 수 있어요.'); return; }
+  // ok
+  $('gate').classList.add('hide'); $('app').classList.remove('hide');
+  $('slugLbl').textContent='/'+slug;
+  $('openLink').href='/'+slug;
+  $('preview').src='/'+slug+'?t='+Date.now();
+  addBubble('sys','안녕하세요! "'+(site.title||slug)+'" 페이지예요. 어떻게 바꿀까요?');
+})();
+
+$('ex').addEventListener('click',e=>{ if(e.target.tagName==='SPAN'){ $('req').value=($('req').value?$('req').value+', ':'')+e.target.textContent; }});
+
+$('send').addEventListener('click', async ()=>{
+  const request=$('req').value.trim(); if(!request) return;
+  $('send').disabled=true; addBubble('me',request); $('req').value='';
+  addBubble('sys','요청을 접수했어요. 페이지를 수정하는 중이에요…');
+  try{
+    const r=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+TOKEN},
+      body:JSON.stringify({type:'edit',slug,request})});
+    const d=await r.json(); if(!r.ok) throw new Error(d.error||r.status);
+    poll(d.jobId);
+  }catch(e){ addBubble('sys','요청 실패: '+e.message); $('send').disabled=false; }
+});
+
+function poll(jobId){
+  let n=0;
+  const iv=setInterval(async()=>{
+    n++;
+    try{
+      const j=await (await fetch('/api/jobs?id='+jobId)).json();
+      if(j.status==='done'){ clearInterval(iv); addBubble('sys','✓ 반영됐어요! 미리보기를 새로고침합니다.');
+        $('preview').src='/'+slug+'?t='+Date.now(); $('send').disabled=false; }
+      else if(j.status==='error'){ clearInterval(iv); addBubble('sys','수정 중 문제가 생겼어요: '+(j.result_json||'')); $('send').disabled=false; }
+    }catch{}
+    if(n>120){ clearInterval(iv); $('send').disabled=false; }
+  }, 4000);
+}
+</script>
+</body>
+</html>
