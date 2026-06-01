@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>관리자 · 요청 큐 · page.cocy.io</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{--bg:#0b0b0d;--bg-2:#15151b;--bg-3:#1d1d25;--ink:#ece9e4;--ink-soft:#aaa6a0;--muted:#6f6b66;--accent:#c9a86a;--accent-2:#e9cd92;--line:rgba(236,233,228,.12);--ok:#7bbf7b;--err:#d98a8a;--warn:#e9cd92}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",sans-serif;font-weight:300}
+.wrap{max-width:820px;margin:0 auto;padding:32px 20px 80px}
+h1{font-family:"Cormorant Garamond",serif;font-size:2rem;font-weight:600;margin-bottom:4px}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:24px}
+.gate{max-width:380px;margin:16vh auto;text-align:center}
+.gate p{color:var(--ink-soft);margin:10px 0 18px}
+#gbtn{display:flex;justify-content:center}
+.hide{display:none!important}
+.filters{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.filters button{background:var(--bg-2);border:1px solid var(--line);color:var(--ink-soft);border-radius:20px;padding:6px 14px;font-size:.82rem;cursor:pointer}
+.filters button.on{background:var(--accent);color:#1a160e;border-color:var(--accent)}
+.job{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
+.job .top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.badge{font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:20px;font-weight:500}
+.b-create{background:#2a3a5a;color:#bcd}.b-edit{background:#3a2a5a;color:#dcb}
+.s-pending{color:var(--warn)}.s-approved{color:#8cf}.s-done{color:var(--ok)}.s-error,.s-rejected{color:var(--err)}
+.job .meta{font-size:.74rem;color:var(--muted);margin-bottom:8px}
+.job .req{font-size:.92rem;line-height:1.6;background:var(--bg-3);border-radius:8px;padding:10px 12px;white-space:pre-wrap;word-break:break-word}
+.job .imgs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.job .imgs a{width:64px;height:64px;border-radius:6px;background:#000 center/cover;border:1px solid var(--line);display:block}
+.job .acts{display:flex;gap:8px;margin-top:12px}
+.job .acts button{flex:0 0 auto;border:none;border-radius:8px;padding:.55rem 1.1rem;font-size:.85rem;cursor:pointer;font-weight:500}
+.ap{background:var(--accent);color:#1a160e}.rj{background:transparent;border:1px solid var(--err)!important;color:var(--err)}
+.job .acts a{margin-left:auto;color:var(--accent-2);text-decoration:none;font-size:.82rem;align-self:center}
+.empty{color:var(--muted);text-align:center;padding:40px;font-family:"Cormorant Garamond",serif;font-size:1.3rem}
+</style>
+</head>
+<body>
+
+<div id="gate" class="gate hide">
+  <h1>관리자 로그인</h1>
+  <p>page.cocy.io 요청 큐 — 관리자만 접근.</p>
+  <div id="gbtn"></div>
+</div>
+
+<div id="app" class="wrap hide">
+  <h1>요청 큐</h1>
+  <div class="sub">로그인 유저의 생성·수정 요청. <b>처리</b> = 승인(에이전트 실행 트리거).</div>
+  <div class="filters" id="filters">
+    <button data-f="pending" class="on">대기</button>
+    <button data-f="approved">승인됨</button>
+    <button data-f="done">완료</button>
+    <button data-f="all">전체</button>
+  </div>
+  <div id="list"></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const GCID='315180918727-3d9rfmpa36r365qna9smdsvrod441jhd.apps.googleusercontent.com';
+const ADMIN_SUB='111993084009681810615';
+function dec(t){ try{ return JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); }catch{return null;} }
+function onCred(r){ localStorage.setItem('page_id_token',r.credential); location.reload(); }
+function renderLogin(){ if(window.google?.accounts?.id){ google.accounts.id.initialize({client_id:GCID,callback:onCred}); google.accounts.id.renderButton($('gbtn'),{theme:'filled_black',size:'large',text:'continue_with',shape:'pill'}); google.accounts.id.prompt(); } else setTimeout(renderLogin,300); }
+
+let TOKEN=localStorage.getItem('page_id_token'); let P=TOKEN?dec(TOKEN):null;
+if(!TOKEN||!P||!P.exp||P.exp*1000<Date.now()||P.sub!==ADMIN_SUB){ $('gate').classList.remove('hide'); renderLogin(); }
+else { $('app').classList.remove('hide'); init(); }
+
+let FILTER='pending', JOBS=[];
+function init(){
+  $('filters').addEventListener('click',e=>{ if(e.target.tagName==='BUTTON'){ document.querySelectorAll('#filters button').forEach(b=>b.classList.remove('on')); e.target.classList.add('on'); FILTER=e.target.dataset.f; render(); }});
+  load();
+}
+async function load(){
+  try{ const r=await fetch('/api/admin/jobs',{headers:{Authorization:'Bearer '+TOKEN}}); const d=await r.json();
+    if(!r.ok){ $('list').innerHTML='<div class="empty">접근 불가: '+(d.error||r.status)+'</div>'; return; }
+    JOBS=d.jobs||[]; render();
+  }catch(e){ $('list').innerHTML='<div class="empty">로드 실패</div>'; }
+}
+function esc(s){ return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function render(){
+  const rows=JOBS.filter(j=>FILTER==='all'||j.status===FILTER);
+  if(!rows.length){ $('list').innerHTML='<div class="empty">해당 상태의 요청이 없어요.</div>'; return; }
+  $('list').innerHTML=rows.map(j=>{
+    let p={}; try{p=JSON.parse(j.payload_json||'{}');}catch{}
+    const req = j.type==='edit' ? esc(p.request) : `[${esc(p.vertical)}] ${esc(p.title)} · ${esc(p.mood&&p.mood.join? p.mood.join('/'):'')} · ${esc(p.palette)}\n${esc(p.content)}`;
+    const imgs=(p.images||[]).map(u=>`<a href="${u}" target="_blank" style="background-image:url('${u}')"></a>`).join('');
+    const when=new Date(j.created_at).toLocaleString('ko-KR');
+    const acts = (j.status==='pending'||j.status==='rejected')
+      ? `<button class="ap" data-id="${j.id}" data-a="approve">처리(승인)</button><button class="rj" data-id="${j.id}" data-a="reject">반려</button>`
+      : '';
+    const link = j.slug ? `<a href="/${j.slug}" target="_blank">/${j.slug} ↗</a>` : '';
+    return `<div class="job">
+      <div class="top">
+        <span><span class="badge b-${j.type}">${j.type}</span> <b class="s-${j.status}">${j.status}</b></span>
+        <span class="meta">${when}</span>
+      </div>
+      <div class="meta">요청자 ${esc((j.owner_id||'').slice(0,8))}… ${j.slug?'· 대상 /'+esc(j.slug):''}</div>
+      <div class="req">${req}</div>
+      ${imgs?`<div class="imgs">${imgs}</div>`:''}
+      <div class="acts">${acts}${link}</div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.acts button').forEach(b=>b.addEventListener('click',()=>act(b.dataset.id,b.dataset.a)));
+}
+async function act(id,a){
+  try{ const r=await fetch('/api/admin/approve',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+TOKEN},body:JSON.stringify({id,action:a})});
+    const d=await r.json(); if(!r.ok)throw new Error(d.error);
+    const j=JOBS.find(x=>x.id===id); if(j)j.status=d.status; render();
+  }catch(e){ alert('실패: '+e.message); }
+}
+</script>
+</body>
+</html>
