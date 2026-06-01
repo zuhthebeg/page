@@ -93,12 +93,9 @@ function syncToken(){
     document.body.appendChild(f);
   });
 }
-const GCID='402340265805-ogo2c09qujqk6gape9oea7sfh8lsegln.apps.googleusercontent.com';
-function onCred(resp){
-  fetch('https://relay.cocy.io/api/auth/google/signin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({credential:resp.credential})})
-    .then(r=>r.json()).then(d=>{ if(d.token){ localStorage.setItem('cocy_auth_token',d.token); location.reload(); } else alert('로그인 실패: '+(d.error||'')); })
-    .catch(e=>alert('로그인 오류: '+e.message));
-}
+const GCID='315180918727-3d9rfmpa36r365qna9smdsvrod441jhd.apps.googleusercontent.com';
+function onCred(resp){ localStorage.setItem('page_id_token', resp.credential); location.reload(); }
+function isExpired(tok){ try{ const p=JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); return !p.exp || (p.exp*1000 < Date.now()); }catch{return true;} }
 function renderLogin(){
   if(window.google&&google.accounts&&google.accounts.id){
     google.accounts.id.initialize({client_id:GCID,callback:onCred});
@@ -113,8 +110,8 @@ function addBubble(cls,txt){ const b=document.createElement('div'); b.className=
 let TOKEN=null;
 (async()=>{
   if(!slug){ showGate('잘못된 접근','수정할 페이지를 찾을 수 없어요.'); return; }
-  TOKEN = await syncToken();
-  if(!TOKEN){ showGate(); return; }
+  TOKEN = localStorage.getItem('page_id_token');
+  if(!TOKEN || isExpired(TOKEN)){ localStorage.removeItem('page_id_token'); showGate(); return; }
   const sub = decodeSub(TOKEN);
   // 사이트 메타
   let site; try{ site=await (await fetch('/api/site?slug='+encodeURIComponent(slug))).json(); }catch{}

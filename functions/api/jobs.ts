@@ -7,16 +7,20 @@ interface Env {
   page_db: D1Database;
 }
 
-const RELAY_ME = "https://relay.cocy.io/api/auth/me";
+// page 자체 인증: Google ID 토큰(GSI credential)을 구글 tokeninfo 로 직접 검증.
+// relay 비의존. 소유자 식별 = 구글 sub.
+const GOOGLE_CLIENT = "315180918727-3d9rfmpa36r365qna9smdsvrod441jhd.apps.googleusercontent.com";
 
-async function getUser(req: Request): Promise<{ id: string; nickname?: string } | null> {
+async function getUser(req: Request): Promise<{ id: string; email?: string } | null> {
   const auth = req.headers.get("Authorization");
   if (!auth?.startsWith("Bearer ")) return null;
+  const idToken = auth.slice(7);
   try {
-    const r = await fetch(RELAY_ME, { headers: { Authorization: auth } });
+    const r = await fetch("https://oauth2.googleapis.com/tokeninfo?id_token=" + encodeURIComponent(idToken));
     if (!r.ok) return null;
-    const u: any = await r.json();
-    return u?.id ? u : null;
+    const info: any = await r.json();
+    if (info.aud !== GOOGLE_CLIENT) return null;   // 클라 불일치 거부
+    return info.sub ? { id: info.sub, email: info.email } : null;
   } catch { return null; }
 }
 
