@@ -6,8 +6,9 @@
 <title>내 페이지 만들기 · page.cocy.io</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-:root{--bg:#0b0b0d;--bg-2:#15151b;--bg-3:#1d1d25;--ink:#ece9e4;--ink-soft:#aaa6a0;--muted:#6f6b66;--accent:#c9a86a;--accent-2:#e9cd92;--line:rgba(236,233,228,.12)}
+:root{--bg:#0b0b0d;--bg-2:#15151b;--bg-3:#1d1d25;--ink:#ece9e4;--ink-soft:#aaa6a0;--muted:#6f6b66;--accent:#c9a86a;--accent-2:#e9cd92;--line:rgba(236,233,228,.12);--err:#d98a8a}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",sans-serif;font-weight:300;line-height:1.7}
 .wrap{max-width:680px;margin:0 auto;padding:48px 22px 90px}
@@ -15,36 +16,50 @@ body{background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",sans-serif
 h1{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:2.4rem;margin:.4rem 0 .3rem}
 .sub{color:var(--ink-soft);margin-bottom:2.4rem}
 .step{margin-bottom:2rem}
-.step > label{display:block;font-weight:500;margin-bottom:.7rem;font-size:.95rem}
+.step>label{display:block;font-weight:500;margin-bottom:.7rem;font-size:.95rem}
 .step .hint{color:var(--muted);font-size:.8rem;font-weight:300;margin-left:.4rem}
 .chips{display:flex;flex-wrap:wrap;gap:.55rem}
-.chip{padding:.6rem 1rem;border:1px solid var(--line);border-radius:40px;background:var(--bg-2);color:var(--ink-soft);
-  cursor:pointer;font-size:.88rem;transition:.2s;user-select:none}
+.chip{padding:.6rem 1rem;border:1px solid var(--line);border-radius:40px;background:var(--bg-2);color:var(--ink-soft);cursor:pointer;font-size:.88rem;transition:.2s;user-select:none}
 .chip:hover{border-color:var(--accent)}
 .chip.on{background:var(--accent);color:#1a160e;border-color:var(--accent);font-weight:500}
-input[type=text],textarea{width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;color:var(--ink);
-  padding:.85rem 1rem;font-family:inherit;font-size:.95rem;font-weight:300}
-textarea{min-height:140px;resize:vertical;line-height:1.6}
+input[type=text],textarea{width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:.85rem 1rem;font-family:inherit;font-size:.95rem;font-weight:300}
+textarea{min-height:130px;resize:vertical;line-height:1.6}
 input::placeholder,textarea::placeholder{color:var(--muted)}
-.go{margin-top:1rem;width:100%;padding:1.05rem;border:none;border-radius:8px;background:var(--accent);color:#1a160e;
-  font-family:"Jost",sans-serif;font-weight:500;letter-spacing:.12em;text-transform:uppercase;font-size:.9rem;cursor:pointer;transition:.3s}
+.attach{display:inline-flex;align-items:center;gap:6px;font-size:.85rem;color:var(--ink-soft);border:1px dashed var(--line);border-radius:8px;padding:9px 13px;cursor:pointer}
+.attach:hover{border-color:var(--accent);color:var(--accent-2)}
+.imgrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.imgrow .th{position:relative;width:60px;height:60px;border-radius:8px;background:#000 center/cover;border:1px solid var(--line)}
+.imgrow .th b{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--err);color:#fff;font-size:11px;line-height:18px;text-align:center;cursor:pointer}
+.go{margin-top:1rem;width:100%;padding:1.05rem;border:none;border-radius:8px;background:var(--accent);color:#1a160e;font-family:"Jost",sans-serif;font-weight:500;letter-spacing:.12em;text-transform:uppercase;font-size:.9rem;cursor:pointer;transition:.3s}
 .go:hover{background:var(--accent-2)}
 .go:disabled{opacity:.5;cursor:not-allowed}
 #status{margin-top:1.4rem;text-align:center;color:var(--ink-soft);min-height:1.4rem}
-#status a{color:var(--accent-2)}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:s .8s linear infinite;vertical-align:-2px;margin-right:6px}
 @keyframes s{to{transform:rotate(360deg)}}
 .result{margin-top:1.6rem;padding:1.3rem;background:var(--bg-2);border:1px solid var(--accent);border-radius:10px;display:none}
 .result.on{display:block}
 .result h3{font-family:"Cormorant Garamond",serif;font-size:1.4rem;font-weight:600;margin-bottom:.5rem}
 .result a.btn{display:inline-block;margin-top:.7rem;padding:.6rem 1.2rem;border:1px solid var(--accent);border-radius:6px;color:var(--accent-2);text-decoration:none;font-size:.85rem}
+.gate{max-width:400px;margin:14vh auto;text-align:center}
+.gate h1{font-size:1.9rem}
+.gate p{color:var(--ink-soft);margin:10px 0 20px}
+#gbtn{display:flex;justify-content:center}
+.hide{display:none!important}
 </style>
 </head>
 <body>
-<div class="wrap">
+
+<div id="gate" class="wrap gate hide">
+  <div class="eyebrow">page.cocy.io</div>
+  <h1>로그인하고 시작해요</h1>
+  <p>cocy 계정으로 로그인하면 내 페이지를 만들 수 있어요.</p>
+  <div id="gbtn"></div>
+</div>
+
+<div id="app" class="wrap hide">
   <div class="eyebrow">page.cocy.io</div>
   <h1>당신만의 페이지를 만들어요</h1>
-  <p class="sub">몇 가지만 고르면, 당신의 분위기에 맞춰 새로 그려드립니다.</p>
+  <p class="sub">몇 가지만 고르면, 당신의 분위기에 맞춰 새로 그려드립니다. (제출하면 정성껏 만들어 발행해드려요)</p>
 
   <div class="step">
     <label>1. 어떤 페이지인가요?</label>
@@ -52,7 +67,10 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
       <div class="chip" data-v="portfolio">포트폴리오</div>
       <div class="chip" data-v="wedding">청첩장</div>
       <div class="chip" data-v="menu">메뉴판</div>
+      <div class="chip" data-v="memorial">추모</div>
+      <div class="chip" data-v="proposal">프로포즈/고백</div>
       <div class="chip" data-v="profile">프로필/명함</div>
+      <div class="chip" data-v="etc">기타</div>
     </div>
   </div>
 
@@ -82,15 +100,21 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 
   <div class="step">
     <label>4. 제목 / 이름</label>
-    <input type="text" id="title" placeholder="예: 김하늘 · 사진가  /  카페 모모 메뉴  /  지우 ♥ 서연 결혼합니다" />
+    <input type="text" id="title" placeholder="예: 김하늘 · 사진가 / 카페 모모 / 지우 ♥ 서연" />
   </div>
 
   <div class="step">
-    <label>5. 내용을 들려주세요 <span class="hint">자유롭게 — 소개, 메뉴, 식순, 연락처 등</span></label>
-    <textarea id="content" placeholder="예) 15년차 다이닝 셰프. 시그니처는 랍스터 비스크. 서울 한남동에서 프라이빗 다이닝 운영. 예약 010-..."></textarea>
+    <label>5. 내용을 들려주세요 <span class="hint">소개·메뉴·식순·연락처 등 자유롭게</span></label>
+    <textarea id="content" placeholder="예) 15년차 다이닝 셰프. 시그니처는 랍스터 비스크. 서울 한남동 프라이빗 다이닝. 예약 010-..."></textarea>
   </div>
 
-  <button class="go" id="go">✦ 페이지 생성하기</button>
+  <div class="step">
+    <label>6. 사진 <span class="hint">5장까지 무료 · 자동 압축</span></label>
+    <label class="attach">📎 사진 첨부<input type="file" id="file" accept="image/*" multiple hidden></label>
+    <div class="imgrow" id="thumbs"></div>
+  </div>
+
+  <button class="go" id="go">✦ 페이지 만들어줘</button>
   <div id="status"></div>
   <div class="result" id="result">
     <h3 id="rtitle"></h3>
@@ -100,53 +124,68 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 </div>
 
 <script>
-const pick = (id, multi) => {
-  const box = document.getElementById(id);
-  box.addEventListener('click', e => {
-    const c = e.target.closest('.chip'); if (!c) return;
-    if (multi) c.classList.toggle('on');
-    else { box.querySelectorAll('.chip').forEach(x => x.classList.remove('on')); c.classList.add('on'); }
+const $=id=>document.getElementById(id);
+const GCID='315180918727-3d9rfmpa36r365qna9smdsvrod441jhd.apps.googleusercontent.com';
+function isExpired(t){ try{ const p=JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); return !p.exp||p.exp*1000<Date.now(); }catch{return true;} }
+function onCred(resp){ localStorage.setItem('page_id_token',resp.credential); location.reload(); }
+function renderLogin(){ if(window.google&&google.accounts&&google.accounts.id){ google.accounts.id.initialize({client_id:GCID,callback:onCred}); google.accounts.id.renderButton($('gbtn'),{theme:'filled_black',size:'large',text:'continue_with',shape:'pill'}); google.accounts.id.prompt(); } else setTimeout(renderLogin,300); }
+
+let TOKEN=localStorage.getItem('page_id_token');
+if(!TOKEN||isExpired(TOKEN)){ localStorage.removeItem('page_id_token'); $('gate').classList.remove('hide'); renderLogin(); }
+else { $('app').classList.remove('hide'); initForm(); }
+
+function pick(id,multi){ const box=$(id); box.addEventListener('click',e=>{ const c=e.target.closest('.chip'); if(!c)return; if(multi)c.classList.toggle('on'); else{box.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');} }); }
+const vals=(id,a)=>[...document.querySelectorAll(`#${id} .chip.on`)].map(c=>c.dataset[a]);
+
+// 사진 압축 + 업로드
+const UPLOADED=[];
+async function compress(file){ const img=await createImageBitmap(file); const max=1280; let w=img.width,h=img.height; if(w>max||h>max){const s=max/Math.max(w,h);w=Math.round(w*s);h=Math.round(h*s);} const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h); return await new Promise(r=>c.toBlob(r,'image/jpeg',0.72)); }
+function renderThumbs(){ $('thumbs').innerHTML=UPLOADED.map((u,i)=>`<div class="th" style="background-image:url('${u}')"><b data-i="${i}">×</b></div>`).join(''); }
+
+function initForm(){
+  pick('vertical',false); pick('mood',true); pick('palette',false);
+  $('thumbs').addEventListener('click',e=>{ if(e.target.tagName==='B'){UPLOADED.splice(+e.target.dataset.i,1);renderThumbs();} });
+  $('file').addEventListener('change',async e=>{
+    const files=[...e.target.files]; e.target.value='';
+    for(const f of files){ if(UPLOADED.length>=5){ $('status').textContent='사진은 5장까지 무료예요.'; break; }
+      try{ const blob=await compress(f);
+        const r=await fetch('/api/upload',{method:'POST',headers:{'Content-Type':'image/jpeg',Authorization:'Bearer '+TOKEN},body:blob});
+        const d=await r.json(); if(!r.ok)throw new Error(d.error||r.status); UPLOADED.push(d.url); renderThumbs();
+      }catch(err){ $('status').textContent='사진 업로드 실패: '+err.message; }
+    }
   });
-};
-pick('vertical', false); pick('mood', true); pick('palette', false);
-const vals = (id, attr) => [...document.querySelectorAll(`#${id} .chip.on`)].map(c => c.dataset[attr]);
+  $('go').addEventListener('click',submit);
+}
 
-document.getElementById('go').addEventListener('click', async () => {
-  const vertical = vals('vertical','v')[0];
-  const content = document.getElementById('content').value.trim();
-  const status = document.getElementById('status');
-  if (!vertical) { status.textContent = '① 페이지 종류를 골라주세요.'; return; }
-  if (content.length < 4) { status.textContent = '⑤ 내용을 적어주세요.'; return; }
+async function submit(){
+  const vertical=vals('vertical','v')[0];
+  const content=$('content').value.trim();
+  if(!vertical){ $('status').textContent='① 페이지 종류를 골라주세요.'; return; }
+  if(content.length<4){ $('status').textContent='⑤ 내용을 적어주세요.'; return; }
+  const spec={ vertical, mood:vals('mood','m'), palette:vals('palette','p')[0]||'', title:$('title').value.trim(), content, lang:'ko', images:UPLOADED.slice() };
+  $('go').disabled=true; $('status').innerHTML='<span class="spin"></span>신청이 접수됐어요. 정성껏 만들어 발행해드릴게요.';
+  $('result').classList.remove('on');
+  try{
+    const r=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+TOKEN},body:JSON.stringify({type:'create',spec})});
+    const d=await r.json(); if(!r.ok)throw new Error(d.error||r.status);
+    poll(d.jobId);
+  }catch(e){ $('status').textContent='접수 실패: '+e.message; $('go').disabled=false; }
+}
 
-  const body = {
-    vertical,
-    mood: vals('mood','m'),
-    palette: vals('palette','p')[0] || '',
-    title: document.getElementById('title').value.trim(),
-    content, lang: 'ko'
-  };
-  const btn = document.getElementById('go');
-  btn.disabled = true;
-  status.innerHTML = '<span class="spin"></span>당신만의 페이지를 그리는 중… (20~40초)';
-  document.getElementById('result').classList.remove('on');
-  try {
-    const tok = localStorage.getItem('cocy_auth_token');
-    const r = await fetch('/api/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...(tok ? { Authorization: 'Bearer ' + tok } : {}) },
-      body: JSON.stringify(body)
-    });
-    const d = await r.json();
-    if (!r.ok) throw new Error(d.error || r.status);
-    status.textContent = '완성됐어요!';
-    document.getElementById('rtitle').textContent = d.title;
-    document.getElementById('rurl').textContent = d.url;
-    const link = document.getElementById('rlink'); link.href = '/' + d.slug;
-    document.getElementById('result').classList.add('on');
-  } catch (e) {
-    status.textContent = '생성에 실패했어요: ' + e.message;
-  } finally { btn.disabled = false; }
-});
+function poll(jobId){
+  let n=0;
+  const iv=setInterval(async()=>{ n++;
+    try{ const j=await (await fetch('/api/jobs?id='+jobId)).json();
+      if(j.status==='done'){ clearInterval(iv);
+        let slug=''; try{ slug=JSON.parse(j.result_json||'{}').slug||''; }catch{}
+        $('status').textContent='완성됐어요!';
+        if(slug){ $('rtitle').textContent=$('title').value||'내 페이지'; $('rurl').textContent='page.cocy.io/'+slug; $('rlink').href='/'+slug; $('result').classList.add('on'); }
+        $('go').disabled=false;
+      } else if(j.status==='error'){ clearInterval(iv); $('status').textContent='생성 중 문제가 생겼어요: '+(j.result_json||''); $('go').disabled=false; }
+    }catch{}
+    if(n>180){ clearInterval(iv); $('status').textContent='시간이 좀 걸리네요 — 완성되면 페이지에 반영돼요.'; $('go').disabled=false; }
+  },4000);
+}
 </script>
 </body>
 </html>
