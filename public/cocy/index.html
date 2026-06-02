@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Builder of Builders · 도구를 만드는 사람</title>
+<meta name="description" content="14년간 남이 만들 수 있게 하는 것을 만들어 온 플랫폼 엔지니어. 게임 퍼블리싱 플랫폼부터 연 100억 규모 LLM 게이트웨이까지." />
+<link rel="canonical" href="https://page.cocy.io/cocy" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Builder of Builders · 도구를 만드는 사람" />
+<meta property="og:description" content="실험을 운영으로. 14년간 플랫폼과 게이트웨이를 만들어 온 엔지니어." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#07080a; --bg-2:#0e1014; --bg-3:#15181e; --panel:#0c0e12;
+  --ink:#e8ebf0; --ink-soft:#9aa1ad; --muted:#5f6671;
+  --accent:#5eead4; --accent-2:#7dd3fc; --wire:rgba(94,234,212,.5); --line:rgba(232,235,240,.10);
+  --disp:"Space Grotesk",sans-serif; --mono:"JetBrains Mono",monospace; --kr:"Noto Sans KR",sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--kr);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.en body,body.en{font-family:var(--disp)}
+.wrap{max-width:920px;margin:0 auto;padding:0 24px}
+.mono{font-family:var(--mono);text-transform:uppercase;letter-spacing:.22em;font-size:.66rem;color:var(--accent)}
+[data-en]{display:none}
+body.en [data-ko]{display:none}
+body.en [data-en]{display:revert}
+
+/* lang toggle */
+.bar{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:14px 22px;background:linear-gradient(var(--bg),transparent)}
+.bar .sig{font-family:var(--mono);font-size:.8rem;color:var(--ink-soft)}
+.toggle{display:flex;border:1px solid var(--line);border-radius:30px;overflow:hidden;font-family:var(--mono);font-size:.7rem}
+.toggle button{background:transparent;border:none;color:var(--muted);padding:.45rem .85rem;cursor:pointer;letter-spacing:.1em}
+.toggle button.on{background:var(--accent);color:#04201b;font-weight:600}
+
+/* wire bg */
+.wires{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
+.wires svg{width:100%;height:100%}
+.wires path{stroke:var(--wire);stroke-width:1;fill:none;stroke-dasharray:6 10;opacity:.25;animation:flow 6s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-160}}
+section{position:relative;z-index:1}
+
+/* hero */
+header.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+  background:radial-gradient(120% 80% at 80% -10%,rgba(94,234,212,.08),transparent 55%)}
+.hero .mono{margin-bottom:1.4rem}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(2.6rem,8.5vw,5.6rem);line-height:.98;letter-spacing:-.02em;color:#fff}
+.hero h1 .g{background:linear-gradient(100deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .who{font-family:var(--kr);font-weight:300;font-size:clamp(1.1rem,2.6vw,1.5rem);color:var(--ink-soft);margin-top:1.6rem;max-width:40ch}
+.hero .who b{color:var(--ink);font-weight:500}
+.name-slot{margin-top:1.2rem;font-family:var(--mono);font-size:.82rem;color:var(--muted)}
+.name-slot b{color:var(--accent-2)}
+.stats{display:flex;flex-wrap:wrap;gap:1.6rem 2.6rem;margin-top:2.8rem}
+.stat .v{font-family:var(--disp);font-weight:700;font-size:clamp(1.5rem,4vw,2.2rem);color:#fff}
+.stat .l{font-family:var(--mono);font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-top:.2rem}
+
+h2{font-family:var(--disp);font-weight:600;font-size:clamp(1.5rem,4vw,2rem);color:#fff;display:flex;align-items:baseline;gap:.7rem;margin-bottom:1.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent)}
+section.blk{padding:11vh 0;border-top:1px solid var(--line)}
+
+/* flagship */
+.flag{background:linear-gradient(160deg,var(--bg-2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:clamp(24px,4vw,40px);position:relative;overflow:hidden}
+.flag::before{content:"";position:absolute;right:-30%;top:-40%;width:60%;height:180%;background:radial-gradient(circle,rgba(125,211,252,.10),transparent 70%)}
+.flag .tag{font-family:var(--mono);font-size:.66rem;color:var(--accent);letter-spacing:.18em}
+.flag h3{font-family:var(--disp);font-weight:600;font-size:1.6rem;color:#fff;margin:.4rem 0 1rem}
+.flag p{color:var(--ink-soft);max-width:58ch}
+.flag .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.4rem}
+.flag .chips span{font-family:var(--mono);font-size:.7rem;color:var(--ink-soft);border:1px solid var(--line);border-radius:6px;padding:.35rem .7rem}
+
+/* the stack */
+.stack{display:flex;flex-direction:column;gap:0}
+.layer{display:grid;grid-template-columns:96px 1fr;gap:1.2rem;padding:1.5rem 0;border-bottom:1px solid var(--line);transition:.4s var(--ease)}
+.layer:hover{background:rgba(94,234,212,.03)}
+.layer .yr{font-family:var(--mono);font-size:.78rem;color:var(--accent);padding-top:.2rem}
+.layer h3{font-family:var(--disp);font-weight:600;font-size:1.15rem;color:#fff}
+.layer .co{font-family:var(--mono);font-size:.7rem;color:var(--muted);margin:.15rem 0 .5rem;letter-spacing:.05em}
+.layer p{color:var(--ink-soft);font-size:.92rem;max-width:60ch}
+.layer p b{color:var(--ink);font-weight:500}
+
+/* origin */
+.origin{display:grid;grid-template-columns:1fr;gap:1rem}
+@media(min-width:680px){.origin{grid-template-columns:1fr 1fr}}
+.award{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:1.5rem}
+.award .medal{font-size:1.4rem}
+.award .rank{font-family:var(--mono);font-size:.68rem;color:var(--accent);letter-spacing:.1em;margin:.5rem 0 .3rem}
+.award h3{font-family:var(--disp);font-weight:600;font-size:1.15rem;color:#fff}
+.award p{color:var(--ink-soft);font-size:.88rem;margin-top:.3rem}
+.award .yr{font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-top:.6rem}
+.origin-note{color:var(--ink-soft);margin-bottom:1.6rem;max-width:60ch}
+.origin-note b{color:var(--accent-2);font-weight:500}
+
+/* domains */
+.doms{display:flex;flex-wrap:wrap;gap:.6rem}
+.doms span{border:1px solid var(--line);border-radius:30px;padding:.5rem 1rem;font-size:.85rem;color:var(--ink-soft)}
+.doms span b{color:var(--accent)}
+.tech{font-family:var(--mono);font-size:.78rem;color:var(--muted);line-height:2;margin-top:1.4rem}
+
+/* meta ending + contact */
+section.end{padding:14vh 0 10vh;text-align:center;border-top:1px solid var(--line)}
+.end .big{font-family:var(--disp);font-weight:700;font-size:clamp(1.8rem,6vw,3rem);color:#fff;line-height:1.2}
+.end .big .g{background:linear-gradient(100deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.meta-loop{margin-top:1.6rem;color:var(--ink-soft)}
+.meta-loop a{color:var(--accent-2);text-decoration:none;border-bottom:1px solid var(--line)}
+.contact{margin-top:2.6rem;display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap}
+.contact a{font-family:var(--mono);font-size:.82rem;color:var(--ink-soft);border:1px solid var(--line);border-radius:8px;padding:.6rem 1.1rem;text-decoration:none;transition:.3s}
+.contact a:hover{border-color:var(--accent);color:var(--accent)}
+footer{padding:2.4rem 0;text-align:center;border-top:1px solid var(--line)}
+footer .mono{color:var(--muted)}
+.reveal{opacity:0;transform:translateY(22px);transition:1s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.fill{outline:1px dashed rgba(125,211,252,.4);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<div class="wires"><svg viewBox="0 0 1000 1000" preserveAspectRatio="none">
+  <path d="M-50 200 C 300 200 300 500 1050 500"/><path d="M-50 800 C 400 800 400 500 1050 500"/>
+  <path d="M-50 500 C 200 500 200 300 1050 300"/><path d="M500 -50 C 500 300 700 300 700 1050"/>
+</svg></div>
+
+<div class="bar">
+  <span class="sig" data-ko>BUILDER OF BUILDERS</span><span class="sig" data-en>BUILDER OF BUILDERS</span>
+  <div class="toggle"><button id="ko" class="on">KO</button><button id="en">EN</button></div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="mono" data-ko>실험을 운영으로 · 2009 → 2026</div>
+    <div class="mono" data-en>Experiment → Production · 2009 → 2026</div>
+    <h1 data-ko>도구를 만드는<br><span class="g">사람</span>.</h1>
+    <h1 data-en>I build the <span class="g">layer</span><br>everything runs on.</h1>
+    <p class="who" data-ko>14년간 <b>남이 무언가를 만들 수 있게 하는 것</b>을 만들었습니다. 웹사이트 제작 툴부터, 3개국 수백만 유저 게임 플랫폼, 그리고 연 100억 규모의 LLM 게이트웨이까지 — 늘 <b>토대</b>를 깔았습니다.</p>
+    <p class="who" data-en>For 14 years I've built <b>the things other people build on</b> — from a website-creation tool, to a game platform serving millions across 3 countries, to an enterprise LLM gateway. Always the <b>foundation</b>.</p>
+    <div class="name-slot">▍ <b data-ko>이름:</b><b data-en>NAME:</b> <span class="fill">your name here</span> — <span data-ko>실명/영문명 알려주면 박습니다</span><span data-en>tell me your name to finalize</span></div>
+    <div class="stats">
+      <div class="stat"><div class="v">₩100억</div><div class="l" data-ko>연 예산 · 단독 설계·개발</div><div class="l" data-en>annual budget · built solo</div></div>
+      <div class="stat"><div class="v">1,000+</div><div class="l" data-ko>사내 사용자</div><div class="l" data-en>internal users</div></div>
+      <div class="stat"><div class="v">40K TPS</div><div class="l" data-ko>이벤트 트래픽 처리</div><div class="l" data-en>event traffic handled</div></div>
+      <div class="stat"><div class="v">3<span style="font-size:1rem"> 개국</span></div><div class="l" data-ko>글로벌 게임 플랫폼</div><div class="l" data-en>countries · game platform</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="blk"><div class="wrap">
+  <h2><span class="n">NOW</span><span data-ko>지금 — LLM Gateway</span><span data-en>Now — LLM Gateway</span></h2>
+  <div class="flag reveal">
+    <div class="tag">KAKAOBANK · ENTERPRISE LLM GATEWAY</div>
+    <h3 data-ko>실험이던 사내 GenAI를, 운영 가능한 시스템으로.</h3>
+    <h3 data-en>From internal GenAI experiments to production-grade operation.</h3>
+    <p data-ko>금융권 보안 제약 아래, 사내 1,000+명이 쓰는 엔터프라이즈 LLM 게이트웨이를 <b>혼자 설계하고 개발</b>했습니다. 연 100억 규모 프로젝트. Azure OpenAI·AWS Bedrock·자체 GPU 호스팅·로컬 엔드포인트까지 30+ 모델을 중앙 라우팅하고, MCP/툴콜 거버넌스·정책 기반 접근제어·크로스 캐시 최적화로 운영합니다.</p>
+    <p data-en>Under financial-sector security constraints, I single-handedly designed and built the enterprise LLM gateway used by 1,000+ internal engineers — a project on a ~₩10B annual budget. It centrally routes 30+ models across Azure OpenAI, AWS Bedrock, self-hosted GPU, and local endpoints, with MCP/tool-call governance, policy-based access control, and cross-cache optimization.</p>
+    <div class="chips"><span>Model Routing</span><span>MCP Governance</span><span>Policy Access Control</span><span>Cache Optimization</span><span>Financial-grade Security</span></div>
+  </div>
+</div></section>
+
+<section class="blk"><div class="wrap">
+  <h2><span class="n">THE STACK</span><span data-ko>쌓아온 레이어 · 14년</span><span data-en>The layers · 14 years</span></h2>
+  <div class="stack">
+    <div class="layer reveal"><div class="yr">2018→<br>now</div><div>
+      <h3>Kakaobank</h3><div class="co" data-ko>SE · SRE · 제휴플랫폼 팀장 · LLM Gateway</div><div class="co" data-en>SE · SRE · Partnership Platform Lead · LLM Gateway</div>
+      <p data-ko>이벤트팀에서 <b>4만 TPS</b> 트래픽 이벤트를 받았고, 쿠폰 지급×뱅킹상품을 연계한 <b>제휴 플랫폼을 혼자 오픈해 팀장</b>까지. 이후 고객인증·신뢰성 <b>SRE</b>, 그리고 현재 <b>LLM 게이트웨이</b>.</p>
+      <p data-en>Handled <b>40K-TPS</b> event traffic; opened a partnership platform (coupons × banking products) <b>solo, then led the team</b>. Then <b>SRE</b> on customer-auth & reliability, now the <b>LLM gateway</b>.</p>
+    </div></div>
+    <div class="layer reveal"><div class="yr">2015–<br>2018</div><div>
+      <h3>HAPPYTUK <span style="color:var(--muted);font-size:.8rem;font-family:var(--mono)">· Taiwan</span></h3><div class="co" data-ko>SW 아키텍트 & 메인 개발</div><div class="co" data-en>SW Architect & Lead Developer</div>
+      <p data-ko><b>3개국 수백만 유저</b>의 글로벌 게임 퍼블리싱 플랫폼을 <b>설계부터 개발까지 메인</b>으로. (Java·Grails·MariaDB·Jenkins)</p>
+      <p data-en>A global game-publishing platform serving <b>millions across 3 countries</b> — <b>architected and built it as the lead</b>. (Java, Grails, MariaDB, Jenkins)</p>
+    </div></div>
+    <div class="layer reveal"><div class="yr">2014–<br>2015</div><div>
+      <h3>JCreative <span style="color:var(--muted);font-size:.8rem;font-family:var(--mono)">· Startup</span></h3><div class="co">Web Developer (FE/BE)</div>
+      <p data-ko>웹사이트 제작 툴, 개발자 디버깅 센터, 온라인 선거 시스템 등 — <b>도구와 시스템</b>을 만들었습니다.</p>
+      <p data-en>Website-creation tool, a developer debugging center, an online election system — building <b>tools and systems</b>.</p>
+    </div></div>
+    <div class="layer reveal"><div class="yr">2012–<br>2014</div><div>
+      <h3 data-ko>강원대 DB Lab · 연구원</h3><h3 data-en>Kangwon Nat'l Univ · DB Lab Researcher</h3><div class="co">Computer Science</div>
+      <p data-ko>KIISE 시스템 유지·개발, 온라인 선거 서비스 개발. 동시에 졸업작품으로 <b>웹 제작·발표 도구</b>를 만들어 수상.</p>
+      <p data-en>KIISE systems, online election service. In parallel, built award-winning <b>web creation & presentation tools</b> as graduation projects.</p>
+    </div></div>
+    <div class="layer reveal"><div class="yr">2009–<br>2012</div><div>
+      <h3 data-ko>국군 · SW 개발</h3><h3 data-en>R.O.K. Defense · SW Development</h3><div class="co" data-ko>국방 시스템 개발·운영</div><div class="co" data-en>Defense systems dev & ops</div>
+      <p data-ko>국방부 통합지휘통제체계, 합참·한미연합사 관리체계 등 <b>대규모 국방 시스템</b>을 개발·운영. (Java·C#·Oracle)</p>
+      <p data-en>Built and operated <b>large-scale defense systems</b> — integrated command & control, joint-chiefs & ROK-US combined-command management systems. (Java, C#, Oracle)</p>
+    </div></div>
+  </div>
+</div></section>
+
+<section class="blk"><div class="wrap">
+  <h2><span class="n">ORIGIN</span><span data-ko>시작점 — 도구를 만드는 본능</span><span data-en>Where it started</span></h2>
+  <p class="origin-note" data-ko>이 이야기는 대학에서 시작됐습니다. 첫 작품들이 이미 <b>"무언가를 만드는 도구"</b>였어요 — 그 본능이 14년 뒤 LLM 게이트웨이로 이어집니다.</p>
+  <p class="origin-note" data-en>It started in university. The very first projects were already <b>tools for making things</b> — the same instinct that, 14 years later, became an LLM gateway.</p>
+  <div class="origin">
+    <div class="award reveal"><div class="medal">🏆</div><div class="rank">THE BEST AWARD · 2013</div>
+      <h3>Wrapper</h3>
+      <p data-ko>웹 기반 <b>웹사이트 제작 툴</b> · 강원대 졸업작품경진대회 최우수상</p>
+      <p data-en>Web-based <b>website creation tool</b> · Best Award, KNU Graduation Project Competition</p>
+      <div class="yr">2013.11 · Kangwon National University</div>
+    </div>
+    <div class="award reveal"><div class="medal">🥇</div><div class="rank">GOLD AWARD · 2012</div>
+      <h3>Webpresenter</h3>
+      <p data-ko>웹 기반 <b>프레젠테이션 발표 도구</b> · 강원대 졸업작품경진대회 금상</p>
+      <p data-en>Web-based <b>presentation tool</b> · Gold Award, KNU Graduation Project Competition</p>
+      <div class="yr">2012.11 · Kangwon National University</div>
+    </div>
+  </div>
+</div></section>
+
+<section class="blk"><div class="wrap">
+  <h2><span class="n">DOMAINS</span><span data-ko>다뤄온 영역</span><span data-en>Domains</span></h2>
+  <div class="doms">
+    <span data-ko><b>플랫폼</b> 엔지니어링</span><span data-en><b>Platform</b> engineering</span>
+    <span><b>LLM</b> Infra · Gateway</span>
+    <span><b>SRE</b> · Reliability</span>
+    <span data-ko><b>게임</b> 퍼블리싱 플랫폼</span><span data-en><b>Game</b> publishing platform</span>
+    <span data-ko><b>금융</b>권 보안·인증</span><span data-en><b>Fintech</b> security & auth</span>
+    <span><b>High-TPS</b> Systems</span>
+  </div>
+  <div class="tech">Java · Spring · Grails · Node.js · C# .NET · Oracle · MariaDB/MySQL/MSSQL · Jenkins · Azure OpenAI · AWS Bedrock · MCP · Performance Tuning · Service Migration · Agile</div>
+</div></section>
+
+<section class="end"><div class="wrap">
+  <div class="big" data-ko>여전히, <span class="g">도구를 만드는 사람</span>.</div>
+  <div class="big" data-en>Still <span class="g">building the builders</span>.</div>
+  <p class="meta-loop" data-ko>그리고 — 이 페이지조차 "웹사이트 만드는 도구"로 만들어졌습니다. <a href="https://page.cocy.io" target="_blank">page.cocy.io</a> 에서.</p>
+  <p class="meta-loop" data-en>And — even this page was built with a "website-creation tool." On <a href="https://page.cocy.io" target="_blank">page.cocy.io</a>.</p>
+  <div class="contact">
+    <a class="fill" href="#">✉ email — 채워주세요</a>
+    <a class="fill" href="#">GitHub</a>
+    <a class="fill" href="#">LinkedIn</a>
+  </div>
+</div></section>
+
+<footer><span class="mono" data-ko>Builder of Builders · page.cocy.io 로 제작</span><span class="mono" data-en>Builder of Builders · made on page.cocy.io</span></footer>
+
+<script>
+const ko=document.getElementById('ko'),en=document.getElementById('en');
+function setLang(l){ document.body.classList.toggle('en',l==='en'); document.documentElement.lang=l; ko.classList.toggle('on',l==='ko'); en.classList.toggle('on',l==='en'); }
+ko.onclick=()=>setLang('ko'); en.onclick=()=>setLang('en');
+if((navigator.language||'').startsWith('en')) setLang('en');
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.14});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
