@@ -74,6 +74,19 @@ ul.clean li::before{content:"";position:absolute;left:.1rem;top:.7em;width:6px;h
 ul.clean li b{color:var(--ink);font-weight:500}
 .verdict{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:1.5rem 1.6rem;margin-top:1rem}
 .verdict p{color:var(--ink-soft)}.verdict p b{color:#fff}
+.cmp-wrap{overflow-x:auto}
+.cmp{width:100%;border-collapse:collapse;margin-top:.6rem;font-size:.84rem;min-width:560px}
+.cmp th,.cmp td{padding:.7rem .6rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.cmp th{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+.cmp td:first-child{color:var(--ink);font-weight:500;font-family:var(--mono);font-size:.72rem;white-space:nowrap}
+.cmp .col-ll{color:var(--acc)}
+.cmp tr td.col-ll{background:rgba(57,217,138,.06)}
+.land{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:.8rem}
+@media(min-width:680px){.land{grid-template-columns:1fr 1fr}}
+.lcard{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:1rem 1.1rem}
+.lcard h4{font-family:var(--disp);font-weight:600;color:#fff;font-size:1.02rem}
+.lcard .pm{font-family:var(--mono);font-size:.7rem;color:var(--warn);margin:.3rem 0}
+.lcard p{font-size:.82rem;color:var(--ink-soft);margin:0}
 footer{padding:3rem 0;border-top:1px solid var(--line);text-align:center}
 footer .mono{color:var(--muted);font-size:.7rem}
 .disc{font-size:.74rem;color:var(--muted);margin-top:.8rem;font-style:italic}
@@ -161,6 +174,39 @@ footer .mono{color:var(--muted);font-size:.7rem}
   <p class="disc">숫자는 공개 출처(2026) 기준 추정치 — 공식 가격은 LiteLLM contact-sales로 스코핑됨. 오버헤드 %는 라이선스비÷월 토큰지출 단순 계산.</p>
 </div></section>
 
-<footer><div class="wrap"><span class="mono">LLM Gateway Cost Teardown · made on page.cocy.io</span></div></footer>
+<section><div class="wrap">
+  <h2><span class="n">04</span> 자체(Python/Redis) vs LiteLLM vs 상용</h2>
+  <p style="color:var(--ink-soft);margin-bottom:.4rem">같은 게이트웨이를 세 갈래로 지을 때의 trade-off.</p>
+  <div class="cmp-wrap"><table class="cmp">
+    <thead><tr><th>항목</th><th>자체 (Python·Redis)</th><th class="col-ll">LiteLLM</th><th>상용 SaaS</th></tr></thead>
+    <tbody>
+      <tr><td>비용 모델</td><td>인건비 + 인프라 (라이선스 0)</td><td class="col-ll">OSS 무료 / Ent 플랫 $250~$2.5K·월</td><td>구독 + 사용량 마크업 / 엔터 custom</td></tr>
+      <tr><td>스케일 비용</td><td>인프라만 (거의 고정)</td><td class="col-ll">플랫 → 토큰당 ≈ 0</td><td>사용량형은 스케일서 급증</td></tr>
+      <tr><td>신모델 대응</td><td>직접 구현 (느림·부담)</td><td class="col-ll">Day0 · 커뮤니티가 함</td><td>벤더가 대응 (보통 빠름)</td></tr>
+      <tr><td>커스터마이즈</td><td>무제한 (내 코드)</td><td class="col-ll">훅/플러그인으로 높음</td><td>벤더 범위 내 제한</td></tr>
+      <tr><td>거버넌스·컴플</td><td>전부 직접 구현</td><td class="col-ll">OSS + Ent(SSO·감사·SOC2)</td><td>내장(SOC2·HIPAA·ISO)</td></tr>
+      <tr><td>유지보수</td><td>100% 내가</td><td class="col-ll">얇은 커스텀만</td><td>벤더가</td></tr>
+      <tr><td>데이터·보안</td><td>완전 자체 통제</td><td class="col-ll">자체 호스팅 가능</td><td>SaaS=외부 경유(셀프호스 옵션 일부)</td></tr>
+      <tr><td>사용 기술</td><td>Python·Redis·자체 라우팅</td><td class="col-ll">Python·FastAPI·Redis·Postgres</td><td>매니지드(블랙박스)</td></tr>
+      <tr><td>적합</td><td>특수 정책·완전 통제 필요</td><td class="col-ll">통제 + 저유지보수 균형</td><td>빠른 도입·풀매니지드</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>금융권·고사용량(우리) 관점:</b> SaaS는 데이터 외부경유 + 사용량 비용이 스케일서 걸린다. 자체는 통제 100%지만 신모델·유지보수 부담을 다 짊어짐. <b>LiteLLM = 자체의 통제력을 거의 유지하면서(자체호스팅+훅) 모델·프로바이더 유지보수를 오프로드</b>하는 중간점.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2><span class="n">05</span> 상용 게이트웨이 라인업</h2>
+  <div class="land">
+    <div class="lcard"><h4>Portkey</h4><div class="pm">$49/월~ · 구독</div><p>1,600+ LLM, 프롬프트 관리·거버넌스·옵저버빌리티. SOC2·ISO·HIPAA·GDPR. 기능 풍부, 엔터 비용 큼.</p></div>
+    <div class="lcard"><h4>TrueFoundry</h4><div class="pm">클라우드 spend 마크업 + 엔터 custom</div><p>sub-5ms 저지연, 풀 LLMOps·거버넌스, SOC2 Type2·HIPAA. 엔터프라이즈 올인원.</p></div>
+    <div class="lcard"><h4>Kong AI Gateway</h4><div class="pm">&gt;$30 / 1M req + 플러그인 + 엔터</div><p>Kong API GW 위 AI 플러그인. 강력하나 가격구조 복잡, 기존 Kong 쓰는 곳에 적합.</p></div>
+    <div class="lcard"><h4>Cloudflare AI Gateway</h4><div class="pm">사실상 무료 (CF 기반)</div><p>캐싱·분석·레이트리밋·로깅. 초저비용이지만 거버넌스/정책 깊이는 얕음.</p></div>
+    <div class="lcard"><h4>OpenRouter</h4><div class="pm">per-token 투명가 (마크업)</div><p>호스티드 멀티모델 1 API·마켓플레이스. 실험·접근성 최고, 사내 거버넌스/셀프호스는 약함.</p></div>
+    <div class="lcard"><h4>Helicone</h4><div class="pm">OSS 무료 셀프호스 / 티어</div><p>옵저버빌리티 중심·저지연. 거버넌스는 제한적, 모니터링 강점.</p></div>
+  </div>
+  <p class="disc">출처·가격은 2026 공개 자료 기준 추정 — 정확한 견적은 각 벤더 영업 스코핑. 사용량형(OpenRouter·일부 TrueFoundry)은 토큰/매출 비례라 고사용량서 비용 급증, 플랫(LiteLLM Ent)·무료(CF·Helicone OSS)는 스케일 유리.</p>
+</div></section>
+
+<footer><div class="wrap"><span class="mono">LLM Gateway Cost & Stack Teardown · made on page.cocy.io</span></div></footer>
 </body>
 </html>
