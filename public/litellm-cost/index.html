@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LiteLLM Enterprise — 사용량 기준 비용 분석</title>
+<meta name="description" content="LiteLLM 오픈소스 vs Enterprise 가격을 사용량 규모로 분해. 플랫 라이선스라 스케일이 커질수록 토큰당 게이트웨이 비용은 0에 수렴한다." />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="LiteLLM Enterprise — 사용량 기준 비용 분석" />
+<meta property="og:description" content="플랫 라이선스 → 스케일에서 토큰당 오버헤드 거의 0. 사내 게이트웨이 도입 비용 분해." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#070809; --bg-2:#0e1013; --panel:#101317; --panel-2:#141820;
+  --ink:#eef2f6; --ink-soft:#949ba6; --muted:#5a626d;
+  --acc:#39d98a; --acc-2:#2bb673; --warn:#ffcf5c; --bad:#ff6b6b; --cool:#5ec8ff;
+  --line:rgba(238,242,246,.09);
+  --disp:"Space Grotesk",sans-serif; --mono:"JetBrains Mono",monospace; --kr:"Noto Sans KR",sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--kr);font-weight:300;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:840px;margin:0 auto;padding:0 22px}
+.mono{font-family:var(--mono)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.24em;font-size:.66rem;color:var(--acc)}
+
+header.hero{padding:14vh 0 7vh;background:radial-gradient(90% 60% at 80% 0%,rgba(57,217,138,.08),transparent 60%)}
+.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(2.2rem,6.5vw,3.6rem);line-height:1.05;letter-spacing:-.02em;margin:.7rem 0 1rem;color:#fff}
+.hero p{color:var(--ink-soft);max-width:54ch;font-size:1.05rem}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.6rem;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.meta b{color:var(--ink-soft);font-weight:400}
+
+.big-insight{margin:2.6rem 0;background:linear-gradient(160deg,var(--panel),var(--bg-2));border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:12px;padding:1.6rem 1.7rem}
+.big-insight .l{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;color:var(--acc);text-transform:uppercase}
+.big-insight .t{font-family:var(--disp);font-weight:600;font-size:clamp(1.2rem,3vw,1.6rem);color:#fff;margin-top:.5rem;line-height:1.35}
+.big-insight .t em{font-style:normal;color:var(--acc)}
+
+section{padding:5vh 0;border-top:1px solid var(--line)}
+h2{font-family:var(--disp);font-weight:600;font-size:1.5rem;color:#fff;margin-bottom:1.4rem;display:flex;gap:.6rem;align-items:baseline}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--acc)}
+
+/* tier cards */
+.tiers{display:grid;grid-template-columns:1fr;gap:1rem}
+@media(min-width:720px){.tiers{grid-template-columns:repeat(3,1fr)}}
+.tier{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:1.5rem}
+.tier.feat{border-color:rgba(57,217,138,.4);box-shadow:0 20px 50px -30px rgba(57,217,138,.4)}
+.tier .nm{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.tier .price{font-family:var(--disp);font-weight:700;font-size:2rem;color:#fff;margin:.5rem 0 .2rem}
+.tier .price small{font-size:.9rem;color:var(--muted);font-weight:400}
+.tier .sub{font-size:.8rem;color:var(--acc);font-family:var(--mono);margin-bottom:1rem}
+.tier ul{list-style:none}
+.tier li{font-size:.85rem;color:var(--ink-soft);padding-left:1.1rem;position:relative;margin-bottom:.45rem}
+.tier li::before{content:"›";position:absolute;left:0;color:var(--acc)}
+
+/* table */
+.tbl{width:100%;border-collapse:collapse;margin-top:.6rem;font-size:.9rem}
+.tbl th,.tbl td{padding:.7rem .55rem;border-bottom:1px solid var(--line);text-align:right;font-family:var(--mono)}
+.tbl th{font-size:.64rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+.tbl td:first-child,.tbl th:first-child{text-align:left}
+.tbl .scale{color:var(--ink)}
+.tbl .z{color:var(--acc);font-weight:700}
+.tbl .hi{color:var(--bad)}
+.tbl tr.you{background:rgba(57,217,138,.07)}
+.tbl tr.you td:first-child{color:var(--acc);font-weight:700}
+.note{font-size:.82rem;color:var(--muted);margin-top:1rem}
+.note b{color:var(--ink-soft)}
+
+ul.clean{list-style:none}
+ul.clean li{position:relative;padding-left:1.3rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.1rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--acc)}
+ul.clean li b{color:var(--ink);font-weight:500}
+.verdict{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:1.5rem 1.6rem;margin-top:1rem}
+.verdict p{color:var(--ink-soft)}.verdict p b{color:#fff}
+footer{padding:3rem 0;border-top:1px solid var(--line);text-align:center}
+footer .mono{color:var(--muted);font-size:.7rem}
+.disc{font-size:.74rem;color:var(--muted);margin-top:.8rem;font-style:italic}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <div class="kicker">Cost Analysis · LLM Gateway</div>
+  <h1>LiteLLM Enterprise,<br>사용량 기준으로 분해하면</h1>
+  <p>결론부터: LiteLLM 가격은 <b>토큰 사용량에 비례하지 않는 플랫(flat) 라이선스</b>다. 그래서 규모가 커질수록 <b>토큰당 게이트웨이 비용은 0에 수렴</b>한다.</p>
+  <div class="meta"><span><b>작성</b> 2026-06-03</span><span><b>대상</b> 사내 LLM 게이트웨이 도입 검토</span><span><b>기준</b> 공개 출처(공식가는 contact-sales)</span></div>
+
+  <div class="big-insight">
+    <div class="l">The one number that matters</div>
+    <div class="t">월 토큰 비용이 <em>$300K</em> 규모라면, Enterprise Premium($2.5K/월)은 <em>약 0.8%</em> 오버헤드. Basic($250/월)이면 <em>0.08%</em>.</div>
+  </div>
+</div></header>
+
+<section><div class="wrap">
+  <h2><span class="n">01</span> 가격 티어</h2>
+  <div class="tiers">
+    <div class="tier">
+      <div class="nm">Open Source</div>
+      <div class="price">$0<small> / MIT</small></div>
+      <div class="sub">자체 호스팅 · 무료</div>
+      <ul>
+        <li>100+ 프로바이더 라우팅 (Bedrock·Azure 포함)</li>
+        <li>버추얼 키 · 예산 · 레이트리밋</li>
+        <li>가드레일 · MCP 게이트웨이</li>
+        <li>로깅(Langfuse/OTel) · 기본 UI</li>
+      </ul>
+    </div>
+    <div class="tier feat">
+      <div class="nm">Enterprise Basic</div>
+      <div class="price">$250<small> / 월</small></div>
+      <div class="sub">중소 규모 · 대부분 여기서 충분</div>
+      <ul>
+        <li>엔터프라이즈 관리 UI</li>
+        <li>SSO (임계 사용자 수까지)</li>
+        <li>Prometheus 메트릭 · JWT 인증</li>
+        <li>LLM 가드레일 · Slack 지원 채널</li>
+      </ul>
+    </div>
+    <div class="tier">
+      <div class="nm">Enterprise Premium</div>
+      <div class="price">~$2.5K<small> / 월</small></div>
+      <div class="sub">≈ $30K / 년 · 규모·컴플라이언스</div>
+      <ul>
+        <li>SLA 우선 지원 · 전담 AM</li>
+        <li>고급 거버넌스</li>
+        <li>SOC2 · HIPAA 컴플라이언스 지원</li>
+        <li>대규모/규제 환경 대상</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note"><b>SSO는 5명까지 무료</b>, 초과 시 Enterprise 필요. 가격은 <b>사용량(토큰)이 아니라 배포 규모/티어 기준</b> — 즉 토큰을 아무리 많이 써도 라이선스비는 그대로.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2><span class="n">02</span> 사용량별 게이트웨이 오버헤드</h2>
+  <p style="color:var(--ink-soft);margin-bottom:.5rem">월 토큰 비용(모델 호출비) 대비, LiteLLM 라이선스가 차지하는 %. 플랫이라 스케일이 커질수록 % 가 급감한다.</p>
+  <table class="tbl">
+    <thead><tr><th>월 토큰 지출</th><th>Basic $250</th><th>Premium $2.5K</th><th>사용량형* 5% 마크업</th></tr></thead>
+    <tbody>
+      <tr><td class="scale">$10K</td><td>2.5%</td><td class="hi">25%</td><td>$500</td></tr>
+      <tr><td class="scale">$50K</td><td>0.5%</td><td>5%</td><td>$2,500</td></tr>
+      <tr><td class="scale">$100K</td><td>0.25%</td><td>2.5%</td><td>$5,000</td></tr>
+      <tr class="you"><td class="scale">$300K (우리 규모)</td><td class="z">0.08%</td><td class="z">0.83%</td><td class="hi">$15,000</td></tr>
+      <tr><td class="scale">$1M</td><td class="z">0.025%</td><td class="z">0.25%</td><td class="hi">$50,000</td></tr>
+    </tbody>
+  </table>
+  <p class="note">* 사용량형 = 토큰당 과금/마크업 거는 상용 게이트웨이 가정(5% 마크업). LiteLLM은 <b>플랫이라 $300K 규모에서 Premium이 사용량형 대비 6배, Basic은 60배 저렴</b>. 스케일 클수록 격차가 벌어진다.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2><span class="n">03</span> 그럼 실제로 무엇에 돈을 내나</h2>
+  <ul class="clean">
+    <li><b>토큰 처리량이 아니다.</b> 라우팅·키·가드레일·MCP 같은 코어는 오픈소스(무료)에 다 있다.</li>
+    <li><b>SSO·감사로그·SOC2/HIPAA·SLA 지원</b> — 금융권 사내 운영에 필요한 거버넌스/컴플라이언스가 Enterprise의 실제 값어치.</li>
+    <li><b>유지보수 절감</b> — 신모델 Day0 대응·프로바이더 추가를 직접 안 짜도 됨(가장 큰 숨은 비용 절감).</li>
+  </ul>
+  <div class="verdict">
+    <p><b>판정 — 우리(고사용량·금융권) 기준:</b> 게이트웨이 라이선스비는 토큰비 대비 <b>1% 미만</b>이라 비용은 사실상 논쟁거리가 아니다. 의사결정은 <b>SSO·감사로그·컴플라이언스(=Enterprise 필요 여부)</b> 와 <b>자체 커스텀 유지보수 vs LiteLLM 위 얇은 커스텀</b> 으로 좁혀진다. 순수 비용만 보면 <b>사용량형 상용 게이트웨이보다 압도적으로 싸다.</b></p>
+  </div>
+  <p class="disc">숫자는 공개 출처(2026) 기준 추정치 — 공식 가격은 LiteLLM contact-sales로 스코핑됨. 오버헤드 %는 라이선스비÷월 토큰지출 단순 계산.</p>
+</div></section>
+
+<footer><div class="wrap"><span class="mono">LLM Gateway Cost Teardown · made on page.cocy.io</span></div></footer>
+</body>
+</html>
