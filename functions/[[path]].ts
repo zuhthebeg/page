@@ -25,6 +25,10 @@ export const onRequest: PagesFunction<Env> = async (ctx) => {
 
   const slug = first;
 
+  // 0) 만료 체크 — KV exp:{slug} = 만료 epoch(ms). 키 없으면 영구(기본).
+  const expRaw = await ctx.env.page_cache.get(`exp:${slug}`);
+  if (expRaw && Number(expRaw) > 0 && Number(expRaw) < Date.now()) return expiredHtml();
+
   // 1) KV 핫캐시 (발행 HTML의 서빙 store)
   const cached = await ctx.env.page_cache.get(`html:${slug}`);
   if (cached) {
@@ -56,6 +60,16 @@ function html(body: string): Response {
       "cache-control": "public, max-age=300",
     },
   });
+}
+
+function expiredHtml(): Response {
+  const body = `<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>만료된 페이지</title>
+<style>body{margin:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#0e1014;color:#e7e9ee;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;text-align:center;padding:24px}
+h1{font-size:1.4rem;margin:0}p{color:#9aa0ab;margin:0;line-height:1.6;font-size:.95rem}a{margin-top:8px;color:#ffb648;text-decoration:none;font-weight:600}</style></head>
+<body><div style="font-size:2.4rem">⌛</div><h1>유지 기간이 지난 페이지예요</h1>
+<p>이 페이지는 설정된 유지 기간이 만료되었습니다.<br>다시 발행하려면 새로 만들어 주세요.</p>
+<a href="https://page.cocy.io/new">page.cocy.io에서 새로 만들기 →</a></body></html>`;
+  return new Response(body, { status: 410, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
 }
 
 function bumpView(env: Env, slug: string): Promise<unknown> {

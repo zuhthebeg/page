@@ -66,6 +66,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <div class="chips" id="vertical">
       <div class="chip" data-v="portfolio">포트폴리오</div>
       <div class="chip" data-v="wedding">청첩장</div>
+      <div class="chip" data-v="dol">돌잔치</div>
       <div class="chip" data-v="menu">메뉴판</div>
       <div class="chip" data-v="memorial">추모</div>
       <div class="chip" data-v="proposal">프로포즈/고백</div>
@@ -114,6 +115,16 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <div class="imgrow" id="thumbs"></div>
   </div>
 
+  <div class="step">
+    <label>7. 페이지 유지 기간 <span class="hint">기본 없음(영구)</span></label>
+    <div class="chips" id="expiry">
+      <div class="chip on" data-e="0">없음(영구)</div>
+      <div class="chip" data-e="3">3개월</div>
+      <div class="chip" data-e="6">6개월</div>
+      <div class="chip" data-e="12">1년</div>
+    </div>
+  </div>
+
   <button class="go" id="go">✦ 페이지 만들어줘</button>
   <div id="status"></div>
   <div class="result" id="result">
@@ -143,7 +154,7 @@ async function compress(file){ const img=await createImageBitmap(file); const ma
 function renderThumbs(){ $('thumbs').innerHTML=UPLOADED.map((u,i)=>`<div class="th" style="background-image:url('${u}')"><b data-i="${i}">×</b></div>`).join(''); }
 
 function initForm(){
-  pick('vertical',false); pick('mood',true); pick('palette',false);
+  pick('vertical',false); pick('mood',true); pick('palette',false); pick('expiry',false);
   $('thumbs').addEventListener('click',e=>{ if(e.target.tagName==='B'){UPLOADED.splice(+e.target.dataset.i,1);renderThumbs();} });
   $('file').addEventListener('change',async e=>{
     const files=[...e.target.files]; e.target.value='';
@@ -162,7 +173,7 @@ async function submit(){
   const content=$('content').value.trim();
   if(!vertical){ $('status').textContent='① 페이지 종류를 골라주세요.'; return; }
   if(content.length<4){ $('status').textContent='⑤ 내용을 적어주세요.'; return; }
-  const spec={ vertical, mood:vals('mood','m'), palette:vals('palette','p')[0]||'', title:$('title').value.trim(), content, lang:'ko', images:UPLOADED.slice() };
+  const spec={ vertical, mood:vals('mood','m'), palette:vals('palette','p')[0]||'', title:$('title').value.trim(), content, lang:'ko', images:UPLOADED.slice(), expiryMonths:+(vals('expiry','e')[0]||0) };
   $('go').disabled=true; $('status').innerHTML='<span class="spin"></span>신청이 접수됐어요. 정성껏 만들어 발행해드릴게요.';
   $('result').classList.remove('on');
   try{
