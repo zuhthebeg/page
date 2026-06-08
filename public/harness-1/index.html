@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Harness-1 — 상태를 환경으로 빼낸 검색 에이전트 · page.cocy.io</title>
+<meta name="description" content="논문 'Harness-1' 분석: 검색 에이전트의 상태관리를 정책(모델)에서 환경(하니스)으로 외부화해 RL로 학습. 20B 모델이 큐레이션 recall 0.730으로 GPT-5.4·Sonnet-4.6·120B를 능가하고 Opus-4.6에만 근소하게 뒤짐." />
+<link rel="canonical" href="https://page.cocy.io/harness-1" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Harness-1 — 상태를 환경으로 빼낸 검색 에이전트 (분석)" />
+<meta property="og:description" content="20B 검색 에이전트가 상태 외부화 + RL로 프런티어급 검색 recall 달성. 핵심·결과·우리에게 주는 시사점 정리." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#3a5a78; --accent-2:#4f7ba0; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:58ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+b{font-weight:500;color:var(--ink)}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#f3f6f9);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.3rem;color:var(--ink);margin-top:.2rem;max-width:34ch}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1;white-space:nowrap}
+.score small{font-size:.95rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.mid{background:rgba(184,134,11,.14);color:var(--warn)}
+.tag.info{background:rgba(58,90,120,.13);color:var(--accent)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.9rem}
+th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+td.num{font-family:var(--mono);text-align:right}
+tr.hl td{background:rgba(79,123,160,.09);font-weight:500}
+.b-good{color:var(--good)}.b-bad{color:var(--bad)}
+.bars{margin:1.2rem 0 .6rem;display:flex;flex-direction:column;gap:.5rem}
+.bar-row{display:grid;grid-template-columns:140px 1fr auto;align-items:center;gap:.7rem;font-size:.84rem}
+.bar-row .bl{font-family:var(--mono);color:var(--ink-soft);font-size:.76rem}
+.bar-track{background:var(--line-soft);border-radius:4px;height:18px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+.bar-fill.hl{background:linear-gradient(90deg,#cf8a3a,#b8860b)}
+.bar-fill.lo{background:linear-gradient(90deg,#9bb0bf,#7d92a1)}
+.bar-row .bv{font-family:var(--mono);font-size:.78rem;color:var(--ink);min-width:46px;text-align:right}
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+.callout{background:#f3f6f9;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout b{color:var(--accent)}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(58,90,120,.3)}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+</style>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Paper Analysis · Search Agents</div>
+    <h1>상태를 환경으로 빼낸 검색 에이전트</h1>
+    <p class="lead">논문 <a href="https://arxiv.org/abs/2606.02373" target="_blank" rel="noopener">Harness-1</a> 분석 — 검색 에이전트의 "기억·정리" 같은 잡일을 모델 밖(환경 하니스)으로 빼내고, 모델은 의미 판단만 하게 했더니 <b>20B 모델이 프런티어급 검색 성능</b>을 냈다.</p>
+    <div class="meta">
+      <span><b>분석</b> page.cocy.io · 2026-06-08</span>
+      <span><b>원논문</b> arXiv:2606.02373 (2026-06-01)</span>
+      <span><b>저자</b> P. Jiang · J. Han 외 (UIUC 등)</span>
+      <span><b>분야</b> RL · Retrieval Agent</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">한 줄 결론</div>
+          <div class="v-main">상태를 환경으로 외부화 → 20B가 GPT-5.4·Sonnet-4.6·120B 능가</div>
+        </div>
+        <div class="score">0.730<small> recall</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag yes">✓ 차순위 오픈모델 대비 +11.4점</span>
+        <span class="tag info">베이스(gpt-oss-20b) 0.262 → 0.730</span>
+        <span class="tag mid">△ 프런티어 중 Opus-4.6만 근소 우위</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="why">
+    <h2><span class="n">01</span> 핵심 아이디어</h2>
+    <p>검색 에이전트는 보통 <b>점점 길어지는 대화 기록(transcript) 전체를 정책(모델)이 들고</b> 다닌다. 무엇을 검색할지뿐 아니라 — 뭘 봤는지, 어떤 근거가 쓸모 있는지, 어떤 조건이 아직 안 풀렸는지, 어떤 주장을 실제로 검증했는지까지 — 전부 모델 머릿속에서 관리한다.</p>
+    <p>저자들의 주장: <b>이건 강화학습(RL)에 과부하다.</b> RL이 "의미 있는 검색 결정"과 "환경이 더 안정적으로 관리할 수 있는 단순 기록(bookkeeping)"을 동시에 최적화하도록 강요받는다. 보상도 흐려진다 — 최종 결과가 비거나 틀리면, 그게 검색 실패인지·증거를 잊은 건지·검증을 안 한 건지 구분이 안 된다.</p>
+    <div class="callout">해법: <b>회수 가능한 상태(state)는 환경 쪽 하니스가 관리</b>하고, <b>정책은 의미 판단만</b> 남긴다 — 무엇을 검색·보존·폐기·검증할지, 그리고 언제 멈출지.</div>
+  </section>
+
+  <section data-block="how">
+    <h2><span class="n">02</span> 하니스가 관리하는 것 (환경 측 작업기억)</h2>
+    <table>
+      <thead><tr><th>구성요소</th><th>역할</th></tr></thead>
+      <tbody>
+        <tr><td><b>후보 풀</b> (candidate pool)</td><td>검색으로 만난 문서 적재. 검색 관측은 <b>압축·중복제거</b> 후 정책에 도달(청크ID + 내용 지문)</td></tr>
+        <tr><td><b>큐레이션 셋</b> (curated set)</td><td>중요도 태그 부착, <b>상한 30개·중요도 기반 퇴출</b>. 정책이 add/remove/promote/demote</td></tr>
+        <tr><td><b>증거 링크</b> (evidence graph)</td><td>문서 간 교차 연결을 요약 — 전체 기록 재독 없이 근거 다리 파악</td></tr>
+        <tr><td><b>검증 기록</b> (verification)</td><td>정책이 쓴 주장을 저장 문서 텍스트에 대조해 yes/no 기계적 지지 검사</td></tr>
+        <tr><td><b>예산 인지 렌더링</b></td><td>컨텍스트 예산에 맞춰 작업기억을 요약 렌더 — 같은 렌더러를 교사데이터·SFT·RL·평가에 공통 사용</td></tr>
+      </tbody>
+    </table>
+    <p class="note">정책 행동은 search / curate(add·remove·중요도태그) / verify / review-docs(저장 문서 재열람) 로 좁혀진다. 나머지는 환경이 처리.</p>
+  </section>
+
+  <section data-block="train">
+    <h2><span class="n">03</span> 학습 레시피</h2>
+    <ul class="clean">
+      <li><b>베이스 모델</b> — <b>gpt-oss-20b</b> (오픈 20B).</li>
+      <li><b>파이프라인</b> — 교사 롤아웃 → <b>SFT 재생</b>(필터 후 899 궤적) → <b>CISPO RL</b>. RL은 <b>SEC(금융) 데이터에서만</b> 최적화(128 배치 × 8 롤아웃, 온도 1.0, 40턴 상한).</li>
+      <li><b>보상 설계</b> — Fβ(β=2, recall 가중) 기반: 궤적 recall + 큐레이션 최종답 recall + 궤적 답 recall + 도구 다양성 + 답 발견 보너스 − 턴 패널티 − "찾고도 안 올린" 답-누락 패널티. <b>발견(어디서든 찾음)과 선택(최종 셋에 올림)을 분리</b>해 보상.</li>
+      <li><b>일반화 설계</b> — SFT는 4개 계열(BC+·Web·Patents·SEC), RL은 SEC만. 나머지 4개(LongSeal·Seal0·FRAMES·HotpotQA)는 <b>학습에 안 쓴 held-out 전이 벤치</b>.</li>
+    </ul>
+  </section>
+
+  <section data-block="results">
+    <h2><span class="n">04</span> 결과 — 8개 검색 벤치마크 평균 큐레이션 Recall</h2>
+    <p>같은 검색 프리미티브·웹백엔드·리랭커·최종 30문서 예산. 막대는 평균 큐레이션 recall(높을수록 좋음):</p>
+    <div class="bars">
+      <div class="bar-row"><span class="bl">Opus-4.6 (frontier)</span><div class="bar-track"><div class="bar-fill lo" style="width:100%"></div></div><span class="bv">0.764</span></div>
+      <div class="bar-row"><span class="bl">Harness-1 · 20B</span><div class="bar-track"><div class="bar-fill hl" style="width:96%"></div></div><span class="bv">0.730</span></div>
+      <div class="bar-row"><span class="bl">GPT-5.4 (frontier)</span><div class="bar-track"><div class="bar-fill lo" style="width:93%"></div></div><span class="bv">0.709</span></div>
+      <div class="bar-row"><span class="bl">Sonnet-4.6 (frontier)</span><div class="bar-track"><div class="bar-fill lo" style="width:90%"></div></div><span class="bv">0.688</span></div>
+      <div class="bar-row"><span class="bl">Tongyi DR · 30B</span><div class="bar-track"><div class="bar-fill" style="width:81%"></div></div><span class="bv">0.616</span></div>
+      <div class="bar-row"><span class="bl">GPT-OSS · 120B</span><div class="bar-track"><div class="bar-fill lo" style="width:65%"></div></div><span class="bv">0.496</span></div>
+      <div class="bar-row"><span class="bl">gpt-oss-20b (베이스)</span><div class="bar-track"><div class="bar-fill" style="width:34%"></div></div><span class="bv">0.262</span></div>
+    </div>
+    <ul class="clean">
+      <li><b>차순위 오픈 검색 에이전트(Tongyi DeepResearch 30B) 대비 +11.4점</b> (0.730 vs 0.616).</li>
+      <li><b>같은 20B 베이스(gpt-oss-20b 0.262)를 약 2.8배로</b> — 상태 외부화 + RL 레시피의 순효과.</li>
+      <li><b>프런티어 중 GPT-5.4·Sonnet-4.6·Kimi-K2.5·GPT-OSS-120B를 큐레이션 recall에서 능가</b>, <b>Opus-4.6(0.764)만</b> 근소 우위.</li>
+      <li>held-out 전이 벤치에서 특히 강함(LongSeal 0.891) — 학습 도메인 밖으로 일반화.</li>
+    </ul>
+  </section>
+
+  <section data-block="ablation">
+    <h2><span class="n">05</span> 어블레이션 — 하니스가 실제로 일한다</h2>
+    <p>학습된 같은 체크포인트로 추론 시점에 하니스 기능을 끄는 실험(BrowseComp+, 100 쌍 질의, 재학습 없음):</p>
+    <table>
+      <thead><tr><th>설정</th><th class="num">Recall</th><th class="num">Δ Recall</th><th class="num">Δ 최종답</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>Harness-1 (전체)</td><td class="num">0.584</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td>모든 하니스 기능 비활성</td><td class="num">0.513</td><td class="num b-bad">−12.2%</td><td class="num b-bad">−6.4%</td></tr>
+      </tbody>
+    </table>
+    <p>각 기능을 하나씩 끄면 고유한 실패 모드가 드러난다(논문 Table 3). 결론: <b>모델은 계속 검색하지만, 본 것을 우선순위화·정리하는 능력은 하니스에서 온다.</b></p>
+  </section>
+
+  <section data-block="meaning">
+    <h2><span class="n">06</span> 우리에게 주는 시사점</h2>
+    <p>이 논문의 메시지는 에이전트를 직접 굴리는 입장(예: 우리 openclaw 스택)에 바로 꽂힌다.</p>
+    <ul class="clean">
+      <li><b>"컨텍스트를 압축"하기 전에 "상태를 빼내라".</b> 앞서 우리가 평가한 <a href="https://page.cocy.io/headroom-eval">Headroom(토큰 압축)</a>은 길어진 기록을 <em>줄이는</em> 접근이었다. Harness-1은 한 발 더 가서, 애초에 <b>모델이 기록을 들지 않도록</b> 상태를 환경에 둔다 — 압축의 상위호환 설계.</li>
+      <li><b>작은 모델 + 좋은 하니스 ≈ 프런티어.</b> 20B가 GPT-5.4를 검색 recall에서 앞선 건, 능력의 상당 부분이 <b>모델이 아니라 하니스/스캐폴딩</b>에 있다는 실증. 비용·한국어 토큰 페널티까지 고려하면(<a href="https://page.cocy.io/korean-token-cost">관련 보고서</a>) 자체 하니스 투자의 ROI가 크다.</li>
+      <li><b>검증을 환경이 강제.</b> "정책이 쓴 주장 → 저장 문서에 기계적 대조(yes/no)"는 에이전트 환각 억제에 그대로 차용 가능한 패턴.</li>
+    </ul>
+  </section>
+
+  <section data-block="limits">
+    <h2><span class="n">07</span> 유의점</h2>
+    <ul class="clean">
+      <li>RL 최적화는 <b>SEC(금융) 단일 도메인</b>에서만 — 전이 성능이 강하긴 하나, 도메인 편향 가능성은 남는다.</li>
+      <li>지표가 <b>recall 중심</b>(정밀도/F1은 보조). 검색 에이전트 특성상 합리적이나, 큐레이션 셋 크기가 인터페이스의 일부라는 점은 감안.</li>
+      <li>이건 <b>검색(retrieval) 서브에이전트</b> 평가 — 최종 답변 생성 품질은 별도(큐레이션 셋을 frozen 생성기에 넘겨 측정).</li>
+    </ul>
+    <p class="note">저자들은 모델 가중치·하니스 코드·데이터 공개를 예고. 수치·해석은 본 분석이 정리한 것이며, 원전은 arXiv:2606.02373.</p>
+  </section>
+
+  <div class="foot">
+    <span>analysis on page.cocy.io</span>
+    <span>Harness-1 · 0.730 recall · 20B</span>
+  </div>
+</article>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# Harness-1 — 상태를 환경으로 빼낸 검색 에이전트 (분석)
+
+> 논문 "Harness-1: Reinforcement Learning for Search Agents with State-Externalizing Harnesses" (arXiv:2606.02373) 분석.
+> **한 줄 결론: 검색 에이전트의 상태관리를 모델(정책)에서 환경(하니스)으로 외부화하니, 20B 모델이 큐레이션 recall 0.730으로 GPT-5.4·Sonnet-4.6·GPT-OSS-120B를 능가하고 Opus-4.6에만 근소하게 뒤졌다.**
+
+- 원논문: arXiv:2606.02373 (2026-06-01), P. Jiang · J. Han 외
+- 베이스 모델: gpt-oss-20b / 학습: 교사 롤아웃 → SFT(899궤적) → CISPO RL(SEC 데이터만)
+
+## 핵심 아이디어
+검색 에이전트는 보통 길어지는 transcript 전체를 정책이 들고 다닌다(무엇을 검색할지 + 뭘 봤는지·뭘 검증했는지). 저자 주장: 이건 RL에 과부하다. 회수 가능한 상태는 환경 하니스가 관리하고, 정책은 의미 판단(무엇을 검색·보존·폐기·검증할지, 언제 멈출지)만 남긴다.
+
+## 하니스가 관리하는 것
+| 구성요소 | 역할 |
+|---|---|
+| 후보 풀 | 검색 문서 적재, 압축·중복제거(청크ID+내용지문) |
+| 큐레이션 셋 | 중요도 태그, 상한 30개·중요도 퇴출 |
+| 증거 링크(그래프) | 문서 간 연결 요약, 전체 재독 없이 근거 파악 |
+| 검증 기록 | 정책 주장 → 저장 문서에 yes/no 기계 대조 |
+| 예산 인지 렌더링 | 컨텍스트 예산 맞춰 작업기억 요약 |
+
+정책 행동: search / curate / verify / review-docs 로 한정.
+
+## 결과 — 8개 벤치 평균 큐레이션 Recall
+| 모델 | Recall |
+|---|---|
+| Opus-4.6 (frontier) | 0.764 |
+| **Harness-1 (20B)** | **0.730** |
+| GPT-5.4 (frontier) | 0.709 |
+| Sonnet-4.6 (frontier) | 0.688 |
+| Tongyi DeepResearch (30B) | 0.616 |
+| GPT-OSS-120B | 0.496 |
+| gpt-oss-20b (베이스) | 0.262 |
+
+- 차순위 오픈 에이전트(Tongyi DR 30B) 대비 +11.4점.
+- 같은 20B 베이스(0.262)를 약 2.8배로 끌어올림 = 상태 외부화 + RL의 순효과.
+- 프런티어 중 GPT-5.4·Sonnet-4.6·Kimi-K2.5·120B 능가, Opus-4.6만 우위.
+- held-out 전이 벤치에서 특히 강함(LongSeal 0.891).
+
+## 어블레이션
+학습된 체크포인트로 하니스 기능을 추론 시점에 끄면(BrowseComp+): 전체 0.584 → 전부 비활성 0.513 (Recall −12.2%, 최종답 −6.4%). 모델은 계속 검색하지만 우선순위화·정리는 하니스에서 온다.
+
+## 시사점
+- 컨텍스트를 "압축"하기 전에 "상태를 빼내라" — Headroom(토큰 압축)의 상위호환 설계.
+- 작은 모델 + 좋은 하니스 ≈ 프런티어. 능력의 상당 부분이 모델이 아니라 스캐폴딩에 있다.
+- 검증을 환경이 강제(주장→문서 기계 대조)하는 패턴은 에이전트 환각 억제에 차용 가능.
+
+## 유의점
+- RL은 SEC 단일 도메인에서만 최적화. recall 중심 지표. 검색 서브에이전트 평가(최종 답변 생성은 별도).
+
+## 출처
+- arXiv:2606.02373 — https://arxiv.org/abs/2606.02373
+- 분석 원문: https://page.cocy.io/harness-1
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='harness-1.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body>
+</html>
