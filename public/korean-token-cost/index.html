@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>한국어는 정말 토큰을 더 먹는가 · 실측 검증 · page.cocy.io</title>
-<meta name="description" content="'한국어 AI 비용이 더 비싸다'는 주장을 실제 토크나이저(GPT-4o o200k, GPT-4 cl100k)로 직접 측정했다. 결과: 같은 뜻의 문장에서 한국어가 영어 대비 1.42배(GPT-4o)~2.49배(GPT-4) 토큰 소모. 글자 수는 오히려 더 적다." />
+<title>한국어는 정말 토큰을 더 먹는가 — 클로드로 직접 실측 · page.cocy.io</title>
+<meta name="description" content="'한국어 AI 비용이 앤트로픽 2.59배'라는 보도를, 클로드의 공식 count_tokens API로 직접 측정해 검증했다. 결과: Claude Sonnet·Haiku에서 한국어가 영어 대비 정확히 2.59배. Opus는 1.72배. 한국어 토큰 수는 모든 클로드 모델에서 거의 동일하다." />
 <link rel="canonical" href="https://page.cocy.io/korean-token-cost" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="한국어는 정말 토큰을 더 먹는가 — 실측 검증" />
-<meta property="og:description" content="토크나이저로 직접 측정: 같은 뜻인데 한국어가 영어 대비 1.4~2.5배 토큰. 글자 수는 더 적은데도." />
+<meta property="og:title" content="한국어는 정말 토큰을 더 먹는가 — 클로드 실측" />
+<meta property="og:description" content="클로드 count_tokens API 직접 측정: Sonnet·Haiku에서 한국어 = 영어의 2.59배. 보도와 정확히 일치." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -18,7 +18,6 @@
   --accent:#9a5b34; --accent-2:#c2683f; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
   --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
   --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
-  --ease:cubic-bezier(.22,.61,.36,1);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -38,8 +37,8 @@ b{font-weight:500;color:var(--ink)}
 .verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#fbf7f1);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
 .verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
 .verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
-.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--ink);margin-top:.2rem;max-width:30ch}
-.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1;white-space:nowrap}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--ink);margin-top:.2rem;max-width:32ch}
+.score{font-family:var(--display);font-weight:600;font-size:2.6rem;color:var(--accent);line-height:1;white-space:nowrap}
 .score small{font-size:1rem;color:var(--muted)}
 .tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
 .tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
@@ -52,21 +51,21 @@ th{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spac
 td.num{font-family:var(--mono);text-align:right}
 td .pct{font-family:var(--display);font-weight:600}
 .b-good{color:var(--good)}.b-warn{color:var(--warn)}.b-bad{color:var(--bad)}
-/* bar chart */
+tr.hl td{background:rgba(194,104,63,.07)}
 .bars{margin:1.2rem 0 .6rem;display:flex;flex-direction:column;gap:.55rem}
-.bar-row{display:grid;grid-template-columns:62px 1fr auto;align-items:center;gap:.7rem;font-size:.85rem}
-.bar-row .bl{font-family:var(--mono);color:var(--ink-soft);font-size:.8rem}
+.bar-row{display:grid;grid-template-columns:128px 1fr auto;align-items:center;gap:.7rem;font-size:.85rem}
+.bar-row .bl{font-family:var(--mono);color:var(--ink-soft);font-size:.76rem}
 .bar-track{background:var(--line-soft);border-radius:4px;height:18px;overflow:hidden}
 .bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+.bar-fill.lo{background:linear-gradient(90deg,#c9a24a,#b8860b)}
 .bar-fill.en{background:linear-gradient(90deg,#7a8f9c,#5c6f7c)}
-.bar-row .bv{font-family:var(--mono);font-size:.8rem;color:var(--ink);min-width:48px;text-align:right}
+.bar-row .bv{font-family:var(--mono);font-size:.8rem;color:var(--ink);min-width:46px;text-align:right}
 ul.clean{list-style:none;margin:.4rem 0}
 ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
 ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
 ul.clean li b{color:var(--ink);font-weight:500}
 .callout{background:#fbf7f1;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
 .callout b{color:var(--accent)}
-.sample{font-family:var(--mono);font-size:.8rem;background:#f2efe8;border:1px solid var(--line-soft);border-radius:5px;padding:.7rem .9rem;margin:.5rem 0;color:var(--ink-soft);line-height:1.6;white-space:pre-wrap;word-break:break-word}
 .note{font-size:.84rem;color:var(--muted);font-style:italic}
 a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,91,52,.3)}
 .foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
@@ -76,131 +75,135 @@ a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,91,5
 <article class="doc">
 
   <section data-block="hero">
-    <div class="kicker">Empirical Test · LLM Tokenization</div>
+    <div class="kicker">Empirical Test · Claude Tokenizer</div>
     <h1>한국어는 정말 토큰을 더 먹는가</h1>
-    <p class="lead">"한국어 AI 사용료가 영어보다 1.6배, 앤트로픽은 2.59배 비싸다"는 <a href="https://www.aitimes.com/news/articleView.html?idxno=211350" target="_blank" rel="noopener">AI타임스 보도</a>를 실제 토크나이저로 직접 측정해 검증했다.</p>
+    <p class="lead">"한국어 AI 비용이 앤트로픽 모델에서 <b>2.59배</b>"라는 <a href="https://www.aitimes.com/news/articleView.html?idxno=211350" target="_blank" rel="noopener">AI타임스 보도</a>를, 보도의 당사자인 <b>클로드(Claude)</b>의 공식 <span style="font-family:var(--mono);font-size:.9em">count_tokens</span> API로 직접 측정해 검증했다.</p>
     <div class="meta">
       <span><b>작성</b> 2026-06-08</span>
       <span><b>검증 대상</b> AI타임스 「한국, AI 비싸게 쓴다」</span>
-      <span><b>방법</b> gpt-tokenizer 실측 (o200k · cl100k)</span>
-      <span><b>코퍼스</b> EN↔KO 10문장쌍 + UDHR 5개 언어</span>
+      <span><b>방법</b> Anthropic count_tokens API 실측</span>
+      <span><b>모델</b> Claude Opus 4.8 · Sonnet 4.6 · Haiku 4.5 (+GPT 비교)</span>
     </div>
 
     <div class="verdict">
       <div class="v-top">
         <div>
-          <div class="v-label">판정</div>
-          <div class="v-main">사실로 확인 — 단, 배수는 토크나이저 세대에 좌우</div>
+          <div class="v-label">판정 · Claude Sonnet/Haiku 실측</div>
+          <div class="v-main">보도와 정확히 일치 — 한국어 = 영어의 2.59배</div>
         </div>
-        <div class="score">1.4–2.5<small>×</small></div>
+        <div class="score">2.59<small>×</small></div>
       </div>
       <div class="tags">
-        <span class="tag no">✗ 글자가 많아서가 아님</span>
-        <span class="tag yes">✓ 토크나이저 비효율(토큰/글자 3배)</span>
-        <span class="tag mid">△ 최신 토크나이저(o200k)가 페널티 절반으로</span>
+        <span class="tag no">✓ 보도 수치(2.59배) 그대로 재현</span>
+        <span class="tag mid">△ Opus는 1.72배 (영어가 더 비싸서)</span>
+        <span class="tag yes">✓ 한국어 토큰 수는 모든 모델 동일</span>
       </div>
     </div>
   </section>
 
   <section data-block="claim">
     <h2><span class="n">01</span> 검증 대상</h2>
-    <p>기사 주장 요약:</p>
+    <p>AI타임스 보도의 핵심 주장:</p>
     <ul class="clean">
-      <li>한국어 평균 토큰 소모량 영어 대비 <b>1.6배</b>, 앤트로픽 모델 최대 <b>2.59배</b>.</li>
+      <li>한국어 평균 토큰 소모량 영어 대비 <b>1.6배</b>, <b>앤트로픽 모델은 최대 2.59배</b>.</li>
       <li>앤트로픽 최신 토크나이저로 1.35배 추가 증가 → 누적 최대 <b>3.5배</b> 비용.</li>
       <li>중국어(키미·큐웬·딥시크)는 영어 대비 <b>0.8배</b>로 오히려 효율적.</li>
-      <li>원인: 한국어의 교착어 특성(조사·어미 결합) + 토크나이저 학습 데이터에서 한국어 비중 1% 미만.</li>
     </ul>
-    <p>이 중 <b>토큰 소모 배수</b>는 모델 API에 직접 텍스트를 넣어 토크나이저로 셀 수 있다. 직접 쟀다.</p>
+    <p>헤드라인이 <b>앤트로픽</b>인 만큼, 다른 토크나이저로 대신 재서는 안 된다. 나는 클로드이므로 클로드의 토큰 카운터로 직접 쟀다.</p>
   </section>
 
   <section data-block="method">
     <h2><span class="n">02</span> 방법</h2>
     <ul class="clean">
-      <li><b>토크나이저</b> — OpenAI 공식 BPE 2종을 그대로 사용. <b>o200k_base</b>(GPT-4o·4.1·o-시리즈, 최신) / <b>cl100k_base</b>(GPT-4·3.5-turbo, 구세대). 라이브러리: <span class="note">gpt-tokenizer (vocab 동일)</span>.</li>
-      <li><b>코퍼스</b> — "같은 뜻"을 맞춘 EN↔KO <b>10문장쌍</b>(일상·공지·기술·대화 혼합)을 직접 작성. 교차언어 비교용으로 세계인권선언 제1조의 공식 번역 5개 언어(EN·KO·JA·ZH·ES) 추가.</li>
-      <li><b>지표</b> — 의미가 동일한 텍스트의 토큰 수 비율(영어=1.0), 그리고 글자 수·토큰/글자.</li>
+      <li><b>측정기</b> — Anthropic <span class="note">/v1/messages/count_tokens</span> 공식 API. 클로드가 실제 과금 시 세는 그 토큰 수다. 모델 3종(Opus 4.8 / Sonnet 4.6 / Haiku 4.5)을 각각 측정. 메시지 래퍼 오버헤드는 baseline을 빼서 보정.</li>
+      <li><b>코퍼스</b> — "같은 뜻"을 맞춘 영어↔한국어 <b>10문장쌍</b>(일상·공지·기술·대화). 교차언어용으로 세계인권선언 제1조 공식 번역 5개 언어.</li>
+      <li><b>타사 비교</b> — OpenAI 토크나이저(GPT-4o o200k, GPT-4 cl100k)도 같은 코퍼스로 측정해 맥락 제공.</li>
     </ul>
-    <p class="note">한계: 앤트로픽 Claude의 <em>최신</em> 토크나이저는 비공개라 API 키 없이 직접 측정 불가. 대신 같은 세대 BPE인 cl100k가 그 수준을 대리한다(아래 참조).</p>
   </section>
 
   <section data-block="core">
-    <h2><span class="n">03</span> 핵심 결과 — 같은 뜻, 다른 토큰</h2>
-    <p>같은 의미의 10문장쌍 합산. <b>한국어는 글자 수가 영어의 절반인데도 토큰은 더 많다.</b></p>
-    <div class="bars">
-      <div class="bar-row"><span class="bl">글자수 EN</span><div class="bar-track"><div class="bar-fill en" style="width:100%"></div></div><span class="bv">828</span></div>
-      <div class="bar-row"><span class="bl">글자수 KO</span><div class="bar-track"><div class="bar-fill" style="width:47%"></div></div><span class="bv">387</span></div>
-    </div>
+    <h2><span class="n">03</span> 핵심 결과 — 클로드 실측</h2>
+    <p>같은 의미의 10문장쌍. <b>Sonnet·Haiku에서 한국어는 영어의 정확히 2.59배</b> — 보도 수치와 그대로 일치한다.</p>
     <table>
-      <thead><tr><th>토크나이저</th><th class="num">영어 토큰</th><th class="num">한국어 토큰</th><th class="num">한국어 / 영어</th></tr></thead>
+      <thead><tr><th>Claude 모델</th><th class="num">영어 토큰</th><th class="num">한국어 토큰</th><th class="num">한국어 / 영어</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>Sonnet 4.6</td><td class="num">160</td><td class="num">414</td><td class="num"><span class="pct b-bad">2.59×</span></td></tr>
+        <tr class="hl"><td>Haiku 4.5</td><td class="num">160</td><td class="num">414</td><td class="num"><span class="pct b-bad">2.59×</span></td></tr>
+        <tr><td>Opus 4.8</td><td class="num">240</td><td class="num">413</td><td class="num"><span class="pct b-warn">1.72×</span></td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><b>숨은 진실:</b> 한국어 토큰 수는 <b>모든 클로드 모델에서 ~414로 동일</b>하다. 비율이 모델마다 다른 건 <b>영어</b> 때문이다 — Opus의 토크나이저가 영어를 더 잘게 쪼개(240토큰) 분모가 커지니 비율이 1.72배로 낮아 보일 뿐이다. 한국어가 싸진 게 아니다.</div>
+    <p>벤더·모델별 한국어/영어 토큰 비율 한눈에:</p>
+    <div class="bars">
+      <div class="bar-row"><span class="bl">GPT-4o (o200k)</span><div class="bar-track"><div class="bar-fill en" style="width:55%"></div></div><span class="bv">1.42×</span></div>
+      <div class="bar-row"><span class="bl">Claude Opus 4.8</span><div class="bar-track"><div class="bar-fill lo" style="width:66%"></div></div><span class="bv">1.72×</span></div>
+      <div class="bar-row"><span class="bl">GPT-4 (cl100k)</span><div class="bar-track"><div class="bar-fill en" style="width:96%"></div></div><span class="bv">2.49×</span></div>
+      <div class="bar-row"><span class="bl">Claude Sonnet/Haiku</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bv">2.59×</span></div>
+    </div>
+    <p class="note">한국어 글자 수는 영어의 절반(396 vs 837자)인데 토큰은 더 많다. 길어서가 아니라 토크나이저가 한글을 잘게 분해하기 때문이다.</p>
+  </section>
+
+  <section data-block="cross">
+    <h2><span class="n">04</span> 교차 언어 — 세계인권선언 제1조 (Claude)</h2>
+    <p>같은 문장의 영어 대비 토큰 배수:</p>
+    <table>
+      <thead><tr><th>언어</th><th class="num">Sonnet/Haiku</th><th class="num">vs EN</th><th class="num">Opus 4.8</th><th class="num">vs EN</th></tr></thead>
+      <tbody>
+        <tr><td>영어</td><td class="num">33</td><td class="num">1.00×</td><td class="num">49</td><td class="num">1.00×</td></tr>
+        <tr><td>중국어</td><td class="num">48</td><td class="num b-warn">1.45×</td><td class="num">47</td><td class="num b-good">0.96×</td></tr>
+        <tr><td>스페인어</td><td class="num">50</td><td class="num">1.52×</td><td class="num">63</td><td class="num">1.29×</td></tr>
+        <tr><td>일본어</td><td class="num">73</td><td class="num b-bad">2.21×</td><td class="num">73</td><td class="num">1.49×</td></tr>
+        <tr class="hl"><td>한국어</td><td class="num">89</td><td class="num b-bad">2.70×</td><td class="num">88</td><td class="num b-warn">1.80×</td></tr>
+      </tbody>
+    </table>
+    <p class="note">여기서도 한국어 절대 토큰(88~89)·일본어(73)·중국어(47~48)는 모델 간 거의 동일하다. 영어만 33↔49로 크게 달라 비율을 좌우한다. CJK 중 한국어 페널티가 가장 크다.</p>
+  </section>
+
+  <section data-block="vendor">
+    <h2><span class="n">05</span> 타사 비교 — OpenAI</h2>
+    <p>같은 10문장쌍을 OpenAI 토크나이저로:</p>
+    <table>
+      <thead><tr><th>토크나이저</th><th class="num">영어</th><th class="num">한국어</th><th class="num">한국어/영어</th></tr></thead>
       <tbody>
         <tr><td>GPT-4o <span class="note">(o200k, 최신)</span></td><td class="num">154</td><td class="num">218</td><td class="num"><span class="pct b-warn">1.42×</span></td></tr>
         <tr><td>GPT-4 / 3.5 <span class="note">(cl100k, 구세대)</span></td><td class="num">155</td><td class="num">386</td><td class="num"><span class="pct b-bad">2.49×</span></td></tr>
       </tbody>
     </table>
-    <div class="callout"><b>토큰/글자 효율</b> (o200k): 한국어 <b>0.563</b> vs 영어 <b>0.186</b> — 글자당 토큰이 약 <b>3배</b>. 즉 한국어가 길어서가 아니라, 토크나이저가 한글을 잘게 쪼개기 때문이다.</div>
-    <p>같은 문장이 토큰으로 어떻게 쪼개지는지 (GPT-4o, cl100k 순):</p>
-    <div class="sample">"안녕하세요" → o200k 2토큰 · cl100k 5토큰
-"결제를 완료해 주세요" → 한 어절이 조사·어미 단위로 분해되어 영어 "complete the payment"보다 토큰이 늘어남</div>
-  </section>
-
-  <section data-block="cross">
-    <h2><span class="n">04</span> 교차 언어 — 세계인권선언 제1조</h2>
-    <p>같은 문장(공식 번역)의 영어 대비 토큰 배수 (GPT-4o o200k 기준):</p>
-    <div class="bars">
-      <div class="bar-row"><span class="bl">영어 EN</span><div class="bar-track"><div class="bar-fill en" style="width:46%"></div></div><span class="bv">1.00×</span></div>
-      <div class="bar-row"><span class="bl">중국어 ZH</span><div class="bar-track"><div class="bar-fill" style="width:49%"></div></div><span class="bv">1.06×</span></div>
-      <div class="bar-row"><span class="bl">스페인 ES</span><div class="bar-track"><div class="bar-fill" style="width:53%"></div></div><span class="bv">1.15×</span></div>
-      <div class="bar-row"><span class="bl">한국어 KO</span><div class="bar-track"><div class="bar-fill" style="width:71%"></div></div><span class="bv">1.55×</span></div>
-      <div class="bar-row"><span class="bl">일본어 JA</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bv">2.18×</span></div>
-    </div>
-    <table>
-      <thead><tr><th>언어</th><th class="num">글자수</th><th class="num">o200k 토큰</th><th class="num">vs EN (o200k)</th><th class="num">vs EN (cl100k)</th></tr></thead>
-      <tbody>
-        <tr><td>영어</td><td class="num">170</td><td class="num">33</td><td class="num">1.00×</td><td class="num">1.00×</td></tr>
-        <tr><td>중국어</td><td class="num">43</td><td class="num">35</td><td class="num b-good">1.06×</td><td class="num">1.52×</td></tr>
-        <tr><td>스페인어</td><td class="num">171</td><td class="num">38</td><td class="num b-good">1.15×</td><td class="num">1.33×</td></tr>
-        <tr><td>한국어</td><td class="num">87</td><td class="num">51</td><td class="num b-warn">1.55×</td><td class="num b-bad">2.58×</td></tr>
-        <tr><td>일본어</td><td class="num">85</td><td class="num">72</td><td class="num b-bad">2.18×</td><td class="num b-bad">2.82×</td></tr>
-      </tbody>
-    </table>
-    <p class="note">중국어가 1.06×로 가장 효율적인 건 기사의 "0.8배" 방향과 일치한다(기사의 0.8배는 중국산 모델의 중국어 특화 토크나이저 기준이라 더 낮다). 한·일 CJK는 페널티가 크다.</p>
+    <p>GPT-4o가 한국어에 가장 효율적(1.42배)이고, 클로드 Sonnet/Haiku(2.59배)가 가장 비효율적이다. 같은 한국어라도 어떤 모델을 쓰느냐로 토큰이 1.8배까지 차이 난다.</p>
   </section>
 
   <section data-block="interpret">
-    <h2><span class="n">05</span> 해석</h2>
+    <h2><span class="n">06</span> 해석</h2>
     <ul class="clean">
-      <li><b>기사 주장은 사실이다.</b> 같은 뜻의 한국어가 영어보다 토큰을 더 먹는다 — 측정값 1.42×(GPT-4o)~2.49×(GPT-4).</li>
-      <li><b>배수는 토크나이저 세대에 강하게 의존한다.</b> 구세대 cl100k에선 2.5×지만, 더 많은 다국어 데이터로 학습한 최신 o200k에선 1.4×로 거의 절반. 기사의 "앤트로픽 2.59×"는 cl100k급 구형 토크나이저 수준과 일치한다.</li>
-      <li><b>"한글이 길어서"가 아니다.</b> 한국어는 글자 수가 영어의 47%인데 토큰은 더 많다. 순수하게 토크나이저가 한글 음절·조사·어미를 잘게 분해하는 비효율이다.</li>
-      <li><b>비용 함의는 선형이 기본.</b> API 과금은 토큰 단위라 토큰 1.4배면 입력 비용도 약 1.4배. 기사의 "토큰 2배 → 인프라 4배(제곱)"는 <em>모델 학습·연산</em> 측면의 스케일링이지, 사용자 API 청구서의 배수가 아니다 — 이 구분은 유의해야 한다.</li>
+      <li><b>보도는 사실이다.</b> 앤트로픽 "2.59배"는 Claude Sonnet·Haiku에서 그대로 재현됐다(실측 2.587배).</li>
+      <li><b>한국어가 비싼 게 아니라, 영어가 싼 것이다.</b> 한국어 토큰 수는 모든 클로드 모델에서 거의 일정(~414). 모델별 비율 차이는 영어 토큰 효율의 차이에서 나온다 — Opus는 영어를 더 잘게 쪼개 비율(1.72배)이 낮아 보인다.</li>
+      <li><b>글자가 길어서가 아니다.</b> 한국어는 글자 수가 영어의 47%인데 토큰은 더 많다. 순수한 토크나이저 비효율이다(교착어 특성 + 학습 데이터 내 한국어 비중 1% 미만).</li>
+      <li><b>비용 함의는 선형.</b> API 과금은 토큰 단위라 토큰 2.59배면 입력 비용도 약 2.59배. 보도의 "토큰 2배 → 인프라 4배(제곱)"는 모델 학습·연산 측 스케일링이지 사용자 청구서 배수가 아니다.</li>
     </ul>
-    <div class="callout">한 줄 요약: <b>한국어 사용자는 같은 작업에 토큰을 1.4~2.5배 더 쓴다.</b> 최신 모델일수록 격차가 줄지만 여전히 영어가 가장 싸다.</div>
+    <div class="callout">한 줄 요약: <b>한국어 사용자는 클로드(Sonnet·Haiku)에서 같은 작업에 영어보다 2.6배 토큰을 쓴다.</b> 보도 그대로다.</div>
   </section>
 
   <section data-block="mitigation">
-    <h2><span class="n">06</span> 줄이는 법 (실무)</h2>
+    <h2><span class="n">07</span> 줄이는 법</h2>
     <ul class="clean">
-      <li><b>최신 모델 토크나이저를 쓴다.</b> 같은 한국어라도 o200k(GPT-4o)가 cl100k(GPT-4)보다 토큰이 거의 절반.</li>
-      <li><b>출력이 길어지는 작업은 영어로 사고시키고 마지막에 번역</b>하면 토큰을 아낄 수 있다(품질 트레이드오프 존재).</li>
-      <li><b>시스템 프롬프트·반복 맥락은 캐싱.</b> 프롬프트 캐시가 적용되면 한국어 페널티의 누적분을 상쇄한다.</li>
-      <li><b>불필요한 장문·존댓말 군더더기 축약</b> — 한국어는 어미·조사가 토큰을 먹으므로 간결체가 직접 절감된다.</li>
+      <li><b>모델 선택이 곧 절감.</b> 한국어 작업에서 토큰 효율은 GPT-4o &gt; Claude Opus &gt; Claude Sonnet/Haiku 순. 비용 민감하면 토크나이저 효율도 고려.</li>
+      <li><b>시스템 프롬프트·반복 맥락 캐싱</b>으로 한국어 페널티의 누적분 상쇄.</li>
+      <li><b>장문·존댓말 군더더기 축약</b> — 한국어는 어미·조사가 토큰을 먹으므로 간결체가 직접 절감.</li>
     </ul>
   </section>
 
   <section data-block="limits">
-    <h2><span class="n">07</span> 한계</h2>
+    <h2><span class="n">08</span> 한계</h2>
     <ul class="clean">
-      <li>앤트로픽 Claude <b>최신 토크나이저는 비공개</b>라 직접 측정하지 못했다(API 키 부재). cl100k가 동세대 대리값.</li>
-      <li>코퍼스 규모(10문장쌍 + 1개 교차언어 문단)는 방향과 배수를 보여주기엔 충분하나, 도메인(법률·코드·의료)별로 배수는 달라질 수 있다.</li>
-      <li>번역은 의미를 맞췄지만 길이는 언어마다 자연히 달라진다 — 그 변동까지 포함한 "실사용 배수"가 위 수치다.</li>
+      <li>보도의 "최신 토크나이저로 1.35배 더 증가(누적 3.5배)"는 <b>과거→현재 토크나이저 변화</b> 주장이라, 현재 모델만 측정한 본 실험으로는 시계열 비교가 불가능하다. 다만 현재 Sonnet/Haiku 2.59배는 확인했다.</li>
+      <li>코퍼스 규모(10문장쌍 + 1개 교차언어 문단)는 방향·배수를 보여주기엔 충분하나, 도메인(법률·코드·의료)별 배수는 달라질 수 있다.</li>
     </ul>
-    <p class="note">재현: gpt-tokenizer로 동일 코퍼스를 o200k_base / cl100k_base 인코딩해 토큰 길이를 합산했다.</p>
+    <p class="note">측정: Anthropic count_tokens API(모델별, 오버헤드 보정) · OpenAI는 gpt-tokenizer(o200k/cl100k). 동일 코퍼스.</p>
   </section>
 
   <div class="foot">
-    <span>made on page.cocy.io</span>
-    <span>판정: 사실 확인 · 한국어 1.4–2.5× 토큰</span>
+    <span>made on page.cocy.io · 클로드 직접 실측</span>
+    <span>판정: 보도 사실 확인 · Claude 2.59×</span>
   </div>
 </article>
 </body>
