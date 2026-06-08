@@ -69,6 +69,8 @@ ul.clean li b{color:var(--ink);font-weight:500}
 .note{font-size:.84rem;color:var(--muted);font-style:italic}
 a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,91,52,.3)}
 .foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
 </style>
 </head>
 <body>
@@ -169,7 +171,7 @@ a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,91,5
         <tr><td>GPT-4 / 3.5 <span class="note">(cl100k, 구세대)</span></td><td class="num">155</td><td class="num">386</td><td class="num"><span class="pct b-bad">2.49×</span></td></tr>
       </tbody>
     </table>
-    <p>GPT-4o가 한국어에 가장 효율적(1.42배)이고, 클로드 Sonnet/Haiku(2.59배)가 가장 비효율적이다. 같은 한국어라도 어떤 모델을 쓰느냐로 토큰이 1.8배까지 차이 난다.</p>
+    <p>측정값상 GPT-4o(o200k)의 한국어/영어 비율이 가장 낮고(1.42배) 클로드 Sonnet/Haiku(2.59배)가 가장 높다. 다만 <b>GPT-4o는 단계적 폐기(레거시) 수순</b>이라 비용 절감용 선택지로 권하긴 어렵다 — 어디까지나 토크나이저 비교용 기준점이다.</p>
   </section>
 
   <section data-block="interpret">
@@ -186,9 +188,10 @@ a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,91,5
   <section data-block="mitigation">
     <h2><span class="n">07</span> 줄이는 법</h2>
     <ul class="clean">
-      <li><b>모델 선택이 곧 절감.</b> 한국어 작업에서 토큰 효율은 GPT-4o &gt; Claude Opus &gt; Claude Sonnet/Haiku 순. 비용 민감하면 토크나이저 효율도 고려.</li>
-      <li><b>시스템 프롬프트·반복 맥락 캐싱</b>으로 한국어 페널티의 누적분 상쇄.</li>
-      <li><b>장문·존댓말 군더더기 축약</b> — 한국어는 어미·조사가 토큰을 먹으므로 간결체가 직접 절감.</li>
+      <li><b>모델을 바꿔도 한국어 토큰은 거의 안 줄어든다.</b> 한국어 토큰 수는 클로드 전 모델에서 ~414로 고정 — 토크나이저 차원의 절감 여지는 작다(모델별 비율 차이는 영어 효율 차이일 뿐).</li>
+      <li><b>프롬프트 캐싱</b> — 시스템 프롬프트·반복 맥락을 캐시하면 한국어 페널티의 누적분을 상쇄한다.</li>
+      <li><b>간결체</b> — 한국어는 어미·조사가 토큰을 먹으므로 군더더기·과한 존댓말을 줄이면 직접 절감된다.</li>
+      <li><b>긴 맥락은 핵심만 요약해 투입</b> — 장문 한국어를 그대로 넣기보다 선요약하면 토큰이 크게 준다.</li>
     </ul>
   </section>
 
@@ -206,5 +209,86 @@ a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,91,5
     <span>판정: 보도 사실 확인 · Claude 2.59×</span>
   </div>
 </article>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# 한국어는 정말 토큰을 더 먹는가 — 클로드 직접 실측
+
+> "한국어 AI 비용이 앤트로픽 모델에서 2.59배"라는 AI타임스 보도를, 클로드의 공식 count_tokens API로 직접 측정해 검증했다.
+> **판정: 보도와 정확히 일치 — Claude Sonnet/Haiku에서 한국어 = 영어의 2.59배.**
+
+- 검증 대상: AI타임스 「한국, AI 비싸게 쓴다」 (2026-06-06)
+- 방법: Anthropic `/v1/messages/count_tokens` 실측 (Opus 4.8 / Sonnet 4.6 / Haiku 4.5), 메시지 오버헤드 보정
+- 코퍼스: 같은 뜻 영어↔한국어 10문장쌍 + 세계인권선언 제1조 5개 언어
+
+## 핵심 결과 — 클로드 실측 (같은 뜻 10문장쌍)
+
+| Claude 모델 | 영어 토큰 | 한국어 토큰 | 한국어/영어 |
+|---|---|---|---|
+| Sonnet 4.6 | 160 | 414 | **2.59×** |
+| Haiku 4.5 | 160 | 414 | **2.59×** |
+| Opus 4.8 | 240 | 413 | 1.72× |
+
+**숨은 진실:** 한국어 토큰 수는 모든 클로드 모델에서 ~414로 동일하다. 비율이 모델마다 다른 건 영어 때문이다 — Opus가 영어를 더 잘게 쪼개(240토큰) 분모가 커져 비율이 낮아 보일 뿐, 한국어가 싸진 게 아니다. (한국어 글자 수는 영어의 47%인데 토큰은 더 많다.)
+
+## 교차 언어 — 세계인권선언 제1조 (vs 영어)
+
+| 언어 | Sonnet/Haiku | vs EN | Opus | vs EN |
+|---|---|---|---|---|
+| 영어 | 33 | 1.00× | 49 | 1.00× |
+| 중국어 | 48 | 1.45× | 47 | 0.96× |
+| 스페인어 | 50 | 1.52× | 63 | 1.29× |
+| 일본어 | 73 | 2.21× | 73 | 1.49× |
+| 한국어 | 89 | 2.70× | 88 | 1.80× |
+
+CJK 중 한국어 페널티가 가장 크다.
+
+## 타사 비교 — OpenAI (참고용 기준점)
+
+| 토크나이저 | 영어 | 한국어 | 한국어/영어 |
+|---|---|---|---|
+| GPT-4o (o200k, 레거시) | 154 | 218 | 1.42× |
+| GPT-4 / 3.5 (cl100k) | 155 | 386 | 2.49× |
+
+## 해석
+
+- **보도는 사실이다.** 앤트로픽 "2.59배"는 Claude Sonnet·Haiku에서 그대로 재현됐다(실측 2.587배).
+- **한국어가 비싼 게 아니라, 영어가 싼 것이다.** 한국어 토큰 수는 모든 클로드 모델에서 거의 일정(~414).
+- **글자가 길어서가 아니다.** 한국어는 글자 수가 영어의 47%인데 토큰은 더 많다 — 순수 토크나이저 비효율(교착어 + 학습데이터 내 한국어 1% 미만).
+- **비용 함의는 선형.** API 과금은 토큰 단위라 토큰 2.59배면 입력 비용도 약 2.59배. 보도의 "토큰 2배 → 인프라 4배(제곱)"는 모델 학습·연산 측 스케일링이지 사용자 청구서 배수가 아니다.
+
+## 줄이는 법
+
+- 모델을 바꿔도 한국어 토큰은 거의 안 줄어든다(클로드 전 모델 ~414 고정). 토크나이저 차원 절감 여지는 작다.
+- 프롬프트 캐싱으로 반복 맥락의 누적 비용 상쇄.
+- 간결체 — 어미·조사 군더더기·과한 존댓말 축약.
+- 긴 한국어 맥락은 선요약해 투입.
+
+## 한계
+
+- 보도의 "최신 토크나이저로 1.35배 더(누적 3.5배)"는 과거→현재 변화 주장이라 현재 모델만으론 시계열 검증 불가. 현재 Sonnet/Haiku 2.59배는 확인.
+- 코퍼스 규모는 방향·배수 확인엔 충분하나 도메인(법률·코드·의료)별 배수는 다를 수 있다.
+
+## 출처
+
+- AI타임스 「한국, AI 비싸게 쓴다」 — https://www.aitimes.com/news/articleView.html?idxno=211350
+- 측정: Anthropic count_tokens API · OpenAI gpt-tokenizer (o200k / cl100k)
+- 원문: https://page.cocy.io/korean-token-cost
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='korean-token-cost.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){
+        btn.textContent='✅ 복사됨 — 위키에 붙여넣기';
+        setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900);
+      }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
 </body>
 </html>
