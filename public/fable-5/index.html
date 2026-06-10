@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Claude Fable 5 — Opus 위의 새 티어, 인터페이스는 거의 그대로 · page.cocy.io</title>
+<meta name="description" content="Claude Fable 5(claude-fable-5) 분석: Opus 위 최상위 티어, SWE-Bench Pro 80.3%(Opus4.8 69.2%, GPT-5.5 58.6%). 2026-06-09 GA. Messages API는 Opus 4.8과 동일하나 thinking:disabled 불가·adaptive 항상 on·거부/폴백 추가. 가격 2배($10/$50)." />
+<link rel="canonical" href="https://page.cocy.io/fable-5" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Claude Fable 5 — Opus 위의 새 티어 (분석)" />
+<meta property="og:description" content="Fable 5는 Opus 위 새 최상위 모델. API는 4.8과 거의 동일, 단 thinking:disabled 제거 + 거부/폴백 추가. 가격 2배. 우리 스택 시사점 포함." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#3a5a78; --accent-2:#4f7ba0; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:60ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+b{font-weight:500;color:var(--ink)}
+code{font-family:var(--mono);font-size:.86em;background:rgba(58,90,120,.09);padding:.08em .4em;border-radius:4px;color:var(--accent)}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#f3f6f9);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.3rem;color:var(--ink);margin-top:.2rem;max-width:36ch}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1;white-space:nowrap}
+.score small{font-size:.95rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.mid{background:rgba(184,134,11,.14);color:var(--warn)}
+.tag.info{background:rgba(58,90,120,.13);color:var(--accent)}
+.tag.bad{background:rgba(168,68,58,.13);color:var(--bad)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.9rem}
+th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+td.num{font-family:var(--mono);text-align:right}
+tr.hl td{background:rgba(79,123,160,.09);font-weight:500}
+.b-good{color:var(--good)}.b-bad{color:var(--bad)}
+.bars{margin:1.2rem 0 .6rem;display:flex;flex-direction:column;gap:.5rem}
+.bar-row{display:grid;grid-template-columns:150px 1fr auto;align-items:center;gap:.7rem;font-size:.84rem}
+.bar-row .bl{font-family:var(--mono);color:var(--ink-soft);font-size:.76rem}
+.bar-track{background:var(--line-soft);border-radius:4px;height:18px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+.bar-fill.hl{background:linear-gradient(90deg,#cf8a3a,#b8860b)}
+.bar-fill.lo{background:linear-gradient(90deg,#9bb0bf,#7d92a1)}
+.bar-row .bv{font-family:var(--mono);font-size:.78rem;color:var(--ink);min-width:52px;text-align:right}
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+.callout{background:#f3f6f9;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout b{color:var(--accent)}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(58,90,120,.3)}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+</style>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Model Brief · Anthropic Frontier</div>
+    <h1>Claude Fable 5 — Opus 위의 새 티어</h1>
+    <p class="lead"><b>Claude Fable 5</b>(<code>claude-fable-5</code>)는 Opus 위에 새로 생긴 앤트로픽 <b>최상위 일반공개 모델</b>이다. 2026-06-09 전 플랫폼(Bedrock 포함) GA. Messages API는 Opus 4.8과 <b>거의 그대로</b>인데, 딱 몇 가지 — <code>thinking:disabled</code> 제거, adaptive 사고 항상 on, 거부/폴백 흐름 추가 — 가 다르다. 가격은 정확히 <b>2배</b>.</p>
+    <div class="meta">
+      <span><b>분석</b> page.cocy.io · 2026-06-10</span>
+      <span><b>출시</b> 2026-06-09 GA</span>
+      <span><b>모델 ID</b> claude-fable-5 / Bedrock: anthropic.claude-fable-5</span>
+      <span><b>출처</b> platform.claude.com (공식 모델·런칭 문서)</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">한 줄 결론</div>
+          <div class="v-main">새 최상위 티어. API는 4.8과 사실상 동일 — 단 <code>thinking:disabled</code> 불가 + 거부/폴백 추가. 값은 2배.</div>
+        </div>
+        <div class="score">2×<small> 가격</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag yes">✓ 6/9 전 플랫폼 GA (Bedrock 포함)</span>
+        <span class="tag info">1M ctx · 128k out · $10/$50</span>
+        <span class="tag yes">✓ SWE-Bench Pro 80.3% (Opus4.8 69.2% · GPT-5.5 58.6%)</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="what">
+    <h2><span class="n">01</span> 무엇인가</h2>
+    <p>Fable 5는 앤트로픽이 "가장 까다로운 추론·장기 에이전트 작업"용으로 내놓은 <b>가장 강력한 일반공개 모델</b>이다. 기존 명명(Opus/Sonnet/Haiku)과 별개의 <b>상위 티어 이름</b>으로 출발했다.</p>
+    <ul class="clean">
+      <li><b>형제 모델 Mythos 5</b>(<code>claude-mythos-5</code>) — Fable 5와 <b>동일 능력에서 안전 분류기만 뺀</b> 버전. 일반공개 아님(초대제 Project Glasswing). Mythos Preview의 후속.</li>
+      <li><b>플랫폼</b> — Claude API · Claude Platform on AWS · <b>Amazon Bedrock</b> · Vertex AI · Microsoft Foundry 전부 <b>6/9 GA</b>. (Bedrock ID는 접두사 붙어 <code>anthropic.claude-fable-5</code>.)</li>
+      <li><b>데이터 보존</b> — Covered Model로 지정 → <b>30일 보존 고정</b>, 무보존(ZDR) 불가. 컴플라이언스에 민감한 워크로드는 확인 필요.</li>
+    </ul>
+  </section>
+
+  <section data-block="spec">
+    <h2><span class="n">02</span> 스펙 — Fable 5 vs Opus 4.8</h2>
+    <table>
+      <thead><tr><th>항목</th><th>Claude Fable 5</th><th>Claude Opus 4.8</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>티어</td><td>최상위(Opus 위)</td><td>Opus 티어 최강</td></tr>
+        <tr><td>컨텍스트</td><td>1M 토큰</td><td>1M 토큰</td></tr>
+        <tr><td>최대 출력</td><td>128k 토큰</td><td>128k 토큰</td></tr>
+        <tr><td>가격(입력/출력)</td><td><b>$10 / $50</b> per MTok</td><td>$5 / $25 per MTok</td></tr>
+        <tr><td>토크나이저</td><td>Opus 4.7 계열(이전 모델 대비 같은 글에 ~30% 토큰↑)</td><td>동일 계열</td></tr>
+        <tr><td>thinking</td><td>adaptive <b>항상 on</b> · extended 없음</td><td>adaptive(명시 시) · extended 없음</td></tr>
+      </tbody>
+    </table>
+    <p>출력 토큰 단가(높을수록 비쌈) — Fable은 Opus 4.8의 정확히 2배:</p>
+    <div class="bars">
+      <div class="bar-row"><span class="bl">Fable 5</span><div class="bar-track"><div class="bar-fill hl" style="width:100%"></div></div><span class="bv">$50</span></div>
+      <div class="bar-row"><span class="bl">Opus 4.8</span><div class="bar-track"><div class="bar-fill" style="width:50%"></div></div><span class="bv">$25</span></div>
+      <div class="bar-row"><span class="bl">Sonnet 4.6</span><div class="bar-track"><div class="bar-fill lo" style="width:30%"></div></div><span class="bv">$15</span></div>
+      <div class="bar-row"><span class="bl">Haiku 4.5</span><div class="bar-track"><div class="bar-fill lo" style="width:10%"></div></div><span class="bv">$5</span></div>
+    </div>
+  </section>
+
+  <section data-block="api">
+    <h2><span class="n">03</span> 인터페이스 — 4.8 대비 뭐가 바뀌나</h2>
+    <p>공식 문서가 못박은 핵심: <b>"Messages API는 Opus·Sonnet·Haiku에선 그대로다. 아래 동작은 Fable 5/Mythos 5 전용이다."</b> 즉 대부분의 요청 코드는 모델 ID만 바꾸면 그대로 돈다. 단, 아래 세 가지가 다르다.</p>
+    <table>
+      <thead><tr><th>항목</th><th>Opus 4.8</th><th>Fable 5</th><th>코드 영향</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><code>thinking:{type:"disabled"}</code></td><td>허용</td><td><b class="b-bad">✗ 미지원(400)</b></td><td>끄려면 <b>파라미터 자체를 생략</b></td></tr>
+        <tr><td>adaptive thinking</td><td>생략 시 <b>off</b></td><td>생략 시 <b>적용(항상 on)</b></td><td>명시 안 해도 사고함</td></tr>
+        <tr><td>raw 사고 내용</td><td>display 기본 omitted</td><td><b>raw CoT 절대 미반환</b>, <code>display:"summarized"</code>로 요약만</td><td>사고 표시 시 display 설정</td></tr>
+        <tr><td>거부(refusal)</td><td>일반</td><td>안전분류기 → <code>stop_reason:"refusal"</code> (<b>HTTP 200</b>, 어느 분류기인지도 반환)</td><td><b>refusal 분기 필요</b></td></tr>
+        <tr><td>폴백</td><td>수동</td><td><code>fallbacks</code> 파라미터(beta)로 다른 모델 자동 재시도 + <b>폴백 크레딧</b>(캐시비 환급)</td><td>자동 폴백 가능</td></tr>
+        <tr><td>거부 과금</td><td>—</td><td>출력 전 거부면 <b>과금 안 됨</b></td><td>—</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">참고: <code>budget_tokens</code>·<code>temperature</code>/<code>top_p</code>/<code>top_k</code> 제거와 <b>마지막 assistant 프리필 400</b>은 <b>Fable 신규가 아니라 이미 Opus 4.7/4.8부터</b> 그렇다 — 4.8에서 올라오면 이 부분은 손댈 게 없다. Fable에서 <em>새로</em> 생긴 건 위 표의 <code>disabled</code> 금지·항상-on 사고·거부/폴백뿐.</div>
+    <p><b>지원 기능(런칭 시점):</b> Effort, Task budgets(beta <code>task-budgets-2026-03-13</code>), 메모리 툴, 컨텍스트 에디팅(beta), Compaction, Vision.</p>
+  </section>
+
+  <section data-block="perf">
+    <h2><span class="n">04</span> 성능 — 벤치마크</h2>
+    <p>앤트로픽 공식 발표 기준 SWE-Bench Pro 수치:</p>
+    <div class="bars">
+      <div class="bar-row"><span class="bl">Fable 5</span><div class="bar-track"><div class="bar-fill hl" style="width:100%"></div></div><span class="bv">80.3%</span></div>
+      <div class="bar-row"><span class="bl">Opus 4.8</span><div class="bar-track"><div class="bar-fill" style="width:86%"></div></div><span class="bv">69.2%</span></div>
+      <div class="bar-row"><span class="bl">GPT-5.5</span><div class="bar-track"><div class="bar-fill lo" style="width:73%"></div></div><span class="bv">58.6%</span></div>
+    </div>
+    <p style="margin-top:1rem">SWE-Bench Pro는 GitHub 이슈 기반 실코딩 벤치마크. Fable 5는 Opus 4.8보다 <b>+11.1%p</b>, GPT-5.5보다 <b>+21.7%p</b> 높다. 앤트로픽은 소프트웨어 엔지니어링·지식 작업·비전·과학 연구 전반에서 거의 모든 AI 역량 벤치마크 최상위라고 발표했다.</p>
+    <ul class="clean">
+      <li><b>토큰 효율 주의</b> — Opus 4.7 토크나이저라 같은 글이 이전 모델보다 ~30% 더 토큰을 먹는다. "출력 단가 2배 × 토큰 수 증가"가 곱해지므로 <b>체감 비용은 단순 2배 이상</b>일 수 있다.</li>
+      <li><b>장기 에이전트</b> — 몇 주에 걸친 대규모 코드 마이그레이션·다단계 비동기 작업을 자율 처리하는 사례가 보고됨. 우리처럼 에이전트 루프가 많은 스택에선 "어려운 1건"에서 격차가 나올 수 있다.</li>
+    </ul>
+  </section>
+
+  <section data-block="us">
+    <h2><span class="n">05</span> 우리 스택 시사점 (openclaw / cocy)</h2>
+    <p>우리는 이미 Fable 5를 openclaw에 추가했다(별칭 <code>fable</code> → <code>anthropic/claude-fable-5</code>, claude-cli 런타임). 운영 관점 정리:</p>
+    <ul class="clean">
+      <li><b>기본 모델은 그대로 Opus 4.8.</b> 출력 $50/MTok은 우리처럼 툴콜·장기 세션이 많은 에이전트엔 부담. Fable은 <b>"가장 어려운 1건"에만</b> 선택적으로 쓰고, 일상 작업은 4.8 유지가 ROI상 합리적.</li>
+      <li><b>한국어 비용이 곱으로 쌓인다.</b> 우리가 측정한 <a href="https://page.cocy.io/korean-token-cost">한국어 토큰 페널티</a> + Fable의 토크나이저(~30%↑) + 단가 2배 → 한국어 장문 작업에서 비용이 빠르게 커진다. 모델 라우팅 시 1순위 고려.</li>
+      <li><b>거부/폴백 흐름은 인프라적으로 유용.</b> <code>fallbacks</code> 파라미터 + 폴백 크레딧은 "Fable 거부 시 4.8로 자동 강등 후 캐시비 환급" 패턴을 표준 지원. 우리 openclaw는 이미 폴백 리스트(gpt-5.4)가 있으니, Fable 라우팅 시 <code>refusal</code>(HTTP 200) 분기만 점검하면 된다.</li>
+      <li><b>설정 호환성 1줄 점검.</b> 어딘가 <code>thinking:disabled</code>를 박아둔 곳이 있으면 Fable에서 400. 우리 게이트웨이는 claude-cli 런타임으로 돌아 일반적으로 무관하나, 커스텀 호출부가 있으면 "끄기 = 생략"으로 확인.</li>
+      <li><b>Mythos 5(안전분류기 제거판)는 우리 대상 아님</b> — 초대제. 인지만 해두면 됨.</li>
+    </ul>
+  </section>
+
+  <section data-block="limits">
+    <h2><span class="n">06</span> 유의점</h2>
+    <ul class="clean">
+      <li>출시 직후(2026-06-09) 모델이라 <b>실사용 벤치/회귀 데이터가 아직 얇다.</b> 도입 전 우리 워크로드로 소규모 A/B 권장.</li>
+      <li>Covered Model = <b>30일 데이터 보존 고정</b>, ZDR 불가 — 민감 데이터 파이프라인이면 확인.</li>
+      <li>본 보고서 수치/사실은 platform.claude.com 공식 모델·런칭 문서 기준이며, <b>구체 성능 벤치는 의도적으로 비워뒀다</b>(공식 미공개분 추정 금지).</li>
+    </ul>
+  </section>
+
+  <div class="foot">
+    <span>analysis on page.cocy.io</span>
+    <span>Claude Fable 5 · $10/$50 · 1M ctx · SWE-Bench Pro 80.3% · GA 2026-06-09</span>
+  </div>
+</article>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# Claude Fable 5 — Opus 위의 새 티어, 인터페이스는 거의 그대로 (분석)
+
+> Claude Fable 5(`claude-fable-5`) 분석. 출처: platform.claude.com 공식 모델·런칭 문서.
+> **한 줄 결론: Opus 위 새 최상위 일반공개 모델. 2026-06-09 전 플랫폼(Bedrock 포함) GA. Messages API는 Opus 4.8과 사실상 동일 — 단 `thinking:disabled` 불가 + adaptive 항상 on + 거부/폴백 흐름 추가. 가격은 정확히 2배($10/$50).**
+
+- 모델 ID: `claude-fable-5` (Claude API/AWS/Vertex), Bedrock: `anthropic.claude-fable-5`
+- 형제: Claude Mythos 5(`claude-mythos-5`) = 동일 능력에서 안전분류기만 뺀 초대제(Project Glasswing) 모델
+
+## 스펙 — Fable 5 vs Opus 4.8
+| 항목 | Fable 5 | Opus 4.8 |
+|---|---|---|
+| 컨텍스트 | 1M | 1M |
+| 최대 출력 | 128k | 128k |
+| 가격(입/출) | **$10 / $50** | $5 / $25 |
+| 토크나이저 | Opus 4.7 계열(이전 대비 ~30% 토큰↑) | 동일 |
+| thinking | adaptive 항상 on | adaptive(명시 시) |
+
+출력 단가: Fable $50 / Opus4.8 $25 / Sonnet4.6 $15 / Haiku4.5 $5.
+
+## 인터페이스 — 4.8 대비 변화 (Fable 전용)
+공식: "Messages API는 Opus/Sonnet/Haiku에선 그대로. 아래는 Fable 5/Mythos 5 전용."
+| 항목 | Opus 4.8 | Fable 5 |
+|---|---|---|
+| `thinking:{type:"disabled"}` | 허용 | ✗ 400 — 끄려면 파라미터 생략 |
+| adaptive thinking | 생략 시 off | 생략 시 적용(항상 on) |
+| raw 사고 | display 기본 omitted | raw CoT 절대 미반환, `display:"summarized"`로 요약만 |
+| 거부 | 일반 | 안전분류기 → `stop_reason:"refusal"` (HTTP 200) |
+| 폴백 | 수동 | `fallbacks` 파라미터(beta) + 폴백 크레딧 |
+| 거부 과금 | — | 출력 전 거부면 과금 안 됨 |
+
+참고: `budget_tokens`/`temperature`/`top_p`/`top_k` 제거와 마지막 assistant 프리필 400은 **이미 Opus 4.7/4.8부터** — 4.8에서 올라오면 손댈 것 없음. Fable 신규는 위 표의 disabled 금지·항상-on·거부/폴백뿐.
+
+지원(런칭): Effort, Task budgets(beta), 메모리 툴, 컨텍스트 에디팅(beta), Compaction, Vision.
+
+## 성능 — SWE-Bench Pro (공식 발표)
+- Fable 5: **80.3%** (+11.1%p vs Opus4.8, +21.7%p vs GPT-5.5)
+- Opus 4.8: 69.2%
+- GPT-5.5: 58.6%
+
+SWE-Bench Pro = GitHub 이슈 기반 실코딩 벤치. 앤트로픽은 소프트웨어 엔지니어링·지식 작업·비전·과학 연구 전반 최상위라고 발표.
+토큰 효율 주의: Opus4.7 토크나이저(~30% 토큰↑) × 단가 2배 → 체감 비용은 단순 2배 이상일 수 있음.
+
+## 우리 스택(openclaw/cocy) 시사점
+- openclaw에 추가됨(별칭 `fable`). 기본은 Opus 4.8 유지, Fable은 최난도 1건에만 선택적.
+- 한국어 비용이 곱으로 누적: 한국어 토큰 페널티 × 토크나이저 ~30%↑ × 단가 2배.
+- `fallbacks` + 폴백 크레딧은 "Fable 거부 시 4.8 자동 강등" 인프라로 유용. refusal(HTTP 200) 분기만 점검.
+- 호환성: `thinking:disabled` 박아둔 곳 있으면 Fable에서 400(끄기=생략).
+
+## 유의점
+- 출시 직후라 실사용 벤치 얇음 → 도입 전 소규모 A/B 권장.
+- Covered Model: 30일 보존 고정, ZDR 불가.
+
+## 출처
+- 모델 개요: https://platform.claude.com/docs/en/about-claude/models/overview
+- 런칭/ API 변경: https://platform.claude.com/docs/en/about-claude/models/introducing-claude-fable-5-and-claude-mythos-5
+- 분석 원문: https://page.cocy.io/fable-5
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='fable-5.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body>
+</html>
