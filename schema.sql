@@ -52,3 +52,13 @@ CREATE TABLE IF NOT EXISTS edits_log (
   tokens      INTEGER,
   created_at  INTEGER NOT NULL
 );
+
+-- 사전등록(수요 측정): 유료 출시 전 가격 노출 → 등록 의사 수집 (결제 없음)
+CREATE TABLE IF NOT EXISTS preorders (
+  id          TEXT PRIMARY KEY,
+  user_id     TEXT,              -- 로그인 시 JWT sub (선택)
+  vertical    TEXT NOT NULL,     -- wedding|menu|...
+  email       TEXT,
+  created_at  INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_preorders_vertical ON preorders(vertical, created_at);

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f)})(window,document,"script","dataLayer","GTM-MV8KQGJF");</script>
 <title>page.cocy.io — 나만의 특별한 페이지</title>
 <meta name="description" content="청첩장·메뉴판·포트폴리오. 뻔한 템플릿 말고, 당신만을 위해 만들어지는 단 하나의 페이지." />
 <meta property="og:title" content="page.cocy.io — 나만의 특별한 페이지" />
@@ -62,10 +63,33 @@ section.gallery{padding:5rem 0 7rem;border-top:1px solid var(--line)}
 .card .edit{position:absolute;top:10px;right:10px;background:rgba(11,11,13,.8);border:1px solid var(--accent);color:var(--accent-2);font-size:.72rem;border-radius:20px;padding:.35rem .8rem;backdrop-filter:blur(4px)}
 .card .edit:hover{background:var(--accent);color:#1a160e}
 .empty{color:var(--muted);font-family:var(--serif);font-size:1.3rem;padding:3rem 0;text-align:center;grid-column:1/-1}
+
+/* pricing */
+section.pricing{padding:5rem 0 6rem;border-top:1px solid var(--line)}
+.pricing h2{font-family:var(--serif);font-size:2rem;font-weight:500;margin:.6rem 0 .4rem}
+.pricing .sub{color:var(--ink-soft);font-size:.92rem;max-width:34rem;margin-bottom:2.2rem}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.4rem}
+.plan{background:var(--bg-2);border:1px solid var(--line);border-radius:6px;padding:1.6rem 1.5rem;display:flex;flex-direction:column;gap:.4rem;transition:.3s var(--ease)}
+.plan:hover{border-color:var(--accent)}
+.plan .tag{font-family:var(--label);text-transform:uppercase;letter-spacing:.2em;font-size:.62rem;color:var(--accent)}
+.plan h3{font-family:var(--serif);font-weight:500;font-size:1.4rem}
+.plan .price{font-family:var(--serif);font-size:1.7rem;color:var(--accent-2);margin:.3rem 0 0}
+.plan .price small{font-size:.85rem;color:var(--muted);font-family:var(--sans)}
+.plan .was{color:var(--muted);font-size:.8rem;text-decoration:line-through}
+.plan ul{list-style:none;margin:.7rem 0 1.1rem;display:grid;gap:.3rem}
+.plan li{font-size:.84rem;color:var(--ink-soft)}
+.plan li::before{content:"— ";color:var(--accent)}
+.plan .act{margin-top:auto;text-align:center;border:1px solid var(--accent);color:var(--accent-2);font-family:var(--label);letter-spacing:.1em;text-transform:uppercase;font-size:.74rem;border-radius:2px;padding:.75rem 1rem;cursor:pointer;background:none;transition:.3s}
+.plan .act:hover{background:var(--accent);color:#1a160e}
+.plan .act[disabled]{border-color:var(--line);color:var(--muted);cursor:default;background:none}
+.plan .note{font-size:.72rem;color:var(--muted);margin-top:.5rem;text-align:center}
 footer{padding:3rem 0;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem;text-align:center}
+footer .donate{display:inline-block;margin-top:.6rem;border:1px solid var(--line);border-radius:30px;padding:.45rem 1rem;font-size:.76rem;color:var(--ink-soft);transition:.3s}
+footer .donate:hover{border-color:var(--accent);color:var(--accent-2)}
 </style>
 </head>
 <body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="bar">
   <a class="logo" href="/">page.cocy.io</a>
@@ -94,7 +118,43 @@ footer{padding:3rem 0;border-top:1px solid var(--line);color:var(--muted);font-s
   </div>
 </section>
 
-<footer><div class="wrap">made with care · page.cocy.io</div></footer>
+<section class="pricing">
+  <div class="wrap">
+    <div class="eyebrow">Pricing</div>
+    <h2>지금은 전부 무료예요</h2>
+    <p class="sub">정식 출시 전까지 모든 페이지를 무료로 만들 수 있어요. 아래는 출시 예정 가격 — 사전등록하시면 출시 때 알려드리고, 등록자에겐 런칭 특가가 적용돼요.</p>
+    <div class="plans">
+      <div class="plan">
+        <div class="tag">Wedding</div>
+        <h3>모바일 청첩장</h3>
+        <div class="price">₩9,900 <small>런칭 특가 · 1년 유지</small></div>
+        <div class="was">정가 ₩14,900</div>
+        <ul><li>템플릿 아닌 맞춤 디자인</li><li>채팅으로 무제한 수정</li><li>1년 호스팅 + 안정 서빙</li></ul>
+        <button class="act" data-pre="wedding">사전등록</button>
+        <div class="note">결제 없음 · 출시 알림만 보내드려요</div>
+      </div>
+      <div class="plan">
+        <div class="tag">Menu</div>
+        <h3>가게 메뉴판</h3>
+        <div class="price">₩19,900 <small>1년 유지</small></div>
+        <ul><li>QR로 바로 여는 모바일 메뉴판</li><li>메뉴·가격 채팅 수정</li><li>1년 호스팅</li></ul>
+        <button class="act" data-pre="menu">사전등록</button>
+        <div class="note">결제 없음 · 출시 알림만 보내드려요</div>
+      </div>
+      <div class="plan">
+        <div class="tag">Portfolio</div>
+        <h3>포트폴리오 · 프로필</h3>
+        <div class="price">무료</div>
+        <ul><li>나만의 한 장 페이지</li><li>지금 바로 만들기</li></ul>
+        <a class="act" href="/new">무료로 만들기</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">made with care · page.cocy.io
+  <div><a class="donate" id="donate" href="#" target="_blank" rel="noopener" style="display:none">☕ 서버비 후원하기</a></div>
+</div></footer>
 
 <script>
 const $=id=>document.getElementById(id);
@@ -108,6 +168,24 @@ let MY=(P&&P.exp*1000>Date.now())?P.sub:null;
 if(MY){ $('me').textContent=(P.name||P.email||'로그인됨')+' · 내 페이지에 ✎ 편집'; }
 else { localStorage.removeItem('page_id_token'); renderLogin(); }
 function renderLogin(){ if(window.google&&google.accounts&&google.accounts.id){ google.accounts.id.initialize({client_id:GCID,callback:onCred}); google.accounts.id.renderButton($('gbtn'),{theme:'filled_black',size:'medium',text:'signin',shape:'pill'}); } else setTimeout(renderLogin,300); }
+
+// ── 사전등록(수요 측정) + 후원 ──
+const DONATE_URL='';   // 토스 후원 링크(toss.me/..) 생기면 채우기 — 빈 값이면 버튼 숨김
+if(DONATE_URL){ const d=$('donate'); d.href=DONATE_URL; d.style.display='inline-block'; }
+document.querySelectorAll('[data-pre]').forEach(btn=>{
+  const v=btn.dataset.pre, KEY='page_pre_'+v;
+  if(localStorage.getItem(KEY)){ btn.disabled=true; btn.textContent='등록 완료 ✓'; }
+  btn.addEventListener('click',async()=>{
+    if(btn.disabled)return;
+    const email=(P&&P.email)||prompt('출시 알림 받을 이메일 (선택, 취소해도 등록돼요)')||null;
+    btn.disabled=true; btn.textContent='등록 중…';
+    try{
+      await fetch('/api/preorder',{method:'POST',headers:Object.assign({'content-type':'application/json'},TOKEN?{authorization:'Bearer '+TOKEN}:{}),body:JSON.stringify({vertical:v,email})});
+      localStorage.setItem(KEY,'1'); btn.textContent='등록 완료 ✓';
+      if(window.dataLayer) dataLayer.push({event:'preorder',vertical:v});
+    }catch{ btn.disabled=false; btn.textContent='사전등록'; }
+  });
+});
 
 let SITES=[], CAT='all';
 (async()=>{
