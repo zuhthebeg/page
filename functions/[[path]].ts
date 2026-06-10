@@ -25,15 +25,16 @@ export const onRequest: PagesFunction<Env> = async (ctx) => {
 
   const slug = first;
 
-  // 0) 만료 체크 — KV exp:{slug} = 만료 epoch(ms). 키 없으면 영구(기본).
+  // 0) 만료 체크 — KV exp:{slug} = 만료 epoch(ms). 키 없으면 영구(신규 발행은 +90일 기본).
+  // 만료돼도 삭제/차단하지 않고 광고 배너를 달아 계속 서빙한다(무료 유지 조건).
   const expRaw = await ctx.env.page_cache.get(`exp:${slug}`);
-  if (expRaw && Number(expRaw) > 0 && Number(expRaw) < Date.now()) return expiredHtml();
+  const expired = !!expRaw && Number(expRaw) > 0 && Number(expRaw) < Date.now();
 
   // 1) KV 핫캐시 (발행 HTML의 서빙 store)
   const cached = await ctx.env.page_cache.get(`html:${slug}`);
   if (cached) {
     ctx.waitUntil(bumpView(ctx.env, slug));
-    return html(cached);
+    return html(expired ? injectAd(cached) : cached);
   }
 
   // 2) D1 fallback — 라이브 버전 HTML 조회 후 KV 재굽기
@@ -50,8 +51,21 @@ export const onRequest: PagesFunction<Env> = async (ctx) => {
 
   await ctx.env.page_cache.put(`html:${slug}`, row.html); // 영구(발행 시 갱신)
   ctx.waitUntil(bumpView(ctx.env, slug));
-  return html(row.html);
+  return html(expired ? injectAd(row.html) : row.html);
 };
+
+// 만료된 페이지에 다는 광고 블록: 애드센스(콘솔에서 page.cocy.io 승인 후 표시) + 서비스 홍보 바(닫기 가능)
+function injectAd(body: string): string {
+  const ad = `
+<!-- free-tier ad: 유지기간 만료 후 무료 유지 조건 -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6634731722045607" crossorigin="anonymous"></script>
+<div id="pgad" style="position:fixed;left:0;right:0;bottom:0;z-index:2147483000;background:rgba(14,16,20,.94);color:#e7e9ee;font-family:system-ui,-apple-system,'Noto Sans KR',sans-serif;font-size:13px;line-height:1.45;display:flex;align-items:center;gap:10px;padding:10px 14px;backdrop-filter:blur(6px)">
+<span style="flex:1;min-width:0">이 페이지는 <a href="https://page.cocy.io" style="color:#ffb648;text-decoration:none;font-weight:600">page.cocy.io</a>에서 만들어졌어요 — 나만의 페이지도 무료로</span>
+<a href="https://page.cocy.io/new" style="color:#0e1014;background:#ffb648;border-radius:20px;padding:6px 13px;text-decoration:none;font-weight:700;white-space:nowrap">만들기</a>
+<button onclick="document.getElementById('pgad').remove()" aria-label="닫기" style="background:none;border:0;color:#9aa0ab;font-size:17px;cursor:pointer;padding:0 2px">×</button>
+</div>`;
+  return body.includes("</body>") ? body.replace("</body>", ad + "\n</body>") : body + ad;
+}
 
 function html(body: string): Response {
   return new Response(body, {
@@ -60,16 +74,6 @@ function html(body: string): Response {
       "cache-control": "public, max-age=300",
     },
   });
-}
-
-function expiredHtml(): Response {
-  const body = `<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>만료된 페이지</title>
-<style>body{margin:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#0e1014;color:#e7e9ee;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;text-align:center;padding:24px}
-h1{font-size:1.4rem;margin:0}p{color:#9aa0ab;margin:0;line-height:1.6;font-size:.95rem}a{margin-top:8px;color:#ffb648;text-decoration:none;font-weight:600}</style></head>
-<body><div style="font-size:2.4rem">⌛</div><h1>유지 기간이 지난 페이지예요</h1>
-<p>이 페이지는 설정된 유지 기간이 만료되었습니다.<br>다시 발행하려면 새로 만들어 주세요.</p>
-<a href="https://page.cocy.io/new">page.cocy.io에서 새로 만들기 →</a></body></html>`;
-  return new Response(body, { status: 410, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
 }
 
 function bumpView(env: Env, slug: string): Promise<unknown> {

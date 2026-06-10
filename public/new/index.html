@@ -116,10 +116,9 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   </div>
 
   <div class="step">
-    <label>7. 페이지 유지 기간 <span class="hint">기본 없음(영구)</span></label>
+    <label>7. 페이지 유지 기간 <span class="hint">기본 3개월 — 이후에도 삭제되지 않고, 작은 광고와 함께 무료로 계속 유지돼요</span></label>
     <div class="chips" id="expiry">
-      <div class="chip on" data-e="0">없음(영구)</div>
-      <div class="chip" data-e="3">3개월</div>
+      <div class="chip on" data-e="3">3개월</div>
       <div class="chip" data-e="6">6개월</div>
       <div class="chip" data-e="12">1년</div>
     </div>
@@ -173,7 +172,7 @@ async function submit(){
   const content=$('content').value.trim();
   if(!vertical){ $('status').textContent='① 페이지 종류를 골라주세요.'; return; }
   if(content.length<4){ $('status').textContent='⑤ 내용을 적어주세요.'; return; }
-  const spec={ vertical, mood:vals('mood','m'), palette:vals('palette','p')[0]||'', title:$('title').value.trim(), content, lang:'ko', images:UPLOADED.slice(), expiryMonths:+(vals('expiry','e')[0]||0) };
+  const spec={ vertical, mood:vals('mood','m'), palette:vals('palette','p')[0]||'', title:$('title').value.trim(), content, lang:'ko', images:UPLOADED.slice(), expiryMonths:+(vals('expiry','e')[0]||3) };
   $('go').disabled=true; $('status').innerHTML='<span class="spin"></span>신청이 접수됐어요. 정성껏 만들어 발행해드릴게요.';
   $('result').classList.remove('on');
   try{
