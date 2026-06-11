@@ -61,7 +61,7 @@ function injectAd(body: string): string {
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6634731722045607" crossorigin="anonymous"></script>
 <div id="pgad" style="position:fixed;left:0;right:0;bottom:0;z-index:2147483000;background:rgba(14,16,20,.94);color:#e7e9ee;font-family:system-ui,-apple-system,'Noto Sans KR',sans-serif;font-size:13px;line-height:1.45;display:flex;align-items:center;gap:10px;padding:10px 14px;backdrop-filter:blur(6px)">
 <span style="flex:1;min-width:0">이 페이지는 <a href="https://page.cocy.io" style="color:#ffb648;text-decoration:none;font-weight:600">page.cocy.io</a>에서 만들어졌어요 — 나만의 페이지도 무료로</span>
-<a href="https://page.cocy.io/new" style="color:#0e1014;background:#ffb648;border-radius:20px;padding:6px 13px;text-decoration:none;font-weight:700;white-space:nowrap">만들기</a>
+<a href="https://page.cocy.io/new?utm_source=expired_banner&utm_medium=referral" style="color:#0e1014;background:#ffb648;border-radius:20px;padding:6px 13px;text-decoration:none;font-weight:700;white-space:nowrap">만들기</a>
 <button onclick="document.getElementById('pgad').remove()" aria-label="닫기" style="background:none;border:0;color:#9aa0ab;font-size:17px;cursor:pointer;padding:0 2px">×</button>
 </div>`;
   return body.includes("</body>") ? body.replace("</body>", ad + "\n</body>") : body + ad;

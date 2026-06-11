@@ -61,6 +61,8 @@ section.gallery{padding:5rem 0 7rem;border-top:1px solid var(--line)}
 .card .meta p{font-size:.82rem;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .card .edit{position:absolute;top:10px;right:10px;background:rgba(11,11,13,.8);border:1px solid var(--accent);color:var(--accent-2);font-size:.72rem;border-radius:20px;padding:.35rem .8rem;backdrop-filter:blur(4px)}
 .card .edit:hover{background:var(--accent);color:#1a160e}
+.card .mklike{display:block;text-align:center;font-family:var(--label);font-size:.72rem;letter-spacing:.08em;color:var(--accent-2);border-top:1px solid var(--line);padding:.7rem;transition:.25s}
+.card .mklike:hover{background:var(--accent);color:#1a160e}
 .empty{color:var(--muted);font-family:var(--serif);font-size:1.3rem;padding:3rem 0;text-align:center;grid-column:1/-1}
 
 /* pricing */
@@ -212,6 +214,7 @@ function renderGrid(){
         <h3>${esc(s.title||s.slug)}</h3>
         <p>${esc(s.description||'')}</p>
       </div></a>
+      <a class="mklike" href="/new?vertical=${encodeURIComponent(s.vertical||'etc')}">+ 나도 ${VLABEL[s.vertical]||'페이지'} 만들기</a>
     </div>`;
   }).join('');
 }

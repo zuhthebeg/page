@@ -154,6 +154,9 @@ function renderThumbs(){ $('thumbs').innerHTML=UPLOADED.map((u,i)=>`<div class="
 
 function initForm(){
   pick('vertical',false); pick('mood',true); pick('palette',false); pick('expiry',false);
+  // 쇼케이스 딥링크: /new?vertical=menu 로 들어오면 업종 미리 선택
+  const want=new URLSearchParams(location.search).get('vertical');
+  if(want){ const chip=document.querySelector(`#vertical .chip[data-v="${CSS.escape(want)}"]`); if(chip) chip.click(); }
   $('thumbs').addEventListener('click',e=>{ if(e.target.tagName==='B'){UPLOADED.splice(+e.target.dataset.i,1);renderThumbs();} });
   $('file').addEventListener('change',async e=>{
     const files=[...e.target.files]; e.target.value='';
