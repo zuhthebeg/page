@@ -88,6 +88,23 @@ section.pricing{padding:5rem 0 6rem;border-top:1px solid var(--line)}
 .plan .act:hover{background:var(--accent);color:#1a160e}
 .plan .act[disabled]{border-color:var(--line);color:var(--muted);cursor:default;background:none}
 .plan .note{font-size:.72rem;color:var(--muted);margin-top:.5rem;text-align:center}
+/* my pages */
+section.mine{padding:4rem 0 1rem;border-top:1px solid var(--line);display:none}
+.mine h2{font-family:var(--serif);font-size:2rem;font-weight:500;margin:.6rem 0 1.2rem}
+.mine .tools{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-bottom:1.6rem}
+.mine input{background:var(--bg-2);border:1px solid var(--line);border-radius:30px;color:var(--ink);padding:.55rem 1.1rem;font-size:.86rem;font-family:var(--sans);min-width:220px;outline:none}
+.mine input:focus{border-color:var(--accent)}
+.badge{font-family:var(--label);font-size:.6rem;letter-spacing:.08em;border-radius:20px;padding:.18rem .6rem;text-transform:uppercase}
+.badge.priv{background:rgba(233,205,146,.15);color:var(--accent-2);border:1px solid var(--accent)}
+.badge.pub{background:rgba(236,233,228,.08);color:var(--ink-soft);border:1px solid var(--line)}
+.badge.exp{background:rgba(225,80,80,.15);color:#e88;border:1px solid rgba(225,80,80,.4)}
+.mine .vgroup{margin-bottom:2rem}
+.mine .vgroup h3{font-family:var(--label);text-transform:uppercase;letter-spacing:.25em;font-size:.7rem;color:var(--accent);margin-bottom:.9rem}
+.mrow{display:flex;align-items:center;gap:.8rem;padding:.65rem .2rem;border-bottom:1px solid var(--line);font-size:.92rem}
+.mrow:hover{background:rgba(236,233,228,.03)}
+.mrow .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mrow .t small{color:var(--muted);margin-left:.5rem}
+.mrow a.go{color:var(--accent-2);font-size:.8rem;white-space:nowrap}
 footer{padding:3rem 0;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem;text-align:center}
 footer .donate{display:inline-block;margin-top:.6rem;border:1px solid var(--line);border-radius:30px;padding:.45rem 1rem;font-size:.76rem;color:var(--ink-soft);transition:.3s}
 footer .donate:hover{border-color:var(--accent);color:var(--accent-2)}
@@ -113,6 +130,15 @@ footer .donate:hover{border-color:var(--accent);color:var(--accent-2)}
     <a class="cta" href="/new" id="hero-cta">내 페이지 만들기 →</a>
   </div>
 </header>
+
+<section class="mine" id="mine">
+  <div class="wrap">
+    <div class="eyebrow">My Pages</div>
+    <h2 id="m-h2">내 페이지</h2>
+    <div class="tools"><input id="m-search" type="search" placeholder="제목·주소로 검색" /><span class="badge priv" id="m-privhint">비공개 포함</span></div>
+    <div id="m-list"></div>
+  </div>
+</section>
 
 <section class="gallery">
   <div class="wrap">
@@ -185,6 +211,7 @@ ko:{
  pre:'만들기 →', preDone:'등록 완료 ✓', preBusy:'등록 중…', preNote:'선결제 없음 · 완성 확인 후 입금',
  preEmail:'출시 알림 받을 이메일 (선택, 취소해도 등록돼요)',
  ftMade:'made with care · page.cocy.io', ftGuide:'📖 가이드: 모바일 청첩장 직접 만들기', donate:'☕ 서버비 후원하기',
+ mH2:'내 페이지', mSearch:'제목·주소로 검색', mPriv:'비공개', mPub:'공개', mExp:'중단됨', mPrivHint:'비공개 포함', mEmpty:'검색 결과가 없어요', mEdit:'✎ 편집',
  meEdit:' · 내 페이지에 ✎ 편집', loggedIn:'로그인됨', edit:'✎ 편집', mklike:v=>'+ 나도 '+v+' 만들기',
  vlabel:{portfolio:'포트폴리오',wedding:'청첩장',menu:'메뉴판',memorial:'추모',proposal:'프로포즈/고백',profile:'프로필',invite:'초대장',dol:'돌잔치',etc:'기타',page:'페이지'},
 },
@@ -205,6 +232,7 @@ en:{
  pre:'Create →', preDone:'Registered ✓', preBusy:'Registering…', preNote:'No upfront payment · pay after you see it',
  preEmail:'Email for launch notification (optional — cancel still registers)',
  ftMade:'made with care · page.cocy.io', ftGuide:'📖 Guide: make your own mobile wedding invitation', donate:'☕ Support server costs',
+ mH2:'My Pages', mSearch:'Search by title or slug', mPriv:'Private', mPub:'Public', mExp:'Suspended', mPrivHint:'incl. private', mEmpty:'No results', mEdit:'✎ Edit',
  meEdit:' · ✎ edit on my pages', loggedIn:'Signed in', edit:'✎ Edit', mklike:v=>'+ Make my own '+v,
  vlabel:{portfolio:'Portfolio',wedding:'Wedding Invitation',menu:'Menu',memorial:'Memorial',proposal:'Proposal',profile:'Profile',invite:'Invitation',dol:'First Birthday',etc:'Etc',page:'page'},
 },
@@ -234,6 +262,7 @@ function applyLang(){
  $('p1-note').textContent=t('preNote'); $('p2-note').textContent=t('preNote');
  $('ft-made').textContent=t('ftMade'); $('ft-guide').textContent=t('ftGuide'); $('donate').textContent=t('donate');
  if(MY) $('me').textContent=(P.name||P.email||t('loggedIn'))+t('meEdit');
+ $('m-h2').textContent=t('mH2'); $('m-search').placeholder=t('mSearch'); $('m-privhint').textContent=t('mPrivHint'); renderMine();
  document.querySelectorAll('[data-mk]').forEach(a=>{ a.textContent=t('pre'); });
  renderCats(); renderGrid();
 }
@@ -256,6 +285,39 @@ document.querySelectorAll('[data-pre]').forEach(btn=>{
     }catch{ btn.disabled=false; btn.textContent=t('pre'); }
   });
 });
+
+// ── 내 페이지 (비공개 포함) ──
+let MINE=[], MQ='';
+async function loadMine(){
+  if(!MY||!TOKEN) return;
+  try{
+    const r=await fetch('/api/my-sites',{headers:{authorization:'Bearer '+TOKEN}});
+    if(!r.ok) return;
+    MINE=(await r.json()).sites||[];
+    renderMine();
+  }catch{}
+}
+function renderMine(){
+  const sec=document.getElementById('mine'); if(!sec) return;
+  if(!MINE.length){ sec.style.display='none'; return; }
+  sec.style.display='block';
+  const q=MQ.trim().toLowerCase();
+  const rows=MINE.filter(x=>!q||(x.title||'').toLowerCase().includes(q)||(x.slug||'').toLowerCase().includes(q)||(x.description||'').toLowerCase().includes(q));
+  const byV={};
+  rows.forEach(x=>{ const v=x.vertical||'etc'; (byV[v]=byV[v]||[]).push(x); });
+  const now=Date.now();
+  const html=Object.keys(byV).map(v=>{
+    const items=byV[v].map(x=>{
+      const priv=!x.listed;
+      const expired=x.expires_at&&x.expires_at<now;
+      const badge=expired?'<span class="badge exp">'+t('mExp')+'</span>':(priv?'<span class="badge priv">'+t('mPriv')+'</span>':'<span class="badge pub">'+t('mPub')+'</span>');
+      return '<div class="mrow">'+badge+'<span class="t"><a href="/'+x.slug+'">'+esc(x.title||x.slug)+'</a><small>/'+esc(x.slug)+'</small></span><a class="go" href="/'+x.slug+'" target="_blank">↗</a><a class="go" href="/edit/?slug='+encodeURIComponent(x.slug)+'">'+t('mEdit')+'</a></div>';
+    }).join('');
+    return '<div class="vgroup"><h3>'+VL(v)+' · '+byV[v].length+'</h3>'+items+'</div>';
+  }).join('');
+  document.getElementById('m-list').innerHTML=html||'<div class="empty">'+t('mEmpty')+'</div>';
+}
+document.getElementById('m-search').addEventListener('input',e=>{ MQ=e.target.value; renderMine(); });
 
 let SITES=[], CAT='all';
 (async()=>{
@@ -289,6 +351,7 @@ function renderGrid(){
   }).join('');
 }
 applyLang();
+loadMine();
 </script>
 </body>
 </html>
