@@ -110,13 +110,13 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   </div>
 
   <div class="step">
-    <label>6. 사진 <span class="hint">5장까지 무료 · 자동 압축</span></label>
+    <label>6. 사진 <span class="hint">10장까지 · 자동 압축</span></label>
     <label class="attach">📎 사진 첨부<input type="file" id="file" accept="image/*" multiple hidden></label>
     <div class="imgrow" id="thumbs"></div>
   </div>
 
   <div class="step">
-    <label>7. 페이지 유지 기간 <span class="hint">후불제 — 완성 후 3일 써보고 입금하면 1년 유지 (청첩장·포트폴리오 4,990원 / 메뉴판 9,900원)</span></label>
+    <label>7. 페이지 유지 기간 <span class="hint">후불제 — 완성 후 3일 써보고 입금하면 1년 유지 (청첩장·포트폴리오 4,990원 / 메뉴판 9,900원 · 수정 10회·사진 10장)</span></label>
     <div class="chips" id="expiry">
       <div class="chip on" data-e="3">3개월</div>
       <div class="chip" data-e="6">6개월</div>
@@ -160,7 +160,7 @@ function initForm(){
   $('thumbs').addEventListener('click',e=>{ if(e.target.tagName==='B'){UPLOADED.splice(+e.target.dataset.i,1);renderThumbs();} });
   $('file').addEventListener('change',async e=>{
     const files=[...e.target.files]; e.target.value='';
-    for(const f of files){ if(UPLOADED.length>=5){ $('status').textContent='사진은 5장까지 무료예요.'; break; }
+    for(const f of files){ if(UPLOADED.length>=10){ $('status').textContent='사진은 10장까지예요.'; break; }
       try{ const blob=await compress(f);
         const r=await fetch('/api/upload',{method:'POST',headers:{'Content-Type':'image/jpeg',Authorization:'Bearer '+TOKEN},body:blob});
         const d=await r.json(); if(!r.ok)throw new Error(d.error||r.status); UPLOADED.push(d.url); renderThumbs();
