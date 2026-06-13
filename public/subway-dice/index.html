@@ -259,7 +259,7 @@ let DATA=null;        // {lines:[{name,color,loop,stations[]}], stations:{name:{
 let LINE={};          // name -> line obj
 let proj=null;        // projection
 let view={x:0,y:0,k:1};
-let G={ started:false, pos:null, prev:null, visited:new Set(), trav:new Set(), stops:[], rolls:0, rou:0, photos:{} };
+let G={ started:false, pos:null, prev:null, line:null, dir:null, visited:new Set(), trav:new Set(), stops:[], rolls:0, rou:0, photos:{} };
 let busy=false, photoTargetIdx=null;
 
 /* ---------- load ---------- */
@@ -415,7 +415,7 @@ function enterPickMode(){
 }
 function startAt(name){
   closeOv('#intro');
-  G.started=true; G.pos=name; G.prev=null;
+  G.started=true; G.pos=name; G.prev=null; G.line=null; G.dir=null;
   G.visited.add(name); markStop(name);
   $('#hud').style.display='flex';
   refresh(); save(); centerOn(name,2.2); toast('출발: '+name+' 🚇');
@@ -426,6 +426,8 @@ $('#btnDice').onclick=async()=>{
   if(busy||!G.started)return; busy=true; setHint('주사위 굴리는 중…');
   const n=await rollDice(); G.rolls++;
   for(let s=0;s<n;s++){ await stepOnce(); }
+  // 환승역에 '도착'했으면 방향을 비워 둔다 → 다음 주사위 때 룰렛으로 새 방향 선택
+  if(DATA.stations[G.pos] && DATA.stations[G.pos].lines.length>=2){ G.line=null; G.dir=null; }
   markStop(G.pos); G.stops.push({name:G.pos,t:Date.now(),roll:s_lastRoll});
   busy=false; refresh(); save(); setHint('도착: '+G.pos);
 };
@@ -448,18 +450,29 @@ function drawPips(v){
 
 /* ---------- one step ---------- */
 async function stepOnce(){
-  let opts=onwardOptions(G.pos,G.prev);
-  if(opts.length===0){ // dead end: bounce back
-    const s=DATA.stations[G.pos]; const ln=s.lines[0];
-    const back=neighbor(G.pos,ln,1)||neighbor(G.pos,ln,-1)||G.prev;
-    opts=[{line:ln,next:back||G.pos}];
+  let choice=null;
+  // 1) 타고 가던 노선이 있으면 그 방향으로 직진 (환승역도 그냥 통과)
+  if(G.line && G.dir){
+    const nx=neighbor(G.pos,G.line,G.dir);
+    if(nx && nx!==G.prev) choice={line:G.line,next:nx};
   }
-  let choice;
-  if(opts.length===1){ choice=opts[0]; }
-  else { choice=await roulette(opts); G.rou++; }
-  await moveTo(G.pos,choice.next);
-  G.prev=G.pos; G.pos=choice.next; G.visited.add(choice.next);
-  G.trav.add(EDGE(G.prev,G.pos)); markTrav(G.prev,G.pos); markVisited();
+  // 2) 방향을 새로 정해야 할 때만 분기 (출발 첫 칸 / 종착역에서 꺾기 / 환승 후 첫 칸)
+  if(!choice){
+    let opts=onwardOptions(G.pos,G.prev);
+    if(opts.length===0){ // dead end: bounce back
+      const s=DATA.stations[G.pos]; const ln=G.line||s.lines[0];
+      const back=neighbor(G.pos,ln,1)||neighbor(G.pos,ln,-1)||G.prev;
+      choice={line:ln,next:back||G.pos};
+    } else if(opts.length===1){ choice=opts[0]; }
+    else { choice=await roulette(opts); G.rou++; }
+  }
+  const from=G.pos;
+  await moveTo(from,choice.next);
+  G.prev=from; G.pos=choice.next; G.visited.add(choice.next);
+  // 현재 노선·방향 기억 → 다음 칸부터 직진 통과
+  G.line=choice.line;
+  G.dir=(neighbor(from,choice.line,1)===choice.next)?1:-1;
+  G.trav.add(EDGE(from,G.pos)); markTrav(from,G.pos); markVisited();
 }
 
 /* animate token from a->b */
@@ -610,12 +623,12 @@ $('#btnReset').onclick=()=>{
 };
 
 /* ---------- persistence ---------- */
-function save(){ const o={started:G.started,pos:G.pos,prev:G.prev,visited:[...G.visited],trav:[...G.trav],
+function save(){ const o={started:G.started,pos:G.pos,prev:G.prev,line:G.line,dir:G.dir,visited:[...G.visited],trav:[...G.trav],
   stops:G.stops,rolls:G.rolls,rou:G.rou,photos:G.photos};
   localStorage.setItem(LS,JSON.stringify(o)); }
 function restore(){
   try{ const o=JSON.parse(localStorage.getItem(LS)); if(!o||!o.started)return;
-    G.started=true;G.pos=o.pos;G.prev=o.prev;G.visited=new Set(o.visited||[]);G.trav=new Set(o.trav||[]);
+    G.started=true;G.pos=o.pos;G.prev=o.prev;G.line=o.line||null;G.dir=o.dir||null;G.visited=new Set(o.visited||[]);G.trav=new Set(o.trav||[]);
     G.stops=o.stops||[];G.rolls=o.rolls||0;G.rou=o.rou||0;G.photos=o.photos||{};
     closeOv('#intro'); $('#hud').style.display='flex'; refresh();
     setTimeout(()=>centerOn(G.pos,2),60);
