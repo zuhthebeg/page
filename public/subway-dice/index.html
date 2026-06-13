@@ -426,10 +426,19 @@ $('#btnDice').onclick=async()=>{
   if(busy||!G.started)return; busy=true; setHint('주사위 굴리는 중…');
   const n=await rollDice(); G.rolls++;
   for(let s=0;s<n;s++){ await stepOnce(); }
-  // 환승역에 '도착'했으면 방향을 비워 둔다 → 다음 주사위 때 룰렛으로 새 방향 선택
-  if(DATA.stations[G.pos] && DATA.stations[G.pos].lines.length>=2){ G.line=null; G.dir=null; }
   markStop(G.pos); G.stops.push({name:G.pos,t:Date.now(),roll:s_lastRoll});
-  busy=false; refresh(); save(); setHint('도착: '+G.pos);
+  refresh(); save();
+  // 환승역에 '도착'하면 그 자리에서 바로 룰렛을 돌려 다음 방면을 정한다 (지나가는 환승역은 직진 통과)
+  if(DATA.stations[G.pos] && DATA.stations[G.pos].lines.length>=2){
+    const opts=onwardOptions(G.pos,G.prev);
+    if(opts.length>=2){
+      setHint(G.pos+' 환승역! 다음 방면 룰렛 🎰');
+      const choice=await roulette(opts); G.rou++;
+      G.line=choice.line; G.dir=(neighbor(G.pos,choice.line,1)===choice.next)?1:-1;
+      save();
+    }
+  }
+  busy=false; refresh(); setHint('도착: '+G.pos);
 };
 let s_lastRoll=0;
 function rollDice(){
