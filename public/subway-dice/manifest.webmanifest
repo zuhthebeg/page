@@ -1,0 +1,28 @@
+{
+  "id": "/subway-dice/",
+  "name": "Subway Dice",
+  "short_name": "SubwayDice",
+  "description": "Roll the dice and let the metro decide your random journey. Seoul, Busan, Taipei, Hong Kong.",
+  "start_url": "/subway-dice/",
+  "scope": "/subway-dice/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a1530",
+  "theme_color": "#0a1530",
+  "lang": "ko",
+  "categories": ["games", "travel", "entertainment"],
+  "icons": [
+    {
+      "src": "/subway-dice/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/subway-dice/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.cocy.subwaydice",
+      "sha256_cert_fingerprints": [
+        "80:50:A8:B2:48:FE:A7:D5:74:B3:65:A9:8D:CD:C7:3D:7C:99:D1:D4:33:95:47:F2:1E:9F:FE:EF:E7:C8:79:39"
+      ]
+    }
+  }
+]
