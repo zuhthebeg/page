@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a1530">
+<meta name="robots" content="index,follow">
+<title>개인정보처리방침 · 지하철 랜덤 여행 (Subway Dice)</title>
+<meta name="description" content="지하철 랜덤 여행 · Subway Dice 개인정보처리방침. 여행 기록·사진·위치는 모두 기기에만 저장되며 서버로 전송되지 않습니다.">
+<link rel="icon" href="./favicon-32.png">
+<style>
+  :root{
+    --bg:#080f22; --bg2:#0d1832; --card:#0f1d3a; --line:#1d2c52;
+    --fg:#e8eefc; --muted:#9fb0d6; --accent:#4f8cff; --accent2:#37d6a0;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:linear-gradient(180deg,var(--bg),var(--bg2));
+    color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR","Noto Sans TC",sans-serif;
+    line-height:1.7; -webkit-font-smoothing:antialiased;
+    padding:env(safe-area-inset-top) 0 0;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:40px 20px 80px}
+  header.top{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+  header.top .dot{width:34px;height:34px;border-radius:10px;
+    background:radial-gradient(circle at 30% 30%,var(--accent),#2c5fd0);
+    display:grid;place-items:center;font-size:18px;box-shadow:0 6px 18px rgba(79,140,255,.35)}
+  h1{font-size:24px;margin:0;letter-spacing:-.3px}
+  .sub{color:var(--muted);font-size:14px;margin:6px 0 28px}
+  .langbar{display:flex;gap:8px;margin:0 0 26px;flex-wrap:wrap}
+  .langbar a{font-size:13px;color:var(--muted);text-decoration:none;
+    border:1px solid var(--line);padding:6px 12px;border-radius:999px}
+  .langbar a:hover{color:var(--fg);border-color:var(--accent)}
+  section.lang{display:none}
+  section.lang#ko{display:block}
+  section.lang:target{display:block}
+  body:has(#en:target) #ko,
+  body:has(#tw:target) #ko{display:none}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:22px 24px;margin:18px 0}
+  h2{font-size:17px;margin:26px 0 8px;color:#fff}
+  h2 .em{color:var(--accent2)}
+  p,li{color:#d6e0f5;font-size:15px}
+  ul{padding-left:20px;margin:8px 0}
+  li{margin:4px 0}
+  .pill{display:inline-block;background:rgba(55,214,160,.12);color:var(--accent2);
+    border:1px solid rgba(55,214,160,.3);border-radius:8px;padding:2px 9px;font-size:13px;margin-right:6px}
+  a.link{color:var(--accent)}
+  footer{color:var(--muted);font-size:13px;margin-top:34px;border-top:1px solid var(--line);padding-top:18px}
+  .updated{color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="dot">🎲</div>
+    <h1>개인정보처리방침</h1>
+  </header>
+  <div class="sub">지하철 랜덤 여행 · Subway Dice</div>
+
+  <div class="langbar">
+    <a href="#ko">한국어</a>
+    <a href="#en">English</a>
+    <a href="#tw">繁體中文</a>
+  </div>
+
+  <!-- 한국어 -->
+  <section class="lang" id="ko">
+    <div class="card">
+      <p><span class="pill">요약</span> 이 앱은 회원가입이 없고, 여러분의 여행 기록·사진·위치 정보를 <b>오직 사용자의 기기에만</b> 저장합니다. 어떤 개인정보도 저희 서버로 전송하거나 수집하지 않습니다.</p>
+    </div>
+
+    <h2>1. 수집하지 않는 정보</h2>
+    <p>‘지하철 랜덤 여행(Subway Dice)’은 이름, 이메일, 전화번호, 계정 등 개인을 식별할 수 있는 정보를 <b>요구하지도, 수집하지도 않습니다.</b> 별도의 로그인이 없습니다.</p>
+
+    <h2>2. 기기에만 저장되는 정보</h2>
+    <ul>
+      <li><b>여행 기록</b> — 주사위로 이동한 경로, 방문한 역은 브라우저 localStorage에 저장되며 기기를 벗어나지 않습니다.</li>
+      <li><b>사진</b> — 역에서 촬영하거나 선택한 사진은 기기에만 보관됩니다. 외부로 업로드되지 않습니다.</li>
+      <li><b>위치</b> — 가까운 역을 찾기 위해 위치 권한을 사용할 수 있으며, 위치 정보는 화면 표시용으로만 쓰이고 저장·전송되지 않습니다.</li>
+    </ul>
+
+    <h2>3. 권한 사용</h2>
+    <ul>
+      <li><b>카메라 / 사진</b> — 역에서 사진을 남기는 기능에만 사용됩니다(선택).</li>
+      <li><b>위치</b> — 현재 위치 근처의 역을 찾는 데에만 사용됩니다(선택). 거부해도 게임 플레이가 가능합니다.</li>
+    </ul>
+
+    <h2>4. <span class="em">광고 및 분석</span></h2>
+    <p>서비스 운영을 위해 Google의 광고(Google AdSense/AdMob) 및 분석(Google Analytics) 서비스가 사용될 수 있습니다. 이 경우 Google은 광고 식별자, 기기 정보, 대략적 사용 통계 등을 자체 정책에 따라 수집할 수 있습니다. 자세한 내용은 <a class="link" href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google 개인정보처리방침</a>을 참고하세요.</p>
+
+    <h2>5. 데이터 보관 및 삭제</h2>
+    <p>모든 데이터는 기기에 저장되므로, 앱(또는 브라우저)의 데이터를 삭제하면 여행 기록과 사진이 함께 삭제됩니다.</p>
+
+    <h2>6. 아동의 개인정보</h2>
+    <p>이 앱은 만 14세 미만 아동으로부터 의도적으로 개인정보를 수집하지 않습니다.</p>
+
+    <h2>7. 방침 변경</h2>
+    <p>본 방침은 변경될 수 있으며, 변경 시 이 페이지에 게시합니다.</p>
+
+    <h2>8. 문의</h2>
+    <p>문의: <a class="link" href="mailto:zuhejbeg@gmail.com">zuhejbeg@gmail.com</a></p>
+  </section>
+
+  <!-- English -->
+  <section class="lang" id="en">
+    <div class="card">
+      <p><span class="pill">Summary</span> This app has no sign-up and stores your travel history, photos, and location <b>only on your own device</b>. We do not collect or transmit any personal data to our servers.</p>
+    </div>
+
+    <h2>1. Information we do NOT collect</h2>
+    <p>Subway Dice does <b>not request or collect</b> any personally identifiable information such as name, email, phone number, or account. There is no login.</p>
+
+    <h2>2. Information stored only on your device</h2>
+    <ul>
+      <li><b>Travel history</b> — the route you roll and stations you visit are saved in browser localStorage and never leave your device.</li>
+      <li><b>Photos</b> — pictures you take or pick at stations stay on your device. They are not uploaded anywhere.</li>
+      <li><b>Location</b> — location permission may be used to find the nearest station; it is used only for on-screen display and is not stored or transmitted.</li>
+    </ul>
+
+    <h2>3. Permissions</h2>
+    <ul>
+      <li><b>Camera / Photos</b> — used only for the "leave a photo at a station" feature (optional).</li>
+      <li><b>Location</b> — used only to find stations near you (optional). The game works without it.</li>
+    </ul>
+
+    <h2>4. <span class="em">Advertising & Analytics</span></h2>
+    <p>To operate the service, Google advertising (Google AdSense/AdMob) and analytics (Google Analytics) may be used. In that case Google may collect advertising identifiers, device information, and aggregate usage statistics under its own policies. See the <a class="link" href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a>.</p>
+
+    <h2>5. Data retention & deletion</h2>
+    <p>All data is stored on your device, so clearing the app's (or browser's) data deletes your travel history and photos.</p>
+
+    <h2>6. Children's privacy</h2>
+    <p>This app does not knowingly collect personal information from children under 14.</p>
+
+    <h2>7. Changes</h2>
+    <p>This policy may be updated; changes will be posted on this page.</p>
+
+    <h2>8. Contact</h2>
+    <p>Contact: <a class="link" href="mailto:zuhejbeg@gmail.com">zuhejbeg@gmail.com</a></p>
+  </section>
+
+  <!-- 繁體中文 -->
+  <section class="lang" id="tw">
+    <div class="card">
+      <p><span class="pill">摘要</span> 本應用程式無需註冊，您的旅程紀錄、照片與位置資訊<b>僅儲存在您的裝置上</b>，不會收集或傳送任何個人資料到我們的伺服器。</p>
+    </div>
+
+    <h2>1. 我們不收集的資訊</h2>
+    <p>「地鐵隨機旅行（Subway Dice）」<b>不會要求或收集</b>姓名、電子郵件、電話、帳號等可識別個人身分的資訊，亦無需登入。</p>
+
+    <h2>2. 僅儲存在您裝置上的資訊</h2>
+    <ul>
+      <li><b>旅程紀錄</b> — 您擲骰移動的路線與造訪的車站會儲存在瀏覽器 localStorage，不會離開您的裝置。</li>
+      <li><b>照片</b> — 在車站拍攝或選取的照片僅保存在您的裝置，不會上傳。</li>
+      <li><b>位置</b> — 可能用於尋找最近車站；僅用於畫面顯示，不會儲存或傳送。</li>
+    </ul>
+
+    <h2>3. 權限使用</h2>
+    <ul>
+      <li><b>相機／照片</b> — 僅用於「在車站留下照片」功能（選用）。</li>
+      <li><b>位置</b> — 僅用於尋找附近車站（選用）。拒絕仍可遊玩。</li>
+    </ul>
+
+    <h2>4. <span class="em">廣告與分析</span></h2>
+    <p>為了營運服務，可能使用 Google 廣告（Google AdSense/AdMob）與分析（Google Analytics）。屆時 Google 可能依其政策收集廣告識別碼、裝置資訊與彙總使用統計。詳見 <a class="link" href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google 隱私權政策</a>。</p>
+
+    <h2>5. 資料保存與刪除</h2>
+    <p>所有資料皆儲存於您的裝置，清除應用程式（或瀏覽器）資料即會一併刪除旅程紀錄與照片。</p>
+
+    <h2>6. 兒童隱私</h2>
+    <p>本應用程式不會在知情下收集未滿 14 歲兒童的個人資訊。</p>
+
+    <h2>7. 政策變更</h2>
+    <p>本政策可能更新，變更時將公布於本頁面。</p>
+
+    <h2>8. 聯絡方式</h2>
+    <p>聯絡：<a class="link" href="mailto:zuhejbeg@gmail.com">zuhejbeg@gmail.com</a></p>
+  </section>
+
+  <footer>
+    <div class="updated">최종 업데이트 / Last updated / 最後更新: 2026-06-14</div>
+    <div style="margin-top:8px"><a class="link" href="./">← 지하철 랜덤 여행으로 돌아가기 / Back to Subway Dice</a></div>
+  </footer>
+</div>
+</body>
+</html>
