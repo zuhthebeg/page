@@ -310,8 +310,8 @@ let G={ started:false, pos:null, prev:null, line:null, dir:null, visited:new Set
 let busy=false, photoTargetIdx=null;
 
 /* ---------- city loading ---------- */
-const CITY_IDS=['seoul','busan','taipei'];
-const CITY_FALLBACK={seoul:{ko:'서울',en:'Seoul',zh:'首爾'},busan:{ko:'부산',en:'Busan',zh:'釜山'},taipei:{ko:'타이베이',en:'Taipei',zh:'台北'}};
+const CITY_IDS=['seoul','busan','taipei','hongkong'];
+const CITY_FALLBACK={seoul:{ko:'서울',en:'Seoul',zh:'首爾'},busan:{ko:'부산',en:'Busan',zh:'釜山'},taipei:{ko:'타이베이',en:'Taipei',zh:'台北'},hongkong:{ko:'홍콩',en:'Hong Kong',zh:'香港'}};
 let CITY='seoul';
 function resetGameState(){ G={started:false,pos:null,prev:null,line:null,dir:null,visited:new Set(),trav:new Set(),stops:[],rolls:0,rou:0,photos:{}}; }
 function clearMap(){ $('#map').innerHTML=''; for(const k in segEls)delete segEls[k]; for(const k in stnEls)delete stnEls[k]; }
