@@ -178,6 +178,7 @@ body{
   <div id="top">
     <div class="brand">지하철 랜덤 여행<small>SUBWAY DICE</small></div>
     <div class="spacer"></div>
+    <button class="iconbtn" id="btnCity" title="도시 변경">🌐</button>
     <button class="iconbtn" id="btnLabels" title="역 이름">가</button>
     <button class="iconbtn" id="btnRecords" title="내 기록">🏁</button>
   </div>
@@ -213,6 +214,13 @@ body{
     <div class="way" id="wayPick"><div class="em">👆</div><div><div class="t">출발역 직접 고르기</div><div class="d">노선도에서 역을 탭</div></div></div>
     <div class="way" id="wayRandom"><div class="em">🎲</div><div><div class="t">랜덤 출발</div><div class="d">운명에 맡긴다</div></div></div>
   </div>
+</div>
+
+<!-- City switch -->
+<div class="ov" id="cityOv">
+  <h2 id="cityOvTitle" style="font-family:var(--display);font-size:24px;margin-bottom:4px">도시 선택</h2>
+  <div id="cityPick2" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px 0 8px;max-width:320px"></div>
+  <button class="btn ghost" id="cityOvX" style="margin-top:10px">✕</button>
 </div>
 
 <!-- Dice -->
@@ -276,7 +284,7 @@ const T={
   pickStart:'출발할 역을 탭하세요', noGeo:'위치 정보를 쓸 수 없어요', findingLoc:'위치 찾는 중…', geoDenied:'위치 거부됨 — 직접 골라보세요', noGeoPerm:'위치 권한이 없어요',
   resetConfirm:'여정을 처음부터 다시 시작할까요? 기록과 사진이 지워집니다.', photoSaved:'📷 {s} 사진 저장', storageFull:'저장공간이 가득찼어요',
   linkCopied:'링크를 복사했어요 🔗', shareFail:'공유 실패', startFirst:'먼저 출발해보세요', friend:'친구의 여정: {n}개 역 🚇',
-  depart:'출발', diceN:'🎲 {n} 칸', comingSoon:'{city} 준비 중이에요', loadingCity:'{city} 불러오는 중…',
+  depart:'출발', diceN:'🎲 {n} 칸', comingSoon:'{city} 준비 중이에요', loadingCity:'{city} 불러오는 중…', cityTitle:'도시 선택',
   shareText:'🎲🚇 지하철 랜덤 여행 ({city})\n{from} → {to} · {n}개 역 방문 · 룰렛 {rou}회\n내 여정 따라오기 👉'},
  en:{brand:'Subway Dice', introTitle:'Subway<br>Dice', tag:'Roll the dice and wander the {city} metro.<br>At transfer stations, a roulette picks your way.',
   geoT:'Start from my location',geoD:'Begin at the nearest station',pickT:'Pick a start station',pickD:'Tap a station on the map',randT:'Random start',randD:'Leave it to fate',
@@ -288,7 +296,7 @@ const T={
   pickStart:'Tap your start station', noGeo:'Location unavailable', findingLoc:'Finding location…', geoDenied:'Location denied — pick one yourself', noGeoPerm:'No location permission',
   resetConfirm:'Restart the journey from scratch? Records and photos will be erased.', photoSaved:'📷 Photo saved at {s}', storageFull:'Storage is full',
   linkCopied:'Link copied 🔗', shareFail:'Share failed', startFirst:'Set off first', friend:"A friend's journey: {n} stations 🚇",
-  depart:'Start', diceN:'🎲 {n} steps', comingSoon:'{city} coming soon', loadingCity:'Loading {city}…',
+  depart:'Start', diceN:'🎲 {n} steps', comingSoon:'{city} coming soon', loadingCity:'Loading {city}…', cityTitle:'Select City',
   shareText:'🎲🚇 Subway Dice ({city})\n{from} → {to} · {n} stations · {rou} roulette spins\nFollow my journey 👉'},
  zh:{brand:'地鐵骰子之旅', introTitle:'地鐵<br>骰子之旅', tag:'擲骰子漫遊{city}地鐵。<br>在轉乘站，輪盤決定你的方向。',
   geoT:'從目前位置出發',geoD:'從最近的車站開始',pickT:'自選出發車站',pickD:'在路線圖上點選車站',randT:'隨機出發',randD:'交給命運',
@@ -300,7 +308,7 @@ const T={
   pickStart:'點選出發車站', noGeo:'無法使用定位', findingLoc:'定位中…', geoDenied:'定位被拒 — 請自行選擇', noGeoPerm:'沒有定位權限',
   resetConfirm:'要從頭重新開始旅程嗎？紀錄與相片將被清除。', photoSaved:'📷 已於 {s} 儲存相片', storageFull:'儲存空間已滿',
   linkCopied:'已複製連結 🔗', shareFail:'分享失敗', startFirst:'請先出發', friend:'朋友的旅程：{n} 個車站 🚇',
-  depart:'出發', diceN:'🎲 {n} 格', comingSoon:'{city} 即將推出', loadingCity:'{city} 載入中…',
+  depart:'出發', diceN:'🎲 {n} 格', comingSoon:'{city} 即將推出', loadingCity:'{city} 載入中…', cityTitle:'選擇城市',
   shareText:'🎲🚇 地鐵骰子之旅（{city}）\n{from} → {to}・造訪 {n} 站・轉乘輪盤 {rou} 次\n跟著我的旅程 👉'}
 };
 function tr(k,v){let s=(T[LANG]&&T[LANG][k])||T.en[k]||k; if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]); return s;}
@@ -349,21 +357,23 @@ function applyI18n(){
   $('#sheet .sh-head h3').textContent=tr('sheetTitle');
   const bx=$$('#sheet .stat-box span'); if(bx[0])bx[0].textContent=tr('boxVisited'); if(bx[1])bx[1].textContent=tr('boxLines'); if(bx[2])bx[2].textContent=tr('boxRolls');
   $('#btnShare').textContent=tr('share'); $('#load .msg').textContent=tr('loadMsg');
+  const ct=$('#cityOvTitle'); if(ct)ct.textContent=tr('cityTitle');
 }
 function setTag(){ const lbl=cityLabel(DATA)||((CITY_FALLBACK[CITY]||{})[LANG])||''; const tEl=$('#intro .tag'); if(tEl)tEl.innerHTML=tr('tag',{city:lbl}); }
-function buildCityPicker(){
-  const box=$('#cityPick'); if(!box)return; box.innerHTML='';
+function renderCityInto(box, after){
+  if(!box)return; box.innerHTML='';
   CITY_IDS.forEach(id=>{
     const b=document.createElement('button');
     b.textContent=((CITY_FALLBACK[id]||{})[LANG])||id;
     const on=id===CITY;
     b.style.cssText='padding:8px 16px;border-radius:999px;font-weight:800;font-size:14px;cursor:pointer;border:1.5px solid '+(on?'var(--cyan)':'var(--line)')+';background:'+(on?'var(--cyan)':'transparent')+';color:'+(on?'#06121f':'var(--soft)')+';transition:.15s';
-    b.onclick=()=>{ if(id===CITY)return;
+    b.onclick=()=>{ if(after)after(); if(id===CITY)return;
       $('#load').style.display='grid'; $('#load .spin').style.display='block'; $('#load .msg').textContent=tr('loadingCity',{city:b.textContent}); location.hash='';
       loadCity(id).catch(()=>{ $('#load').style.display='none'; toast(tr('comingSoon',{city:b.textContent})); }); };
     box.appendChild(b);
   });
 }
+function buildCityPicker(){ renderCityInto($('#cityPick')); }
 
 /* ---------- load (invoked at end, after all declarations) ---------- */
 function boot(){
@@ -745,6 +755,9 @@ function restore(){
 $('#btnLabels').onclick=()=>{ const g=$('#labels'); if(!g)return; const on=g.style.display!=='none';
   g.style.display=on?'none':'block'; $('#btnLabels').classList.toggle('on',!on); };
 $('#btnRecenter').onclick=()=>{ if(G.pos)centerOn(G.pos,Math.max(view.k,2)); else fitAll(); };
+$('#btnCity').onclick=()=>{ renderCityInto($('#cityPick2'), ()=>closeOv('#cityOv')); openOv('#cityOv'); };
+$('#cityOvX').onclick=()=>closeOv('#cityOv');
+$('#cityOv').onclick=(e)=>{ if(e.target===$('#cityOv'))closeOv('#cityOv'); };
 $('#sheet .grab').onclick=()=>$('#sheet').classList.remove('on');
 function setHint(t){$('#hint').textContent=t;}
 function openOv(s){$(s).classList.add('on');} function closeOv(s){$(s).classList.remove('on');}
