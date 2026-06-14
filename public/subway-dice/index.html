@@ -277,7 +277,7 @@ const T={
   resetConfirm:'여정을 처음부터 다시 시작할까요? 기록과 사진이 지워집니다.', photoSaved:'📷 {s} 사진 저장', storageFull:'저장공간이 가득찼어요',
   linkCopied:'링크를 복사했어요 🔗', shareFail:'공유 실패', startFirst:'먼저 출발해보세요', friend:'친구의 여정: {n}개 역 🚇',
   depart:'출발', diceN:'🎲 {n} 칸', comingSoon:'{city} 준비 중이에요', loadingCity:'{city} 불러오는 중…',
-  shareText:'🎲🚇 지하철 랜덤 여행 ({city})\n출발 {from} → {n}개 역 방문, 환승룰렛 {rou}회!\n내 여정 보기 👉'},
+  shareText:'🎲🚇 지하철 랜덤 여행 ({city})\n{from} → {to} · {n}개 역 방문 · 룰렛 {rou}회\n내 여정 따라오기 👉'},
  en:{brand:'Subway Dice', introTitle:'Subway<br>Dice', tag:'Roll the dice and wander the {city} metro.<br>At transfer stations, a roulette picks your way.',
   geoT:'Start from my location',geoD:'Begin at the nearest station',pickT:'Pick a start station',pickD:'Tap a station on the map',randT:'Random start',randD:'Leave it to fate',
   dice:'🎲 Roll the dice', hintStart:'Roll to set off', rolling:'Rolling…',
@@ -289,7 +289,7 @@ const T={
   resetConfirm:'Restart the journey from scratch? Records and photos will be erased.', photoSaved:'📷 Photo saved at {s}', storageFull:'Storage is full',
   linkCopied:'Link copied 🔗', shareFail:'Share failed', startFirst:'Set off first', friend:"A friend's journey: {n} stations 🚇",
   depart:'Start', diceN:'🎲 {n} steps', comingSoon:'{city} coming soon', loadingCity:'Loading {city}…',
-  shareText:'🎲🚇 Subway Dice ({city})\nFrom {from} → {n} stations visited, {rou} roulette spins!\nSee my journey 👉'},
+  shareText:'🎲🚇 Subway Dice ({city})\n{from} → {to} · {n} stations · {rou} roulette spins\nFollow my journey 👉'},
  zh:{brand:'地鐵骰子之旅', introTitle:'地鐵<br>骰子之旅', tag:'擲骰子漫遊{city}地鐵。<br>在轉乘站，輪盤決定你的方向。',
   geoT:'從目前位置出發',geoD:'從最近的車站開始',pickT:'自選出發車站',pickD:'在路線圖上點選車站',randT:'隨機出發',randD:'交給命運',
   dice:'🎲 擲骰子', hintStart:'擲骰子出發吧', rolling:'擲骰子中…',
@@ -301,7 +301,7 @@ const T={
   resetConfirm:'要從頭重新開始旅程嗎？紀錄與相片將被清除。', photoSaved:'📷 已於 {s} 儲存相片', storageFull:'儲存空間已滿',
   linkCopied:'已複製連結 🔗', shareFail:'分享失敗', startFirst:'請先出發', friend:'朋友的旅程：{n} 個車站 🚇',
   depart:'出發', diceN:'🎲 {n} 格', comingSoon:'{city} 即將推出', loadingCity:'{city} 載入中…',
-  shareText:'🎲🚇 地鐵骰子之旅（{city}）\n從 {from} 出發 → 造訪 {n} 站，轉乘輪盤 {rou} 次！\n看我的旅程 👉'}
+  shareText:'🎲🚇 地鐵骰子之旅（{city}）\n{from} → {to}・造訪 {n} 站・轉乘輪盤 {rou} 次\n跟著我的旅程 👉'}
 };
 function tr(k,v){let s=(T[LANG]&&T[LANG][k])||T.en[k]||k; if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]); return s;}
 function nm(key){const s=DATA&&DATA.stations[key]; if(!s)return key; const n=s.name; return (n&&(n[LANG]||n.en||n.ko))||key;}
@@ -319,7 +319,7 @@ let busy=false, photoTargetIdx=null;
 const CITY_IDS=['seoul','busan','taipei','hongkong'];
 const CITY_FALLBACK={seoul:{ko:'서울',en:'Seoul',zh:'首爾'},busan:{ko:'부산',en:'Busan',zh:'釜山'},taipei:{ko:'타이베이',en:'Taipei',zh:'台北'},hongkong:{ko:'홍콩',en:'Hong Kong',zh:'香港'}};
 let CITY='seoul';
-function resetGameState(){ G={started:false,pos:null,prev:null,line:null,dir:null,visited:new Set(),trav:new Set(),stops:[],rolls:0,rou:0,photos:{}}; }
+function resetGameState(){ G={started:false,pos:null,prev:null,line:null,dir:null,visited:new Set(),trav:new Set(),stops:[],rolls:0,rou:0,photos:{},replay:false}; }
 function clearMap(){ $('#map').innerHTML=''; for(const k in segEls)delete segEls[k]; for(const k in stnEls)delete stnEls[k]; }
 function loadCity(city){
   return fetch('./data.'+city+'.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.json();})
@@ -368,7 +368,10 @@ function buildCityPicker(){
 /* ---------- load (invoked at end, after all declarations) ---------- */
 function boot(){
   applyI18n();
-  loadCity('seoul').catch(()=>{ $('#load .msg').textContent=tr('loadFail'); $('#load .spin').style.display='none'; });
+  let start='seoul';
+  const cm=location.hash.match(/[#&]c=([a-z]+)/);
+  if(cm&&CITY_IDS.includes(cm[1])) start=cm[1];
+  loadCity(start).catch(()=>{ if(start!=='seoul'){ loadCity('seoul').catch(()=>{ $('#load .msg').textContent=tr('loadFail'); $('#load .spin').style.display='none'; }); } else { $('#load .msg').textContent=tr('loadFail'); $('#load .spin').style.display='none'; } });
 }
 
 /* ---------- projection ---------- */
@@ -508,6 +511,7 @@ function enterPickMode(){
 }
 function startAt(name){
   closeOv('#intro');
+  if(G.replay){ G.replay=false; G.visited=new Set(); G.trav=new Set(); G.stops=[]; clearMap(); buildProjection(); renderMap(); }
   G.started=true; G.pos=name; G.prev=null; G.line=null; G.dir=null;
   G.visited.add(name); markStop(name);
   $('#hud').style.display='flex';
@@ -699,20 +703,21 @@ function buildTimeline(){
 /* ---------- share ---------- */
 $('#btnShare').onclick=async()=>{
   const names=G.stops.map(s=>s.name);
-  const url=location.origin+location.pathname+'#j='+encodeURIComponent(names.join(','));
-  const txt=tr('shareText',{city:cityLabel(DATA)||'',from:names[0]?nm(names[0]):'?',n:G.visited.size,rou:G.rou});
+  const url=location.origin+location.pathname+'#c='+CITY+'&j='+encodeURIComponent(names.join(','));
+  const txt=tr('shareText',{city:cityLabel(DATA)||'',from:names[0]?nm(names[0]):'?',to:names.length?nm(names[names.length-1]):'?',n:G.visited.size,rou:G.rou});
   try{
     if(navigator.share){ await navigator.share({title:tr('brand'),text:txt,url}); }
     else{ await navigator.clipboard.writeText(txt+'\n'+url); toast(tr('linkCopied')); }
   }catch(e){ try{await navigator.clipboard.writeText(txt+'\n'+url);toast(tr('linkCopied'));}catch(_){toast(tr('shareFail'));} }
 };
 function tryReplay(){
-  const m=location.hash.match(/#j=([^&]+)/); if(!m)return;
+  const m=location.hash.match(/[#&]j=([^&]+)/); if(!m)return;
   const names=decodeURIComponent(m[1]).split(',').filter(n=>DATA.stations[n]);
   if(names.length<2)return;
   names.forEach(n=>{G.visited.add(n);markStop(n);});
   for(let i=0;i<names.length-1;i++){G.trav.add(EDGE(names[i],names[i+1]));markTrav(names[i],names[i+1]);}
   markVisited();
+  G.replay=true;
   toast(tr('friend',{n:names.length}));
   const p=P(names[0]); if(p)centerOn(names[0],1.6);
 }
