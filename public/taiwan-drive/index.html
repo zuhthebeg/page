@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>대만 렌터카 운전 가이드 — 한국인 준비물·유의사항 · page.cocy.io</title>
+<meta name="description" content="한국 운전면허로 대만에서 렌터카 운전하기: 국제운전면허증(IDP)+한국면허 둘 다 필수, 30일 무등록 한도, 우측통행, 적신호 우회전 금지, ETC 통행료, 주유·주차, 산악도로·지진·태풍 리스크, 긴급연락처까지 출발 전 체크리스트로 정리." />
+<link rel="canonical" href="https://page.cocy.io/taiwan-drive" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="대만 렌터카 운전 가이드 (한국인 기준)" />
+<meta property="og:description" content="IDP+한국면허 둘 다 필수·30일 룰·한국과 다른 규칙·산악 리스크. 출발 전 체크리스트로 한 장에 정리." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f6f3ee; --paper:#fffdf9; --ink:#221f1a; --ink-soft:#574f45; --muted:#8f8779;
+  --accent:#c0473a; --accent-2:#d98a3a; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(34,31,26,.13); --line-soft:rgba(34,31,26,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(34,31,26,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:60ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+b{font-weight:500;color:var(--ink)}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#faf1ec);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.25rem;color:var(--ink);margin-top:.2rem;max-width:38ch}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1;white-space:nowrap;text-align:right}
+.score small{display:block;font-size:.7rem;color:var(--muted);font-family:var(--mono);font-weight:400;letter-spacing:.04em;margin-top:.3rem}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.mid{background:rgba(184,134,11,.14);color:var(--warn)}
+.tag.bad{background:rgba(168,68,58,.14);color:var(--bad)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.9rem}
+th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+tr.hl td{background:rgba(192,71,58,.07);font-weight:500}
+.b-good{color:var(--good)}.b-bad{color:var(--bad)}
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+ul.check{list-style:none;margin:.6rem 0}
+ul.check li{position:relative;padding-left:1.9rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.check li::before{content:"☐";position:absolute;left:.1rem;top:-.05em;color:var(--accent);font-size:1.15rem;font-weight:700}
+ul.check li b{color:var(--ink);font-weight:500}
+.callout{background:#faf1ec;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout.warn{background:#fbf4e6;border-left:3px solid var(--warn)}
+.callout.danger{background:#fbeae7;border-left:3px solid var(--bad)}
+.callout b{color:var(--accent)}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(192,71,58,.3)}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(34,31,26,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+</style>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Travel Guide · Driving in Taiwan</div>
+    <h1>대만 렌터카 운전 가이드</h1>
+    <p class="lead">한국 운전면허로 대만에서 차를 빌려 직접 운전하려는 사람을 위한 준비물·법적 요건·한국과 다른 규칙·리스크 정리. 좋은 소식부터: <b>대만도 한국처럼 우측통행·좌핸들</b>이라 적응은 쉽다. 함정은 운전 자체가 아니라 <b>서류</b>다.</p>
+    <div class="meta">
+      <span><b>정리</b> page.cocy.io · 2026-06-15</span>
+      <span><b>대상</b> 한국 면허 소지 · 단기 여행자</span>
+      <span><b>통행</b> 우측통행 (한국과 동일)</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">가장 중요한 것</div>
+          <div class="v-main">국제운전면허증(IDP) + 한국 면허증 <b>원본 둘 다</b> 지참 — 하나만 있으면 무면허 취급</div>
+        </div>
+        <div class="score">30일<small>무등록 운전 한도</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag bad">✗ 영문면허·모바일면허 불가</span>
+        <span class="tag yes">✓ 우측통행 — 적응 쉬움</span>
+        <span class="tag mid">△ 적신호 우회전 금지</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="checklist">
+    <h2><span class="n">01</span> 출발 전 체크리스트</h2>
+    <ul class="check">
+      <li><b>국제운전면허증(IDP)</b> — 운전면허시험장·경찰서·인천공항 등에서 발급. 여권·면허증·여권사진 1매, 약 8,500원, 즉시 발급, 유효 1년. 출국 전에 미리.</li>
+      <li><b>한국 운전면허증 원본</b> — IDP는 단독으론 무효, 본 면허증과 <b>항상 같이</b> 휴대.</li>
+      <li><b>여권</b> — 렌터카 수령 시 신분 확인용.</li>
+      <li><b>해외 결제 가능한 신용카드</b> — 렌트비 + 보증금(예치) 결제, 운전자 본인 명의 권장.</li>
+      <li><b>렌터카 예약 확정서</b> — 업체가 사전에 IDP 사진을 요구하기도 함.</li>
+      <li><b>현지 유심/eSIM + 내비</b> — 구글맵 잘 됨. 데이터는 필수.</li>
+      <li><b>여행자 보험</b> — 렌트사 자차보험(CDW)과 별개로 본인 보험도 점검.</li>
+    </ul>
+  </section>
+
+  <section data-block="license">
+    <h2><span class="n">02</span> 면허·법적 요건 (가장 헷갈리는 부분)</h2>
+    <p>대만과 한국은 <b>상호 인정(reciprocity)</b> 관계라, 한국에서 발급한 IDP로 대만 운전이 가능하다. 단 조건이 정확하다:</p>
+    <table>
+      <thead><tr><th>체류 기간</th><th>필요 절차</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><b>30일 이내</b> (대부분의 여행자)</td><td>IDP + 한국 면허증만 있으면 <b>별도 등록 없이</b> 바로 운전 가능</td></tr>
+        <tr><td>30일 초과 ~ 6개월</td><td>현지 감리소(監理站, Motor Vehicle Office)에서 <b>IDP 등록</b> 신청 (수수료 NT$150, 사진 1매)</td></tr>
+        <tr><td>6개월 초과 장기</td><td>대만 현지 면허로 전환 필요</td></tr>
+      </tbody>
+    </table>
+    <div class="callout danger"><b>치명적 함정:</b> "영문 운전면허증(국문 겸용)"이나 "모바일 운전면허증"은 <b>대만에서 인정 안 된다.</b> 일본과 동일하게, 반드시 <b>국제운전면허증(IDP) 실물</b>이 있어야 한다. 없이 운전하다 적발되면 무면허 — 사고 시 보험도 무효가 될 수 있다.</div>
+    <p class="note">대만에서 인정하는 IDP는 1949년 제네바 협약(및 1968년 비엔나 협약) 기반. 한국 발급 IDP가 여기 해당하므로 문제없다.</p>
+  </section>
+
+  <section data-block="rental">
+    <h2><span class="n">03</span> 렌터카 예약·수령</h2>
+    <ul class="clean">
+      <li><b>주요 업체</b> — Chailease(和運, Hertz 제휴·영문 사이트), iRent(무인 카셰어링), Hotai, 그리고 Klook/KKday 같은 한국인 친화 플랫폼 경유 예약도 가능.</li>
+      <li><b>예약 시점</b> — 일부 업체는 <b>렌트 시작 30일 전부터만</b> 예약을 받는다(너무 일찍은 시스템상 안 됨). 일정 임박해서 다시 시도.</li>
+      <li><b>보험</b> — 기본 자차(CDW)는 자기부담금이 크다. <b>추가 보험(면책)은 거의 무조건 가입</b> 권장. 예약 단계에선 선택 못 하고 현장에서 권유받는 경우 많음.</li>
+      <li><b>수령 장소</b> — "타이베이역 픽업"이라도 역 안에 사무소가 없고 담당자가 차를 가져다주는 방식일 수 있음. 연락 수단(현지 메신저/전화) 확보.</li>
+      <li><b>인수 점검</b> — 외관 스크래치·연료량 사진으로 기록. 반납 시 <b>연료 만땅(滿)</b>이 보통.</li>
+    </ul>
+  </section>
+
+  <section data-block="rules">
+    <h2><span class="n">04</span> 한국과 다른 운전 규칙 — 꼭 체크</h2>
+    <ul class="clean">
+      <li><b>적신호 우회전 금지.</b> 한국식으로 빨간불에 우회전하면 위반. 신호를 따라야 하고, 우회전 전용 신호가 따로 있는 교차로도 있다.</li>
+      <li><b>스쿠터(機車) 천국.</b> 도로 우측·차 사이로 오토바이가 빽빽하게 끼어든다. <b>우회전·차선 변경 시 사각 사이드미러 필수 확인.</b> 교차로 앞 흰색 박스(機車待轉區/정지구역)는 오토바이 대기공간.</li>
+      <li><b>음주운전 초강력.</b> 단속 기준 엄격(호기 0.15mg/L↑ 형사처벌), 고액 벌금 + 차량 압류 가능. 한 잔도 금물.</li>
+      <li><b>속도 단속 많음.</b> 고정식 카메라(測速)와 <b>구간단속(區間測速)</b>이 흔하다. 고속도로(國道) 100~110km/h, 시내 40~50km/h가 일반적.</li>
+      <li><b>전 좌석 안전벨트·카시트.</b> 영유아 카시트 의무. 예약 시 미리 요청.</li>
+      <li><b>경적</b>은 한국보다 일상적으로 쓰임 — 위협이 아니라 신호로 받아들이면 된다.</li>
+    </ul>
+  </section>
+
+  <section data-block="money">
+    <h2><span class="n">05</span> 통행료·주유·주차</h2>
+    <table>
+      <thead><tr><th>항목</th><th>알아둘 점</th></tr></thead>
+      <tbody>
+        <tr><td><b>고속도로 통행료</b></td><td>대만 國道는 <b>eTag(ETC) 거리비례 자동과금</b>. 렌터카엔 단말이 달려 있어 <b>반납 시 정산</b>되는 게 보통 — 업체에 정산 방식 확인.</td></tr>
+        <tr><td><b>주유</b></td><td>휘발유는 92/95/98 무연(無鉛). 보통 <b>95(九五)</b>. 풀서비스 주유소 많음 — "95, 加滿(만땅)" 하면 됨. 반납 전 만땅.</td></tr>
+        <tr><td><b>주차</b></td><td>노상 유료주차는 요원이 표를 꽂거나 앱/편의점 결제. <b>빨간선(紅線)=주정차 금지, 노란선(黃線)=정차만</b>. 도심은 유료 주차장(計時) 이용이 안전.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section data-block="risk">
+    <h2><span class="n">06</span> 지형·날씨 리스크</h2>
+    <ul class="clean">
+      <li><b>산악도로.</b> 타이루거(太魯閣)·합환산·蘇花공로 등은 좁은 커브·터널·낙석 구간. 초보면 동부 산악 자가운전은 신중히 — 차라리 기사 포함 차량(包車)도 대안.</li>
+      <li><b>지진·낙석.</b> 2024년 화롄 대지진 이후 일부 협곡 도로·관광 구간이 <b>통제되거나 복구 중</b>일 수 있다. 타이루거 등은 <b>방문 직전 공식 통제 정보 확인</b> 필수.</li>
+      <li><b>태풍철(여름~초가을).</b> 산사태·도로 폐쇄·운행 통제 잦음. 일정에 여유를.</li>
+      <li><b>도심 정체.</b> 타이베이·가오슝 시내는 스쿠터+정체로 스트레스. 도심은 MRT, 외곽·동부 해안은 렌터카 — 식으로 구간을 나누는 게 현실적.</li>
+    </ul>
+  </section>
+
+  <section data-block="emergency">
+    <h2><span class="n">07</span> 긴급연락처</h2>
+    <table>
+      <thead><tr><th>상황</th><th>번호</th></tr></thead>
+      <tbody>
+        <tr><td>경찰</td><td><b>110</b></td></tr>
+        <tr><td>화재·구급(앰뷸런스)</td><td><b>119</b></td></tr>
+        <tr><td>고속도로/도로 교통정보</td><td><b>1968</b> (앱·전화)</td></tr>
+        <tr><td>주타이베이 한국대표부 긴급(사건사고)</td><td>현지 영사 콜센터 + 외교부 영사콜센터 <b>+82-2-3210-0404</b></td></tr>
+        <tr><td>렌터카 사고</td><td>먼저 <b>렌트사 긴급번호</b>로 연락(계약서에 기재) → 경찰 신고서 꼭 발급받기(보험 처리용)</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><b>사고 나면:</b> ① 안전 확보·부상자 119 ② 경찰 110 신고(현장 기록·신고서 = 보험 필수) ③ 렌트사 통보 ④ 상대·현장·차량 번호판 사진. 합의·현금 종용엔 응하지 말고 정식 절차로.</div>
+  </section>
+
+  <section data-block="limits">
+    <h2><span class="n">08</span> 마지막 당부</h2>
+    <ul class="clean">
+      <li>면허·통행료·도로 통제 규정은 <b>바뀔 수 있다.</b> 출발 전 렌트사 안내와 공식 정보(대만 공로총국 MVDIS, 타이루거 국가공원 공지)를 한 번 더 확인할 것.</li>
+      <li>가장 흔한 실패는 운전 실력이 아니라 <b>IDP를 안 챙기거나 한국 면허증 본판을 두고 오는 것</b>. 출국 가방 쌀 때 이 둘부터.</li>
+    </ul>
+    <p class="note">정리·검증: 대만 교통부 공로총국(MVDIS)·타이베이 모터차량사무소·주부산 타이베이대표부·한국 도로교통공단 공개 정보 기준(2025–2026). 본 페이지는 cocy가 정리한 여행 참고자료이며 법적 효력은 없다.</p>
+  </section>
+
+  <div class="foot">
+    <span>guide on page.cocy.io</span>
+    <span>Taiwan · IDP+면허 둘 다 · 30일 · 우측통행</span>
+  </div>
+</article>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# 대만 렌터카 운전 가이드 (한국인 기준)
+
+> 한국 면허로 대만에서 렌터카 운전하기. **핵심: 국제운전면허증(IDP) + 한국 면허증 원본 둘 다 필수, 30일 이내는 무등록 운전 가능. 영문면허·모바일면허는 불가.** 대만은 한국처럼 우측통행·좌핸들이라 적응은 쉽다.
+
+## 출발 전 체크리스트
+- [ ] 국제운전면허증(IDP) — 운전면허시험장/경찰서/공항 발급, 여권·면허증·사진, ~8,500원, 유효 1년
+- [ ] 한국 운전면허증 원본 (IDP와 항상 같이 휴대)
+- [ ] 여권
+- [ ] 해외결제 신용카드(운전자 본인 명의)
+- [ ] 렌터카 예약 확정서 (업체가 IDP 사진 요구하기도)
+- [ ] 유심/eSIM + 내비(구글맵 OK)
+- [ ] 여행자 보험
+
+## 면허·법적 요건
+대만-한국 상호인정. IDP는 1949 제네바(+1968 비엔나) 협약 기반 — 한국 IDP 인정됨.
+| 체류 | 절차 |
+|---|---|
+| 30일 이내 | IDP+한국면허만으로 등록 없이 운전 |
+| 30일~6개월 | 감리소(監理站)에서 IDP 등록 (NT$150) |
+| 6개월 초과 | 대만 면허로 전환 |
+
+⚠️ 영문면허(국문겸용)·모바일면허는 인정 안 됨. IDP 실물 필수. 미소지 운전=무면허, 사고 시 보험 무효 위험.
+
+## 렌터카 예약·수령
+- 업체: Chailease(和運, Hertz제휴·영문), iRent, Hotai, Klook/KKday 경유
+- 일부 업체는 렌트 30일 전부터만 예약 가능
+- 추가 보험(면책) 거의 무조건 권장 (기본 CDW 자기부담 큼)
+- 픽업 장소에 사무소 없이 담당자가 차 가져다주기도 — 연락수단 확보
+- 인수 시 외관·연료 사진, 반납 시 연료 만땅
+
+## 한국과 다른 운전 규칙
+- 적신호 우회전 금지(신호 준수)
+- 스쿠터(機車) 매우 많음 — 우회전/차선변경 시 사각 확인, 교차로 흰박스는 오토바이 대기구역
+- 음주운전 초강력(호기 0.15mg/L↑ 형사처벌, 고액벌금)
+- 속도 카메라+구간단속(區間測速) 흔함. 고속도로 100~110, 시내 40~50
+- 전 좌석 안전벨트·카시트 의무
+- 경적은 일상적 신호
+
+## 통행료·주유·주차
+- 고속도로(國道): eTag(ETC) 거리비례 자동과금 — 렌터카는 반납 시 정산(업체 확인)
+- 주유: 92/95/98 무연. 보통 95, "加滿(만땅)". 반납 전 만땅
+- 주차: 빨간선=주정차금지, 노란선=정차만. 노상 유료(요원/앱), 도심은 유료주차장
+
+## 지형·날씨 리스크
+- 산악도로(타이루거·합환산·蘇花) 좁은 커브·낙석. 초보는 包車(기사포함)도 대안
+- 2024 화롄 지진 이후 일부 협곡 도로 통제/복구 중 — 방문 직전 공식 통제정보 확인
+- 태풍철(여름~초가을) 도로 폐쇄 잦음
+- 도심은 MRT, 외곽·동부 해안은 렌터카로 구간 분리 추천
+
+## 긴급연락처
+- 경찰 110 / 화재·구급 119 / 도로교통정보 1968
+- 외교부 영사콜센터 +82-2-3210-0404
+- 사고: ①119/안전 ②110 신고서(보험필수) ③렌트사 통보 ④현장·번호판 사진. 현금 합의 종용 거절
+
+## 마지막
+면허·통행료·통제 규정은 바뀔 수 있음 — 출발 전 렌트사+공식정보(MVDIS, 타이루거 공지) 재확인.
+가장 흔한 실패는 운전이 아니라 IDP/면허 본판 안 챙김. 가방 쌀 때 이 둘부터.
+
+## 출처
+- 대만 교통부 공로총국 MVDIS, 타이베이 모터차량사무소, 주부산 타이베이대표부, 한국 도로교통공단 (2025–2026 공개 정보)
+- https://page.cocy.io/taiwan-drive
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='taiwan-drive.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body>
+</html>
