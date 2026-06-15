@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>로컬 LLM으로 에이전트 코딩하기 — 필드가이드 분석 · page.cocy.io</title>
+<meta name="description" content="Alex Ewerlöf의 'Using local LLMs for agentic coding' 분석: GitHub 사용량 과금 전환을 계기로 로컬 모델을 코딩 에이전트에 붙이는 실전 가이드. 작은 모델+하니스로 최대 6× 보완(저자 주장), Gemma 4 라인업, LM Studio 4k 컨텍스트 함정, 그리고 12GB VRAM 현실에서 우리 스택에 주는 시사점." />
+<link rel="canonical" href="https://page.cocy.io/local-llm-coding" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="로컬 LLM으로 에이전트 코딩하기 (분석)" />
+<meta property="og:description" content="작은 모델 + 좋은 하니스로 클라우드 의존을 줄인다 — 실전 셋업 함정과 12GB VRAM 현실까지. cocy 앵글로 재구성." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#3a5a78; --accent-2:#4f7ba0; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:58ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+b{font-weight:500;color:var(--ink)}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#f3f6f9);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.3rem;color:var(--ink);margin-top:.2rem;max-width:34ch}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1;white-space:nowrap;text-align:right}
+.score small{display:block;font-size:.7rem;color:var(--muted);font-family:var(--mono);font-weight:400;letter-spacing:.04em;margin-top:.3rem}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.mid{background:rgba(184,134,11,.14);color:var(--warn)}
+.tag.info{background:rgba(58,90,120,.13);color:var(--accent)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.9rem}
+th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+td.num{font-family:var(--mono);text-align:right}
+tr.hl td{background:rgba(79,123,160,.09);font-weight:500}
+.b-good{color:var(--good)}.b-bad{color:var(--bad)}
+.bars{margin:1.2rem 0 .6rem;display:flex;flex-direction:column;gap:.5rem}
+.bar-row{display:grid;grid-template-columns:160px 1fr auto;align-items:center;gap:.7rem;font-size:.84rem}
+.bar-row .bl{font-family:var(--mono);color:var(--ink-soft);font-size:.76rem}
+.bar-track{background:var(--line-soft);border-radius:4px;height:18px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+.bar-fill.hl{background:linear-gradient(90deg,#cf8a3a,#b8860b)}
+.bar-fill.lo{background:linear-gradient(90deg,#9bb0bf,#7d92a1)}
+.bar-row .bv{font-family:var(--mono);font-size:.78rem;color:var(--ink);min-width:54px;text-align:right}
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+.callout{background:#f3f6f9;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout b{color:var(--accent)}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(58,90,120,.3)}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+</style>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Field Guide · Local LLMs for Coding</div>
+    <h1>로컬 LLM으로 에이전트 코딩하기</h1>
+    <p class="lead">Alex Ewerlöf의 <a href="https://blog.alexewerlof.com/p/local-llms-for-agentic-coding" target="_blank" rel="noopener">Using local LLMs for agentic coding</a> 분석 — GitHub Copilot이 사용량 과금으로 전환한 시점에, 자기 GPU에서 도는 <b>작은 모델 + 하니스</b>로 클라우드 의존을 얼마나 줄일 수 있나를 다룬 실전 가이드. 결론부터: 가능하다, 단 함정이 많다.</p>
+    <div class="meta">
+      <span><b>분석</b> page.cocy.io · 2026-06-15</span>
+      <span><b>원문</b> Alex Ewerlöf 블로그 (실무 가이드 / 오피니언)</span>
+      <span><b>분야</b> Local AI · Agentic Coding</span>
+      <span><b>성격</b> 벤치마크 논문 아님 — 3년차 실무자의 경험담</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">한 줄 결론</div>
+          <div class="v-main">"능력의 상당 부분은 모델이 아니라 하니스에 있다" — 약한 로컬 모델도 좋은 스캐폴딩 안에서는 쓸만해진다</div>
+        </div>
+        <div class="score">최대 6×<small>저자 주장 · 측정값 아님</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag yes">✓ 가격/성능 논리 견고</span>
+        <span class="tag info">서구 오픈모델은 사실상 Gemma 4뿐</span>
+        <span class="tag mid">△ 12GB VRAM엔 26B 안 들어감</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="why-now">
+    <h2><span class="n">01</span> 배경 — 왜 지금 로컬인가</h2>
+    <p>저자의 출발점은 비용이다. GitHub Copilot이 크레딧/무료 모델 체계에서 <b>사용량 기반 과금</b>으로 전환했고(Copilot은 토큰 재판매상이라 인상폭이 더 노골적), 플래그십 모델은 출시 때마다 가격이 크게 뛰는데 <b>성능은 같은 속도로 오르지 않는다</b>는 지적이다.</p>
+    <p>예시로 든 게 Flash 3.5가 2.5 대비 +3×, GPT 5.5가 5 대비 +3× 가격이라는 것. 핵심 주장: <b>최신·최고 모델의 가격은 성능 개선 대비 기하급수적으로 비싸다.</b> 그래서 "로컬이 SOTA를 못 따라간다"는 건 맞지만, 그게 곧 "로컬을 쓸 이유가 없다"는 뜻은 아니라는 것.</p>
+  </section>
+
+  <section data-block="case">
+    <h2><span class="n">02</span> 로컬을 쓸 이유 — 저자의 다섯 논점</h2>
+    <ul class="clean">
+      <li><b>가격/성능 비율.</b> 클라우드 SOTA는 성능 1을 더 얻는 데 비용이 지수적으로 든다.</li>
+      <li><b>결정론적 하니스로 보완.</b> 도구·지시·스캐폴딩을 잘 짜면 약한 모델의 품질을 <b>최대 6배까지</b> 끌어올릴 수 있다는 주장. (수치 출처는 본인 경험 — 벤치마크가 아님은 분명히 해둔다.) 같은 결의 실증으로는 우리가 이미 정리한 <a href="https://page.cocy.io/harness-1">Harness-1</a>이 있다.</li>
+      <li><b>벤치마크 함정.</b> 모델을 스칼라 하나로 줄이는 건 위험하고, 각 랩은 자기에게 유리한 벤치만 강조한다. <b>네 워크로드로 직접 돌려봐야</b> 진짜를 안다.</li>
+      <li><b>지정학.</b> 미국 랩이 무료로 푸는 건 최고작이 아니다 — gpt-oss-20b는 낡았고, Anthropic은 오픈웨이트가 없으며, <b>서구에서 진지한 오픈모델은 사실상 Gemma 4뿐</b>. 반면 중국 랩(Qwen·Kimi·GLM)이 매우 유능한 모델을 푼다.</li>
+      <li><b>"뇌 위축" 논점.</b> 약한 모델은 사람이 더 개입하게 만들어 오히려 사고력 유지에 낫다 — 자동화에 사고를 전부 넘기는 건 "내 일은 자동화 가능하다"는 자백이라는, 다분히 철학적인 주장. (분석가 주: 동의 여부는 갈릴 영역.)</li>
+    </ul>
+  </section>
+
+  <section data-block="models">
+    <h2><span class="n">03</span> 코딩용 모델 선택 — Gemma 4 라인업</h2>
+    <p>저자는 코딩 리더보드 상위가 대체로 중국 모델(Qwen·DeepSeek·Kimi)이라면서도, 본인은 일반 작업(계획·탐색)과 코드 생성의 균형이 좋은 <b>Gemma 4</b>를 추천한다.</p>
+    <table>
+      <thead><tr><th>버전</th><th>특징</th><th>저자 코멘트</th></tr></thead>
+      <tbody>
+        <tr><td><b>E2B</b> (2B, edge)</td><td>대부분 하드웨어서 구동</td><td>환각·중도포기 위험 높음</td></tr>
+        <tr class="hl"><td><b>E4B</b> (4B)</td><td>E2B의 2배 크기</td><td>다운로드·설정 부담 적어 <b>입문 추천</b></td></tr>
+        <tr><td><b>12B</b></td><td><b>이미지 네이티브 이해</b>(디코더 불필요)</td><td>프런트엔드·비주얼 코딩에 유리, 오디오도 지원</td></tr>
+        <tr><td><b>26B A4B</b> (MoE)</td><td>26B 중 4B만 활성, 8–12GB VRAM 목표</td><td>저자 <b>최애</b> — E4B보다 똑똑</td></tr>
+        <tr><td><b>31B</b> (dense)</td><td>구글 최대 오픈웨이트, 비MoE</td><td>VRAM 많이 필요 — 본인 AMD APU선 1–2 TPS로 비실용</td></tr>
+      </tbody>
+    </table>
+    <p class="note">메모리 절약은 <b>QAT</b> 변형(예: E4B QAT, 품질 유지)으로, 추가 효율은 <b>Unsloth</b> 최적화본으로. 코딩 에이전트엔 Tool Use(필수)·Vision·Reasoning 세 능력이 핵심이라고 못박는다.</p>
+  </section>
+
+  <section data-block="stack">
+    <h2><span class="n">04</span> 로컬 실행 스택 — 4개 레이어</h2>
+    <p>저자가 정리한 구성요소. OpenAI 호환 API가 사실상 표준 접점이라는 점이 우리에겐 특히 중요하다.</p>
+    <table>
+      <thead><tr><th>레이어</th><th>역할 / 선택지</th></tr></thead>
+      <tbody>
+        <tr><td><b>하니스</b></td><td>모델(확률적) 둘레의 결정론적 코드. VS Code Copilot · Copilot CLI · Pi 등</td></tr>
+        <tr><td><b>모델</b></td><td>가중치 파일. 양자화(Q8/Q4 = 해상도 비유), 포맷(GGUF/MLX)</td></tr>
+        <tr><td><b>런타임</b> (추론엔진)</td><td><b>Llama.cpp</b>(가장 대중적, GGUF/MLX) · MLX(Apple) · ONNX(브라우저/모바일, transformers.js) · vLLM(서버)</td></tr>
+        <tr><td><b>모델 매니저</b> (선택)</td><td><b>Ollama</b>(OSS, llama.cpp 래퍼) · <b>LM Studio</b>(무료·비OSS, SDK+REST, GUI 풍부) · <b>Jan</b>(무료+OSS). 핵심 = <b>OpenAI 호환 API</b></td></tr>
+      </tbody>
+    </table>
+    <p class="note">하드웨어가 부족하면 OpenRouter의 무료 모델로 우회 가능하다고 언급(클라우드지만 무료).</p>
+  </section>
+
+  <section data-block="traps">
+    <h2><span class="n">05</span> 실전 함정 — LM Studio에서 직접 데인 것들</h2>
+    <p>가이드에서 가장 값진 부분. "그냥 켜면 되겠지"가 안 되는 지점들이다.</p>
+    <ul class="clean">
+      <li><b>기본 컨텍스트가 4k다.</b> LM Studio가 모델 로드 시 기본값으로 컨텍스트를 <b>4096</b>까지만 잡는다 — Copilot 클라우드 모델이 보통 200–400k인 걸 생각하면 치명적. <b>수동으로 키워야</b> 한다. (그리고 설정 저장 안 하면 다음 로드에 기본값으로 되돌아감.)</li>
+      <li><b>JIT 콜드스타트.</b> 모델은 요청 올 때 lazy-load → 첫 요청에 10–30초 추가(TTFT 악화). 타임아웃 있으면 미리 로드하거나 콜드스타트를 감안해야 함.</li>
+      <li><b>TTL.</b> 유휴 시 메모리 회수 시점 조절 가능.</li>
+    </ul>
+    <p>핵심 트레이드오프 — Gemma 4 26B를 기준으로 컨텍스트 길이별 VRAM 소요(저자 실측):</p>
+    <div class="bars">
+      <div class="bar-row"><span class="bl">4,096 (기본값)</span><div class="bar-track"><div class="bar-fill lo" style="width:71%"></div></div><span class="bv">18.16 GB</span></div>
+      <div class="bar-row"><span class="bl">150,000 (저자 선호)</span><div class="bar-track"><div class="bar-fill" style="width:87%"></div></div><span class="bv">22.45 GB</span></div>
+      <div class="bar-row"><span class="bl">262,144 (최대)</span><div class="bar-track"><div class="bar-fill hl" style="width:100%"></div></div><span class="bv">25.74 GB</span></div>
+    </div>
+    <p class="note">저자 기준 "최소 100k 토큰은 띄울 수 있어야 코딩에 쓸만하다". 즉 26B는 사실상 24GB+급 카드를 요구한다.</p>
+  </section>
+
+  <section data-block="meaning">
+    <h2><span class="n">06</span> 우리(cocy/openclaw) 스택에 주는 시사점</h2>
+    <p>이 글은 우리가 이미 굴리는 구조와 정확히 맞닿는다 — 하지만 장밋빛으로 받지 말고 우리 하드웨어 현실에 비춰 읽어야 한다.</p>
+    <ul class="clean">
+      <li><b>접점은 이미 있다.</b> <a href="https://llm.cocy.io">llm.cocy.io</a>가 OpenAI 호환 게이트웨이라, Ollama/LM Studio의 OpenAI 호환 API를 그 뒤에 한 모델로 꽂는 건 구조적으로 자연스럽다. 새 인프라가 아니라 라우팅 한 줄 추가 수준.</li>
+      <li><b>그런데 12GB가 천장이다.</b> 우리 워크스테이션은 RTX 3080 Ti = <b>12GB VRAM</b>. 저자가 미는 26B A4B는 4k에서도 18GB+ → <b>우리 카드엔 안 들어간다.</b> 현실적 상한은 <b>E4B(QAT)나 12B 양자화</b>이고, 역할도 코딩 자율 주행이 아니라 <b>보조</b>(분류·요약·단순 편집)다.</li>
+      <li><b>그래서 위임 정책과 맞물린다.</b> 단순·반복·토큰 소모형 작업은 위임한다는 우리 원칙([[feedback_delegation]]) 그대로 — 그 위임처를 부분적으로 <b>로컬 모델</b>로 돌리면 클라우드 토큰을 아낀다. 설계·판단은 여전히 프런티어 모델.</li>
+      <li><b>"6배"는 우리 워크로드에서 검증된 적 없다.</b> 우리가 <a href="https://page.cocy.io/headroom-eval">Headroom 평가</a>에서 토큰 압축이 "우리 패턴엔 효과 애매"로 결론 냈던 것과 같은 태도가 필요하다 — 저자 주장을 그대로 옮기지 말고, 작은 PoC(한 가지 위임 작업을 로컬 E4B로)로 우리 숫자를 직접 재는 게 다음 수순.</li>
+    </ul>
+    <div class="callout"><b>액션 후보:</b> Windows 박스에 LM Studio로 Gemma 4 E4B(QAT) 띄우고 → 컨텍스트 100k 수동 설정 → llm.cocy.io에 <code>local-gemma</code> 모델로 등록 → 위임 가능한 단순 작업 1종을 붙여 클라우드 대비 품질/비용 실측. (실행은 cocy 승인 후.)</div>
+  </section>
+
+  <section data-block="limits">
+    <h2><span class="n">07</span> 유의점</h2>
+    <ul class="clean">
+      <li>이 글은 <b>벤치마크 논문이 아니라 오피니언/실무 가이드</b>다. "6×"는 저자 경험치이고, "뇌 위축" 같은 논점은 견해 영역.</li>
+      <li>원문 후반(VS Code Copilot/Pi 상세 설정 + 데모 앱 빌드)은 본 분석 범위 밖이라 요약하지 않았다 — 실제 셋업은 원문을 따라가야 한다.</li>
+      <li>로컬 모델 판은 빠르게 변한다. 모델·런타임 권장은 글 작성 시점 기준이며, 우리도 도입 전 최신 리더보드를 다시 확인해야 한다.</li>
+    </ul>
+    <p class="note">수치·정리·해석은 본 분석이 cocy 앵글로 재구성한 것이며, 원전은 Alex Ewerlöf, "Using local LLMs for agentic coding".</p>
+  </section>
+
+  <div class="foot">
+    <span>analysis on page.cocy.io</span>
+    <span>Local LLMs · 하니스 ≫ 모델 · 12GB 현실</span>
+  </div>
+</article>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# 로컬 LLM으로 에이전트 코딩하기 (분석)
+
+> Alex Ewerlöf, "Using local LLMs for agentic coding" 분석 (벤치마크 논문 아님 — 3년차 실무자의 경험 가이드/오피니언).
+> **한 줄 결론: 능력의 상당 부분은 모델이 아니라 하니스에 있다 — 약한 로컬 모델도 좋은 스캐폴딩 안에서는 쓸만해진다. 단 "최대 6배"는 저자 주장이지 측정값이 아니다.**
+
+- 원문: https://blog.alexewerlof.com/p/local-llms-for-agentic-coding
+
+## 배경 — 왜 지금 로컬인가
+GitHub Copilot이 사용량 기반 과금으로 전환. 플래그십 모델은 출시마다 가격이 크게 뛰는데(Flash 3.5 +3×, GPT 5.5 +3×) 성능은 같은 속도로 안 오른다. 핵심: 최고 모델의 가격은 성능 개선 대비 기하급수적으로 비싸다.
+
+## 로컬을 쓸 이유 (저자 다섯 논점)
+- 가격/성능 비율: 클라우드 SOTA는 성능 1 더 얻는 데 비용이 지수적.
+- 결정론적 하니스: 도구·지시로 약한 모델 품질을 최대 6배까지 보완(경험치, 벤치 아님). 같은 결의 실증=Harness-1.
+- 벤치마크 함정: 모델을 스칼라로 줄이면 위험, 각 랩은 유리한 벤치만 강조. 네 워크로드로 직접 돌려봐라.
+- 지정학: 서구 진지한 오픈모델은 사실상 Gemma 4뿐(gpt-oss-20b 낡음, Anthropic 오픈웨이트 없음). 중국 랩(Qwen·Kimi·GLM)이 유능한 모델을 푼다.
+- "뇌 위축": 약한 모델은 사람이 더 개입하게 해 사고력 유지에 낫다(견해 영역).
+
+## 코딩용 모델 — Gemma 4 라인업
+| 버전 | 특징 | 코멘트 |
+|---|---|---|
+| E2B (2B edge) | 대부분 HW 구동 | 환각·중도포기 위험 |
+| **E4B (4B)** | E2B 2배 | 입문 추천 |
+| 12B | 이미지 네이티브 이해 | 프런트엔드/비주얼 코딩 유리 |
+| 26B A4B (MoE) | 26B 중 4B 활성, 8–12GB 목표 | 저자 최애 |
+| 31B (dense) | 구글 최대 오픈웨이트 | VRAM 많이 필요, 비실용적 속도 |
+
+메모리 절약=QAT 변형, 추가효율=Unsloth. 코딩엔 Tool Use(필수)·Vision·Reasoning이 핵심.
+
+## 로컬 실행 스택 (4 레이어)
+- 하니스: VS Code Copilot / Copilot CLI / Pi (모델 둘레 결정론 코드)
+- 모델: 양자화(Q8/Q4), 포맷(GGUF/MLX)
+- 런타임: Llama.cpp(대중적) / MLX(Apple) / ONNX(브라우저·모바일) / vLLM(서버)
+- 모델 매니저: Ollama(OSS) / LM Studio(무료·비OSS) / Jan(무료+OSS). 핵심=OpenAI 호환 API.
+
+## 실전 함정 (LM Studio)
+- 기본 컨텍스트 4k!! 수동으로 키워야(저장 안 하면 기본값 복귀). 클라우드는 보통 200–400k.
+- JIT 콜드스타트: 첫 요청 10–30초(TTFT 악화).
+- VRAM vs 컨텍스트 (Gemma 4 26B 기준): 4k=18.16GB / 150k=22.45GB / 262k(max)=25.74GB. 코딩엔 최소 100k 권장 → 사실상 24GB+ 카드 요구.
+
+## 우리(cocy/openclaw) 시사점
+- 접점은 이미 있음: llm.cocy.io가 OpenAI 호환 게이트웨이 → Ollama/LM Studio를 한 모델로 꽂으면 됨.
+- 12GB가 천장: RTX 3080 Ti(12GB)엔 26B 안 들어감. 현실적 상한=E4B(QAT)/12B 양자화, 역할=보조(분류·요약·단순 편집).
+- 위임 정책과 결합: 단순·반복 작업을 로컬 모델로 돌려 클라우드 토큰 절약. 설계·판단은 프런티어 유지.
+- "6배"는 우리 워크로드 미검증 → 작은 PoC(위임 작업 1종을 로컬 E4B로)로 우리 숫자를 직접 재는 게 다음 수순.
+
+## 유의점
+오피니언/실무 가이드(벤치마크 아님). 원문 후반(Copilot/Pi 설정 + 데모 앱)은 분석 범위 밖. 로컬 판은 빠르게 변함 — 도입 전 최신 리더보드 재확인.
+
+## 출처
+- Alex Ewerlöf, "Using local LLMs for agentic coding" — https://blog.alexewerlof.com/p/local-llms-for-agentic-coding
+- 분석 원문: https://page.cocy.io/local-llm-coding
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='local-llm-coding.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body>
+</html>
