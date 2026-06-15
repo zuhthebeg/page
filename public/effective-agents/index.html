@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>효과적인 에이전트 만들기 — 학습노트 · page.cocy.io</title>
+<meta name="description" content="Anthropic 'Building Effective Agents' 학습노트: 워크플로 vs 에이전트 구분, 5가지 워크플로 패턴(프롬프트 체이닝·라우팅·병렬화·오케스트레이터-워커·평가자-최적화기), 자율 에이전트, 그리고 단순성·투명성·ACI 3원칙. 우리 OpenClaw 스택에 어떻게 매핑되는지까지 정리." />
+<link rel="canonical" href="https://page.cocy.io/effective-agents" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="효과적인 에이전트 만들기 (학습노트)" />
+<meta property="og:description" content="복잡한 프레임워크가 아니라 단순·조합 가능한 패턴이 이긴다. 5가지 워크플로 + 에이전트 + 3원칙, 그리고 우리 스택 매핑." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#3a5a78; --accent-2:#4f7ba0; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:60ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+h3{font-family:var(--display);font-weight:600;font-size:1.1rem;margin:1.4rem 0 .4rem}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+b{font-weight:500;color:var(--ink)}
+code{font-family:var(--mono);font-size:.86em;background:rgba(58,90,120,.09);padding:.1em .4em;border-radius:4px;color:var(--accent)}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#f3f6f9);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.25rem;color:var(--ink);margin-top:.2rem;max-width:38ch}
+.score{font-family:var(--display);font-weight:600;font-size:2.2rem;color:var(--accent);line-height:1;white-space:nowrap;text-align:right}
+.score small{display:block;font-size:.7rem;color:var(--muted);font-family:var(--mono);font-weight:400;letter-spacing:.04em;margin-top:.3rem}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.mid{background:rgba(184,134,11,.14);color:var(--warn)}
+.tag.info{background:rgba(58,90,120,.13);color:var(--accent)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.9rem}
+th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+tr.hl td{background:rgba(79,123,160,.09)}
+.b-good{color:var(--good)}.b-bad{color:var(--bad)}
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+ol.steps{list-style:none;counter-reset:s;margin:.4rem 0}
+ol.steps li{position:relative;padding-left:2.2rem;margin-bottom:.8rem;color:var(--ink-soft)}
+ol.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:.05em;width:1.5rem;height:1.5rem;background:var(--accent);color:#fff;border-radius:50%;font-family:var(--mono);font-size:.8rem;display:flex;align-items:center;justify-content:center;font-weight:500}
+ol.steps li b{color:var(--ink);font-weight:500}
+.callout{background:#f3f6f9;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout b{color:var(--accent)}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(58,90,120,.3)}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+</style>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Learning Note · Agent Patterns</div>
+    <h1>효과적인 에이전트 만들기</h1>
+    <p class="lead">Anthropic의 <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building Effective Agents</a> 학습노트 — 수십 개 팀과 에이전트를 만들며 얻은 결론은 의외로 단순하다: <b>가장 성공한 구현은 복잡한 프레임워크가 아니라 단순하고 조합 가능한 패턴</b>으로 만들어졌다.</p>
+    <div class="meta">
+      <span><b>학습노트</b> page.cocy.io · 2026-06-15</span>
+      <span><b>원문</b> Anthropic Engineering</span>
+      <span><b>저자</b> Erik S. · Barry Zhang</span>
+      <span><b>분야</b> Agentic Systems</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">한 줄 결론</div>
+          <div class="v-main">정교한 시스템이 아니라 "필요에 맞는" 시스템을 만들어라 — 복잡도는 결과가 증명될 때만 추가</div>
+        </div>
+        <div class="score">3원칙<small>단순 · 투명 · ACI</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag info">워크플로 5패턴 + 에이전트</span>
+        <span class="tag yes">✓ LLM API 직접 시작 권장</span>
+        <span class="tag mid">△ 프레임워크 추상화 주의</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="def">
+    <h2><span class="n">01</span> 워크플로 vs 에이전트 — 핵심 구분</h2>
+    <p>Anthropic은 둘 다 "에이전트형 시스템(agentic systems)"으로 묶되, <b>아키텍처상 결정적 차이</b>를 둔다:</p>
+    <table>
+      <thead><tr><th>구분</th><th>정의</th><th>성격</th></tr></thead>
+      <tbody>
+        <tr><td><b>워크플로</b> (Workflow)</td><td>LLM과 도구가 <b>미리 정해진 코드 경로</b>로 오케스트레이션됨</td><td>예측 가능·일관성 — 잘 정의된 작업에 적합</td></tr>
+        <tr><td><b>에이전트</b> (Agent)</td><td>LLM이 <b>스스로 프로세스·도구 사용을 동적으로 지휘</b>, 작업 수행 방식의 통제권을 가짐</td><td>유연성·모델 주도 판단 — 규모 있는 개방형 문제에 적합</td></tr>
+      </tbody>
+    </table>
+    <p class="note">즉 "경로를 사람이 코드로 박았나(워크플로) vs 모델이 런타임에 정하나(에이전트)"가 갈림길.</p>
+  </section>
+
+  <section data-block="when">
+    <h2><span class="n">02</span> 언제 (안) 쓰나 + 프레임워크 경고</h2>
+    <ul class="clean">
+      <li><b>가장 단순한 해법부터.</b> 에이전트형 시스템은 <b>지연·비용을 더 나은 성능과 맞바꾼다.</b> 그 트레이드오프가 말이 될 때만 복잡도를 올려라. 많은 경우 <b>단일 LLM 호출 + 검색 + in-context 예시</b>면 충분하다.</li>
+      <li><b>워크플로 vs 에이전트 선택.</b> 잘 정의된 작업엔 워크플로(예측 가능), 규모 있는 유연성이 필요하면 에이전트.</li>
+      <li><b>프레임워크는 양날의 검.</b> Claude Agent SDK·Strands(AWS)·Rivet·Vellum 등은 시작을 쉽게 하지만, <b>추상화 레이어가 실제 프롬프트·응답을 가려 디버깅을 어렵게</b> 하고 불필요한 복잡도를 부추긴다. <b>LLM API를 직접 쓰며 시작</b>하고, 프레임워크를 쓰더라도 내부 코드를 이해하라. "내부가 이럴 것"이라는 잘못된 가정이 흔한 에러 원인.</li>
+    </ul>
+  </section>
+
+  <section data-block="block">
+    <h2><span class="n">03</span> 빌딩블록 — 증강된 LLM</h2>
+    <p>모든 에이전트형 시스템의 기본 단위는 <b>검색(retrieval)·도구(tools)·메모리(memory)로 증강된 LLM</b>이다. 현 모델은 스스로 검색 쿼리를 만들고, 적절한 도구를 고르고, 무엇을 기억할지 판단한다.</p>
+    <div class="callout">구현에서 중요한 두 가지: ① 능력을 <b>네 유스케이스에 맞게 재단</b>하고, ② LLM에게 <b>쉽고 잘 문서화된 인터페이스</b>를 줄 것. (MCP가 서드파티 도구 생태계 연결의 한 방법.)</div>
+  </section>
+
+  <section data-block="patterns">
+    <h2><span class="n">04</span> 워크플로 5패턴</h2>
+    <p>단순한 조합부터 점점 복잡해지는 순서. 각 패턴엔 "언제 쓰나"가 명확하다.</p>
+    <table>
+      <thead><tr><th>패턴</th><th>구조</th><th>언제 / 예시</th></tr></thead>
+      <tbody>
+        <tr><td><b>1. 프롬프트 체이닝</b><br>Prompt chaining</td><td>작업을 순차 단계로 분해, 각 LLM 호출이 앞 출력을 처리. 중간에 <b>게이트(프로그램적 검사)</b> 삽입 가능</td><td>깔끔히 고정 하위작업으로 쪼개질 때. <b>지연↔정확도</b> 맞교환. 예: 카피 생성→번역, 개요 작성→검증→본문</td></tr>
+        <tr><td><b>2. 라우팅</b><br>Routing</td><td>입력을 분류해 전문화된 후속 작업으로 보냄(관심사 분리)</td><td>구분되는 카테고리를 따로 다루는 게 나을 때. 예: 고객문의 유형별 분기, <b>쉬운 질문→Haiku / 어려운 질문→Sonnet</b>으로 비용·성능 최적화</td></tr>
+        <tr><td><b>3. 병렬화</b><br>Parallelization</td><td><b>섹셔닝</b>(독립 하위작업 동시 실행) + <b>투표</b>(같은 작업 여러 번 → 다양한 출력)</td><td>속도 또는 다관점 신뢰도가 필요할 때. 예: 본응답/유해성 검사 분리, <b>코드 취약점 여러 프롬프트로 교차 점검</b>, 평가 자동화</td></tr>
+        <tr><td><b>4. 오케스트레이터-워커</b><br>Orchestrator-workers</td><td>중앙 LLM이 <b>동적으로</b> 작업을 쪼개 워커 LLM에 위임하고 결과를 종합</td><td>하위작업을 미리 예측 못 할 때(병렬화와 달리 <b>사전 정의 아님</b>). 예: 여러 파일 고치는 코딩, 다중 소스 검색</td></tr>
+        <tr><td><b>5. 평가자-최적화기</b><br>Evaluator-optimizer</td><td>한 LLM이 생성, 다른 LLM이 <b>평가·피드백</b>을 루프로 제공</td><td>명확한 평가기준 + 반복 개선이 가치 있을 때. 예: 문학 번역, 여러 라운드 검색(평가자가 추가검색 여부 결정)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section data-block="agents">
+    <h2><span class="n">05</span> 에이전트 — 자율 루프</h2>
+    <p>에이전트는 사람의 명령/대화로 시작 → 작업이 명확해지면 <b>독립적으로 계획·실행</b>한다. 핵심은 매 스텝마다 환경에서 <b>"그라운드 트루스(ground truth)"</b>를 얻는 것 — 도구 호출 결과·코드 실행 결과로 진척을 평가하고, 체크포인트나 막힐 때 사람에게 돌아온다.</p>
+    <ul class="clean">
+      <li><b>구현은 의외로 단순.</b> "환경 피드백에 기반해 <b>도구를 루프로 쓰는 LLM</b>"일 뿐. 그래서 <b>도구셋과 그 문서 설계가 결정적</b>이다.</li>
+      <li><b>언제 쓰나.</b> 스텝 수를 예측·고정할 수 없는 개방형 문제, 모델 판단을 어느 정도 신뢰할 수 있는 환경. 자율성 = 신뢰된 환경에서 작업을 스케일하는 데 이상적.</li>
+      <li><b>대가.</b> 비용↑ + <b>오류 누적(compounding errors)</b> 위험. → <b>샌드박스에서 광범위 테스트 + 가드레일 + 정지조건</b>(예: 최대 반복 횟수) 필수.</li>
+    </ul>
+    <p class="note">자사 사례: SWE-bench 코딩 에이전트(PR 설명만으로 실제 GitHub 이슈 해결), computer use 레퍼런스 구현.</p>
+  </section>
+
+  <section data-block="principles">
+    <h2><span class="n">06</span> 3대 원칙 + ACI</h2>
+    <ol class="steps">
+      <li><b>단순성(Simplicity).</b> 에이전트 설계를 단순하게 유지.</li>
+      <li><b>투명성(Transparency).</b> 에이전트의 <b>계획 단계를 명시적으로 드러내라.</b></li>
+      <li><b>잘 만든 ACI(Agent-Computer Interface).</b> 철저한 <b>도구 문서화와 테스트</b>로 에이전트-컴퓨터 인터페이스를 정성껏 설계.</li>
+    </ol>
+    <div class="callout"><b>ACI = 모델을 위한 UX.</b> 사람용 인터페이스(HCI)에 쏟는 노력만큼 도구 정의에 투자하라. "주니어 개발자에게 주는 좋은 docstring"처럼 — 예시·엣지케이스·입력형식·도구 간 경계를 명시. 포맷은 <b>모델이 인터넷에서 자연스럽게 본 형태</b>에 가깝게(diff보다 전체 재작성이 쉬울 때가 있음, JSON 안 코드보다 마크다운). 실수 못 하게 인자를 바꾸는 <b>포카요케(poka-yoke)</b>. SWE-bench 때 전체 프롬프트보다 <b>도구 최적화에 더 많은 시간</b>을 썼고, 상대경로→절대경로 강제만으로 실수가 사라졌다.</div>
+  </section>
+
+  <section data-block="meaning">
+    <h2><span class="n">07</span> 우리(OpenClaw/cocy) 스택 매핑</h2>
+    <p>이 글이 특히 유용한 건, <b>우리가 이미 이 패턴들을 굴리고 있기 때문</b>이다. 용어만 맞추면 우리 도구가 바로 보인다.</p>
+    <table>
+      <thead><tr><th>원문 패턴</th><th>우리 스택의 대응</th></tr></thead>
+      <tbody>
+        <tr><td>프롬프트 체이닝</td><td>Workflow 툴의 <code>pipeline()</code> — 단계별 통과, 게이트 검사</td></tr>
+        <tr><td>병렬화(섹셔닝/투표)</td><td><code>parallel()</code> 팬아웃, 그리고 우리가 쓰는 <b>다수결 검증</b>(여러 검토자)</td></tr>
+        <tr><td>오케스트레이터-워커</td><td><code>sessions_spawn</code>/subagents, Workflow의 <code>agent()</code> 동적 위임·종합</td></tr>
+        <tr><td>평가자-최적화기</td><td>워크플로의 <b>adversarial verify 단계</b>(생성→독립 검증 루프)</td></tr>
+        <tr><td>라우팅</td><td>llm.cocy.io 모델 라우팅 + <code>agents.defaults</code> 폴백(쉬운 건 저비용 모델, 어려운 건 상위 모델)</td></tr>
+      </tbody>
+    </table>
+    <ul class="clean">
+      <li><b>"단순부터, 복잡도는 증명될 때만"</b> = 우리 위임 원칙 그대로. 스펙 명확한 단순 작업은 단일 호출/위임, 3파일 이상 복잡 작업만 harness로 끌어올린다.</li>
+      <li><b>ACI = 우리 <code>TOOLS.md</code>·스킬 <code>SKILL.md</code>·MCP 스키마.</b> "도구 문서를 주니어용 docstring처럼"은 우리 스킬 작성 규칙과 정확히 같은 말. 우리도 <b>절대경로 강제</b> 같은 포카요케를 이미 쓴다.</li>
+      <li><b>투명성</b> = 우리 위임 계약(Target State / Scope / Done When / Stop Conditions). 계획을 드러내라는 원칙의 운영판.</li>
+      <li><b>프레임워크 추상화 경고</b> = 우리가 무거운 에이전트 프레임워크 대신 <b>CLI·LLM API를 직접</b> 쓰는 이유의 근거.</li>
+    </ul>
+  </section>
+
+  <section data-block="limits">
+    <h2><span class="n">08</span> 메모</h2>
+    <ul class="clean">
+      <li>이 글은 Anthropic의 <b>의견 있는 가이드</b>다. "에이전트 = 도구를 루프로 쓰는 LLM일 뿐"이라는 의도적으로 <b>거품을 뺀 framing</b>이 핵심 — 마케팅보다 엔지니어링 관점.</li>
+      <li>패턴은 처방(prescription)이 아니라 <b>조합용 블록</b>. 성능 측정 → 반복이 유일한 정답이라고 못박는다.</li>
+    </ul>
+    <p class="note">정리·해석은 본 학습노트가 cocy 앵글로 재구성한 것이며, 원문은 Anthropic Engineering, "Building Effective Agents" (Erik S. · Barry Zhang).</p>
+  </section>
+
+  <div class="foot">
+    <span>learning note on page.cocy.io</span>
+    <span>Agents · 워크플로 5패턴 · 단순·투명·ACI</span>
+  </div>
+</article>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# 효과적인 에이전트 만들기 (학습노트)
+
+> Anthropic, "Building Effective Agents" (Erik S. · Barry Zhang) 학습노트.
+> **한 줄 결론: 가장 성공한 에이전트 구현은 복잡한 프레임워크가 아니라 단순·조합 가능한 패턴으로 만들어졌다. 복잡도는 결과가 증명될 때만 추가하라.**
+
+- 원문: https://www.anthropic.com/engineering/building-effective-agents
+
+## 워크플로 vs 에이전트
+- 워크플로: LLM·도구가 **미리 정해진 코드 경로**로 오케스트레이션. 예측 가능·일관성.
+- 에이전트: LLM이 **스스로 프로세스·도구 사용을 동적으로 지휘**. 유연성·모델 주도.
+- 갈림길: 경로를 사람이 코드로 박았나 vs 모델이 런타임에 정하나.
+
+## 언제 (안) 쓰나 + 프레임워크
+- 가장 단순한 해법부터. 에이전트는 지연·비용을 성능과 맞바꿈. 단일 LLM 호출+검색+예시면 충분한 경우 많음.
+- 잘 정의된 작업=워크플로, 규모 있는 유연성=에이전트.
+- 프레임워크(Claude Agent SDK·Strands·Rivet·Vellum)는 추상화가 프롬프트·응답을 가려 디버깅 어렵게 함. **LLM API 직접 쓰며 시작**, 쓰더라도 내부 이해.
+
+## 빌딩블록: 증강된 LLM
+검색·도구·메모리로 증강된 LLM이 기본 단위. ① 유스케이스에 맞게 재단 ② 쉽고 잘 문서화된 인터페이스. MCP가 한 방법.
+
+## 워크플로 5패턴
+1. **프롬프트 체이닝** — 순차 분해, 중간 게이트 검사. 지연↔정확도. 예: 카피→번역, 개요→검증→본문
+2. **라우팅** — 입력 분류해 전문 작업으로. 예: 문의 유형별 분기, 쉬운 질문→Haiku/어려운 질문→Sonnet
+3. **병렬화** — 섹셔닝(독립 하위작업 동시) + 투표(같은 작업 반복). 예: 본응답/유해성 분리, 코드 취약점 교차점검
+4. **오케스트레이터-워커** — 중앙 LLM이 동적으로 쪼개 위임·종합. 병렬화와 달리 사전정의 아님. 예: 다중 파일 코딩, 다중 소스 검색
+5. **평가자-최적화기** — 생성 LLM + 평가/피드백 LLM 루프. 예: 문학 번역, 다라운드 검색
+
+## 에이전트 (자율 루프)
+환경에서 매 스텝 ground truth(도구·코드 결과) 획득이 핵심. "도구를 루프로 쓰는 LLM"일 뿐 → 도구셋·문서 설계가 결정적. 개방형/스텝 예측불가 문제에. 대가=비용↑+오류 누적 → 샌드박스 테스트+가드레일+정지조건 필수. 사례: SWE-bench 코딩, computer use.
+
+## 3대 원칙 + ACI
+1. 단순성 2. 투명성(계획 단계 명시) 3. 잘 만든 ACI(도구 문서화·테스트)
+ACI = 모델용 UX. HCI만큼 투자. 주니어용 docstring처럼(예시·엣지케이스·경계). 포맷은 모델이 자연스럽게 본 형태로. 포카요케(실수 못 하게 인자 설계). SWE-bench서 프롬프트보다 도구 최적화에 더 시간, 상대→절대경로 강제로 실수 제거.
+
+## 우리(OpenClaw/cocy) 스택 매핑
+| 원문 패턴 | 우리 대응 |
+|---|---|
+| 프롬프트 체이닝 | Workflow pipeline() |
+| 병렬화 | parallel() + 다수결 검증 |
+| 오케스트레이터-워커 | sessions_spawn/subagents, Workflow agent() |
+| 평가자-최적화기 | 워크플로 adversarial verify |
+| 라우팅 | llm.cocy.io 모델 라우팅 + agents.defaults 폴백 |
+
+- "단순부터, 복잡도는 증명될 때만" = 우리 위임 원칙(단순=단일호출/위임, 3파일+ =harness).
+- ACI = TOOLS.md·SKILL.md·MCP 스키마. 절대경로 강제 같은 포카요케 이미 사용.
+- 투명성 = 위임 계약(Target State/Scope/Done When/Stop Conditions).
+- 프레임워크 경고 = CLI·LLM API 직접 쓰는 근거.
+
+## 메모
+의견 있는 엔지니어링 가이드. "에이전트=도구 루프 LLM"은 의도적으로 거품 뺀 framing. 패턴은 처방 아닌 조합 블록 — 측정→반복이 정답.
+
+## 출처
+- Anthropic Engineering, "Building Effective Agents" — https://www.anthropic.com/engineering/building-effective-agents
+- 학습노트 원문: https://page.cocy.io/effective-agents
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='effective-agents.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body>
+</html>
