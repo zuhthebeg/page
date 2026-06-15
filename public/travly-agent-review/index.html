@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Travly 에이전트 성숙도 진단 — 개선 보고서 · page.cocy.io</title>
+<meta name="description" content="Anthropic 에이전트 패턴 + cocy의 Agent Platform 학습노트 관점에서 Travly의 AI 어시스턴트를 5영역(Workflow·Planning·Execution·Memory·Context)으로 진단. 강점은 plan→승인→실행 상태머신, 최대 갭은 영속 메모리 부재. 우선순위별 개선안 + 사내 PoC 전환 제언." />
+<link rel="canonical" href="https://page.cocy.io/travly-agent-review" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Travly 에이전트 성숙도 진단 (개선 보고서)" />
+<meta property="og:description" content="Travly는 plan→승인→실행 골격을 이미 갖춘 2.7/5 수준. 메모리·멱등성·예산을 채우면 cocy의 Agent Runtime PoC가 된다." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#3a5a78; --accent-2:#4f7ba0; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:60ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+b{font-weight:500;color:var(--ink)}
+code{font-family:var(--mono);font-size:.84em;background:rgba(58,90,120,.09);padding:.1em .4em;border-radius:4px;color:var(--accent)}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#f3f6f9);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.25rem;color:var(--ink);margin-top:.2rem;max-width:38ch}
+.score{font-family:var(--display);font-weight:600;font-size:2.3rem;color:var(--accent);line-height:1;white-space:nowrap;text-align:right}
+.score small{display:block;font-size:.7rem;color:var(--muted);font-family:var(--mono);font-weight:400;letter-spacing:.04em;margin-top:.3rem}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.mid{background:rgba(184,134,11,.14);color:var(--warn)}
+.tag.bad{background:rgba(168,68,58,.14);color:var(--bad)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.9rem}
+th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+tr.hl td{background:rgba(79,123,160,.09)}
+.b-good{color:var(--good)}.b-bad{color:var(--bad)}
+.bars{margin:1.2rem 0 .6rem;display:flex;flex-direction:column;gap:.55rem}
+.bar-row{display:grid;grid-template-columns:150px 1fr auto;align-items:center;gap:.7rem;font-size:.84rem}
+.bar-row .bl{font-family:var(--mono);color:var(--ink-soft);font-size:.76rem}
+.bar-track{background:var(--line-soft);border-radius:4px;height:18px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+.bar-fill.hi{background:linear-gradient(90deg,#5fa06f,#3f7d4f)}
+.bar-fill.lo{background:linear-gradient(90deg,#cf8a6a,#a8443a)}
+.bar-row .bv{font-family:var(--mono);font-size:.78rem;color:var(--ink);min-width:42px;text-align:right}
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+ol.rank{list-style:none;counter-reset:r;margin:.4rem 0}
+ol.rank li{position:relative;padding-left:2.4rem;margin-bottom:1rem;color:var(--ink-soft)}
+ol.rank li::before{counter-increment:r;content:"P"counter(r);position:absolute;left:0;top:.05em;padding:.05rem .4rem;background:var(--accent);color:#fff;border-radius:6px;font-family:var(--mono);font-size:.72rem;font-weight:500}
+ol.rank li b{color:var(--ink);font-weight:500}
+.callout{background:#f3f6f9;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout.warn{background:#fbf4e6;border-left:3px solid var(--warn)}
+.callout b{color:var(--accent)}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(58,90,120,.3)}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+</style>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Internal Review · Agent Maturity</div>
+    <h1>Travly 에이전트 성숙도 진단</h1>
+    <p class="lead"><a href="https://page.cocy.io/effective-agents">Anthropic 에이전트 패턴</a>과 <a href="https://page.cocy.io/agent-platform-notes">Agent Platform 학습노트</a>의 5영역 프레임으로 Travly의 AI 어시스턴트를 실제 코드 기준으로 진단했다. 결론: <b>"AI 기능"치고는 골격이 단단하다 — 이미 plan→승인→실행 상태머신을 갖췄다.</b> 빠진 건 런타임급 부품들이다.</p>
+    <div class="meta">
+      <span><b>진단</b> page.cocy.io · 2026-06-15</span>
+      <span><b>대상</b> Travly (travel-mvp) AI 어시스턴트</span>
+      <span><b>근거</b> 소스 직접 검토 (functions/api/assistant/*, migrations/0018)</span>
+      <span><b>프레임</b> Workflow·Planning·Execution·Memory·Context</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">한 줄 진단</div>
+          <div class="v-main">제품 기능으로는 상위, 에이전트 런타임으로는 절반 — 메모리·멱등성·예산을 채우면 cocy의 PoC가 된다</div>
+        </div>
+        <div class="score">2.7<small>/ 5 (주관 평가)</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag yes">✓ 승인 게이트 + 상태머신 보유</span>
+        <span class="tag bad">✗ 영속 메모리 부재 (최대 갭)</span>
+        <span class="tag mid">△ 멱등성·예산·시크릿 미흡</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="have">
+    <h2><span class="n">01</span> 이미 갖춘 것 — 생각보다 단단한 골격</h2>
+    <p>Travly의 어시스턴트는 단순 챗봇이 아니다. <code>migrations/0018</code>의 <code>assistant_action_proposals</code> 테이블과 API 구성을 보면 <b>plan-then-execute + HITL</b> 워크플로가 이미 돌아간다:</p>
+    <ul class="clean">
+      <li><b>파이프라인이 있다.</b> <code>chat</code>(의도) → <code>parse-plan</code>/<code>generate-draft</code>(계획) → <code>verify-places</code>(검증) → <code>preview</code> → <code>execute</code>(승인 후 실행) → <code>cancel</code>. 학습노트의 Intent→Plan→Verify 루프 형태 그대로.</li>
+      <li><b>확인 우선(confirm-first) 승인 게이트.</b> 제안은 <code>pending</code>으로 저장되고 사용자가 확인해야 실행 — 비가역 작업에 사람을 끼우는 HITL이 코드에 박혀 있다(학습노트 04의 핵심).</li>
+      <li><b>상태머신.</b> <code>pending→running→completed/failed/cancelled/expired</code> — 노트 3단계 로드맵이 요구하는 잡 생애주기를 이미 구현.</li>
+      <li><b>계획이 데이터다.</b> <code>actions_json</code>로 구조화 산출, <code>summary_json</code>로 요약, <code>classifyExecutionMode</code>로 immediate/background 분기.</li>
+      <li><b>제안 만료(<code>expires_at</code>)</b>와 <b>결과 기록(<code>results_json</code>/<code>error_text</code>)</b> — 위생과 감사의 씨앗.</li>
+      <li><b>모델 라우팅.</b> <code>_common.ts</code>에 primary/fallback·모델별 타임아웃·5분 캐시·alias 정규화. 라우팅 패턴이 살아 있다.</li>
+    </ul>
+    <p class="note">즉 "에이전트 안 쓰고 워크플로로 풀 수 있으면 그렇게 하라"는 노트 원칙을 (의도했든 아니든) 잘 따르고 있다. 자율 루프가 아니라 고정 흐름 + 승인이라 감사·예측 가능성이 높다.</p>
+  </section>
+
+  <section data-block="scorecard">
+    <h2><span class="n">02</span> 5영역 스코어카드</h2>
+    <p>학습노트의 다섯 단면으로 점수화(0–5, 내 주관 평가). 막대가 길수록 성숙:</p>
+    <div class="bars">
+      <div class="bar-row"><span class="bl">Workflow 설계</span><div class="bar-track"><div class="bar-fill hi" style="width:80%"></div></div><span class="bv">4.0</span></div>
+      <div class="bar-row"><span class="bl">Execution 전략</span><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><span class="bv">3.1</span></div>
+      <div class="bar-row"><span class="bl">Planning</span><div class="bar-track"><div class="bar-fill" style="width:58%"></div></div><span class="bv">2.9</span></div>
+      <div class="bar-row"><span class="bl">Context Eng.</span><div class="bar-track"><div class="bar-fill lo" style="width:44%"></div></div><span class="bv">2.2</span></div>
+      <div class="bar-row"><span class="bl">Memory</span><div class="bar-track"><div class="bar-fill lo" style="width:30%"></div></div><span class="bv">1.5</span></div>
+    </div>
+    <table>
+      <thead><tr><th>영역</th><th>현재</th><th>핵심 갭</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><b>Workflow</b></td><td>plan→승인→실행, 상태머신, 라우팅</td><td>거의 없음 — 가장 잘 된 부분</td></tr>
+        <tr><td><b>Execution</b></td><td>HITL 게이트·만료·결과기록</td><td>멱등성/보상 트랜잭션·예산·서킷브레이커 부재. <code>execute</code>가 내부 HTTP self-call이라 부분 실패 취약</td></tr>
+        <tr><td><b>Planning</b></td><td>구조화 <code>actions_json</code></td><td>계획에 <b>성공 조건 필드 없음</b>("됐는지"를 모름), 재계획 트리거 없음</td></tr>
+        <tr><td><b>Context</b></td><td>언어감지·웹검색 시스템 프롬프트</td><td>점진 공개 없음·히스토리 비제한(context rot)·구조화 주입(출처/신뢰도) 없음·<b>시크릿 하드코딩</b></td></tr>
+        <tr><td><b>Memory</b></td><td>Working(요청마다 history 전달)뿐</td><td><b>Semantic/Episodic 영속 메모리 전무</b> — 여행 앱인데 사용자 취향·과거 여행을 못 기억</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section data-block="gap">
+    <h2><span class="n">03</span> 가장 아픈 갭 — 기억이 없다</h2>
+    <p>어시스턴트는 사실상 <b>요청마다 백지에서 시작</b>한다. <code>chat</code>은 클라이언트가 넘긴 <code>history</code>·현재 위치·시각만 받는다. 사용자가 누구인지, 지난 여행에서 무엇을 좋아했는지, 동행이 누구인지를 <b>저장·검색하지 않는다.</b></p>
+    <div class="callout">여행은 user-memory의 가치가 가장 큰 도메인이다. "대만인 배우자가 있음"(Semantic), "지난달 오사카에서 라멘집을 별 5개 줬음"(Episodic) 같은 사실이 다음 추천 품질을 좌우한다. 지금 Travly는 이걸 전부 버리고 있다 — <b>제품 차별화와 에이전트 성숙도가 동시에 걸린 1순위.</b></div>
+  </section>
+
+  <section data-block="fix">
+    <h2><span class="n">04</span> 우선순위별 개선안</h2>
+    <ol class="rank">
+      <li><b>메모리 레이어 (최우선).</b> D1에 <code>user_facts</code>(Semantic) 테이블 + 과거 일정·리뷰를 Episodic으로 인덱싱(pgvector 없으니 D1 + 임베딩 검색, 또는 우리 로컬 임베딩 활용)해 <code>chat</code>에 주입. 쓰기 정책은 "다음에 또 쓸 사실인가" 하나로 시작. 망각·정정 경로도 같이.</li>
+      <li><b>멱등성 + 보상.</b> <code>execute</code>에 멱등키와 상태 전이 가드(<code>pending→running</code> 원자적 UPDATE), 부분 실패 시 롤백/보상. 내부 HTTP self-call을 직접 함수 호출 + D1 트랜잭션으로 교체.</li>
+      <li><b>예산·서킷브레이커 + 감사.</b> 스텝/시간/토큰 예산과 초과 시 중단. <code>results_json</code>을 who/what/why 감사 로그로 확장 — 백엔드+SRE 출신의 차별화 포인트(노트 04).</li>
+      <li><b>계획에 성공 조건.</b> <code>actions_json</code> 각 액션에 검증 조건 필드를 넣고, <code>verify-places</code>를 일반 검증자로 확장 — "실행자 말고 검증자가 채점".</li>
+      <li><b>시크릿 정리.</b> <code>_common.ts</code>에 LLM API 키가 <b>평문 상수로 하드코딩</b>돼 있다. 서버사이드(Pages Function)라 브라우저 노출은 아니지만, 소스·git에 박힌 키는 즉시 env 바인딩(시크릿)으로 빼고 로테이션.</li>
+      <li><b>비용 경로.</b> primary가 <code>gpt-5.4-mini</code> = OpenAI 과금 경로다. 단순 작업(파싱·요약)은 이미 슬롯 잡아둔 <b>로컬 Gemma</b>나 구독 경로로 오프로드 — <a href="https://page.cocy.io/local-llm-coding">로컬 LLM 보고서</a>의 결론과 직결.</li>
+    </ol>
+  </section>
+
+  <section data-block="poc">
+    <h2><span class="n">05</span> 제언 — Travly를 PoC로 다시 보라</h2>
+    <p>학습노트 4단계(채팅→멀티스텝→승인 게이트→메모리)를 Travly에 겹쳐 보면, <b>Travly는 이미 3.5단계까지 와 있다</b> — 채팅·멀티스텝·승인 게이트가 다 있고, 빠진 건 메모리 한 칸이다.</p>
+    <ul class="clean">
+      <li>즉 <b>"휴가 신청 + 팀 공지" 같은 가상 PoC를 새로 짤 필요가 없다.</b> 실제 사용자·실제 비가역 작업(일정 생성)·실제 승인 흐름이 도는 Travly가 더 좋은 PoC다.</li>
+      <li>여기에 <b>메모리 + 멱등 실행 + 감사</b>를 얹는 작업이 곧 노트 2~3단계(직접 구현·Runtime 설계)의 산출물이 된다. "운영하며 겪은 실패와 수정"이라는 차별화 케이스가 공짜로 쌓인다(노트 07).</li>
+      <li>주의(노트 07의 약점 보완): 빠른 실행보다 <b>요구사항/계약(스텝 입출력 스키마·실패 정책)을 먼저 고정</b>하는 연습을 Travly 리팩터에서 의도적으로 할 것.</li>
+    </ul>
+  </section>
+
+  <section data-block="limits">
+    <h2><span class="n">06</span> 진단의 한계</h2>
+    <ul class="clean">
+      <li>점수는 학습노트 프레임에 비춘 <b>내 주관 평가</b>다. 절대 등급이 아니라 "어디를 다음에 손볼지"를 가리키는 나침반으로 쓸 것.</li>
+      <li>실행 경로(<code>execute</code>) 일부는 헤더만 보고 판단했다 — 멱등성·트랜잭션은 실제 동작 테스트로 재확인 권장(과부하 더블클릭·중복 실행 시나리오).</li>
+      <li>이 진단은 어시스턴트(에이전트) 축만 본 것이다. Travly의 UX·성장지표·수익화는 별도 평가가 필요하다.</li>
+    </ul>
+    <p class="note">근거: <code>/mnt/c/Users/user/travel</code> 소스 직접 검토(2026-06-15). 평가·정리는 본 보고서가 cocy 앵글로 재구성.</p>
+  </section>
+
+  <div class="foot">
+    <span>internal review on page.cocy.io</span>
+    <span>Travly · 2.7/5 · memory가 1순위</span>
+  </div>
+</article>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# Travly 에이전트 성숙도 진단 (개선 보고서)
+
+> Anthropic 에이전트 패턴 + cocy의 Agent Platform 학습노트(Workflow·Planning·Execution·Memory·Context)로 Travly AI 어시스턴트를 소스 기준 진단.
+> **한 줄 진단: 제품 기능으로는 상위, 에이전트 런타임으로는 절반(2.7/5). 이미 plan→승인→실행 상태머신을 갖췄고, 빠진 건 메모리·멱등성·예산 같은 런타임 부품.**
+
+- 근거: /mnt/c/Users/user/travel 소스 직접 검토 (functions/api/assistant/*, migrations/0018_assistant_action_proposals)
+
+## 이미 갖춘 것 (단단한 골격)
+- 파이프라인: chat(의도)→parse-plan/generate-draft(계획)→verify-places(검증)→preview→execute(승인 후)→cancel
+- confirm-first 승인 게이트(HITL): 제안 pending 저장→사용자 확인→실행
+- 상태머신: pending→running→completed/failed/cancelled/expired
+- 계획=데이터: actions_json 구조화, summary_json, classifyExecutionMode(immediate/background)
+- 제안 만료(expires_at) + 결과기록(results_json/error_text)
+- 모델 라우팅: _common.ts primary/fallback·모델별 타임아웃·캐시·alias 정규화
+
+## 5영역 스코어카드 (0–5, 주관)
+| 영역 | 점수 | 핵심 갭 |
+|---|---|---|
+| Workflow | 4.0 | 거의 없음 — 가장 잘 됨 |
+| Execution | 3.1 | 멱등성/보상·예산·서킷브레이커 부재. execute가 내부 HTTP self-call이라 부분 실패 취약 |
+| Planning | 2.9 | 계획에 성공 조건 필드 없음, 재계획 트리거 없음 |
+| Context | 2.2 | 점진 공개 없음·히스토리 비제한·구조화 주입 없음·시크릿 하드코딩 |
+| Memory | 1.5 | Semantic/Episodic 영속 메모리 전무 (최대 갭) |
+
+## 가장 아픈 갭 — 기억이 없다
+chat은 클라가 넘긴 history·위치·시각만 받음. 사용자 취향·과거 여행·동행을 저장·검색 안 함. 여행은 user-memory 가치가 가장 큰 도메인 → 제품 차별화 + 에이전트 성숙도 동시 1순위.
+
+## 우선순위별 개선안
+1. **메모리 레이어(최우선)**: D1 user_facts(Semantic) + 과거 일정·리뷰 Episodic 인덱싱→chat 주입. 쓰기 정책 "다음에 또 쓸 사실인가" 1개로 시작. 망각/정정 경로 포함.
+2. **멱등성+보상**: execute에 멱등키, pending→running 원자적 가드, 부분 실패 롤백. 내부 HTTP self-call→직접 함수 호출+D1 트랜잭션.
+3. **예산·서킷브레이커+감사**: 스텝/시간/토큰 예산, 초과 중단. results_json을 who/what/why 감사로 확장.
+4. **계획에 성공 조건**: actions_json 액션마다 검증 조건, verify-places를 일반 검증자로 확장.
+5. **시크릿 정리**: _common.ts에 LLM 키 평문 하드코딩. 서버사이드라 브라우저 노출은 아니나 소스·git 박힘 → env 바인딩으로 이동+로테이션.
+6. **비용 경로**: primary=gpt-5.4-mini=OpenAI 과금. 단순 작업은 로컬 Gemma(슬롯 있음)/구독 경로로 오프로드.
+
+## 제언 — Travly를 PoC로
+노트 4단계(채팅→멀티스텝→승인→메모리)에 겹치면 Travly는 이미 3.5단계. 메모리 한 칸만 빠짐.
+- 가상 PoC("휴가 신청+팀 공지") 새로 짤 필요 없음 — 실사용자·실비가역작업(일정 생성)·실승인 도는 Travly가 더 나은 PoC.
+- 메모리+멱등 실행+감사 얹기 = 노트 2~3단계 산출물. "운영하며 겪은 실패와 수정" 케이스가 쌓임.
+- 약점 보완: 빠른 실행보다 요구사항/계약(스키마·실패정책) 먼저 고정하는 연습을 Travly 리팩터에서.
+
+## 한계
+주관 평가(나침반용). execute 멱등성·트랜잭션은 실제 더블클릭/중복실행 테스트로 재확인 권장. 어시스턴트 축만 본 진단(UX·성장·수익화는 별도).
+
+## 출처
+- effective-agents(학습노트): https://page.cocy.io/effective-agents
+- agent-platform-notes: https://page.cocy.io/agent-platform-notes
+- 진단 원문: https://page.cocy.io/travly-agent-review
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='travly-agent-review.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body>
+</html>
