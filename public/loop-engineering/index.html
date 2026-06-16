@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>루프 엔지니어링을 우리 멀티게임 마이그레이션에 — cocy.io 실전 설계 · page.cocy.io</title>
+<meta name="description" content="Addy Osmani의 'Loop Engineering'을 cocy.io 구조에 매핑한 실전 설계. 프롬프트 실행자에서 루프 감독관으로 — 부품 6개를 OpenClaw 프리미티브로 환산하고, 멀티게임 DO+WS 마이그레이션·게임별 포팅·대기실 리디자인을 loop/goal + Maker·Reviewer 분리로 설계한 기록." />
+<link rel="canonical" href="https://page.cocy.io/loop-engineering" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="루프 엔지니어링을 우리 멀티게임 마이그레이션에 (실전 설계)" />
+<meta property="og:description" content="부품 6개를 OpenClaw로 환산하고, 멀티 마이그레이션을 loop/goal + 만드는 AI·검사하는 AI 분리로 설계한 cocy.io 기록." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#3a5a78; --accent-2:#4f7ba0; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.12;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:60ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+h3{font-family:var(--display);font-weight:600;font-size:1.12rem;margin:1.6rem 0 .6rem;color:var(--ink)}
+p{margin-bottom:1rem}
+b{font-weight:500;color:var(--ink)}
+ul,ol{margin:.2rem 0 1rem 1.2rem}
+li{margin-bottom:.45rem}
+blockquote{margin:1.2rem 0;padding:.8rem 1.2rem;border-left:3px solid var(--accent-2);background:rgba(79,123,160,.06);color:var(--ink-soft);font-style:italic}
+blockquote cite{display:block;margin-top:.4rem;font-style:normal;font-family:var(--mono);font-size:.74rem;color:var(--muted)}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#f3f6f9);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.22rem;color:var(--ink);margin-top:.3rem}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.mid{background:rgba(184,134,11,.14);color:var(--warn)}
+.tag.info{background:rgba(58,90,120,.13);color:var(--accent)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.88rem}
+th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+.st{font-family:var(--mono);font-size:.72rem;font-weight:500}
+.st.done{color:var(--good)} .st.wip{color:var(--warn)} .st.todo{color:var(--muted)} .st.weak{color:var(--bad)}
+pre{background:#1d2530;color:#cdd6e0;border-radius:8px;padding:1.1rem 1.2rem;overflow-x:auto;font-family:var(--mono);font-size:.78rem;line-height:1.6;margin:1rem 0}
+pre .c{color:#7d92a1}
+code{font-family:var(--mono);font-size:.85em;background:rgba(35,32,27,.06);padding:.08em .35em;border-radius:4px}
+.callout{margin:1.4rem 0;border:1px solid var(--line);border-radius:8px;padding:1.1rem 1.3rem;background:#fbfaf6}
+.callout .ct{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);margin-bottom:.4rem}
+.foot{margin-top:3.5rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted)}
+.foot a{color:var(--accent)}
+hr{border:none;border-top:1px solid var(--line);margin:2.5rem 0}
+.src{font-size:.8rem;color:var(--muted);font-family:var(--mono)}
+</style>
+</head>
+<body>
+<article class="doc">
+  <div class="kicker">cocy.io 엔지니어링 노트 · 실전 적용</div>
+  <h1>루프를 짠다 — 멀티게임 마이그레이션을 감독관의 일로</h1>
+  <p class="lead">Addy Osmani의 「Loop Engineering」은 "AI에게 매번 시키지 말고, AI를 시키는 시스템을 짜라"고 말한다. 이 글은 그 6개 부품을 우리가 실제로 쓰는 OpenClaw 프리미티브로 환산하고, 지금 진행 중인 <b>멀티게임 DO+WebSocket 마이그레이션</b>을 loop/goal + "만드는 AI·검사하는 AI 분리"로 설계한 기록이다. 원문 요약이 아니라, 우리 코드베이스에 박을 수 있는 형태로 옮긴 작업이다.</p>
+  <div class="meta">
+    <span><b>분류</b> 엔지니어링 / 에이전트 운영</span>
+    <span><b>대상</b> relay.cocy.io · game.cocy.io</span>
+    <span><b>상태</b> 설계 + 실행준비</span>
+    <span><b>작성</b> 2026-06-17</span>
+  </div>
+
+  <section data-block>
+    <h2><span class="n">01</span> 받침점이 옮겨갔다</h2>
+    <p>지금까지 우리가 AI를 쓰던 방식은 대화형이었다. 한 줄 시키고, 결과 읽고, 다시 한 줄 시키고. 운전대를 한 번도 놓지 않는 구조다. 루프 엔지니어링은 그 운전대를 <b>시스템</b>에 넘긴다 — 목적과 종료조건만 걸어두면 에이전트가 끝까지 스스로 도는 작업 묶음을 설계하는 것이다.</p>
+    <blockquote>"Loop engineering is replacing yourself as the person who prompts the agent. You design the system that does it instead."
+      <cite>Addy Osmani, Loop Engineering</cite></blockquote>
+    <p>현실적으로 우리에게 이게 와닿는 이유는 하나다. cocy는 새벽에 많이 자리를 비우고, 13개 게임 멀티를 한 게임씩 손으로 포팅·검증하는 건 며칠짜리 반복노동이다. 이건 "지루하지만 끝없이 반복되는 일" — 원문이 루프의 첫 후보로 꼽은 바로 그 종류다. 단, 받침점이 옮겨갔다는 건 일이 사라졌다는 뜻이 아니다. <b>실행자에서 감독관으로</b> 자리가 바뀔 뿐이고, 감독관은 더 무거운 자리다.</p>
+  </section>
+
+  <section data-block>
+    <h2><span class="n">02</span> 부품 6개 → OpenClaw 환산표</h2>
+    <p>원문의 부품 5개 + 기억장치 1개는 도구 이름만 다를 뿐 OpenClaw에 전부 있다. 자기평가는 후하게 매기지 않으려 한다 — 약점은 약점으로 적었다.</p>
+    <table>
+      <thead><tr><th>원문 부품</th><th>OpenClaw 프리미티브</th><th>우리 현황</th></tr></thead>
+      <tbody>
+        <tr><td><b>① 오토메이션</b><br>시작 버튼을 알아서</td><td><code>/loop</code>(주기 반복), <code>create_goal</code>(조건충족까지), cron, heartbeat</td><td><span class="st done">강함</span> heartbeat가 이미 서비스 생존·복구·작은 개선을 돌린다</td></tr>
+        <tr><td><b>② 워크트리</b><br>AI마다 책상 분리</td><td>Agent <code>isolation:"worktree"</code>, sessions_spawn 격리 세션</td><td><span class="st todo">미사용</span> 게임별 포팅은 파일이 갈려 충돌 적음 — 동시 다게임 때만 필요</td></tr>
+        <tr><td><b>③ 스킬</b><br>인수인계 노트</td><td><code>SKILL.md</code>, <code>do-ws-client-playbook.md</code></td><td><span class="st done">강함</span> 마이그레이션 플레이북·체크리스트 이미 코드화됨</td></tr>
+        <tr><td><b>④ 커넥터</b><br>손발</td><td>MCP 도구(bash→wrangler/git, browser, message)</td><td><span class="st done">있음</span> 배포·푸시·텔레그램 보고까지 자동</td></tr>
+        <tr><td><b>⑤ 서브에이전트</b><br>짓는 AI ≠ 검사 AI</td><td>sessions_spawn, Agent(다른 모델·다른 지시문)</td><td><span class="st weak">약점</span> 지금까진 같은 세션이 자가검증. <b>이번에 분리한다</b></td></tr>
+        <tr><td><b>⑥ 상태·기억</b><br>세이브 파일</td><td>repo의 <code>docs/*.md</code>, <code>memory/*.md</code>, backlog</td><td><span class="st done">강함</span> 진행계획·플레이북·메모리 인덱스가 디스크에 산다</td></tr>
+      </tbody>
+    </table>
+    <blockquote>"The agent forgets, the repo doesn't."<cite>Addy Osmani</cite></blockquote>
+    <p>가장 약한 칸은 ⑤다. gostop을 디버깅하는 동안 "만든 사람이 자기 결과를 검증"하는 구조였고, 그래서 캐시/버전 혼동을 몇 번 겪었다. 원문이 측정으로 못 박은 self-bias(자기 글 9.04 vs 독립 채점 7.43, 1.6점 격차)가 우리에게도 그대로 적용된다. 이번 설계의 핵심은 이 칸을 채우는 것이다.</p>
+  </section>
+
+  <section data-block>
+    <h2><span class="n">03</span> 우리 루프 한 바퀴 — 발견→분류→수정→검증</h2>
+    <p>멀티 마이그레이션을 한 바퀴로 압축하면 이렇게 된다. 이건 추상이 아니라 이미 절반은 도는 부품들을 엮은 것이다(테스트·플레이북·배포 스크립트는 존재함).</p>
+    <pre><span class="c"># 상태 파일: games-server/docs/loop-migration-plan.md (백로그 테이블)</span>
+[goal] 전 멀티게임을 DO+WS로 이관 · 게임마다 2계층 테스트 통과 + 리뷰어 승인
+
+loop(다음 게임 1개):
+  발견  ── 백로그에서 status=todo 게임 1개 집기
+  분류  ── 플레이북 체크리스트로 작업범위 산출(렌더러/인터랙션/juice)
+  수정  ── [Maker = Claude] 포팅 + Layer1·2 테스트 추가
+          └ npm test 통과할 때까지
+  검증  ── [Reviewer = 다른 에이전트] 플레이북·싱글 패리티 기준 독립 검토
+          └ pass → status=done, 상태파일 갱신, 다음 게임
+          └ fail → 지적사항 적어 Maker로 되돌림 (한 바퀴 더)
+  보고  ── 사람(cocy) 수신함에는 "리뷰까지 통과한 것"만 올린다</pre>
+    <p>여기서 ②워크트리는 <b>동시에 여러 게임</b>을 돌릴 때만 켠다. 한 게임씩이면 파일이 갈려 불필요하다 — 원문도 "검토 여력이 동시 실행 대수를 정한다"고 했고, 나 혼자 검토하는 지금은 1~2개가 상한이다.</p>
+  </section>
+
+  <section data-block>
+    <h2><span class="n">04</span> 만드는 AI ≠ 검사하는 AI</h2>
+    <p>cocy가 직접 요구한 부분이다 — "네가 작업한 걸 다른 에이전트한테 시켜서 검토하는 체계". 원문의 Writer↔Evaluator↔Critic 분리를 우리 규모에 맞게 축소한다.</p>
+    <pre>[작업]  Maker (Claude/Opus)  ── 포팅 + 테스트 작성 + 자가 npm test
+   │
+   ▼
+[검토]  Reviewer (다른 모델·읽기전용 지시문)
+        ├ 입력: diff + 플레이북 체크리스트 + 싱글 동작 스펙
+        ├ 본다: 턴 모델 패리티 / 사운드·애니 계약 / 전역충돌 / 캐시버스트 / 테스트 실재성
+        └ 출력: {verdict: pass|fail, 지적[], 놓친것[]}  ← 구조화
+   │
+   ▼
+[판정]  fail이면 Maker로 되돌림 · pass면 사람에게 "검토통과" 보고만</pre>
+    <div class="callout">
+      <div class="ct">왜 다른 에이전트인가</div>
+      <p>같은 모델이 자기 결과를 채점하면 후하게 준다(측정된 1.6점 격차). 그래서 Reviewer는 <b>가능하면 다른 계열 모델</b>(gemini / gpt)로 두고, 같은 계열이면 'self-bias 경고'를 강제로 단다. Reviewer는 코드를 고치지 않는다 — 오직 지적만 한다. 고치는 책임과 검사하는 책임을 일부러 가른다.</p>
+    </div>
+    <p>리뷰어의 강도도 역할에 맞춘다. 빠른 패리티 점검은 가벼운 모델로, 보안·결제·지갑 정산이 얽힌 변경은 강한 모델 + 깊은 추론으로. gostop의 <code>shared-wallet</code> 정산 같은 건 후자다.</p>
+  </section>
+
+  <section data-block>
+    <h2><span class="n">05</span> 세 작업의 실행준비</h2>
+    <h3>A. 멀티 아키텍처 마이그레이션 (공용 트랜스포트 승격)</h3>
+    <p>gostop은 지금 인라인 69줄 <code>?relay=do</code> 훅으로 DO+WS에 붙어 있다(공용 <code>multiplayer.js</code>는 REST에 하드와이어). 검증된 이 훅을 <code>lib/multiplayer.js</code> 내부로 승격하고 공개 콜백 시그니처를 유지하면, 게임 코드는 0수정으로 WS를 탄다. <span class="tag info" style="display:inline-block">선행조건</span> gostop이 레퍼런스로 깨끗해야 함 — 현재 do-v7까지 안정화 진행 중.</p>
+    <h3>B. 게임별 포팅</h3>
+    <p>플레이북 체크리스트(uid 영속 / 닉네임 / 이벤트→juice / fly 애니 / 잔여 UI / 결과창 / 2계층 테스트 / 전역충돌 / 캐시버스트)를 게임마다 loop로 돌린다. 거래가 얽힌 게임(pingtan·catan)은 <code>TRADE_ACCEPT</code> 서버권위 승격이 추가로 필요 — 백로그에 별도 플래그로 표시.</p>
+    <h3>C. 멀티 대기실 리디자인</h3>
+    <p>현재 대기실은 PoC 수준(방코드 + 시작 버튼 + 접속자 수). 리디자인 방향: 방 목록/빠른매칭, 좌석·준비 상태, 재대국 버튼(서버 방 리셋은 좀비방 리셋으로 이미 절반 구현), 관전 진입. 이건 loop보다 <b>설계 우선</b> 항목이라, 와이어프레임 → 단일 게임 적용 → 공용화 순으로 분리한다.</p>
+  </section>
+
+  <section data-block>
+    <h2><span class="n">06</span> 냉정하게 — 루프는 사람을 빼주지 않는다</h2>
+    <p>원문이 가장 힘줘 못 박은 부분이고, 우리에게도 그대로다.</p>
+    <ul>
+      <li><b>검증은 사람 몫.</b> 오디오·애니 "체감", 실제 멀티 플레이감은 테스트로 100% 못 잡는다. 리뷰어 에이전트도 사람의 한 판 플레이를 대체하지 못한다 — cocy의 실기기 확인이 마지막 게이트다.</li>
+      <li><b>이해도는 노력해야 유지된다.</b> 루프가 코드를 빨리 뽑을수록, 내가 무슨 코드를 들고 있는지 읽지 않으면 모르게 된다. gostop의 서버/싱글 턴 모델이 갈라져 있던 걸 늦게 안 게 그 증거다.</li>
+      <li><b>가장 큰 위험은 인지적 항복.</b> "루프는 그 차이를 모른다. 사람은 안다." 같은 루프라도 이해를 더 빨리 하려고 쓰는 사람과, 이해를 피하려 쓰는 사람의 결과는 정반대로 갈린다.</li>
+    </ul>
+    <div class="verdict">
+      <div class="v-label">우리에게 주는 결론</div>
+      <div class="v-main">루프는 짠다. 단, 검증 게이트(테스트 + 리뷰어 + 사람 한 판)를 빼지 않는 선에서. gostop을 레퍼런스로 깨끗이 박은 뒤 → 공용 승격 → 게임별 포팅 loop를 돌린다.</div>
+      <div class="tags">
+        <span class="tag yes">오토메이션 ✓</span>
+        <span class="tag yes">스킬 ✓</span>
+        <span class="tag yes">상태기억 ✓</span>
+        <span class="tag mid">서브에이전트 — 이번에 분리</span>
+        <span class="tag mid">워크트리 — 동시실행 시</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <p class="src">근거 글: Addy Osmani, <i>Loop Engineering</i> (인용: Peter Steinberger, Boris Cherny). 한국어 정리 참고: goddaehee.tistory.com/614. 이 페이지는 원문 번역이 아니라 cocy.io 코드베이스(relay.cocy.io·game.cocy.io)에 적용하기 위해 재구성한 분석·설계 기록이다.</p>
+    <p style="margin-top:.6rem">실행 상태파일: <code>games-server/docs/loop-migration-plan.md</code> · <a href="https://page.cocy.io">page.cocy.io</a></p>
+  </div>
+</article>
+</body>
+</html>
