@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nous Research Hermes 로컬 셋업 타당성 — 다른 PC에 깔 수 있나 · page.cocy.io</title>
+<meta name="description" content="Nous Research의 오픈웨이트 Hermes 라인업(Hermes 4 14B/70B/405B, Hermes 4.3 36B) 조사. 무검열·중립정렬·하이브리드 추론 모델을 다른 PC에 로컬로 셋업할 수 있는지 — VRAM 티어별 타당성, GGUF 양자화 크기, 실행 스택, 라이선스, cocy 활용처까지 cocy 앵글로 정리." />
+<link rel="canonical" href="https://page.cocy.io/hermes-local" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Hermes 로컬 셋업 타당성 (조사 보고서)" />
+<meta property="og:description" content="Nous Research Hermes 오픈웨이트를 다른 PC에 깔 수 있나 — 12GB는 14B, 24GB면 4.3 36B. VRAM 티어별 go/no-go." />
+<meta name="robots" content="index,follow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#3a5a78; --accent-2:#4f7ba0; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:60ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+h3{font-family:var(--display);font-weight:600;font-size:1.12rem;margin:1.6rem 0 .6rem}
+p{margin-bottom:1rem}
+b{font-weight:500;color:var(--ink)}
+ul{margin:.2rem 0 1rem 1.1rem}
+li{margin-bottom:.45rem}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--line)}
+code{font-family:var(--mono);font-size:.86em;background:rgba(35,32,27,.06);padding:.1rem .35rem;border-radius:4px}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#f3f6f9);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.25rem;color:var(--ink);margin-top:.2rem;max-width:46ch}
+.score{font-family:var(--display);font-weight:600;font-size:2.1rem;color:var(--accent);line-height:1;white-space:nowrap;text-align:right}
+.score small{display:block;font-size:.7rem;color:var(--muted);font-family:var(--mono);font-weight:400;letter-spacing:.04em;margin-top:.3rem}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.mid{background:rgba(184,134,11,.14);color:var(--warn)}
+.tag.no{background:rgba(168,68,58,.14);color:var(--bad)}
+.tag.info{background:rgba(58,90,120,.13);color:var(--accent)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.9rem}
+th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+td.num{font-family:var(--mono);text-align:right}
+tr.hl td{background:rgba(79,123,160,.09);font-weight:500}
+.b-good{color:var(--good);font-weight:500}.b-bad{color:var(--bad);font-weight:500}.b-mid{color:var(--warn);font-weight:500}
+.note{background:rgba(58,90,120,.06);border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1.2rem 0;font-size:.92rem;color:var(--ink-soft)}
+.foot{margin-top:3.4rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted)}
+.foot a{color:var(--muted)}
+.src{font-family:var(--mono);font-size:.74rem;line-height:1.9}
+</style>
+</head>
+<body>
+<main class="doc">
+  <div class="kicker">page.cocy.io · 오픈모델 조사</div>
+  <h1>Hermes를 다른 PC에 깔 수 있나</h1>
+  <p class="lead">Nous Research의 오픈웨이트 <b>Hermes</b> 라인업을 조사하고, 우리(cocy) 환경 기준으로 다른 PC에 로컬 셋업이 현실적인지 VRAM 티어별로 판정한다. 결론부터: <b>12GB면 14B, 24GB면 4.3 36B</b>가 실용선이다.</p>
+  <div class="meta">
+    <span><b>대상</b> Hermes 4 (14B/70B/405B) · Hermes 4.3 (36B)</span>
+    <span><b>제작</b> Nous Research</span>
+    <span><b>분류</b> 오픈웨이트 · 무검열/중립정렬</span>
+    <span><b>작성</b> 2026-06-21</span>
+  </div>
+
+  <div class="verdict">
+    <div class="v-top">
+      <div>
+        <div class="v-label">셋업 타당성</div>
+        <div class="v-main">다른 PC가 <b>24GB VRAM(RTX 3090/4090)</b>이면 Hermes 4.3 36B 로컬 셋업 추천. <b>12GB</b>면 Hermes 4 14B가 한계선.</div>
+      </div>
+      <div class="score">가능<small>조건부 · GPU VRAM 의존</small></div>
+    </div>
+    <div class="tags">
+      <span class="tag yes">12GB → 14B OK</span>
+      <span class="tag yes">24GB → 36B OK</span>
+      <span class="tag no">70B+ → 서버급</span>
+      <span class="tag info">GGUF · Ollama 한 줄 실행</span>
+      <span class="tag mid">라이선스 베이스 의존</span>
+    </div>
+  </div>
+
+  <section data-block>
+    <h2><span class="n">01</span> Hermes가 뭐고 왜 보나</h2>
+    <p>Hermes는 <b>Nous Research</b>가 내는 오픈웨이트 LLM 시리즈다. 상용 폐쇄모델(ChatGPT/Claude)과 달리 가중치를 직접 받아 자기 하드웨어에서 돌릴 수 있고, 두 가지 차별점이 핵심이다.</p>
+    <ul>
+      <li><b>중립 정렬 · 최소 거부</b> — 회사 정책으로 답을 막는 대신 "사용자 가치에 정렬"을 지향. Hermes 4.3은 RefusalBench(불필요한 거부 측정)에서 오픈·폐쇄 통틀어 SOTA를 주장. 캐릭터/롤플레이/제약 적은 어시스턴트에 강점.</li>
+      <li><b>하이브리드 추론</b> — <code>&lt;think&gt;...&lt;/think&gt;</code> 태그로 추론 모드를 켜고 끈다. 단순 질의는 빠르게, 복잡한 건 사고사슬을 펼친다.</li>
+    </ul>
+    <p>우리가 보는 이유는 명확하다. <b>llm.cocy.io는 현재 OpenAI/Claude/Gemini 같은 과금·외부 경로에 묶여 있다.</b> 무검열·중립 모델을 로컬로 두면 (1) 캐릭터/게임 NPC 대화처럼 정책 거부가 거슬리는 용도, (2) 과금 없는 로컬 백엔드 옵션, (3) 프라이버시가 필요한 작업을 우리 GPU에서 처리할 수 있다.</p>
+  </section>
+
+  <section data-block>
+    <h2><span class="n">02</span> 라인업 — 무엇을 깔 수 있나</h2>
+    <p>현재 받을 수 있는 주요 가중치는 네 가지다. 같은 Hermes라도 <b>베이스 모델이 다 다르다</b>(라이선스가 거기서 갈린다).</p>
+    <table>
+      <thead><tr><th>모델</th><th>베이스</th><th class="num">파라미터</th><th class="num">컨텍스트</th><th>출시</th><th>성격</th></tr></thead>
+      <tbody>
+        <tr><td>Hermes 4 14B</td><td>Qwen3</td><td class="num">14B</td><td class="num">~128K</td><td>2025-08</td><td>가성비 소형</td></tr>
+        <tr class="hl"><td>Hermes 4.3 36B</td><td>Seed-OSS-36B</td><td class="num">36B</td><td class="num">최대 512K</td><td>2025-12</td><td>로컬 플래그십</td></tr>
+        <tr><td>Hermes 4 70B</td><td>Llama 3.1</td><td class="num">70B</td><td class="num">~128K</td><td>2025-08</td><td>고성능</td></tr>
+        <tr><td>Hermes 4 405B</td><td>Llama 3.1</td><td class="num">405B</td><td class="num">~128K</td><td>2025-08</td><td>프런티어급</td></tr>
+      </tbody>
+    </table>
+    <p><b>주목할 건 Hermes 4.3 36B다.</b> Nous가 "소비자 로컬 추론용 최적 형태"로 내놓은 모델로, <b>파라미터 절반(36B)으로 Hermes 4 70B에 근접</b>하는 성능을 주장한다. 컨텍스트도 최대 512K. 즉 "로컬에 깔 거면 70B 무리하지 말고 4.3 36B"가 Nous의 공식 권장이다.</p>
+    <div class="note">메모: Hermes 4.3은 Nous의 <b>Psyche 분산 학습 네트워크</b>(DisTrO 옵티마이저, Solana 합의)로 학습된 첫 프로덕션 모델이다. 우리 셋업과 직접 상관은 없지만 "탈중앙 학습으로 프런티어 모델 만든다"는 방향이라 추적 가치 있음.</p>
+  </section>
+
+  <section data-block>
+    <h2><span class="n">03</span> 다른 PC 셋업 타당성 — VRAM이 전부다</h2>
+    <p>로컬 LLM은 사실상 <b>GPU VRAM 용량 싸움</b>이다. GGUF 양자화(Q4_K_M, 품질/크기 스윗스폿)로 받았을 때 모델이 VRAM에 들어가면 빠르고, 넘치면 CPU로 흘러(offload) 급격히 느려진다. 실측 파일 크기 기준:</p>
+    <table>
+      <thead><tr><th>모델</th><th class="num">Q4_K_M 크기</th><th class="num">풀 GPU 권장 VRAM*</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td>Hermes 4 14B</td><td class="num">≈ 9.0 GB</td><td class="num">12 GB</td><td><span class="b-good">소비자 GPU OK</span></td></tr>
+        <tr class="hl"><td>Hermes 4.3 36B</td><td class="num">≈ 21.8 GB</td><td class="num">24 GB</td><td><span class="b-good">3090/4090급 OK</span></td></tr>
+        <tr><td>Hermes 4 70B</td><td class="num">≈ 42 GB</td><td class="num">48 GB (2×24)</td><td><span class="b-mid">멀티GPU/대용량</span></td></tr>
+        <tr><td>Hermes 4 405B</td><td class="num">≈ 230 GB+</td><td class="num">멀티 H100/A100</td><td><span class="b-bad">서버·클라우드 전용</span></td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:.8rem;color:var(--muted);margin-top:.2rem">*가중치 + 컨텍스트 KV 캐시 + 여유분 포함 실사용 기준. 컨텍스트를 길게 잡으면 VRAM이 더 든다.</p>
+
+    <h3>우리 환경(RTX 3080 Ti · 12GB) 기준</h3>
+    <ul>
+      <li><b>Hermes 4 14B (Q4) — 실용 한계선.</b> 9GB라 12GB에 들어가지만, 컨텍스트를 4~8K 정도로 잡아야 안전. 길게 쓰려면 Q3로 더 줄이거나 일부 CPU offload(느려짐). 우리 <a href="https://page.cocy.io/local-llm-coding">로컬 LLM 코딩 보고서</a>에서 짚은 "12GB 현실"과 동일.</li>
+      <li><b>Hermes 4.3 36B — 12GB로는 무리.</b> 21.8GB라 절반 이상 CPU로 흘러 토큰/초가 뚝 떨어진다. "되긴 되는데 쓸만하진 않은" 구간.</li>
+    </ul>
+
+    <h3>그래서 "다른 PC"는 이렇게 보면 된다</h3>
+    <ul>
+      <li><b>그 PC가 24GB(RTX 3090/4090)다 →</b> 망설일 것 없음. <b>Hermes 4.3 36B Q4</b> 풀 GPU로 쾌적. 이게 베스트 시나리오.</li>
+      <li><b>16GB(4060 Ti 16G/4080 등)다 →</b> 14B는 여유, 36B는 Q3/Q4 + 약간 offload로 "쓸만" 정도.</li>
+      <li><b>12GB 이하다 →</b> Hermes 4 14B까지. 36B는 비추.</li>
+      <li><b>GPU 없음(CPU만) →</b> 14B도 토큰/초가 답답함. 데모는 가능, 실사용은 비추.</li>
+    </ul>
+  </section>
+
+  <section data-block>
+    <h2><span class="n">04</span> 어떻게 까나 — 실행 스택</h2>
+    <p>전부 GGUF가 풀려 있어서 셋업 난이도는 낮다. 쉬운 순서:</p>
+    <ul>
+      <li><b>Ollama</b> (가장 쉬움) — 설치 후 한 줄. <code>ollama run hermes...</code> 식으로 GGUF 자동 다운로드+서빙. OpenAI 호환 API(<code>localhost:11434</code>)라 우리 스택에 바로 붙는다. CPU offload 자동.</li>
+      <li><b>LM Studio</b> (GUI) — 클릭으로 모델 받고 채팅/서버. 비개발자 친화적, 컨텍스트 길이 슬라이더 주의(기본 4K 함정).</li>
+      <li><b>llama.cpp</b> (로우레벨) — 직접 빌드, <code>-ngl</code> 로 GPU 레이어 수 조절해 offload 미세제어. 최대 성능/제어.</li>
+      <li><b>vLLM</b> (서버/배치) — 처리량 최강이지만 보통 풀 GPU(비양자화 or AWQ) 가정. 12~24GB 단일 소비자 GPU엔 과함.</li>
+    </ul>
+    <div class="note"><b>우리 권장 경로:</b> 다른 PC에 <b>Ollama</b> 깔고 → 24GB면 Hermes 4.3 36B, 12GB면 Hermes 4 14B → OpenAI 호환 엔드포인트를 llm.cocy.io에서 한 모델로 등록. 기존 라우팅(gpt/claude/gemini 경로) 옆에 "hermes-local" 추가하는 그림.</p></div>
+  </section>
+
+  <section data-block>
+    <h2><span class="n">05</span> 라이선스 — 상업 전에 확인할 것</h2>
+    <p>Hermes "코드"(hermes-agent 등)는 MIT지만, <b>가중치 라이선스는 베이스 모델을 상속</b>한다. cocy 서비스에 쓰려면 상업 가능 여부를 모델별로 확인해야 한다.</p>
+    <table>
+      <thead><tr><th>모델</th><th>베이스 라이선스(확인 대상)</th><th>상업 사용</th></tr></thead>
+      <tbody>
+        <tr><td>Hermes 4 14B</td><td>Qwen3 → Apache 2.0</td><td><span class="b-good">대체로 자유</span></td></tr>
+        <tr><td>Hermes 4.3 36B</td><td>Seed-OSS-36B (ByteDance Seed)</td><td><span class="b-mid">HF에서 확인 필요</span></td></tr>
+        <tr><td>Hermes 4 70B / 405B</td><td>Llama 3.1 Community License</td><td><span class="b-mid">월 7억 MAU 미만 OK</span></td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:.85rem;color:var(--ink-soft)">우리 규모(상업 사용·소규모)에선 14B(Apache)와 70B/405B(Llama Community, MAU 한참 미만)는 문제없음. <b>4.3 36B만 Seed-OSS 베이스 라이선스를 HF 모델카드에서 한 번 확인</b>하고 가면 된다.</p>
+  </section>
+
+  <section data-block>
+    <h2><span class="n">06</span> cocy 활용처 — 깔면 뭐 하나</h2>
+    <ul>
+      <li><b>게임/캐릭터 NPC 대화</b> — 무검열·중립정렬이라 캐릭터 톤 제약이 적다. 고스톱 NPC, 조커런 같은 게임의 동적 대사/힌트에 로컬로.</li>
+      <li><b>llm.cocy.io 로컬 백엔드 옵션</b> — 과금 없는 "hermes-local" 모델 추가. PC 켜져 있을 때만 동작하는 보조 경로(터널 경유, TTS/STT 패턴과 동일).</li>
+      <li><b>로컬 에이전트 코딩 보조</b> — 작은 모델 + 좋은 하니스 전략(로컬 LLM 코딩 보고서 참조). 36B면 보조 작업엔 충분.</li>
+      <li><b>프라이버시 작업</b> — 외부로 못 보내는 데이터 가공/요약을 우리 GPU에서.</li>
+    </ul>
+  </section>
+
+  <section data-block>
+    <h2><span class="n">07</span> 결론 · 다음 액션</h2>
+    <p><b>"다른 PC에 깔 수 있나" → 그 PC의 GPU VRAM만 보면 답이 나온다.</b></p>
+    <ul>
+      <li><b>24GB(3090/4090)</b> → Hermes 4.3 36B로 가라. Nous 공식 권장 + 70B 근접 성능 + 우리한테 최적.</li>
+      <li><b>12~16GB</b> → Hermes 4 14B. 안정적, 가볍다.</li>
+      <li>둘 다 <b>Ollama 한 줄</b>이면 OpenAI 호환 서버까지 끝. llm.cocy.io에 모델 하나 추가하는 작업만 남는다.</li>
+    </ul>
+    <p>다음 단계 제안: <b>(1)</b> 그 PC의 GPU/VRAM 스펙 확정 → <b>(2)</b> Ollama로 해당 사이즈 Hermes 받아 토큰/초·품질 실측 → <b>(3)</b> 쓸만하면 터널+llm.cocy.io 라우팅에 "hermes-local" 등록. PC 스펙만 알려주면 1~3 바로 진행한다.</p>
+  </section>
+
+  <div class="foot">
+    <p class="src">출처: Nous Research — Introducing Hermes 4.3 (nousresearch.com) · Hermes 4 Technical Report (arxiv 2508.18255) · Hugging Face NousResearch/Hermes-4-70B · Hermes-4.3-36B(-GGUF) · bartowski GGUF 양자화 모델카드 · LM Studio / Ollama 문서.</p>
+    <p style="margin-top:.6rem">본 문서는 cocy 환경(로컬 GPU·llm.cocy.io 스택) 기준으로 재구성한 cocy 소유 분석 보고서입니다. 사양·가격·라이선스는 시점에 따라 변동될 수 있으니 도입 전 원문 확인 권장. · <a href="https://page.cocy.io">page.cocy.io</a></p>
+  </div>
+</main>
+</body>
+</html>
