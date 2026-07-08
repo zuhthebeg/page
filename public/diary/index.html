@@ -216,6 +216,8 @@
   let committed = '';       // 현재 유저 라인에 렌더된 값
   let visitorName = null;
   let turn = 0;
+  let interruptRequested = false; // 인트로 도중 사용자가 펜을 들면 중단
+  let engaged = false;            // 첫 전송 이후 = 인트로 정리 타이머 무효
 
   // ── 글자별 흔들림: 재렌더에도 같은 모양이 나오도록 (index, char) 시드 ──
   function jitter(i, code) {
@@ -244,12 +246,14 @@
   const sleep = ms => new Promise(r => setTimeout(r, reduced ? Math.min(ms, 60) : ms));
 
   // ── 일기장이 한 글자씩 씀 ──
-  async function diaryWrite(text) {
+  async function diaryWrite(text, interruptible = false) {
+    interruptRequested = false;
     diaryLine.innerHTML = '';
     const nib = document.createElement('span');
     nib.className = 'nib diary-nib';
     diaryLine.appendChild(nib);
     for (let i = 0; i < text.length; i++) {
+      if (interruptible && interruptRequested) return; // absorb가 이미 지우는 중
       const c = text[i];
       diaryLine.insertBefore(makeCh(c, i, true), nib);
       if (c === ' ') { await sleep(45); continue; }
@@ -326,6 +330,7 @@
     const value = pen.value.trim();
     if (!value || busy) return;
     busy = true;
+    engaged = true;
     pen.value = '';
     hint.classList.remove('show');
 
@@ -342,7 +347,10 @@
 
   pen.addEventListener('input', () => {
     if (busy) { pen.value = ''; return; }
-    if (diaryLine.children.length) absorb(diaryLine); // 새로 쓰기 시작하면 일기장 글씨는 물러남
+    if (diaryLine.children.length) {
+      interruptRequested = true;                      // 인트로였다면 여기서 끊김
+      absorb(diaryLine);                              // 새로 쓰기 시작하면 일기장 글씨는 물러남
+    }
     renderUser(pen.value);
   });
 
@@ -350,18 +358,24 @@
     if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); submit(); }
   });
 
-  page.addEventListener('pointerdown', () => {
+  // click 사용 필수: pointerdown에서 focus하면 브라우저 기본 mousedown이 도로 뺏는다
+  function grabPen() {
     pen.focus({ preventScroll: true });
     hint.classList.remove('show');
+  }
+  page.addEventListener('click', grabPen);
+  document.addEventListener('keydown', e => {        // 데스크톱: 그냥 치기 시작해도 써짐
+    if (document.activeElement !== pen && !e.ctrlKey && !e.metaKey && !e.altKey) grabPen();
   });
+  grabPen();                                          // 로드 직후 (데스크톱)
 
   // ── 첫 인사 ──
   (async () => {
     await sleep(1400);
-    await diaryWrite('…오랜만이야. 네 이름이 뭐지?');
-    busy = false;
+    busy = false;                                   // 인트로 중에도 펜은 살아있음
+    await diaryWrite('…오랜만이야. 네 이름이 뭐지?', true);
     await sleep(7000);
-    if (busy || committed) return;   // 이미 쓰기 시작했으면 그대로 둠
+    if (busy || committed || engaged) return;   // 이미 대화가 시작됐으면 손대지 않음
     if (diaryLine.children.length) {
       await absorb(diaryLine);
       hint.classList.add('show');
