@@ -75,7 +75,8 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
     });
     if (!res.ok) return json({ error: "upstream" }, 502);
     const data = (await res.json()) as any;
-    const reply = (data?.choices?.[0]?.message?.content || "").trim();
+    // 개행/연속 공백 정리 — 클라 글자 렌더러는 한 줄 텍스트 기준
+    const reply = (data?.choices?.[0]?.message?.content || "").trim().replace(/\s+/g, " ");
     if (!reply) return json({ error: "empty" }, 502);
     return json({ reply });
   } catch {
