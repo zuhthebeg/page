@@ -297,7 +297,36 @@
     committed = value;
   }
 
-  // ── 가짜 응답 (프로토: LLM 자리) ──
+  // ── LLM 연결 (실패 시 아래 가짜 응답으로 폴백) ──
+  const history = [];
+  async function askDiary(userText) {
+    history.push({ role: 'user', content: userText.slice(0, 300) });
+    while (history.length > 6) history.shift();
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 12000);
+      const res = await fetch('/api/diary', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history }),
+        signal: ctrl.signal
+      });
+      clearTimeout(t);
+      if (res.status === 429) return '…오늘은 너무 많은 이야기를 들었어. 내일 다시 와 줘.';
+      if (!res.ok) throw 0;
+      const d = await res.json();
+      const text = (d.reply || '').trim();
+      if (!text) throw 0;
+      history.push({ role: 'assistant', content: text });
+      return text;
+    } catch {
+      const r = fallbackReply(userText);
+      history.push({ role: 'assistant', content: r });
+      return r;
+    }
+  }
+
+  // ── 가짜 응답 (오프라인/장애 폴백) ──
   const DEFAULTS = [
     '이 페이지는 오래 비어 있었어. 네 글씨가 반가워.',
     '적힌 것은 사라져도, 배어든 것은 남아.',
@@ -307,7 +336,7 @@
     '나는 기억해. 종이는 잊는 법이 없거든.'
   ];
 
-  function reply(input) {
+  function fallbackReply(input) {
     const t = input.trim();
     const name = t.match(/(?:내\s*이름은|나는|난)\s*([가-힣a-zA-Z]{1,10}?)(?:이야|이에요|예요|야|입니다|이라고|라고)?[.!\s]*$/);
     if (name && !visitorName) {
@@ -334,11 +363,19 @@
     pen.value = '';
     hint.classList.remove('show');
 
+    const pending = askDiary(value);          // 네트워크는 연출과 병렬로
     await absorb(userLine);
     committed = '';
-    await sleep(650 + Math.random() * 700);   // 일기장이 읽는 시간
+    await sleep(500 + Math.random() * 500);   // 일기장이 읽는 시간
 
-    await diaryWrite(reply(value));           // 실서비스: 여기서 LLM 스트리밍
+    diaryLine.innerHTML = '';                 // 답이 늦으면 펜촉만 종이 위에서 깜빡임
+    const rest = document.createElement('span');
+    rest.className = 'nib diary-nib';
+    diaryLine.appendChild(rest);
+    const text = await pending;
+    rest.remove();
+
+    await diaryWrite(text);
     busy = false;
     pen.focus();
     await sleep(6000);
