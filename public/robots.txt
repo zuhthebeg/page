@@ -1,0 +1,43 @@
+# page.cocy.io — AI 검색엔진 크롤러 전부 허용 (GEO)
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /edit
+Disallow: /new
+
+# AI search / answer engines — explicitly allowed
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://page.cocy.io/sitemap.xml

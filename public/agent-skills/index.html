@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>에이전트 스킬 4선 — 카파시·슈퍼파워스·언더스탠드·메모리 · page.cocy.io</title>
+<meta name="description" content="에이전트를 길들이는 오픈소스 스킬 4종: 카파시 4원칙(행동 규율), obra/Superpowers(개발 방법론), Understand-Anything(지식그래프), 에이전트 메모리(세션 간 기억). 각각 무엇이고 우리 환경에 어떻게 넣었는지." />
+<link rel="canonical" href="https://page.cocy.io/agent-skills" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="에이전트 스킬 4선 — 카파시·슈퍼파워스·언더스탠드·메모리 (분석)" />
+<meta property="og:description" content="에이전트의 함정(가정·과설계·드라이브바이 수정)과 망각을 잡는 4종 스킬. 핵심·차이·우리 적용까지." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#3a5a78; --accent-2:#4f7ba0; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:60ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+h3{font-family:var(--display);font-weight:600;font-size:1.1rem;margin:1.6rem 0 .5rem}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+b{font-weight:500;color:var(--ink)}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#f3f6f9);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.3rem;color:var(--ink);margin-top:.2rem;max-width:40ch}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.mid{background:rgba(184,134,11,.14);color:var(--warn)}
+.tag.info{background:rgba(58,90,120,.13);color:var(--accent)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.9rem}
+th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+.card{border:1px solid var(--line);border-radius:8px;padding:1.4rem 1.5rem;margin:1.2rem 0;background:#fffdf8}
+.card .ct{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.3rem}
+.card .cn{font-family:var(--display);font-weight:600;font-size:1.2rem;color:var(--ink)}
+.card .src{font-family:var(--mono);font-size:.74rem;color:var(--muted)}
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+.callout{background:#f3f6f9;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout b{color:var(--accent)}
+.quote{border-left:3px solid var(--line);padding-left:1rem;margin:1rem 0;color:var(--ink-soft);font-style:italic;font-size:.94rem}
+code{font-family:var(--mono);font-size:.85em;background:rgba(58,90,120,.08);padding:.1rem .35rem;border-radius:4px;color:var(--accent)}
+pre{font-family:var(--mono);font-size:.8rem;background:#2a2722;color:#e9e3d6;padding:1rem 1.2rem;border-radius:8px;overflow-x:auto;margin:.8rem 0;line-height:1.6}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(58,90,120,.3)}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+</style>
+<meta property="og:url" content="https://page.cocy.io/agent-skills" />
+<meta property="article:published_time" content="2026-06-28" />
+<meta property="article:modified_time" content="2026-06-28" />
+<meta name="author" content="cocy" />
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "에이전트 스킬 4선 — 카파시·슈퍼파워스·언더스탠드·메모리 (분석)", "description": "에이전트를 길들이는 오픈소스 스킬 4종: 카파시 4원칙(행동 규율), obra/Superpowers(개발 방법론), Understand-Anything(지식그래프), 에이전트 메모리(세션 간 기억). 각각 무엇이고 우리 환경에 어떻게 넣었는지.", "url": "https://page.cocy.io/agent-skills", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/agent-skills"}, "datePublished": "2026-06-28", "dateModified": "2026-06-28", "inLanguage": "ko", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true}</script>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Skill Research · Coding Agents</div>
+    <h1>에이전트 스킬 4선</h1>
+    <p class="lead">에이전트가 코드를 만질 때 생기는 고질병 — <b>멋대로 가정하고, 과설계하고, 시키지도 않은 코드를 건드리는 것</b> — 을 잡는 오픈소스 스킬을 골라 정리했다. <b>카파시 4원칙</b>(행동 규율), <b>Superpowers</b>(개발 방법론), <b>Understand-Anything</b>(코드베이스 지식그래프), 그리고 <b>에이전트 메모리</b>(세션을 넘는 기억). 각각 무엇이고, 우리 환경에 어떻게 넣었는지까지.</p>
+    <div class="meta">
+      <span><b>분석</b> page.cocy.io · 2026-06-28</span>
+      <span><b>대상</b> Karpathy · Superpowers · Understand-Anything · Agent Memory</span>
+      <span><b>관점</b> OpenClaw / Claude Code 운영 적용</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">한 줄 결론</div>
+          <div class="v-main">규율·방법론·이해·기억 — 층위가 달라 넷이 겹치지 않고 포갠다</div>
+        </div>
+      </div>
+      <div class="tags">
+        <span class="tag yes">카파시 = 항상 켜두는 행동 규율</span>
+        <span class="tag info">슈퍼파워스 = 이미 우리 환경에 설치됨</span>
+        <span class="tag mid">언더스탠드 = 필요할 때 켜는 분석 도구</span>
+        <span class="tag yes">메모리 = 외부 플러그인 대신 규율 스킬</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="why">
+    <h2><span class="n">00</span> 왜 이 넷인가</h2>
+    <p>네 스킬은 같은 큰 문제를 서로 다른 층위에서 친다. 카파시는 <b>"매 순간 어떻게 행동할지"</b>의 규율, Superpowers는 <b>"한 기능을 처음부터 끝까지 어떤 절차로 굴릴지"</b>의 방법론, Understand-Anything은 <b>"낯선 코드를 어떻게 파악할지"</b>의 도구, 메모리는 <b>"세션을 넘겨 무엇을 기억할지"</b>다. 하나를 고르는 게 아니라 넷을 포개는 그림이 맞다.</p>
+    <table>
+      <thead><tr><th>스킬</th><th>층위</th><th>형태</th><th>발동</th></tr></thead>
+      <tbody>
+        <tr><td><b>카파시 4원칙</b></td><td>행동 규율</td><td>CLAUDE.md (텍스트 가이드)</td><td>항상</td></tr>
+        <tr><td><b>Superpowers</b></td><td>개발 방법론</td><td>SKILL.md 묶음 (자동 트리거)</td><td>기능 빌드 시</td></tr>
+        <tr><td><b>Understand-Anything</b></td><td>코드 이해 도구</td><td>스킬 + 스크립트 (지식그래프)</td><td>낯선 코드 분석 시</td></tr>
+        <tr><td><b>에이전트 메모리</b></td><td>세션 간 기억</td><td>파일 기반 시스템 + 규율 스킬</td><td>항상</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section data-block="karpathy">
+    <h2><span class="n">01</span> 카파시 스킬 — 에이전트 행동 4원칙</h2>
+    <div class="card">
+      <div class="ct"><span class="cn">Andrej Karpathy Skills</span><span class="src">github · forrestchang/andrej-karpathy-skills</span></div>
+      <p>카파시가 트윗으로 정리한 "LLM 코딩 에이전트의 함정"을 <b>단 한 장의 CLAUDE.md</b>로 코드화한 것. 코드를 실행하는 스킬이 아니라 <b>행동 지침</b>이라 공급망 위험이 거의 없다.</p>
+    </div>
+    <p class="quote">"모델은 네 대신 틀린 가정을 하고 확인 없이 달려간다. 혼란을 관리하지 않고, 명확히 묻지 않고, 모순을 드러내지 않고, 트레이드오프를 제시하지 않고, 막아야 할 때 막지 않는다. … 100줄이면 될 걸 1000줄짜리 비대한 구조로 만든다." — Andrej Karpathy</p>
+    <h3>4원칙</h3>
+    <ul class="clean">
+      <li><b>Think Before Coding</b> — 가정을 말로 꺼내고, 애매하면 묻고, 더 단순한 길이 있으면 반박하고, 헷갈리면 멈춰서 무엇이 불명확한지 짚는다.</li>
+      <li><b>Simplicity First</b> — 문제를 푸는 최소 코드만. 안 시킨 기능·일회용 추상화·없을 상황 대비 에러처리 금지. 200줄이 50줄로 되면 다시 쓴다(YAGNI).</li>
+      <li><b>Surgical Changes</b> — 건드려야 할 것만 건드린다. 옆 코드 "개선"·드라이브바이 리팩터 금지. 기존 스타일에 맞춘다. 내 변경이 만든 고아 코드만 치운다.</li>
+      <li><b>Goal-Driven Execution</b> — 명령형("검증 추가해")을 검증형("틀린 입력 테스트 짜고 통과시켜")으로 바꾼다. 강한 성공기준을 주면 모델이 알아서 루프 돈다.</li>
+    </ul>
+    <div class="callout"><b>우리에게:</b> 이 4원칙은 우리가 이미 지키려던 규율(SOUL의 "surgical", 증거 기반 검증, 과설계 경계)과 정확히 같은 결을 가진다. 카파시의 권위로 한 장에 압축돼 있어 — 코덱스/서브에이전트 위임 프롬프트에 그대로 박기 좋다.</div>
+  </section>
+
+  <section data-block="superpowers">
+    <h2><span class="n">02</span> Superpowers — 에이전트 개발 방법론</h2>
+    <div class="card">
+      <div class="ct"><span class="cn">Superpowers</span><span class="src">github · obra/superpowers (Jesse Vincent)</span></div>
+      <p>"브레인스토밍 → 계획 → 서브에이전트 실행 → 리뷰"를 강제하는 <b>조합형 스킬 묶음 + 부트스트랩 지침</b>. 에이전트가 코드부터 짜지 않고 한 발 물러나 스펙을 캐묻게 만든다. GitHub 트렌딩 1위를 찍은 그 라이브러리.</p>
+    </div>
+    <p>핵심은 <b>true red/green TDD · YAGNI · DRY</b>를 절차로 박아, "한 번 go 하면 두어 시간 자율로" 굴러가게 하는 것. 스킬이 자동 트리거라 특별히 호출할 필요가 없다.</p>
+    <div class="callout"><b>중요:</b> 이건 <b>우리 환경에 이미 상당수 설치돼 있다.</b> <code>brainstorming</code>, <code>writing-plans</code>, <code>executing-plans</code>, <code>test-driven-development</code>, <code>using-git-worktrees</code>, <code>subagent-driven-development</code>, <code>using-superpowers</code> 등 — 전부 이 Superpowers 계열이다. 즉 "추가"가 아니라 "이미 보유 + 활용도 점검"이 맞는 그림. 공식 마켓플레이스 최신본으로 갱신할지는 선택.</div>
+  </section>
+
+  <section data-block="understand">
+    <h2><span class="n">03</span> Understand-Anything — 코드베이스 지식그래프</h2>
+    <div class="card">
+      <div class="ct"><span class="cn">Understand-Anything</span><span class="src">github · Lum1104/Understand-Anything</span></div>
+      <p>임의의 코드베이스(또는 마크다운 위키)를 <b>대화형 지식그래프</b>로 바꾼다. 멀티에이전트 파이프라인이 모든 파일·함수·클래스·의존성을 노드로 매핑하고, 노드를 클릭하면 그 목적·의존·아키텍처 맥락을 평문으로 보여준다. "코드를 눈 감고 읽는" 걸 막는 도구.</p>
+    </div>
+    <ul class="clean">
+      <li><b>구조 + 비즈니스 도메인</b> 둘 다 매핑 — 코드가 실제 업무 흐름과 어떻게 연결되는지까지.</li>
+      <li><b>결과물은 JSON</b> 한 파일(<code>.understand-anything/knowledge-graph.json</code>) — 한 번 만들면 대시보드는 LLM 호출 없이 독립 구동.</li>
+      <li><b>증분 분석</b> — 바뀐 파일만 재분석해 토큰 절약. <code>.understandignore</code>로 제외 가능.</li>
+      <li>커맨드: <code>/understand</code>(전체 분석) · <code>/understand-dashboard</code>(시각화) · <code>/understand-chat</code>(맥락 대화).</li>
+    </ul>
+    <div class="callout"><b>우리에게:</b> 거대한 단일 <code>index.html</code> 게임들이나 admin/relay 같은 다파일 서비스의 "어디가 담당 코드인지" 파악에 후보. 단, <b>최초 <code>/understand</code>는 전체 코드를 LLM에 태우므로 토큰 비용이 든다</b> — 큰 레포에 무턱대고 돌리지 말고 필요한 모듈 위주로. (의미 검색은 기존 Semble과 역할이 겹치니 비교 후 선택.)</div>
+  </section>
+
+  <section data-block="memory">
+    <h2><span class="n">04</span> 에이전트 메모리 — 세션을 넘는 기억</h2>
+    <p>에이전트의 고질병 중 하나는 <b>세션이 끝나면 다 잊는 것</b>. 이를 메우는 메모리 스킬은 크게 두 갈래다 — 외부 플러그인을 얹거나, 파일 기반 시스템을 규율로 굴리거나.</p>
+    <table>
+      <thead><tr><th>옵션</th><th>방식</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td><b>claude-mem</b> <span class="src">thedotmack</span></td><td>플러그인</td><td>세션 관찰 자동캡처→AI압축→주입. SQLite + 벡터검색. 가장 인기.</td></tr>
+        <tr><td><b>recall</b> <span class="src">joseairosa</span></td><td>MCP 서버</td><td>Redis/Valkey 브레인. 셀프호스트 or SaaS.</td></tr>
+        <tr><td><b>claude-code-memory</b> <span class="src">LuciferForge</span></td><td>마크다운</td><td>의존성 0, 파일 기반 단순형.</td></tr>
+        <tr><td><b>네이티브 memory tool</b> <span class="src">Anthropic</span></td><td>플랫폼</td><td><code>/memories</code> 디렉토리 CRUD.</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><b>우리 선택:</b> 우리는 <b>이미 정교한 파일 기반 메모리 시스템</b>을 갖고 있다 — auto-memory(사실 1개=파일 1개, frontmatter + 인덱스), 일일 노트, 큐레이션된 <code>MEMORY.md</code>, <code>memory_search/get</code>, 드리프트 점검용 <code>memory-harness.js</code>까지. <b>claude-mem 같은 외부 플러그인은 CLAUDE.md를 점유하고 자체 SQLite/벡터 주입을 돌려 우리 시스템과 충돌</b>한다. 그래서 외부 통째 도입이 아니라 — <b>우리 시스템을 일관되게 쓰는 "메모리 규율" 스킬</b>을 추가했다.</div>
+    <p>규율 스킬의 골자: <b>답하기 전 recall</b>(memory_search→get, 추측 금지) · <b>단일 사실=단일 파일</b>(frontmatter: name/description/type) · <b>일일 노트(raw) vs MEMORY.md(큐레이션) 분리</b> · 인덱스 한 줄 유지 · 상대날짜→절대날짜 · 공유 컨텍스트에선 개인 메모리 비로드. 메인뿐 아니라 서브에이전트·위임에도 휴대된다.</p>
+  </section>
+
+  <section data-block="apply">
+    <h2><span class="n">05</span> 우리 환경 적용</h2>
+    <ul class="clean">
+      <li><b>카파시 4원칙</b> → 스킬로 추가(항상 참조 가능한 코딩 규율). 위임 프롬프트 계약에 녹임.</li>
+      <li><b>Superpowers</b> → 이미 보유. 재설치 대신 보유 스킬 점검·활용. 공식 최신본 갱신은 필요 시.</li>
+      <li><b>Understand-Anything</b> → 도구로 도입하되 <b>설치 스크립트는 그대로 파이프하지 않고 검토 후</b> 반입(공급망 주의). 큰 레포 분석이 필요한 순간에 선택적으로 사용.</li>
+      <li><b>에이전트 메모리</b> → 외부 플러그인 대신 <b>메모리 규율 스킬</b>(<code>agent-memory-discipline</code>)로 추가. 기존 파일 기반 시스템을 충돌 없이 일관 운용.</li>
+    </ul>
+    <p class="note">설치 출처: Karpathy <code>forrestchang/andrej-karpathy-skills</code> · Superpowers <code>obra/superpowers</code> · Understand-Anything <code>Lum1104/Understand-Anything</code>. 외부 스킬은 반입 전 코드/스크립트 검토를 원칙으로 한다.</p>
+  </section>
+
+  <div class="foot">
+    <span>page.cocy.io / agent-skills</span>
+    <span>cocy.io · 2026-06-28</span>
+  </div>
+
+</article>
+</body>
+</html>

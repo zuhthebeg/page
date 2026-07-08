@@ -12,3 +12,21 @@
 - 돌잔치·생일 초대장
 - 식당 메뉴판
 - 개인 포트폴리오·프로필
+
+## 분석 보고서 (cocy 직접 실측·조사)
+- [한국어는 정말 토큰을 더 먹는가](https://page.cocy.io/korean-token-cost): "한국어 AI 비용 2.59배" 보도를 Claude 공식 count_tokens API로 직접 실측 검증. Sonnet·Haiku 2.59배, Opus 1.72배 확인.
+- [Claude Fable 5 분석](https://page.cocy.io/fable-5): Opus 위에 신설된 Mythos-class 티어 분석 — 무엇이 바뀌고 인터페이스는 왜 그대로인가.
+- [Harness-1 논문 분석](https://page.cocy.io/harness-1): 검색 에이전트의 상태를 정책(모델)에서 환경(하니스)으로 외부화해 RL 학습 — 20B가 프런티어급 recall을 내는 구조.
+- [효과적인 에이전트 만들기 — 학습노트](https://page.cocy.io/effective-agents): 에이전트 설계 원칙(워크플로 vs 에이전트, 도구 설계, 검증 루프) 학습 정리.
+- [로컬 LLM으로 에이전트 코딩하기](https://page.cocy.io/local-llm-coding): 로컬 모델 기반 코딩 에이전트 필드가이드 분석 — VRAM 티어별 현실적 기대치.
+- [에이전트 스킬 4선](https://page.cocy.io/agent-skills): 카파시 4원칙·Superpowers·Understand-Anything·에이전트 메모리 — 무엇이고 어떻게 적용했는지.
+- [Hermes Agent 셋업 타당성](https://page.cocy.io/hermes-agent): OpenClaw 대안 에이전트 하네스를 다른 PC에 설치할 수 있는지 조사.
+- [Hermes 로컬 모델 셋업 타당성](https://page.cocy.io/hermes-local): Nous Research Hermes 로컬 구동 — VRAM 티어별 go/no-go.
+- [LiteLLM Enterprise 비용 분석](https://page.cocy.io/litellm-cost): 사용량 기준 도입 비용 실측 분석.
+- [Headroom 도입 평가](https://page.cocy.io/headroom-eval): 토큰 압축 레이어 실측 — 반복 JSON 40~90% 절감, 파일 read ~0%. 전면 도입 보류 판단 근거.
+- [루프 엔지니어링 실전 설계](https://page.cocy.io/loop-engineering): 멀티게임 마이그레이션에 루프 엔지니어링을 적용한 설계 기록.
+- [Travly 에이전트 성숙도 진단](https://page.cocy.io/travly-agent-review): 여행 서비스 AI 어시스턴트의 에이전트 성숙도 진단(2.7/5)과 P1~P6 개선 우선순위.
+- [대만 렌터카 운전 가이드](https://page.cocy.io/taiwan-drive): 한국인 기준 준비물(국제면허+한국면허), 교통 규칙 차이, 주유·주차 유의사항.
+
+## 가이드
+- [모바일 청첩장 만들기 가이드](https://page.cocy.io/guide/mobile-invitation): 모바일 청첩장을 무료로 만드는 법과 체크리스트.
