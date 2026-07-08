@@ -76,7 +76,7 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-5.4-nano",
+        model: "gpt-5.4-mini", // nano는 few-shot에도 "힘내!"류 이탈 반복 — 대사 품질이 핵심이라 mini
         max_tokens: 120,
         reasoning_effort: "minimal",
         messages: [{ role: "system", content: SYSTEM }, ...FEWSHOT, ...messages],
