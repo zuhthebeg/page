@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>낡은 일기장</title>
+<meta name="description" content="누군가 두고 간 낡은 일기장. 무엇이든 적어 보세요. 답이 돌아올지도 모릅니다.">
+<meta name="robots" content="noindex"><!-- 프로토타입: 정식 배포 시 제거 + 메타3종 적용 -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 4c-3 6-9 10-9 17a9 9 0 0 0 18 0c0-7-6-11-9-17z' fill='%232a2118'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: oklch(0.92 0.022 88);
+    --paper-deep: oklch(0.84 0.03 82);
+    --ink-diary: oklch(0.29 0.025 55);
+    --ink-user: oklch(0.31 0.055 262);
+    --write-size: clamp(1.7rem, 3.2vw + 1.1rem, 2.6rem);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: oklch(0.16 0.015 60); /* 책상 위 어둠 — 종이 바깥 */
+  }
+
+  body {
+    display: grid;
+    place-items: center;
+    font-family: 'Nanum Pen Script', cursive;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── 종이 ───────────────────────────── */
+  .page {
+    position: relative;
+    width: min(100vw, 720px);
+    height: 100dvh;
+    max-height: 100dvh;
+    background:
+      /* 오래된 얼룩들 */
+      radial-gradient(ellipse 340px 260px at 82% 12%, oklch(0.86 0.04 75 / .5), transparent 70%),
+      radial-gradient(ellipse 260px 320px at 8% 88%, oklch(0.85 0.045 70 / .45), transparent 70%),
+      radial-gradient(ellipse 150px 130px at 24% 20%, oklch(0.87 0.035 80 / .4), transparent 75%),
+      /* 가장자리 비네팅 */
+      radial-gradient(ellipse 120% 105% at 50% 45%, var(--paper) 55%, var(--paper-deep) 100%);
+    box-shadow:
+      inset 0 0 90px oklch(0.7 0.04 75 / .35),
+      0 0 60px oklch(0 0 0 / .55);
+    cursor: text;
+    overflow: hidden;
+  }
+
+  /* 종이 섬유 결 */
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0 0.28 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23p)'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  /* 접힌 자국 */
+  .page::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 46%, oklch(0.75 0.03 75 / .18) 49.5%, oklch(0.98 0.01 85 / .25) 50.5%, transparent 54%);
+    pointer-events: none;
+  }
+
+  /* ── 글이 놓이는 자리 ─────────────────── */
+  .writing {
+    position: absolute;
+    top: 26%;
+    left: clamp(1.6rem, 9vw, 5.5rem);
+    right: clamp(1.2rem, 6vw, 3.5rem);
+    z-index: 2;
+  }
+
+  .line {
+    font-size: var(--write-size);
+    line-height: 1.55;
+    min-height: calc(var(--write-size) * 1.55);
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    filter: url(#inkbleed);
+  }
+
+  .line.diary {
+    font-family: 'Nanum Brush Script', cursive;
+    font-size: calc(var(--write-size) * 1.12);
+    color: var(--ink-diary);
+    transform: rotate(-0.6deg);
+  }
+
+  .line.user {
+    color: var(--ink-user);
+    margin-top: calc(var(--write-size) * 1.1);
+    transform: rotate(0.3deg);
+  }
+
+  /* ── 글자 하나하나 ────────────────────── */
+  .ch {
+    display: inline-block;
+    white-space: pre;
+    opacity: 0;
+    --rx: 0deg; --dy: 0px; --ik: 1;
+  }
+
+  .ch.on {
+    animation: settle .34s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  }
+
+  @keyframes settle {
+    from { opacity: 0; filter: blur(2.5px); transform: rotate(var(--rx)) translateY(calc(var(--dy) - 2px)) scale(1.06); }
+    to   { opacity: var(--ik); filter: blur(0); transform: rotate(var(--rx)) translateY(var(--dy)) scale(1); }
+  }
+
+  /* 종이에 스며듦 */
+  .ch.soak {
+    animation: soak 1.5s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+  }
+
+  @keyframes soak {
+    0%   { opacity: var(--ik); filter: blur(0); }
+    35%  { opacity: calc(var(--ik) * 0.9); filter: blur(0.5px); }
+    100% { opacity: 0; filter: blur(6px); transform: rotate(var(--rx)) translateY(var(--dy)) scale(1.12); }
+  }
+
+  /* ── 펜 끝 잉크 점 (캐럿) ─────────────── */
+  .nib {
+    display: inline-block;
+    width: 0.14em;
+    height: 0.9em;
+    margin-left: 0.06em;
+    vertical-align: -0.12em;
+    background: var(--ink-user);
+    border-radius: 40% 60% 55% 45%;
+    animation: nib 1.1s ease-in-out infinite;
+  }
+  .nib.diary-nib { background: var(--ink-diary); }
+
+  @keyframes nib {
+    0%, 100% { opacity: .85; }
+    50% { opacity: .15; }
+  }
+
+  /* ── 안내 문구 ────────────────────────── */
+  .hint {
+    position: absolute;
+    bottom: calc(2.2rem + env(safe-area-inset-bottom));
+    left: 0; right: 0;
+    text-align: center;
+    font-size: clamp(1.1rem, 2vw + .6rem, 1.5rem);
+    color: oklch(0.5 0.03 60 / .55);
+    opacity: 0;
+    transition: opacity 2.4s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .hint.show { opacity: 1; animation: breathe 5s ease-in-out infinite; }
+  @keyframes breathe { 50% { opacity: .45; } }
+
+  /* 숨은 입력 */
+  #pen {
+    position: fixed;
+    bottom: 30%;
+    left: 50%;
+    width: 2px; height: 2px;
+    opacity: 0.01;
+    font-size: 16px; /* iOS zoom 방지 */
+    border: 0; outline: 0; background: transparent; color: transparent;
+    caret-color: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ch.on { animation-duration: .01s; }
+    .ch.soak { animation-duration: .6s; }
+    .nib { animation: none; opacity: .7; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="inkbleed">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6"/>
+  </filter>
+</svg>
+
+<main class="page" id="page">
+  <div class="writing">
+    <div class="line diary" id="diaryLine" aria-live="polite"></div>
+    <div class="line user" id="userLine"></div>
+  </div>
+  <div class="hint" id="hint">일기장 위 아무 곳이나 눌러 이야기해 보세요</div>
+</main>
+
+<input id="pen" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="일기장에 쓰기">
+
+<script>
+(() => {
+  const diaryLine = document.getElementById('diaryLine');
+  const userLine  = document.getElementById('userLine');
+  const hint      = document.getElementById('hint');
+  const pen       = document.getElementById('pen');
+  const page      = document.getElementById('page');
+  const reduced   = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let busy = true;          // 일기장이 쓰는 동안 입력 잠금
+  let committed = '';       // 현재 유저 라인에 렌더된 값
+  let visitorName = null;
+  let turn = 0;
+
+  // ── 글자별 흔들림: 재렌더에도 같은 모양이 나오도록 (index, char) 시드 ──
+  function jitter(i, code) {
+    const h = Math.sin(i * 127.1 + code * 311.7) * 43758.5453;
+    const r = h - Math.floor(h);
+    const h2 = Math.sin(i * 269.5 + code * 183.3) * 28001.8384;
+    const r2 = h2 - Math.floor(h2);
+    return {
+      rot: ((r - 0.5) * 5).toFixed(2) + 'deg',
+      dy:  ((r2 - 0.5) * 3).toFixed(2) + 'px',
+      ink: (0.78 + r * 0.22).toFixed(2)
+    };
+  }
+
+  function makeCh(char, i, visible) {
+    const s = document.createElement('span');
+    s.className = 'ch' + (visible ? ' on' : '');
+    s.textContent = char;
+    const j = jitter(i, char.charCodeAt(0));
+    s.style.setProperty('--rx', j.rot);
+    s.style.setProperty('--dy', j.dy);
+    s.style.setProperty('--ik', j.ink);
+    return s;
+  }
+
+  const sleep = ms => new Promise(r => setTimeout(r, reduced ? Math.min(ms, 60) : ms));
+
+  // ── 일기장이 한 글자씩 씀 ──
+  async function diaryWrite(text) {
+    diaryLine.innerHTML = '';
+    const nib = document.createElement('span');
+    nib.className = 'nib diary-nib';
+    diaryLine.appendChild(nib);
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      diaryLine.insertBefore(makeCh(c, i, true), nib);
+      if (c === ' ') { await sleep(45); continue; }
+      if ('…'.includes(c)) { await sleep(520); continue; }
+      if (',.?!'.includes(c)) { await sleep(330); continue; }
+      await sleep(62 + Math.random() * 75);
+      if (Math.random() < 0.04) await sleep(300 + Math.random() * 350); // 머뭇거림
+    }
+    nib.remove();
+  }
+
+  // ── 스며들어 사라짐 ──
+  function absorb(el) {
+    const chs = [...el.querySelectorAll('.ch')];
+    if (!chs.length) { el.innerHTML = ''; return Promise.resolve(); }
+    el.querySelector('.nib')?.remove();
+    chs.forEach((s, i) => {
+      setTimeout(() => { s.classList.remove('on'); s.classList.add('soak'); },
+        reduced ? 0 : i * 28 + Math.random() * 60);
+    });
+    const total = (reduced ? 700 : chs.length * 28 + 1650);
+    return sleep(total).then(() => { el.innerHTML = ''; });
+  }
+
+  // ── 유저 라인 렌더 (타이핑/IME 대응: 전체 diff 재렌더) ──
+  function renderUser(value) {
+    userLine.innerHTML = '';
+    for (let i = 0; i < value.length; i++) {
+      const s = makeCh(value[i], i, false);
+      if (i < committed.length && committed[i] === value[i]) {
+        s.classList.add('on');
+        s.style.animationDuration = '0.01s'; // 이미 쓴 글자는 그대로
+      } else {
+        s.classList.add('on'); // 새 글자만 잉크 번짐 애니메이션
+      }
+      userLine.appendChild(s);
+    }
+    const nib = document.createElement('span');
+    nib.className = 'nib';
+    userLine.appendChild(nib);
+    committed = value;
+  }
+
+  // ── 가짜 응답 (프로토: LLM 자리) ──
+  const DEFAULTS = [
+    '이 페이지는 오래 비어 있었어. 네 글씨가 반가워.',
+    '적힌 것은 사라져도, 배어든 것은 남아.',
+    '더 써 봐. 나는 지우는 법밖에 몰라서.',
+    '너의 오늘은 어떤 잉크 색이었을까.',
+    '괜찮아. 여기 적힌 건 아무도 못 읽으니까.',
+    '나는 기억해. 종이는 잊는 법이 없거든.'
+  ];
+
+  function reply(input) {
+    const t = input.trim();
+    const name = t.match(/(?:내\s*이름은|나는|난)\s*([가-힣a-zA-Z]{1,10}?)(?:이야|이에요|예요|야|입니다|이라고|라고)?[.!\s]*$/);
+    if (name && !visitorName) {
+      visitorName = name[1];
+      return visitorName + '… 좋은 이름이야. 잊지 않을게.';
+    }
+    if (/안녕|하이|헬로/i.test(t)) return '…안녕. 이 일기장이 펼쳐진 게 얼마 만인지.';
+    if (/누구|정체|뭐야\??$/.test(t)) return '나? 오래 잊혀진 기록이야. 네가 깨우기 전까진.';
+    if (/이름.*(뭐|알려|궁금)/.test(t)) return '이름은 잃어버렸어. 네가 하나 지어 줄래?';
+    if (/뭐해|뭐하고|심심/.test(t)) return '기다렸어. 누군가 다시 펜을 들 때까지.';
+    if (/사랑|좋아해/.test(t)) return '종이에 적힌 마음은 지워져도 배어들어. …조심해.';
+    if (/무서|귀신|유령/.test(t)) return '무서워할 건 없어. 아직은.';
+    if (/잘\s*가|안녕히|바이|갈게|잘자/.test(t)) return (visitorName ? visitorName + ', ' : '') + '벌써? …또 와. 나는 어디에도 못 가니까.';
+    if (t.endsWith('?')) return '글쎄. 답은 네가 이미 알고 있을 텐데.';
+    return DEFAULTS[turn++ % DEFAULTS.length];
+  }
+
+  // ── 대화 턴 ──
+  async function submit() {
+    const value = pen.value.trim();
+    if (!value || busy) return;
+    busy = true;
+    pen.value = '';
+    hint.classList.remove('show');
+
+    await absorb(userLine);
+    committed = '';
+    await sleep(650 + Math.random() * 700);   // 일기장이 읽는 시간
+
+    await diaryWrite(reply(value));           // 실서비스: 여기서 LLM 스트리밍
+    busy = false;
+    pen.focus();
+    await sleep(6000);
+    if (!busy) absorb(diaryLine);             // 다음 턴이 이미 시작됐으면 그쪽이 지움
+  }
+
+  pen.addEventListener('input', () => {
+    if (busy) { pen.value = ''; return; }
+    if (diaryLine.children.length) absorb(diaryLine); // 새로 쓰기 시작하면 일기장 글씨는 물러남
+    renderUser(pen.value);
+  });
+
+  pen.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); submit(); }
+  });
+
+  page.addEventListener('pointerdown', () => {
+    pen.focus({ preventScroll: true });
+    hint.classList.remove('show');
+  });
+
+  // ── 첫 인사 ──
+  (async () => {
+    await sleep(1400);
+    await diaryWrite('…오랜만이야. 네 이름이 뭐지?');
+    busy = false;
+    await sleep(7000);
+    if (busy || committed) return;   // 이미 쓰기 시작했으면 그대로 둠
+    if (diaryLine.children.length) {
+      await absorb(diaryLine);
+      hint.classList.add('show');
+    }
+  })();
+})();
+</script>
+</body>
+</html>
