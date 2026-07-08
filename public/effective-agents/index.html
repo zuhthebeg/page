@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>효과적인 에이전트 만들기 — 학습노트 · page.cocy.io</title>
 <meta name="description" content="Anthropic 'Building Effective Agents' 학습노트: 워크플로 vs 에이전트 구분, 5가지 워크플로 패턴(프롬프트 체이닝·라우팅·병렬화·오케스트레이터-워커·평가자-최적화기), 자율 에이전트, 그리고 단순성·투명성·ACI 3원칙. 우리 OpenClaw 스택에 어떻게 매핑되는지까지 정리." />
-<link rel="canonical" href="https://page.cocy.io/effective-agents" />
+<link rel="canonical" href="https://page.cocy.io/effective-agents/" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="효과적인 에이전트 만들기 (학습노트)" />
 <meta property="og:description" content="복잡한 프레임워크가 아니라 단순·조합 가능한 패턴이 이긴다. 5가지 워크플로 + 에이전트 + 3원칙, 그리고 우리 스택 매핑." />
@@ -68,11 +68,11 @@ a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(58,90,12
 .mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
 .mdbtn:active{transform:translateY(1px)}
 </style>
-<meta property="og:url" content="https://page.cocy.io/effective-agents" />
+<meta property="og:url" content="https://page.cocy.io/effective-agents/" />
 <meta property="article:published_time" content="2026-06-15" />
 <meta property="article:modified_time" content="2026-06-15" />
 <meta name="author" content="cocy" />
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "효과적인 에이전트 만들기 (학습노트)", "description": "Anthropic 'Building Effective Agents' 학습노트: 워크플로 vs 에이전트 구분, 5가지 워크플로 패턴(프롬프트 체이닝·라우팅·병렬화·오케스트레이터-워커·평가자-최적화기), 자율 에이전트, 그리고 단순성·투명성·ACI 3원칙. 우리 OpenClaw 스택에 어떻게 매핑되는지까지 정리.", "url": "https://page.cocy.io/effective-agents", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/effective-agents"}, "datePublished": "2026-06-15", "dateModified": "2026-06-15", "inLanguage": "ko", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "효과적인 에이전트 만들기 (학습노트)", "description": "Anthropic 'Building Effective Agents' 학습노트: 워크플로 vs 에이전트 구분, 5가지 워크플로 패턴(프롬프트 체이닝·라우팅·병렬화·오케스트레이터-워커·평가자-최적화기), 자율 에이전트, 그리고 단순성·투명성·ACI 3원칙. 우리 OpenClaw 스택에 어떻게 매핑되는지까지 정리.", "url": "https://page.cocy.io/effective-agents/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/effective-agents/"}, "datePublished": "2026-06-15", "dateModified": "2026-06-15", "inLanguage": "ko", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true}</script>
 </head>
 <body>
 <article class="doc">
