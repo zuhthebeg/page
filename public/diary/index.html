@@ -442,7 +442,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       const res = await fetch('/api/diary', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(image ? { messages: history, image, lang: LANG } : { messages: history, lang: LANG }),
+        body: JSON.stringify({
+          messages: history, lang: LANG,
+          time: new Date().toLocaleString(navigator.language || 'ko', { month: 'short', day: 'numeric', weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false }),
+          ...(image ? { image } : {})
+        }),
         signal: ctrl.signal
       });
       clearTimeout(t);
@@ -506,9 +510,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     return DEFAULTS[turn++ % DEFAULTS.length];
   }
 
+  // ── 침묵하면 일기장이 먼저 화제를 던짐 (세션당 2회까지) ──
+  let nudges = 0, nudgeTimer = null;
+  function armNudge() {
+    clearTimeout(nudgeTimer);
+    if (nudges >= 2 || !engaged) return;
+    nudgeTimer = setTimeout(async () => {
+      if (busy || sending || committed || bbox) return;   // 뭔가 하고 있으면 침묵 유지
+      nudges++;
+      busy = true;
+      await runTurn(askDiary(LANG === 'ko'
+        ? '(나는 아무 말 없이 펼쳐진 일기장을 보고 있다. 네가 먼저 가볍게 화제 하나를 던져 봐. 한 문장.)'
+        : '(I am silent, just staring at the open page. You go first — toss one small topic. one sentence.)'));
+    }, 25000 + Math.random() * 20000);
+  }
+
   // ── 대화 턴 공통부: 유저 잉크 흡수 → 답장 → 소멸 ──
   async function runTurn(pending) {
     hint.classList.remove('show');
+    clearTimeout(nudgeTimer);
     await absorb(userLine);
     committed = '';
     await sleep(500 + Math.random() * 500);   // 일기장이 읽는 시간
@@ -522,6 +542,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     await diaryWrite(text);
     busy = false;
+    armNudge();
     await sleep(6000);
     if (!busy) absorb(diaryLine);             // 다음 턴이 이미 시작됐으면 그쪽이 지움
   }
@@ -544,6 +565,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   let bbox = null;              // 스트로크 경계 (CSS px)
   let inkTimer = null;          // 멈춤 감지 → 자동 전송
   let sending = false;
+  let strokes = [];             // 세그먼트 기록 — 전송 시 고해상도 재렌더링용
+  let curStroke = null;
 
   function sizePad() {
     const r = page.getBoundingClientRect();
@@ -556,6 +579,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     pctx.lineCap = 'round';
     pctx.lineJoin = 'round';
     bbox = null;                // 리사이즈는 캔버스를 지움 — 미전송 잉크도 리셋
+    strokes = [];
+    curStroke = null;
   }
   sizePad();
   addEventListener('resize', sizePad);
@@ -568,21 +593,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
   }
 
+  // 화면 캔버스를 긁어 보내지 않고 획을 재렌더링 — 작게 쓴 글씨도 업스케일 + 진한 잉크로 인식률 확보
   function captureInk() {
-    const dpr = devicePixelRatio || 1;
     const m = 20;
-    const x = Math.max(0, bbox.x1 - m), y = Math.max(0, bbox.y1 - m);
-    const w = Math.min(pad.width / dpr, bbox.x2 + m) - x;
-    const h = Math.min(pad.height / dpr, bbox.y2 + m) - y;
-    const scale = Math.min(1, 768 / w, 768 / h);
+    const x = bbox.x1 - m, y = bbox.y1 - m;
+    const w = bbox.x2 - bbox.x1 + m * 2, h = bbox.y2 - bbox.y1 + m * 2;
+    const scale = Math.min(4, Math.max(1, 1000 / Math.max(w, h)));   // 긴 변 ~1000px 목표
     const out = document.createElement('canvas');
     out.width = Math.max(1, Math.round(w * scale));
     out.height = Math.max(1, Math.round(h * scale));
     const octx = out.getContext('2d');
-    octx.fillStyle = '#fff';                  // 비전 인식률 위해 흰 배경
+    octx.fillStyle = '#fff';
     octx.fillRect(0, 0, out.width, out.height);
-    octx.drawImage(pad, x * dpr, y * dpr, w * dpr, h * dpr, 0, 0, out.width, out.height);
-    return out.toDataURL('image/jpeg', 0.82);
+    octx.strokeStyle = '#101018';             // 화면은 반투명 청잉크지만 판독용은 불투명 흑
+    octx.lineCap = 'round';
+    octx.lineJoin = 'round';
+    for (const st of strokes) {
+      for (let i = 1; i < st.length; i++) {
+        octx.lineWidth = Math.max(2.5, (st[i].w || 2.6) * scale);
+        octx.beginPath();
+        octx.moveTo((st[i - 1].x - x) * scale, (st[i - 1].y - y) * scale);
+        octx.lineTo((st[i].x - x) * scale, (st[i].y - y) * scale);
+        octx.stroke();
+      }
+    }
+    return out.toDataURL('image/jpeg', 0.85);
   }
 
   async function sendInk() {
@@ -598,6 +633,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       pctx.clearRect(0, 0, pad.width, pad.height);
       pad.classList.remove('soaking');
       bbox = null;
+      strokes = [];
+      curStroke = null;
     }, 1700);
 
     while (busy) await sleep(250);            // 일기장이 쓰는 중이면 기다렸다가
@@ -646,6 +683,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     pctx.moveTo(ptr.last.x, ptr.last.y);
     pctx.lineTo(x, y);
     pctx.stroke();
+    if (!curStroke) { curStroke = [{ x: ptr.last.x, y: ptr.last.y }]; strokes.push(curStroke); }
+    curStroke.push({ x, y, w: pctx.lineWidth });
     growBbox(x, y);
     if (e.timeStamp - (ptr.lastSnd || 0) > 45) {
       Sound.scratch(0.06, Math.min(0.09, 0.03 + speed * 0.05));
@@ -665,10 +704,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       grabPen();
     }
     ptr = null;
+    curStroke = null;
   });
   page.addEventListener('pointercancel', () => {
     if (ptr && ptr.drawing) inkTimer = setTimeout(sendInk, 1600);
     ptr = null;
+    curStroke = null;
   });
 
   pen.addEventListener('input', () => {

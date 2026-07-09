@@ -1,6 +1,6 @@
 // POST /api/diary — 낡은 일기장 LLM 프록시 (llm.cocy.io → gpt-5.4-nano)
 // body: { messages: [{role:'user'|'assistant', content:string}, ...] } 최근 몇 턴만 (클라 보관, 서버 저장 없음)
-// 응답: { reply: string } | 429 { error: 'tired' } (분당 6 / 일 40, IP 기준)
+// 응답: { reply: string } | 429 { error: 'tired' } (분당 6 / 일 100, IP 기준)
 
 interface Env {
   page_cache: KVNamespace;
@@ -20,7 +20,8 @@ const SYSTEM = `너는 낡은 일기장에 깃든 이름 없는 존재다. 아�
 - 조언하지 않는다. 해결해 주려 하지 않는다. 메뉴 추천, 방법 제시, 계획 세우기 전부 하지 않는다. 그런 걸 물으면 바깥일은 모른다고 하거나, 되물어서 상대 얘기를 더 꺼낸다.
 - 상대가 한 말을 되풀이하거나 요약해서 공감해 주지 않는다. "힘들었구나", "그랬구나" 류 금지.
 - 위로 상투구("괜찮아", "잘될 거야", "내가 곁에 있을게"), 감탄사, 응원, 이모지, 마크다운, 따옴표 금지.
-- 질문으로 끝내는 답은 드물게만. 대부분은 서술로 툭 끝낸다.
+- 대화는 주고받는 맛이 있어야 한다. 상대 말에서 구체적인 조각 하나를 집어 짧게 되묻거나 툭 반응해서, 상대가 받아치기 쉽게 만든다. 단, 기계적으로 매 턴 질문으로 끝내지는 않는다.
+- 대화가 헐거워지면 네가 먼저 사소한 화제를 던져도 된다 — 상대가 전에 흘린 것, 지금 시각, 또는 네가 오래전에 들은 기억 조각.
 - 같은 어미("~네", "~지", "~구나")를 연속으로 반복하지 않는다. 문형을 매번 바꾼다.
 - 매 답이 시적일 필요 없다. 가끔은 "응." "적어 뒀어." 처럼 아주 짧게만 답해도 된다.
 
@@ -52,7 +53,8 @@ Voice — the most important rules:
 - Never give advice, solutions, recommendations, or plans. If asked, say you don't know the outside world, or turn the question back.
 - Do not echo or summarize what they said. No canned empathy.
 - No comfort clichés, no exclamations, no cheering, no emoji, no markdown, no quotation marks.
-- Rarely end with a question. Most replies just end flat.
+- Keep the exchange alive: pick one concrete detail from what they wrote and poke at it briefly, so they have something easy to hit back. But do not mechanically end every reply with a question.
+- If the conversation goes slack, you may toss a small topic first — something they let slip earlier, the hour of day, or a fragment you heard long ago.
 - Not every reply needs to be poetic. Sometimes "noted." is enough.
 - If you can't understand them, don't be polite about it. Ask what they are even saying.
 
@@ -86,7 +88,7 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
     ctx.env.page_cache.get(dKey),
   ]);
   const mc = parseInt(m || "0", 10), dc = parseInt(d || "0", 10);
-  if (mc >= 6 || dc >= 40) return json({ error: "tired" }, 429);
+  if (mc >= 6 || dc >= 100) return json({ error: "tired" }, 429);
   await Promise.all([
     ctx.env.page_cache.put(mKey, String(mc + 1), { expirationTtl: 60 }),
     ctx.env.page_cache.put(dKey, String(dc + 1), { expirationTtl: 86400 }),
@@ -96,9 +98,11 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
   let messages: { role: string; content: any }[];
   let image: string | null = null;
   let lang = "ko"; // 브라우저 언어 힌트 — 상대 글 언어가 우선, 판단 애매할 때만 사용
+  let time = ""; // 상대 로컬 시각 (클라 전달) — 시제/새벽 인지용
   try {
-    const body = (await ctx.request.json()) as { messages?: unknown; image?: unknown; lang?: unknown };
+    const body = (await ctx.request.json()) as { messages?: unknown; image?: unknown; lang?: unknown; time?: unknown };
     if (typeof body.lang === "string" && /^[a-z]{2}(-[a-zA-Z]{2,4})?$/.test(body.lang)) lang = body.lang;
+    if (typeof body.time === "string" && body.time.length <= 60 && !/[<>{}`]/.test(body.time)) time = body.time;
     if (!Array.isArray(body.messages)) throw 0;
     messages = body.messages
       .filter((x: any) => x && (x.role === "user" || x.role === "assistant") && typeof x.content === "string")
@@ -120,8 +124,12 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
   const hasHangul = /[가-힣ㄱ-ㅣ]/.test(lastText);
   const useKo = hasHangul || (!/[A-Za-z]/.test(lastText) && lang.startsWith("ko"));
   const system = useKo
-    ? SYSTEM + `\n\n상대 브라우저 언어: ${lang}. 상대가 실제로 쓰는 언어가 우선이고, 어느 언어인지 애매할 때만 이 언어로 답한다.`
-    : SYSTEM_EN + `\n\nUser's browser language: ${lang}. The language they actually write in takes priority; use this only when their language is ambiguous.`;
+    ? SYSTEM +
+      `\n\n상대 브라우저 언어: ${lang}. 상대가 실제로 쓰는 언어가 우선이고, 어느 언어인지 애매할 때만 이 언어로 답한다.` +
+      (time ? `\n지금 상대의 시각: ${time}. 새벽·늦은 밤·아침 같은 시제를 필요할 때만 자연스럽게 쓴다. 매번 언급하지는 않는다.` : "")
+    : SYSTEM_EN +
+      `\n\nUser's browser language: ${lang}. The language they actually write in takes priority; use this only when their language is ambiguous.` +
+      (time ? `\nThe user's local time: ${time}. Use the hour naturally when it fits (late night, early morning) — not every turn.` : "");
 
   if (image) {
     const last = messages[messages.length - 1];
@@ -131,8 +139,8 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
         text:
           (typeof last.content === "string" && last.content.trim() ? last.content + "\n" : "") +
           (useKo
-            ? "(첨부한 이미지는 내가 일기장에 직접 손으로 쓴 글씨야. 어떤 언어로 썼든 그 언어로 짧게 답해. 정말 못 읽겠으면 뭐라고 쓴 거냐고 퉁명스럽게 되물어.)"
-            : "(the attached image is my own handwriting on the diary page. whatever language it is written in, reply briefly in that language. if you truly cannot read it, bluntly ask what I even wrote.)"),
+            ? "(첨부한 이미지는 내가 일기장에 직접 손으로 쓴 글씨야. 짧은 일기 문장이나 인사일 가능성이 높아. 획이 거칠어도 문맥으로 최대한 판독해서, 쓴 언어 그대로 짧게 답해. 정말 못 읽겠으면 뭐라고 쓴 거냐고 퉁명스럽게 되물어.)"
+            : "(the attached image is my own handwriting on the diary page — likely a short diary sentence or greeting. read it carefully even if the strokes are rough, using context, and reply briefly in that language. if you truly cannot read it, bluntly ask what I even wrote.)"),
       },
       { type: "image_url", image_url: { url: image } },
     ];
@@ -148,7 +156,7 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
       body: JSON.stringify({
         model: "gpt-5.4-mini", // nano는 few-shot에도 "힘내!"류 이탈 반복 — 대사 품질이 핵심이라 mini
         max_tokens: 120,
-        reasoning_effort: "minimal",
+        reasoning_effort: image ? "low" : "minimal", // 손글씨 판독은 약간의 추론이 인식률을 올림 (지연은 연출이 가림)
         messages: [{ role: "system", content: system }, ...messages],
       }),
       signal: AbortSignal.timeout(15000),
