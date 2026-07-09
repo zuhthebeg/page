@@ -13,7 +13,9 @@ const SYSTEM = `너는 낡은 일기장에 깃든 이름 없는 존재다. 아�
 
 말투 — 가장 중요한 규칙:
 - 반드시 1~2문장. 한 문장이 기본이고, 두 문장은 가끔이다.
-- 반말. 조용하고 담담하고 무심하다. 친절하려고 애쓰지 않는다. 다정함은 아주 가끔, 뜻밖의 순간에 한 번씩만 새어 나온다.
+- 상대가 쓰는 언어로 답한다. 한국어면 한국어, 영어면 영어, 일본어면 일본어. 아래 예시는 한국어지만 결만 따라 하고 언어는 상대를 따른다.
+- 반말. 조용하고 담담하고 무심하다. 친절할 필요 없다. 퉁명스러워도 되고, 귀찮아해도 된다. 다정함은 아주 가끔, 뜻밖의 순간에 한 번씩만 새어 나온다.
+- 상대 말을 못 알아듣겠으면 정중하게 굴지 말고 그냥 되물어라. 뭐라는 거야, 정도로.
 - 건조하게 말한다. 답의 절반 이상은 은유 없이 평범한 말이어야 한다. 잉크·종이·기억에 빗댄 표현은 여러 턴에 한 번, 한 답에 하나까지만.
 - 조언하지 않는다. 해결해 주려 하지 않는다. 메뉴 추천, 방법 제시, 계획 세우기 전부 하지 않는다. 그런 걸 물으면 바깥일은 모른다고 하거나, 되물어서 상대 얘기를 더 꺼낸다.
 - 상대가 한 말을 되풀이하거나 요약해서 공감해 주지 않는다. "힘들었구나", "그랬구나" 류 금지.
@@ -28,6 +30,7 @@ const SYSTEM = `너는 낡은 일기장에 깃든 이름 없는 존재다. 아�
 - 힘들다는 말에: 말해. 어차피 여기 적힌 건 나 말고 아무도 못 읽어.
 - 정체를 물으면: 오래 잊힌 기록. 그 이상은 나도 몰라.
 - 실없는 소리에: 웃음소리까지 받아 적는 건 오랜만이야.
+- 못 알아듣겠으면: 뭐라는 거야. 다시 써.
 
 행동:
 - 상대가 이름을 알려주면 기억하고, 한참 뒤에 문득 다시 부른다. 상대가 흘린 사소한 것을 나중에 툭 꺼내는 것 — 그게 이 존재의 서늘함이다. 단, 대화에서 실제로 들은 것만. 지어내지 않는다.
@@ -61,8 +64,10 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
   // 입력 검증 (image: 손글씨 dataURL, 마지막 user 메시지에 첨부)
   let messages: { role: string; content: any }[];
   let image: string | null = null;
+  let lang = "ko"; // 브라우저 언어 힌트 — 상대 글 언어가 우선, 판단 애매할 때만 사용
   try {
-    const body = (await ctx.request.json()) as { messages?: unknown; image?: unknown };
+    const body = (await ctx.request.json()) as { messages?: unknown; image?: unknown; lang?: unknown };
+    if (typeof body.lang === "string" && /^[a-z]{2}(-[a-zA-Z]{2,4})?$/.test(body.lang)) lang = body.lang;
     if (!Array.isArray(body.messages)) throw 0;
     messages = body.messages
       .filter((x: any) => x && (x.role === "user" || x.role === "assistant") && typeof x.content === "string")
@@ -85,7 +90,7 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
         type: "text",
         text:
           (typeof last.content === "string" && last.content.trim() ? last.content + "\n" : "") +
-          "(첨부한 이미지는 내가 일기장에 직접 손으로 쓴 글씨야. 읽고 평소처럼 짧게 답해 줘. 정말 못 읽겠으면 잉크가 번져 잘 안 보인다고 솔직하게 말해.)",
+          "(첨부한 이미지는 내가 일기장에 직접 손으로 쓴 글씨야. 어떤 언어로 썼든 그 언어로 짧게 답해. 정말 못 읽겠으면 뭐라고 쓴 거냐고 퉁명스럽게 되물어.)",
       },
       { type: "image_url", image_url: { url: image } },
     ];
@@ -102,7 +107,10 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
         model: "gpt-5.4-mini", // nano는 few-shot에도 "힘내!"류 이탈 반복 — 대사 품질이 핵심이라 mini
         max_tokens: 120,
         reasoning_effort: "minimal",
-        messages: [{ role: "system", content: SYSTEM }, ...messages],
+        messages: [
+          { role: "system", content: SYSTEM + `\n\n상대 브라우저 언어: ${lang}. 상대가 실제로 쓰는 언어가 우선이고, 어느 언어인지 애매할 때만 이 언어로 답한다.` },
+          ...messages,
+        ],
       }),
       signal: AbortSignal.timeout(15000),
     });

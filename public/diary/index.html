@@ -286,6 +286,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   let interruptRequested = false; // 인트로 도중 사용자가 펜을 들면 중단
   let engaged = false;            // 첫 전송 이후 = 인트로 정리 타이머 무효
 
+  // ── 브라우저 언어 (ko 외엔 영어로 — 인트로/힌트/폴백만. LLM 답변 언어는 서버가 상대 글을 따라감) ──
+  const LANG = (navigator.language || 'ko').toLowerCase().startsWith('ko') ? 'ko' : 'en';
+  const L = LANG === 'ko' ? {
+    hint: '아무 곳에나 손으로 쓰거나, 눌러서 이야기해 보세요',
+    intro: ['…오랜만이야.', '…누구지.', '…또 펜 소리가 들리네.'],
+    tired: '…오늘은 너무 많은 이야기를 들었어. 내일 다시 와.',
+  } : {
+    hint: 'write anywhere by hand, or tap and type',
+    intro: ['…it has been a while.', '…who is there.', '…I hear a pen again.'],
+    tired: '…too many words for one day. come back tomorrow.',
+  };
+  hint.textContent = L.hint;
+
   // ── 펜 사각 소리 (프로시저럴 노이즈 — 에셋 없음) ──
   const Sound = {
     ctx: null, buf: null,
@@ -429,11 +442,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       const res = await fetch('/api/diary', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(image ? { messages: history, image } : { messages: history }),
+        body: JSON.stringify(image ? { messages: history, image, lang: LANG } : { messages: history, lang: LANG }),
         signal: ctrl.signal
       });
       clearTimeout(t);
-      if (res.status === 429) return '…오늘은 너무 많은 이야기를 들었어. 내일 다시 와 줘.';
+      if (res.status === 429) return L.tired;
       if (!res.ok) throw 0;
       const d = await res.json();
       const text = (d.reply || '').trim();
@@ -448,30 +461,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   // ── 가짜 응답 (오프라인/장애 폴백) ──
-  const DEFAULTS = [
-    '이 페이지는 오래 비어 있었어. 네 글씨가 반가워.',
+  const DEFAULTS = LANG === 'ko' ? [
+    '이 페이지는 오래 비어 있었어.',
     '적힌 것은 사라져도, 배어든 것은 남아.',
     '더 써 봐. 나는 지우는 법밖에 몰라서.',
-    '너의 오늘은 어떤 잉크 색이었을까.',
-    '괜찮아. 여기 적힌 건 아무도 못 읽으니까.',
-    '나는 기억해. 종이는 잊는 법이 없거든.'
+    '응. 적어 뒀어.',
+    '여기 적힌 건 나 말고 아무도 못 읽어.',
+    '종이는 잊는 법이 없어.'
+  ] : [
+    'this page has been empty a long time.',
+    'what is written fades. what soaks in stays.',
+    'keep writing. erasing is all I know.',
+    'noted.',
+    'no one reads this page but me.',
+    'paper does not forget.'
   ];
 
   function fallbackReply(input) {
     const t = input.trim();
-    const name = t.match(/(?:내\s*이름은|나는|난)\s*([가-힣a-zA-Z]{1,10}?)(?:이야|이에요|예요|야|입니다|이라고|라고)?[.!\s]*$/);
-    if (name && !visitorName) {
-      visitorName = name[1];
-      return visitorName + '… 좋은 이름이야. 잊지 않을게.';
+    if (LANG === 'ko') {
+      const name = t.match(/(?:내\s*이름은|나는|난)\s*([가-힣a-zA-Z]{1,10}?)(?:이야|이에요|예요|야|입니다|이라고|라고)?[.!\s]*$/);
+      if (name && !visitorName) {
+        visitorName = name[1];
+        return visitorName + '. 적어 뒀어.';
+      }
+      if (/안녕|하이|헬로/i.test(t)) return '…오랜만에 누가 펜을 들었네.';
+      if (/누구|정체|뭐야\??$/.test(t)) return '오래 잊힌 기록. 그 이상은 나도 몰라.';
+      if (/이름.*(뭐|알려|궁금)/.test(t)) return '이름은 잃어버렸어. 오래돼서.';
+      if (/뭐해|뭐하고|심심/.test(t)) return '기다렸어. 누군가 다시 펜을 들 때까지.';
+      if (/무서|귀신|유령/.test(t)) return '무서워할 건 없어. 아직은.';
+      if (/잘\s*가|안녕히|바이|갈게|잘자/.test(t)) return (visitorName ? visitorName + '. ' : '') + '또 와. 나는 어디에도 못 가니까.';
+      if (t.endsWith('?')) return '글쎄. 그건 네가 더 잘 알 텐데.';
+    } else {
+      const name = t.match(/(?:my name is|i am|i'm|im)\s+([A-Za-z가-힣]{1,15})[.!\s]*$/i);
+      if (name && !visitorName) {
+        visitorName = name[1];
+        return visitorName + '. noted.';
+      }
+      if (/\b(hi|hello|hey)\b/i.test(t)) return '…someone holds a pen again.';
+      if (/who are you|what are you/i.test(t)) return 'a record, long forgotten. that is all I know.';
+      if (/\b(bye|goodbye|good night)\b/i.test(t)) return (visitorName ? visitorName + '. ' : '') + 'come back. I cannot go anywhere.';
+      if (t.endsWith('?')) return 'you would know better than I do.';
     }
-    if (/안녕|하이|헬로/i.test(t)) return '…안녕. 이 일기장이 펼쳐진 게 얼마 만인지.';
-    if (/누구|정체|뭐야\??$/.test(t)) return '나? 오래 잊혀진 기록이야. 네가 깨우기 전까진.';
-    if (/이름.*(뭐|알려|궁금)/.test(t)) return '이름은 잃어버렸어. 네가 하나 지어 줄래?';
-    if (/뭐해|뭐하고|심심/.test(t)) return '기다렸어. 누군가 다시 펜을 들 때까지.';
-    if (/사랑|좋아해/.test(t)) return '종이에 적힌 마음은 지워져도 배어들어. …조심해.';
-    if (/무서|귀신|유령/.test(t)) return '무서워할 건 없어. 아직은.';
-    if (/잘\s*가|안녕히|바이|갈게|잘자/.test(t)) return (visitorName ? visitorName + ', ' : '') + '벌써? …또 와. 나는 어디에도 못 가니까.';
-    if (t.endsWith('?')) return '글쎄. 답은 네가 이미 알고 있을 텐데.';
     return DEFAULTS[turn++ % DEFAULTS.length];
   }
 
@@ -664,13 +695,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
   grabPen();                                          // 로드 직후 (데스크톱)
 
-  // ── 첫 인사 ──
+  // ── 첫 인사 — 반드시 먼저 말 걸지 않는다. 잠시 침묵, 그 뒤에도 반쯤은 끝까지 침묵 ──
   (async () => {
     await sleep(1400);
-    busy = false;                                   // 인트로 중에도 펜은 살아있음
-    await diaryWrite('…오랜만이야. 네 이름이 뭐지?', true);
+    busy = false;                                   // 처음부터 펜은 살아있음
+    await sleep(4000 + Math.random() * 4000);
+    if (busy || committed || engaged) return;       // 사용자가 먼저 쓰기 시작했으면 침묵 유지
+    if (Math.random() < 0.5) {                      // 절반은 아예 말 안 걸고 힌트만
+      hint.classList.add('show');
+      return;
+    }
+    await diaryWrite(L.intro[Math.floor(Math.random() * L.intro.length)], true);
     await sleep(7000);
-    if (busy || committed || engaged) return;   // 이미 대화가 시작됐으면 손대지 않음
+    if (busy || committed || engaged) return;
     if (diaryLine.children.length) {
       await absorb(diaryLine);
       hint.classList.add('show');
