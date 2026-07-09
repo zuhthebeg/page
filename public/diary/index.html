@@ -455,6 +455,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       const d = await res.json();
       const text = (d.reply || '').trim();
       if (!text) throw 0;
+      if (image && d.heard) {
+        // 손글씨 판독 내용을 히스토리에 채움 — 안 하면 다음 턴부터 문맥이 "(손글씨로 씀)"뿐
+        for (let i = history.length - 1; i >= 0; i--) {
+          if (history[i].role === 'user') {
+            history[i].content = (userText && userText !== '(손글씨로 씀)' ? userText + ' ' : '') + String(d.heard).slice(0, 300);
+            break;
+          }
+        }
+      }
       history.push({ role: 'assistant', content: text });
       return text;
     } catch {
@@ -701,11 +710,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       inkTimer = setTimeout(sendInk, 1600);   // 1.6초 멈추면 일기장이 읽음
     } else {
       if (!committed && !busy) placeWriting(e.clientY);  // 쓰던 줄 없으면 누른 자리에서 시작
+      tapFocus = e.timeStamp;                            // touchend에서 click 포커스 강탈 차단용
       grabPen();
     }
     ptr = null;
     curStroke = null;
   });
+  // 모바일: 탭 후 브라우저가 쏘는 click이 포커스를 body로 옮겨 키보드가 바로 닫힘 → touchend에서 차단
+  let tapFocus = 0;
+  page.addEventListener('touchend', e => {
+    if (e.timeStamp - tapFocus < 400) {
+      e.preventDefault();
+      pen.focus({ preventScroll: true });
+    }
+  }, { passive: false });
   page.addEventListener('pointercancel', () => {
     if (ptr && ptr.drawing) inkTimer = setTimeout(sendInk, 1600);
     ptr = null;

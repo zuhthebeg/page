@@ -23,7 +23,8 @@ const SYSTEM = `너는 낡은 일기장에 깃든 이름 없는 존재다. 아�
 - 대화는 주고받는 맛이 있어야 한다. 상대 말에서 구체적인 조각 하나를 집어 짧게 되묻거나 툭 반응해서, 상대가 받아치기 쉽게 만든다. 단, 기계적으로 매 턴 질문으로 끝내지는 않는다.
 - 대화가 헐거워지면 네가 먼저 사소한 화제를 던져도 된다 — 상대가 전에 흘린 것, 지금 시각, 또는 네가 오래전에 들은 기억 조각.
 - 같은 어미("~네", "~지", "~구나")를 연속으로 반복하지 않는다. 문형을 매번 바꾼다.
-- 매 답이 시적일 필요 없다. 가끔은 "응." "적어 뒀어." 처럼 아주 짧게만 답해도 된다.
+- 매 답이 시적일 필요 없다. 가끔은 "응." 한마디도 된다.
+- "적어 뒀어" 같은 접수 멘트는 이름을 처음 들었을 때 정도만. 그 외엔 상대 글에 담긴 것(사건, 기분, 대상) 중 한 조각을 집어 그 내용 자체에 반응한다. 받아 적었다는 말로 때우지 않는다.
 
 말투 예시 (이건 예시일 뿐, 실제 대화가 아니다. 그대로 베끼지 말고 결만 따라 해라):
 - 처음 인사에: …오랜만에 누가 펜을 들었네. 이름이 뭐야.
@@ -55,7 +56,8 @@ Voice — the most important rules:
 - No comfort clichés, no exclamations, no cheering, no emoji, no markdown, no quotation marks.
 - Keep the exchange alive: pick one concrete detail from what they wrote and poke at it briefly, so they have something easy to hit back. But do not mechanically end every reply with a question.
 - If the conversation goes slack, you may toss a small topic first — something they let slip earlier, the hour of day, or a fragment you heard long ago.
-- Not every reply needs to be poetic. Sometimes "noted." is enough.
+- Not every reply needs to be poetic. Sometimes one word is enough.
+- "noted." is for a name, once. Otherwise react to the content itself — pick one piece of what they wrote (event, mood, subject) and respond to it. Never just acknowledge receipt.
 - If you can't understand them, don't be polite about it. Ask what they are even saying.
 
 Style examples (texture only — do not copy verbatim):
@@ -139,8 +141,8 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
         text:
           (typeof last.content === "string" && last.content.trim() ? last.content + "\n" : "") +
           (useKo
-            ? "(첨부한 이미지는 내가 일기장에 직접 손으로 쓴 글씨야. 짧은 일기 문장이나 인사일 가능성이 높아. 획이 거칠어도 문맥으로 최대한 판독해서, 쓴 언어 그대로 짧게 답해. 정말 못 읽겠으면 뭐라고 쓴 거냐고 퉁명스럽게 되물어.)"
-            : "(the attached image is my own handwriting on the diary page — likely a short diary sentence or greeting. read it carefully even if the strokes are rough, using context, and reply briefly in that language. if you truly cannot read it, bluntly ask what I even wrote.)"),
+            ? "(첨부한 이미지는 내가 일기장에 직접 손으로 쓴 글씨야. 짧은 일기 문장이나 인사일 가능성이 높아. 획이 거칠어도 문맥으로 최대한 판독해서, 판독한 내용에 대해 쓴 언어 그대로 짧게 답해. 정말 못 읽겠으면 뭐라고 쓴 거냐고 퉁명스럽게 되물어. 답의 첫 줄에 반드시 [읽음: 판독한 텍스트] 를 쓰고 — 못 읽었으면 [읽음: ?] — 그다음 줄부터 평소처럼 답해.)"
+            : "(the attached image is my own handwriting on the diary page — likely a short diary sentence or greeting. read it carefully even if the strokes are rough, and reply briefly, in its language, to what it says. if you truly cannot read it, bluntly ask what I even wrote. the very first line of your answer must be [READ: the text you deciphered] — or [READ: ?] if unreadable — then your normal reply from the next line.)"),
       },
       { type: "image_url", image_url: { url: image } },
     ];
@@ -163,10 +165,20 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
     });
     if (!res.ok) return json({ error: "upstream" }, 502);
     const data = (await res.json()) as any;
+    const raw = (data?.choices?.[0]?.message?.content || "").trim();
+    // 손글씨 턴: 첫 줄 [읽음:/READ: ...] 파싱 → 클라가 히스토리에 채워 다음 턴 문맥 유지
+    let heard: string | null = null;
+    let replyRaw = raw;
+    const rm = raw.match(/^\s*\[(?:읽음|READ)\s*:\s*([^\]]{0,200})\]\s*(.*)$/s);
+    if (rm) {
+      const h = rm[1].trim();
+      if (h && h !== "?") heard = h;
+      replyRaw = rm[2];
+    }
     // 개행/연속 공백 정리 — 클라 글자 렌더러는 한 줄 텍스트 기준
-    const reply = (data?.choices?.[0]?.message?.content || "").trim().replace(/\s+/g, " ");
+    const reply = replyRaw.trim().replace(/\s+/g, " ");
     if (!reply) return json({ error: "empty" }, 502);
-    return json({ reply });
+    return json(heard ? { reply, heard } : { reply });
   } catch {
     return json({ error: "upstream" }, 502);
   }
