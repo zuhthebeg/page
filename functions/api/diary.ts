@@ -1,6 +1,6 @@
 // POST /api/diary — 낡은 일기장 LLM 프록시 (llm.cocy.io → gpt-5.4-nano)
 // body: { messages: [{role:'user'|'assistant', content:string}, ...] } 최근 몇 턴만 (클라 보관, 서버 저장 없음)
-// 응답: { reply: string } | 429 { error: 'tired' } (분당 6 / 일 100, IP 기준)
+// 응답: { reply: string } | 429 { error: 'tired' } (분당 12 / 일 300, IP 기준)
 
 interface Env {
   page_cache: KVNamespace;
@@ -90,7 +90,7 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
     ctx.env.page_cache.get(dKey),
   ]);
   const mc = parseInt(m || "0", 10), dc = parseInt(d || "0", 10);
-  if (mc >= 6 || dc >= 100) return json({ error: "tired" }, 429);
+  if (mc >= 12 || dc >= 300) return json({ error: "tired" }, 429);
   await Promise.all([
     ctx.env.page_cache.put(mKey, String(mc + 1), { expirationTtl: 60 }),
     ctx.env.page_cache.put(dKey, String(dc + 1), { expirationTtl: 86400 }),
@@ -156,7 +156,7 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-5.4-mini", // nano는 few-shot에도 "힘내!"류 이탈 반복 — 대사 품질이 핵심이라 mini
+        model: "gpt-5.5", // mini는 대사가 밋밋 — 페르소나 대사가 곧 상품이라 최상위. 턴당 토큰이 작아 비용 여전히 미미
         max_tokens: 120,
         reasoning_effort: image ? "low" : "minimal", // 손글씨 판독은 약간의 추론이 인식률을 올림 (지연은 연출이 가림)
         messages: [{ role: "system", content: system }, ...messages],
