@@ -141,8 +141,8 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
         text:
           (typeof last.content === "string" && last.content.trim() ? last.content + "\n" : "") +
           (useKo
-            ? "(첨부한 이미지는 내가 일기장에 직접 손으로 쓴 글씨야. 짧은 일기 문장이나 인사일 가능성이 높아. 획이 거칠어도 문맥으로 최대한 판독해서, 판독한 내용에 대해 쓴 언어 그대로 짧게 답해. 정말 못 읽겠으면 뭐라고 쓴 거냐고 퉁명스럽게 되물어. 답의 첫 줄에 반드시 [읽음: 판독한 텍스트] 를 쓰고 — 못 읽었으면 [읽음: ?] — 그다음 줄부터 평소처럼 답해.)"
-            : "(the attached image is my own handwriting on the diary page — likely a short diary sentence or greeting. read it carefully even if the strokes are rough, and reply briefly, in its language, to what it says. if you truly cannot read it, bluntly ask what I even wrote. the very first line of your answer must be [READ: the text you deciphered] — or [READ: ?] if unreadable — then your normal reply from the next line.)"),
+            ? "(첨부한 이미지는 내가 일기장에 직접 손으로 쓴 글씨야. 획이 거칠어도 문맥으로 판독해.\n출력 형식 — 반드시 정확히 두 줄:\n1번째 줄: [읽음: 판독한 텍스트 그대로] (못 읽으면 [읽음: ?])\n2번째 줄: 판독한 내용에 대한 평소 말투의 답. 판독 텍스트를 답에서 반복하지 마. 못 읽었으면 뭐라고 쓴 거냐고 퉁명스럽게 되물어.\n1번째 줄 없이 답만 쓰는 것은 금지다.)"
+            : "(the attached image is my own handwriting on the diary page. decipher it even if the strokes are rough, using context.\nOutput format — exactly two lines, mandatory:\nline 1: [READ: the deciphered text verbatim] (or [READ: ?] if unreadable)\nline 2: your usual reply to what it says, in its language. do not repeat the deciphered text in the reply. if unreadable, bluntly ask what I even wrote.\nAnswering without line 1 is forbidden.)"),
       },
       { type: "image_url", image_url: { url: image } },
     ];
