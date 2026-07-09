@@ -422,7 +422,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   const history = [];
   async function askDiary(userText, image) {
     history.push({ role: 'user', content: userText.slice(0, 300) });
-    while (history.length > 6) history.shift();
+    while (history.length > 12) history.shift();
     try {
       const ctrl = new AbortController();
       const t = setTimeout(() => ctrl.abort(), image ? 18000 : 12000);

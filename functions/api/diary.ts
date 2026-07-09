@@ -66,7 +66,7 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
     if (!Array.isArray(body.messages)) throw 0;
     messages = body.messages
       .filter((x: any) => x && (x.role === "user" || x.role === "assistant") && typeof x.content === "string")
-      .slice(-6)
+      .slice(-12)
       .map((x: any) => ({ role: x.role, content: x.content.slice(0, 300) }));
     if (!messages.length || messages[messages.length - 1].role !== "user") throw 0;
     if (typeof body.image === "string") {
