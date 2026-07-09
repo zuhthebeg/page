@@ -18,6 +18,11 @@ export const onRequestGet: PagesFunction<Env> = async (ctx) => {
 
   return Response.json(
     { sites: results ?? [] },
-    { headers: { "cache-control": "public, max-age=60" } }
+    {
+      headers: {
+        "cache-control": "public, max-age=60",
+        "access-control-allow-origin": "*",
+      },
+    }
   );
 };
