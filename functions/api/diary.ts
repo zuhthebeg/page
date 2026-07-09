@@ -54,18 +54,37 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
     ctx.env.page_cache.put(dKey, String(dc + 1), { expirationTtl: 86400 }),
   ]);
 
-  // 입력 검증
-  let messages: { role: string; content: string }[];
+  // 입력 검증 (image: 손글씨 dataURL, 마지막 user 메시지에 첨부)
+  let messages: { role: string; content: any }[];
+  let image: string | null = null;
   try {
-    const body = (await ctx.request.json()) as { messages?: unknown };
+    const body = (await ctx.request.json()) as { messages?: unknown; image?: unknown };
     if (!Array.isArray(body.messages)) throw 0;
     messages = body.messages
       .filter((x: any) => x && (x.role === "user" || x.role === "assistant") && typeof x.content === "string")
       .slice(-6)
       .map((x: any) => ({ role: x.role, content: x.content.slice(0, 300) }));
     if (!messages.length || messages[messages.length - 1].role !== "user") throw 0;
+    if (typeof body.image === "string") {
+      if (!/^data:image\/(png|jpeg);base64,[A-Za-z0-9+/=]+$/.test(body.image) || body.image.length > 900_000)
+        throw 0;
+      image = body.image;
+    }
   } catch {
     return json({ error: "bad_request" }, 400);
+  }
+
+  if (image) {
+    const last = messages[messages.length - 1];
+    last.content = [
+      {
+        type: "text",
+        text:
+          (typeof last.content === "string" && last.content.trim() ? last.content + "\n" : "") +
+          "(첨부한 이미지는 내가 일기장에 직접 손으로 쓴 글씨야. 읽고 평소처럼 짧게 답해 줘. 정말 못 읽겠으면 잉크가 번져 잘 안 보인다고 솔직하게 말해.)",
+      },
+      { type: "image_url", image_url: { url: image } },
+    ];
   }
 
   try {

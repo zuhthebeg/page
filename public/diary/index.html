@@ -52,6 +52,41 @@
       0 0 60px oklch(0 0 0 / .55);
     cursor: text;
     overflow: hidden;
+    touch-action: none; /* 필기 중 스크롤 방지 */
+  }
+
+  /* 손글씨 캔버스 — 페이지 전체, 이벤트는 page가 받아서 그림 */
+  #inkpad {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    transition: opacity 1.6s ease;
+  }
+  #inkpad.soaking { opacity: 0; filter: blur(4px); }
+
+  /* 소리 토글 — 잉크 깃펜 */
+  #soundToggle {
+    position: absolute;
+    right: 1.1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+    z-index: 4;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: oklch(0.42 0.03 60 / .5);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: .4rem;
+  }
+  #soundToggle.off { opacity: .4; }
+  #soundToggle.off::after {
+    content: '';
+    position: absolute;
+    left: 15%; top: 50%;
+    width: 70%; height: 1.5px;
+    background: currentColor;
+    transform: rotate(-30deg);
   }
 
   /* 종이 섬유 결 */
@@ -194,11 +229,13 @@
 </svg>
 
 <main class="page" id="page">
-  <div class="writing">
+  <div class="writing" id="writing">
     <div class="line diary" id="diaryLine" aria-live="polite"></div>
     <div class="line user" id="userLine"></div>
   </div>
-  <div class="hint" id="hint">일기장 위 아무 곳이나 눌러 이야기해 보세요</div>
+  <canvas id="inkpad"></canvas>
+  <div class="hint" id="hint">아무 곳에나 손으로 쓰거나, 눌러서 이야기해 보세요</div>
+  <button id="soundToggle" aria-label="소리 켜고 끄기">✒</button>
 </main>
 
 <input id="pen" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="일기장에 쓰기">
@@ -218,6 +255,58 @@
   let turn = 0;
   let interruptRequested = false; // 인트로 도중 사용자가 펜을 들면 중단
   let engaged = false;            // 첫 전송 이후 = 인트로 정리 타이머 무효
+
+  // ── 펜 사각 소리 (프로시저럴 노이즈 — 에셋 없음) ──
+  const Sound = {
+    ctx: null, buf: null,
+    on: localStorage.getItem('diary_snd') !== '0',
+    init() {
+      if (this.ctx) return;
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      this.ctx = new AC();
+      const len = this.ctx.sampleRate * 0.6;
+      const buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      let last = 0;
+      for (let i = 0; i < len; i++) {         // 갈색 노이즈 — 종이 위 마찰음 질감
+        const w = Math.random() * 2 - 1;
+        last = (last + 0.03 * w) / 1.03;
+        d[i] = last * 3.2;
+      }
+      this.buf = buf;
+    },
+    resume() { this.init(); if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); },
+    scratch(dur = 0.06, vol = 0.05) {
+      if (!this.on || !this.ctx || this.ctx.state !== 'running' || reduced) return;
+      const t = this.ctx.currentTime;
+      const src = this.ctx.createBufferSource();
+      src.buffer = this.buf;
+      src.playbackRate.value = 0.85 + Math.random() * 0.5;
+      const bp = this.ctx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.frequency.value = 1600 + Math.random() * 2200;
+      bp.Q.value = 1.1;
+      const g = this.ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol * (0.6 + Math.random() * 0.8), t + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      src.connect(bp); bp.connect(g); g.connect(this.ctx.destination);
+      src.start(t, Math.random() * 0.4);
+      src.stop(t + dur + 0.05);
+    }
+  };
+  const sndBtn = document.getElementById('soundToggle');
+  const syncSndBtn = () => sndBtn.classList.toggle('off', !Sound.on);
+  syncSndBtn();
+  sndBtn.addEventListener('pointerdown', e => e.stopPropagation());
+  sndBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    Sound.on = !Sound.on;
+    localStorage.setItem('diary_snd', Sound.on ? '1' : '0');
+    if (Sound.on) { Sound.resume(); Sound.scratch(0.08, 0.08); }
+    syncSndBtn();
+  });
 
   // ── 글자별 흔들림: 재렌더에도 같은 모양이 나오도록 (index, char) 시드 ──
   function jitter(i, code) {
@@ -257,6 +346,7 @@
       const c = text[i];
       diaryLine.insertBefore(makeCh(c, i, true), nib);
       if (c === ' ') { await sleep(45); continue; }
+      Sound.scratch(0.05 + Math.random() * 0.04, 0.045);
       if ('…'.includes(c)) { await sleep(520); continue; }
       if (',.?!'.includes(c)) { await sleep(330); continue; }
       await sleep(62 + Math.random() * 75);
@@ -280,6 +370,7 @@
 
   // ── 유저 라인 렌더 (타이핑/IME 대응: 전체 diff 재렌더) ──
   function renderUser(value) {
+    if (value.length > committed.length) Sound.scratch(0.05, 0.05);
     userLine.innerHTML = '';
     for (let i = 0; i < value.length; i++) {
       const s = makeCh(value[i], i, false);
@@ -299,16 +390,16 @@
 
   // ── LLM 연결 (실패 시 아래 가짜 응답으로 폴백) ──
   const history = [];
-  async function askDiary(userText) {
+  async function askDiary(userText, image) {
     history.push({ role: 'user', content: userText.slice(0, 300) });
     while (history.length > 6) history.shift();
     try {
       const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 12000);
+      const t = setTimeout(() => ctrl.abort(), image ? 18000 : 12000);
       const res = await fetch('/api/diary', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history }),
+        body: JSON.stringify(image ? { messages: history, image } : { messages: history }),
         signal: ctrl.signal
       });
       clearTimeout(t);
@@ -354,16 +445,9 @@
     return DEFAULTS[turn++ % DEFAULTS.length];
   }
 
-  // ── 대화 턴 ──
-  async function submit() {
-    const value = pen.value.trim();
-    if (!value || busy) return;
-    busy = true;
-    engaged = true;
-    pen.value = '';
+  // ── 대화 턴 공통부: 유저 잉크 흡수 → 답장 → 소멸 ──
+  async function runTurn(pending) {
     hint.classList.remove('show');
-
-    const pending = askDiary(value);          // 네트워크는 연출과 병렬로
     await absorb(userLine);
     committed = '';
     await sleep(500 + Math.random() * 500);   // 일기장이 읽는 시간
@@ -377,10 +461,154 @@
 
     await diaryWrite(text);
     busy = false;
-    pen.focus();
     await sleep(6000);
     if (!busy) absorb(diaryLine);             // 다음 턴이 이미 시작됐으면 그쪽이 지움
   }
+
+  async function submit() {
+    const value = pen.value.trim();
+    if (!value || busy) return;
+    busy = true;
+    engaged = true;
+    pen.value = '';
+    const pending = askDiary(value);          // 네트워크는 연출과 병렬로
+    await runTurn(pending);
+    pen.focus({ preventScroll: true });
+  }
+
+  // ── 손글씨 (전면 캔버스) ──
+  const pad = document.getElementById('inkpad');
+  const pctx = pad.getContext('2d');
+  const writingEl = document.getElementById('writing');
+  let bbox = null;              // 스트로크 경계 (CSS px)
+  let inkTimer = null;          // 멈춤 감지 → 자동 전송
+  let sending = false;
+
+  function sizePad() {
+    const r = page.getBoundingClientRect();
+    const dpr = devicePixelRatio || 1;
+    pad.width = Math.round(r.width * dpr);
+    pad.height = Math.round(r.height * dpr);
+    pad.style.width = r.width + 'px';
+    pad.style.height = r.height + 'px';
+    pctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    pctx.lineCap = 'round';
+    pctx.lineJoin = 'round';
+    bbox = null;                // 리사이즈는 캔버스를 지움 — 미전송 잉크도 리셋
+  }
+  sizePad();
+  addEventListener('resize', sizePad);
+
+  function growBbox(x, y) {
+    if (!bbox) bbox = { x1: x, y1: y, x2: x, y2: y };
+    else {
+      bbox.x1 = Math.min(bbox.x1, x); bbox.y1 = Math.min(bbox.y1, y);
+      bbox.x2 = Math.max(bbox.x2, x); bbox.y2 = Math.max(bbox.y2, y);
+    }
+  }
+
+  function captureInk() {
+    const dpr = devicePixelRatio || 1;
+    const m = 20;
+    const x = Math.max(0, bbox.x1 - m), y = Math.max(0, bbox.y1 - m);
+    const w = Math.min(pad.width / dpr, bbox.x2 + m) - x;
+    const h = Math.min(pad.height / dpr, bbox.y2 + m) - y;
+    const scale = Math.min(1, 768 / w, 768 / h);
+    const out = document.createElement('canvas');
+    out.width = Math.max(1, Math.round(w * scale));
+    out.height = Math.max(1, Math.round(h * scale));
+    const octx = out.getContext('2d');
+    octx.fillStyle = '#fff';                  // 비전 인식률 위해 흰 배경
+    octx.fillRect(0, 0, out.width, out.height);
+    octx.drawImage(pad, x * dpr, y * dpr, w * dpr, h * dpr, 0, 0, out.width, out.height);
+    return out.toDataURL('image/jpeg', 0.82);
+  }
+
+  async function sendInk() {
+    if (!bbox || sending) return;
+    sending = true;
+    const image = captureInk();
+    const typed = pen.value.trim();
+    pen.value = '';
+
+    placeWriting((bbox.y1 + bbox.y2) / 2);    // 답장은 손글씨 쓴 자리 근처에
+    pad.classList.add('soaking');             // 손글씨가 종이에 스며듦
+    setTimeout(() => {
+      pctx.clearRect(0, 0, pad.width, pad.height);
+      pad.classList.remove('soaking');
+      bbox = null;
+    }, 1700);
+
+    while (busy) await sleep(250);            // 일기장이 쓰는 중이면 기다렸다가
+    busy = true;
+    engaged = true;
+    await runTurn(askDiary(typed || '(손글씨로 씀)', image));
+    sending = false;
+  }
+
+  // ── 입력 통합: 탭=타이핑, 끌면=필기 ──
+  let ptr = null;               // {x, y, drawing, last}
+  function placeWriting(clientY) {
+    const r = page.getBoundingClientRect();
+    const pct = Math.min(0.58, Math.max(0.08, (clientY - r.top) / r.height - 0.04));
+    writingEl.style.top = (pct * 100) + '%';
+  }
+
+  page.addEventListener('pointerdown', e => {
+    if (!e.isPrimary) return;
+    Sound.resume();
+    ptr = { x: e.clientX, y: e.clientY, drawing: false, last: null, t: e.timeStamp };
+    try { page.setPointerCapture(e.pointerId); } catch {}
+  });
+
+  page.addEventListener('pointermove', e => {
+    if (!ptr || !e.isPrimary) return;
+    const r = page.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    if (!ptr.drawing) {
+      if (Math.hypot(e.clientX - ptr.x, e.clientY - ptr.y) < 7) return;
+      ptr.drawing = true;
+      ptr.last = { x: ptr.x - r.left, y: ptr.y - r.top };
+      growBbox(ptr.last.x, ptr.last.y);
+      clearTimeout(inkTimer);
+      hint.classList.remove('show');
+      if (!busy && diaryLine.children.length) {  // 쓰기 시작하면 일기장 글씨는 물러남
+        interruptRequested = true;
+        absorb(diaryLine);
+      }
+    }
+    const dt = Math.max(1, e.timeStamp - ptr.t);
+    const speed = Math.hypot(x - ptr.last.x, y - ptr.last.y) / dt;
+    pctx.strokeStyle = 'oklch(0.31 0.055 262 / 0.92)';
+    pctx.lineWidth = Math.max(1.6, 3.6 - speed * 1.4);
+    pctx.beginPath();
+    pctx.moveTo(ptr.last.x, ptr.last.y);
+    pctx.lineTo(x, y);
+    pctx.stroke();
+    growBbox(x, y);
+    if (e.timeStamp - (ptr.lastSnd || 0) > 45) {
+      Sound.scratch(0.06, Math.min(0.09, 0.03 + speed * 0.05));
+      ptr.lastSnd = e.timeStamp;
+    }
+    ptr.last = { x, y };
+    ptr.t = e.timeStamp;
+  });
+
+  page.addEventListener('pointerup', e => {
+    if (!ptr || !e.isPrimary) return;
+    if (ptr.drawing) {
+      clearTimeout(inkTimer);
+      inkTimer = setTimeout(sendInk, 1600);   // 1.6초 멈추면 일기장이 읽음
+    } else {
+      if (!committed && !busy) placeWriting(e.clientY);  // 쓰던 줄 없으면 누른 자리에서 시작
+      grabPen();
+    }
+    ptr = null;
+  });
+  page.addEventListener('pointercancel', () => {
+    if (ptr && ptr.drawing) inkTimer = setTimeout(sendInk, 1600);
+    ptr = null;
+  });
 
   pen.addEventListener('input', () => {
     if (busy) { pen.value = ''; return; }
@@ -395,13 +623,13 @@
     if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); submit(); }
   });
 
-  // click 사용 필수: pointerdown에서 focus하면 브라우저 기본 mousedown이 도로 뺏는다
+  // pointerup에서 focus: pointerdown에서 주면 브라우저 기본 mousedown이 도로 뺏는다
   function grabPen() {
     pen.focus({ preventScroll: true });
     hint.classList.remove('show');
   }
-  page.addEventListener('click', grabPen);
   document.addEventListener('keydown', e => {        // 데스크톱: 그냥 치기 시작해도 써짐
+    Sound.resume();
     if (document.activeElement !== pen && !e.ctrlKey && !e.metaKey && !e.altKey) grabPen();
   });
   grabPen();                                          // 로드 직후 (데스크톱)
