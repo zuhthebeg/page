@@ -157,7 +157,7 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
       },
       body: JSON.stringify({
         model: "gpt-5.5", // mini는 대사가 밋밋 — 페르소나 대사가 곧 상품이라 최상위. 턴당 토큰이 작아 비용 여전히 미미
-        max_tokens: 120,
+        max_tokens: 400, // gpt-5.5는 minimal에서도 추론 토큰 ~100+ 소모 — 120이면 본문이 빈 채 length 컷 (502 empty 원인)
         reasoning_effort: image ? "low" : "minimal", // 손글씨 판독은 약간의 추론이 인식률을 올림 (지연은 연출이 가림)
         messages: [{ role: "system", content: system }, ...messages],
       }),
