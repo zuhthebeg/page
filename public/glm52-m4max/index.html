@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>M4 Max 64GB로 GLM 5.2 돌릴 수 있나 · page.cocy.io</title>
+<meta name="description" content="753B MoE 모델 GLM 5.2를 M4 Max 64GB 맥북 exo 클러스터로 돌릴 수 있는지 스펙 기반 실행 가능성 조사. 판정: 조건부 가능(6/10) — 최소 9대, 권장 10대, 실증 리스크 있음." />
+<link rel="canonical" href="https://page.cocy.io/glm52-m4max/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="M4 Max 64GB로 GLM 5.2 돌릴 수 있나 — exo 클러스터 실행 가능성 조사" />
+<meta property="og:description" content="스펙 기반 실측 계산 · 판정: 조건부 가능 (6/10) · 최소 9대 / 권장 10대 / TB5 8대+ 스케일 미실증" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#9a5b34; --accent-2:#c2683f; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:58ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+a{color:var(--accent-2)}
+
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#fbf7f1);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--ink);margin-top:.2rem}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1}
+.score small{font-size:1rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.no{background:rgba(168,68,58,.12);color:var(--bad)}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.warn{background:rgba(184,134,11,.14);color:var(--warn)}
+
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.92rem}
+th,td{text-align:left;padding:.7rem .6rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:500}
+td .pct{font-family:var(--display);font-weight:600}
+.b-good{color:var(--good)}.b-warn{color:var(--warn)}.b-bad{color:var(--bad)}
+.tdtag{font-size:.78rem}
+
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+ol.steps{list-style:none;counter-reset:s;margin:.4rem 0}
+ol.steps li{position:relative;padding-left:2.2rem;margin-bottom:.9rem;counter-increment:s}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--mono);font-size:.78rem;display:flex;align-items:center;justify-content:center}
+ol.steps li b{color:var(--ink);font-weight:500}
+
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+.src{font-size:.8rem;color:var(--muted)}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+</style>
+<meta property="og:url" content="https://page.cocy.io/glm52-m4max/" />
+<meta property="article:published_time" content="2026-07-15" />
+<meta property="article:modified_time" content="2026-07-15" />
+<meta name="author" content="cocy" />
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "M4 Max 64GB로 GLM 5.2 돌릴 수 있나 — exo 클러스터 실행 가능성 조사", "description": "753B MoE 모델 GLM 5.2를 M4 Max 64GB 맥북 exo 클러스터로 돌릴 수 있는지 스펙 기반 실행 가능성 조사. 판정: 조건부 가능(6/10).", "url": "https://page.cocy.io/glm52-m4max/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/glm52-m4max/"}, "datePublished": "2026-07-15", "dateModified": "2026-07-15", "inLanguage": "ko", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true}</script>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Tech Feasibility · Local LLM Cluster</div>
+    <h1>M4 Max 64GB로 GLM 5.2 돌릴 수 있나</h1>
+    <p class="lead">753B 파라미터 오픈모델 <b>GLM 5.2</b>를 회사에서 굴러다니는 <b>M4 Max 64GB</b> 맥북들로 <b>exo</b> 분산클러스터를 짜서 실제로 돌릴 수 있는지, 공식 모델 스펙과 하드웨어 스펙을 교차 계산해 확인했다.</p>
+    <div class="meta">
+      <span><b>작성</b> 2026-07-15</span>
+      <span><b>대상</b> exo(MLX) 분산 클러스터 실험</span>
+      <span><b>방법</b> 모델·하드웨어 공식 스펙 계산 + 커뮤니티 실측 교차검증</span>
+      <span><b>출처</b> huggingface.co/mlx-community, z.ai, github.com/exo-explore/exo (Apache-2.0)</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">최종 판정</div>
+          <div class="v-main">조건부 가능 — 메모리 계산은 통과, 실증은 미검증</div>
+        </div>
+        <div class="score">6<small>/10</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag yes">✓ 메모리 계산상 가능 (9~10대)</span>
+        <span class="tag warn">△ exo GLM-5 계열 지원 이슈 오픈 상태</span>
+        <span class="tag warn">△ TB5 8대+ 스케일 공개 실증 없음</span>
+        <span class="tag no">✗ 바로 8~10대 도전은 비권장</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="model">
+    <h2><span class="n">01</span> GLM 5.2 스펙</h2>
+    <p>Z.ai(구 Zhipu)가 2026-06-16 MIT 라이선스로 공개한 코딩 특화 MoE 모델. <a href="https://z.ai/blog/glm-5.2" target="_blank" rel="noopener">공식 블로그</a> 기준 스펙은 다음과 같다.</p>
+    <table>
+      <thead><tr><th>항목</th><th>값</th></tr></thead>
+      <tbody>
+        <tr><td>총 파라미터</td><td>~744B (소스에 따라 753B로도 표기)</td></tr>
+        <tr><td>활성 파라미터/토큰</td><td>~40B (MoE, 256개 전문가 중 8+1 활성)</td></tr>
+        <tr><td>레이어 수</td><td>78</td></tr>
+        <tr><td>은닉 크기</td><td>6,144</td></tr>
+        <tr><td>컨텍스트</td><td>최대 1M 토큰 (IndexShare 스파스 어텐션)</td></tr>
+        <tr><td>어텐션</td><td>Multi-head Latent Attention + DeepSeek Sparse Attention</td></tr>
+      </tbody>
+    </table>
+    <p class="note">MoE라 <b>연산량</b>은 40B급이지만, <b>메모리에는 전체 744B 가중치가 다 올라가 있어야</b> 한다 — 토큰마다 어떤 전문가가 활성화될지 미리 알 수 없기 때문. 클러스터 사이징은 활성 파라미터가 아니라 총 파라미터 기준으로 해야 한다.</p>
+  </section>
+
+  <section data-block="memory">
+    <h2><span class="n">02</span> 메모리 계산 — 몇 대 필요한가</h2>
+    <p>실제 배포된 <a href="https://huggingface.co/mlx-community/GLM-5.2-4bit" target="_blank" rel="noopener">mlx-community/GLM-5.2-4bit</a> (zai-org/GLM-5.2를 MLX 포맷으로 변환, mlx-lm 0.31.3)의 실측 모델 크기는 <b>418GB</b>다. M4 Max 64GB의 실사용 가능 GPU 메모리는 기본값 기준 <b>~48GB</b>(macOS wired memory 한도, 튜닝 시 최대 ~58GB까지 확장 가능하나 시스템 안정성과 트레이드오프).</p>
+    <table>
+      <thead><tr><th>양자화</th><th>모델 총 용량</th><th>노드당 48GB 기준 필요 대수</th></tr></thead>
+      <tbody>
+        <tr><td>4-bit (mlx-community 실측)</td><td>418GB</td><td class="tdtag b-good">9대 (여유 없이 딱 맞음)</td></tr>
+        <tr><td>8-bit (추정)</td><td>~753GB</td><td class="tdtag b-warn">16대</td></tr>
+        <tr><td>bf16 풀정밀 (추정)</td><td>~1.49TB</td><td class="tdtag b-bad">31대</td></tr>
+      </tbody>
+    </table>
+    <p><b>4-bit 기준 최소 9대.</b> 이건 가중치 저장 공간만 계산한 숫자다. KV 캐시·exo/MLX 통신 버퍼·OS 오버헤드를 얹으면 9대는 여유가 전혀 없다. <b>안전 마진 포함 10대를 목표로 잡는 걸 권장한다.</b> GLM 5.2는 MLA(Multi-head Latent Attention) 구조라 KV 캐시 자체는 표준 어텐션보다 가벼운 편이지만, 1M 토큰급 롱컨텍스트를 실제로 쓰면 이 여유가 금방 사라진다.</p>
+    <p class="note">참고: mlx-community 모델카드에 "현재 퀀트에는 MTP(speculative decoding) 블록이 빠져 있다"는 명시가 있음 — GLM 5.2가 홍보하는 "MTP로 토큰 가속 최대 20%" 효과가 이 4bit 버전엔 아직 적용 안 됐을 수 있다.</p>
+  </section>
+
+  <section data-block="hardware">
+    <h2><span class="n">03</span> M4 Max 64GB 하드웨어 요건 충족 여부</h2>
+    <table>
+      <thead><tr><th>요건</th><th>M4 Max 64GB</th><th>충족</th></tr></thead>
+      <tbody>
+        <tr><td>메모리 대역폭</td><td>546GB/s (16코어 CPU/40코어 GPU 풀칩 기준)</td><td class="tdtag b-good">✓</td></tr>
+        <tr><td>Thunderbolt 5</td><td>3포트, 최대 120Gb/s (Bandwidth Boost)</td><td class="tdtag b-good">✓</td></tr>
+        <tr><td>RDMA over TB5 (exo의 JACCL 백엔드)</td><td>macOS 26.2+ 필요, 리커버리모드에서 1회 활성화 커맨드 필요</td><td class="tdtag b-warn">△ OS 버전 확인 필요</td></tr>
+      </tbody>
+    </table>
+    <p>하드웨어 스펙 자체는 문제없다. M4 Max 64GB는 Thunderbolt 5를 기본 탑재하고, JACCL(RDMA over Thunderbolt)이 요구하는 macOS 26.2 이상만 맞추면 exo의 텐서 병렬 경로를 쓸 수 있다.</p>
+  </section>
+
+  <section data-block="risks">
+    <h2><span class="n">04</span> 리스크 — 계산은 통과해도 실증은 아직</h2>
+    <ul class="clean">
+      <li><b>exo의 GLM-5 계열 지원이 확정 안 됨.</b> exo 저장소에 <a href="https://github.com/exo-explore/exo/issues/1468" target="_blank" rel="noopener">"Request to add support for GLM-5" (#1468)</a>가 오픈 이슈로 존재한다. mlx-community 쪽엔 이미 MLX 변환 가중치가 있어서 모델 자체는 로드 가능할 확률이 높지만(exo가 "커스텀 모델은 HuggingFace에서 로드 가능"이라 명시), MoE 256개 전문가를 exo의 자동 샤딩이 효율적으로 나눠줄지는 실제로 붙여봐야 안다. 시도 전에 이슈 상태부터 확인할 것.</li>
+      <li><b>exo 자체 공개 벤치마크는 전부 4대 이하.</b> exo가 공식 제시하는 텐서 병렬 스피드업 수치(2대 1.8배, 4대 3.2배)와 M3 Ultra Mac Studio 4대 클러스터 사례들은 전부 <b>4대 규모</b>에서 나온 것이다. 이번 계산이 요구하는 <b>9~10대 규모</b> RDMA 텐서 병렬은 공개적으로 검증된 사례를 찾지 못했다. 노드가 늘어날수록 통신 토폴로지(데이지체인이냐 허브 메시냐)가 성능에 미치는 영향이 커지는데, 이 규모에서는 미지수다.</li>
+      <li><b>사무실 배선 문제.</b> Thunderbolt는 직결이 기본이라, 노트북 9~10대를 어떻게 물리적으로 연결할지(TB5 허브 다수 구매 또는 데이지체인 설계)가 별도 과제다. 안 되면 RING(TCP, 일반 네트워크) 백엔드로 폴백되는데 훨씬 느려진다.</li>
+      <li><b>9~10대 확보 자체가 리소스 허들.</b> M4 Max 64GB는 흔한 스펙이 아니다. 사내에서 동시에 그만큼을 빌려 쓸 수 있는지가 기술보다 먼저 걸리는 문제일 수 있다.</li>
+    </ul>
+  </section>
+
+  <section data-block="recommendation">
+    <h2><span class="n">05</span> 권장 실행 순서</h2>
+    <ol class="steps">
+      <li><b>바로 9~10대로 GLM 5.2 도전 금지.</b> 확보 난이도도 높고, exo 다중노드 RDMA 자체를 처음 만져보는 상태에서 최대 난이도로 시작하면 실패 원인 진단이 어렵다.</li>
+      <li><b>2~4대로 먼저 exo+JACCL 파이프라인부터 검증.</b> 훨씬 작은 오픈모델(예: 100GB대 모델, mlx-community에 있는 것)로 디바이스 자동 디스커버리·RDMA 활성화·텐서 병렬이 실제로 동작하는지 확인한다. exo 공식 벤치마크와 같은 규모라 비교 기준도 있다.</li>
+      <li><b>GLM-5 이슈(#1468) 상태 재확인.</b> 클로즈됐으면 네이티브 지원, 아니면 mlx-community/GLM-5.2-4bit를 커스텀 모델 경로로 직접 지정해서 로드 시도.</li>
+      <li><b>대수를 늘려가며 스케일 검증.</b> 4대에서 되는 걸 확인한 뒤 6대, 8대로 늘리며 스피드업 곡선이 꺾이는 지점을 직접 관측한다. 이 곡선 자체가 사내 회사놀이 데모/보고서 소재로도 값어치 있다.</li>
+      <li><b>최종적으로 9~10대 GLM 5.2 클러스터.</b> 위 단계를 통과한 뒤에 시도. 메모리 여유가 없으므로 KV 캐시를 짧게(수천~수만 토큰) 잡고 시작해서 점진적으로 늘린다.</li>
+    </ol>
+  </section>
+
+  <section data-block="conclusion">
+    <h2><span class="n">06</span> 결론</h2>
+    <p><b>이론적으로는 가능하다.</b> 4-bit 양자화 기준 418GB, M4 Max 64GB 노드당 실사용 ~48GB로 나누면 최소 9대, 안전 마진 포함 10대면 메모리는 맞는다. 하드웨어 요건(TB5, RDMA)도 M4 Max가 충족한다.</p>
+    <p>다만 <b>exo가 이 정도 규모·이 모델을 실제로 잘 처리한다는 공개 증거는 없다</b> — GLM-5 계열 지원은 오픈 이슈 상태고, 텐서 병렬 벤치마크는 전부 4대 이하에서만 나왔다. "계산상 된다"와 "회사에서 켜보면 된다" 사이에 검증되지 않은 구간이 있다는 뜻이다. 처음부터 9~10대로 밀어붙이지 말고, 2~4대 소규모로 exo 자체의 동작을 먼저 확인한 뒤 단계적으로 규모를 키우는 게 실패 확률을 크게 낮춘다.</p>
+  </section>
+
+  <div class="foot">
+    <span>made on page.cocy.io</span>
+    <span>판정: 조건부 가능 · 6/10</span>
+  </div>
+</article>
+</body>
+</html>
