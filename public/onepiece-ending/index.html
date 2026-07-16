@@ -116,10 +116,27 @@ blockquote .who{display:block;margin-top:.5rem;font-family:var(--mono);font-size
 .foot{margin-top:3.6rem;padding-top:1.4rem;border-top:2px solid var(--ink);position:relative;font-family:var(--mono);font-size:.72rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
 .foot::before{content:"";position:absolute;top:3px;left:0;right:0;border-top:1px solid var(--ink)}
 .foot a{color:var(--ink-soft);text-decoration:none}
+.fig{margin:1.5rem 0 1.7rem}
+.fig img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:4px;filter:saturate(.92) contrast(1.02)}
+.fig figcaption{margin-top:.5rem;font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--muted);border-left:2px solid var(--gold);padding-left:.6rem}
 .plug{margin-top:2.6rem;border:1px dashed var(--gold);border-radius:6px;padding:1rem 1.3rem;font-size:.9rem;color:var(--ink-soft);background:rgba(184,134,45,.06)}
 .plug a{color:var(--crimson);font-weight:700;text-decoration:none;border-bottom:1px dotted var(--crimson)}
 @media(max-width:560px){.stamp{display:none}.lang-nav{position:static;justify-content:flex-end;padding:14px 18px 0}}
 </style>
+<script>
+/* 최초 방문자만 브라우저 언어로 1회 전환. 직접 고른 언어가 있으면 그 선택을 우선한다. */
+(function(){
+  try{
+    if(location.search.indexOf('nolang')>-1) return;
+    if(localStorage.getItem('op-lang')) return;
+    var l=(navigator.language||'').toLowerCase();
+    if(l.indexOf('ko')===0) return;
+    var to = l.indexOf('ja')===0 ? '/onepiece-ending/ja/' : '/onepiece-ending/en/';
+    localStorage.setItem('op-lang', l.indexOf('ja')===0?'ja':'en');
+    location.replace(to);
+  }catch(e){}
+})();
+</script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -150,6 +167,7 @@ blockquote .who{display:block;margin-top:.5rem;font-family:var(--mono);font-size
 
 <section id="origin">
 <h2><span class="n">Log.01</span>발단 — "해적다운 해적은 아직 안 나왔다"</h2>
+<figure class="fig"><img src="/onepiece-ending/img/01-stereotype.webp" width="1000" height="684" alt="안대와 갈고리 손, 어깨 위의 앵무새를 갖춘 전형적인 해적 선장의 실루엣" loading="lazy" decoding="async"><figcaption>안대 · 갈고리 손 · 어깨 위의 앵무새 — 정작 원피스에는 나오지 않은 '해적다운 해적'</figcaption></figure>
 <p>모든 것은 해적의 클리셰에서 시작한다. 안대, 갈고리 손, 의족, 그리고 <b>어깨 위의 앵무새</b>. 이 '스테레오타입 해적'은 원피스라는 만화에 이상할 정도로 등장하지 않는다. 원글 작성자는 오다 에이치로가 과거 "정통파 해적다운 해적은 이야기 마지막에야 등장할 것"이라고 언급했다는 점을 출발점으로 삼는다.</p>
 <p>2026년 7월 15일 밤, 디시인사이드 원피스 버닝블러드 갤러리에 올라온 글의 제목은 이랬다. <b>"[초개념] 방금 엄청난거 생각났는데 이무의 정체는 앵무새임"</b> — 조회 37,795, 추천 1,089. 논지는 단순하다. 최초의 해적 조이보이의 실루엣에서 의족과 갈고리 비슷한 형태는 이미 보였다. 그런데 해적의 필수 요소 중 하나가 아직 비어 있다. <b>앵무새가 안 나왔다.</b></p>
 <blockquote>"이름이 무인 앵무새였을 거임. '무야~ 니 이름은 무야' 이런 식으로 말을 가르쳐주니까, 이무 말버릇이 지금처럼 '무는 ○○이다'라고 자신을 3인칭으로 말하는 거임."<span class="who">— 원글(디시인사이드 원피스 버닝블러드 갤러리, 2026.07.15) 중</span></blockquote>
@@ -159,6 +177,7 @@ blockquote .who{display:block;margin-top:.5rem;font-family:var(--mono);font-size
 <section id="evidence">
 <h2><span class="n">Log.02</span>핵심 근거 6가지 — 그럴듯함 판정</h2>
 <p>커뮤니티에서 제시된 근거를 하나씩 뜯어보고, 앵무새 다섯 마리 만점으로 '그럴듯함'을 매겼다. 판정 기준은 단순하다 — 원작 묘사와의 정합성, 그리고 우연으로 치부하기 어려운 정도.</p>
+<figure class="fig"><img src="/onepiece-ending/img/02-throne.webp" width="1000" height="684" alt="어두운 대리석 홀의 빈 왕좌와 바닥에 남은 세 갈래 새 발자국" loading="lazy" decoding="async"><figcaption>왕좌를 향해 이어진 세 갈래 발자국 — 앉아 있는 것은 정말 사람인가</figcaption></figure>
 
 <div class="ev"><div class="hd"><b><span class="no">근거 1</span>"무는 ○○이다" — 3인칭 말버릇</b><span class="gauge" aria-label="그럴듯함 5점 만점에 4점"><span class="f">🦜🦜🦜🦜</span><span>🦜</span></span></div>
 <div class="bd"><p>이무는 작중에서 자신을 "무(ムー)"라고 3인칭으로 부른다. 앵무새에게 말을 가르칠 때 "○○야, 따라해봐" 식으로 이름을 반복해 학습시키는 것과 정확히 같은 화법 구조다. 이론 전체에서 가장 미묘하고, 가장 소름돋는 디테일.</p>
@@ -187,6 +206,7 @@ blockquote .who{display:block;margin-top:.5rem;font-family:var(--mono);font-size
 
 <section id="monkey">
 <h2><span class="n">Log.03</span>확장 — 그럼 조이보이는 원숭이 아니냐?</h2>
+<figure class="fig"><img src="/onepiece-ending/img/03-sunmonkey.webp" width="1000" height="684" alt="태양 원반을 등지고 북을 두드리는 원숭이가 새겨진 고대 신전 벽 부조" loading="lazy" decoding="async"><figcaption>태양을 등지고 북을 치는 원숭이 — 니카의 도상은 왜 하필 원숭이인가</figcaption></figure>
 <p>이론이 여기서 멈췄다면 '잘 만든 떡밥' 정도로 끝났을 것이다. 진짜 폭발은 역방향 질문에서 왔다. 캐리비안의 해적을 보라 — 해적 영화의 상징 동물은 정확히 둘이다. <b>원숭이 잭, 그리고 앵무새 코튼.</b> 이무가 앵무새라면, 반대편 자리는 누구인가?</p>
 <blockquote>"이 새끼 그냥 원숭이 아님? 사람사람 열매 모델 니카를 먹었잖아. 루피는 인간인데 니카 열매를 먹어서 고무 능력을 얻은 거고 — <b>원숭이가 먹으면 사람으로 변하고</b> 고무 능력을 얻는 거지."<span class="who">— 갤러리 확장 게시물 중</span></blockquote>
 <p>조이보이가 먹은 것은 '사람사람 열매' 모델 니카다. 인간이 먹으면 니카의 힘을 얻지만, <b>동물이 먹으면 사람이 된다</b> — 이건 원작에서 이미 확립된 규칙이다(인간계 열매를 먹은 동물은 인간화한다). 즉 조이보이는 니카 열매를 먹고 사람이 된 원숭이였다는 가설이 성립 가능한 구조다. 그리고 그 후손의 성은, 숨긴 적도 없이 <b>몽키(Monkey) D.</b>다.</p>
@@ -216,6 +236,7 @@ blockquote .who{display:block;margin-top:.5rem;font-family:var(--mono);font-size
 
 <section id="game">
 <h2><span class="n">Log.05</span>가장 소름돋는 근거 — 2004년 게임 속 하얀 앵무새</h2>
+<figure class="fig"><img src="/onepiece-ending/img/05-retrogame.webp" width="1000" height="684" alt="어두운 방에서 빛나는 구형 CRT 화면에 저해상도 도트로 표현된 하얀 앵무새" loading="lazy" decoding="async"><figcaption>22년 전 게임 화면에 남아 있던 하얀 앵무새 — 우연인가, 흘린 것인가</figcaption></figure>
 <p>밈이 이론으로 승격된 결정적 순간은 22년 전 게임에서 나왔다. 게임보이 어드밴스용 <b>'원피스 일곱섬의 대보물'(2004)</b> — 이 게임에는 시리얼 코드를 입력하면 서로 다른 앵무새가 등장하는 시스템이 있고, 코드 <b>L8YN52</b>를 입력하면 "모든 정보를 알고 있는 하얀 앵무새"가 나온다고 알려져 있다.</p>
 <p>커뮤니티의 해석: L8YN52 = <b>L</b>ast <b>8</b>00 <b>Y</b>ears &amp; <b>N</b>... 52(고니→오니·악마) — "공백의 100년 이후 800년간 세계를 지배한 악마"라는 뜻의 복선이라는 것. 그리고 결정타가 붙는다. 2004년 당시 국내 정식발매 보도에 이렇게 적혀 있었다.</p>
 <blockquote>"보물 탐험의 안내인은 원작자인 오다 에이치로가 디자인한 앵무새이다!"<span class="who">— '원피스 일곱섬의 대보물' 한글화 발매 보도(2004) 중</span></blockquote>
@@ -224,6 +245,7 @@ blockquote .who{display:block;margin-top:.5rem;font-family:var(--mono);font-size
 
 <section id="biscuit">
 <h2><span class="n">Log.06</span>개그 결말부 — 원피스는 비스킷 한 조각이다</h2>
+<figure class="fig"><img src="/onepiece-ending/img/06-biscuit.webp" width="1000" height="684" alt="달빛 해변에 열려 있는 보물상자, 안에는 비스킷 한 조각만 놓여 있다" loading="lazy" decoding="async"><figcaption>800년을 건너온 대비보 — 앵무새에게는 이것이 전부였을지도</figcaption></figure>
 <p>이론의 마지막 구간은 완전히 코미디로 넘어간다. 발단은 레딧의 오래된 개그 코멘트다. 라프텔의 보물 상자에는 포네그리프로 적힌 편지 한 장이 있는데, 내용이 이렇다는 것.</p>
 <blockquote>"안녕, 내 이름은 조이보이야. 내 멍청한 앵무새가 이상한 열매를 먹고서 자꾸 세계를 지배한다느니 뭐니 하고 있네. 난 죽어가는 몸이라 길게는 못 쓰지만 — 혹시 걔가 짜증나게 굴면, 여기 있는 <b>크래커 한 조각(one piece)</b>을 먹여줘. 그럼 잠들고 착해질 거야."<span class="who">— 레딧발 개그 이론(한국 커뮤니티 번역본) 중</span></blockquote>
 <p>대항해시대 선원의 보존식이 럼, 육포, 그리고 <b>선원용 비스킷(ship's biscuit)</b>이었다는 점, 라프텔(Laugh Tale)이 '웃기는 이야기'라는 공식 명명이라는 점이 여기 얹힌다. 원숭이와 앵무새가 비스킷 한 조각을 두고 싸운 것이 공백의 100년 전쟁의 기원이고, 로저 일행은 그 진실을 보고 눈물이 나올 만큼 웃었다는 것 — "부(해수면을 내리면 나오는 고대왕국의 보물), 명성(세계의 왕을 갱생시킨 자), 힘(이무와의 동맹)을 전부 얻을 수 있다"는 로저의 유언까지 기어이 회수해낸다.</p>
@@ -272,5 +294,13 @@ blockquote .who{display:block;margin-top:.5rem;font-family:var(--mono);font-size
 
 </div>
 </article>
+<script>
+/* 언어를 직접 고르면 그 선택을 기억한다 (자동 전환보다 우선). */
+document.querySelectorAll('.lang-nav a').forEach(function(a){
+  a.addEventListener('click', function(){
+    try{ localStorage.setItem('op-lang', a.getAttribute('lang')); }catch(e){}
+  });
+});
+</script>
 </body>
 </html>
