@@ -30,3 +30,4 @@
 
 ## 가이드
 - [모바일 청첩장 만들기 가이드](https://page.cocy.io/guide/mobile-invitation): 모바일 청첩장을 무료로 만드는 법과 체크리스트.
+- [원피스 결말 추측 총정리 — 이무=앵무새 이론](https://page.cocy.io/onepiece-ending/): 2026년 7월 한국 커뮤니티발 최종보스·결말 떡밥 분석. 근거별 판정과 출처 포함. 영어(/onepiece-ending/en/)·일본어(/onepiece-ending/ja/) 버전 제공.
