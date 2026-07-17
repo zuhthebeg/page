@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>남궁 가계도</title>
+<!-- 가족 정보(실명·생년)이므로 검색엔진 색인 금지 -->
+<meta name="robots" content="noindex, nofollow, noarchive" />
+<meta name="referrer" content="no-referrer" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --paper:#f4efe3;
+  --paper-hi:#fbf8f1;
+  --ink:#241f1a;
+  --ink-soft:#5b524a;
+  --ink-faint:#9a9086;
+  --line:#cfc4b0;
+  --line-soft:#e2d9c8;
+  --cheong:#3f6b8f;   /* 청 — 남 */
+  --hong:#a8475a;     /* 홍 — 여 */
+  --unknown:#9a9086;
+  --gold:#a8853d;
+  --serif:'Gowun Batang', serif;
+  --sans:'Gowun Dodum', system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  /* 한지 결 */
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(168,133,61,.05), transparent 60%),
+    radial-gradient(circle at 80% 70%, rgba(63,107,143,.04), transparent 55%);
+}
+/* ── 상단 ── */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:10;
+  display:flex;align-items:baseline;gap:.85rem;
+  padding:16px 20px 14px;
+  background:linear-gradient(180deg, var(--paper) 62%, rgba(244,239,227,0));
+  pointer-events:none;
+}
+h1{
+  font-family:var(--serif);font-weight:700;font-size:1.32rem;letter-spacing:.02em;
+}
+.hanja{font-family:var(--serif);font-size:.82rem;color:var(--ink-faint);letter-spacing:.28em}
+.count{
+  margin-left:auto;font-size:.68rem;color:var(--ink-faint);letter-spacing:.08em;
+  pointer-events:auto;
+}
+/* ── 캔버스 ── */
+#stage{
+  position:fixed;inset:0;
+  cursor:grab;touch-action:none;
+}
+#stage.dragging{cursor:grabbing}
+svg{display:block;width:100%;height:100%}
+
+/* 카드 */
+.card rect.bg{
+  fill:var(--paper-hi);
+  stroke:var(--line);
+  stroke-width:1;
+}
+.card .tick{stroke-width:2.5;stroke-linecap:round}
+.card text.nm{
+  font-family:var(--serif);font-weight:700;font-size:14px;
+  fill:var(--ink);text-anchor:middle;
+}
+.card text.hj{
+  font-family:var(--serif);font-size:8.5px;
+  fill:var(--ink-faint);text-anchor:middle;letter-spacing:.12em;
+}
+.card text.by{
+  font-family:var(--sans);font-size:9px;
+  fill:var(--ink-soft);text-anchor:middle;letter-spacing:.05em;
+}
+.card{cursor:default}
+.card.dim{opacity:.22}
+.card.hit rect.bg{stroke:var(--gold);stroke-width:2;fill:#fffdf6}
+
+/* 선 */
+.link{fill:none;stroke:var(--ink-faint);stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
+.marriage{stroke:var(--line);stroke-width:1.1}
+.marriage-dot{fill:var(--line)}
+.sibbar{stroke:var(--line);stroke-width:1.1;stroke-dasharray:2 4}
+.rootlabel{
+  font-family:var(--serif);font-size:10px;fill:var(--ink-faint);
+  text-anchor:middle;letter-spacing:.24em;
+}
+
+/* ── 컨트롤 ── */
+.ctrl{
+  position:fixed;right:16px;bottom:16px;z-index:10;
+  display:flex;flex-direction:column;gap:6px;
+}
+.ctrl button{
+  width:38px;height:38px;border:1px solid var(--line);border-radius:3px;
+  background:var(--paper-hi);color:var(--ink-soft);
+  font-family:var(--serif);font-size:15px;line-height:1;cursor:pointer;
+  transition:background .15s, color .15s;
+}
+.ctrl button:hover{background:#fff;color:var(--ink)}
+.ctrl button.fit{font-size:9.5px;font-family:var(--sans);letter-spacing:.02em}
+
+.search{
+  position:fixed;left:20px;bottom:16px;z-index:10;
+}
+.search input{
+  width:150px;padding:9px 11px;
+  border:1px solid var(--line);border-radius:3px;
+  background:var(--paper-hi);color:var(--ink);
+  font-family:var(--sans);font-size:.78rem;outline:none;
+}
+.search input:focus{border-color:var(--gold);background:#fff}
+.search input::placeholder{color:var(--ink-faint)}
+
+.legend{
+  position:fixed;left:20px;bottom:60px;z-index:10;
+  display:flex;gap:.7rem;font-size:.64rem;color:var(--ink-faint);
+}
+.legend i{display:inline-block;width:8px;height:2.5px;border-radius:2px;vertical-align:middle;margin-right:3px}
+
+.foot{
+  position:fixed;right:16px;top:16px;z-index:10;
+  font-size:.6rem;color:var(--ink-faint);letter-spacing:.06em;
+}
+@media(max-width:560px){
+  h1{font-size:1.1rem}
+  .hanja{display:none}
+  .search input{width:110px}
+  .legend{bottom:58px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>남궁 가계도</h1>
+  <span class="hanja">南宮 家系圖</span>
+</header>
+<div class="foot" id="foot"></div>
+
+<div id="stage">
+  <svg id="svg" xmlns="http://www.w3.org/2000/svg">
+    <g id="viewport"></g>
+  </svg>
+</div>
+
+<div class="legend">
+  <span><i style="background:var(--cheong)"></i>남</span>
+  <span><i style="background:var(--hong)"></i>여</span>
+</div>
+
+<div class="search">
+  <input id="q" type="search" placeholder="이름 검색" autocomplete="off" />
+</div>
+
+<div class="ctrl">
+  <button id="zin" title="확대">＋</button>
+  <button id="zout" title="축소">－</button>
+  <button id="fit" class="fit" title="전체 보기">전체</button>
+</div>
+
+<script>
+/* ────────────────────────────────────────────
+   레이아웃 상수
+   ──────────────────────────────────────────── */
+const CARD_W = 104, CARD_H = 54;
+const COUPLE_GAP = 20;     // 부부 두 카드 사이
+const SIB_GAP    = 30;     // 형제 서브트리 사이
+const FAM_GAP    = 70;     // 5남매 가정 사이
+const GEN_GAP    = 92;     // 세대 사이 세로 간격
+const PAD        = 90;     // 바깥 여백
+
+const svg = document.getElementById('svg');
+const vp  = document.getElementById('viewport');
+const stage = document.getElementById('stage');
+
+let DATA, PEOPLE, UNION_OF, ROOT_UNITS, BOUNDS;
+
+fetch('data.json?v=' + Date.now())
+  .then(r => r.json())
+  .then(d => { DATA = d; build(); })
+  .catch(e => {
+    document.getElementById('foot').textContent = '데이터를 불러오지 못했습니다';
+    console.error(e);
+  });
+
+function build(){
+  PEOPLE = new Map(DATA.people.map(p => [p.id, p]));
+
+  // 혈족(partners[0]) 기준으로 그 사람의 가정을 찾는다
+  UNION_OF = new Map();
+  DATA.unions.forEach(u => { if(!UNION_OF.has(u.partners[0])) UNION_OF.set(u.partners[0], u); });
+
+  ROOT_UNITS = DATA.roots.map(rid => {
+    const u = DATA.unions.find(x => x.id === rid);
+    return buildUnit(u.partners[0]);
+  });
+
+  ROOT_UNITS.forEach(measure);
+
+  // 5남매 가정을 가로로 배치
+  const totalW = ROOT_UNITS.reduce((s,u)=>s+u.w, 0) + FAM_GAP*(ROOT_UNITS.length-1);
+  let x = -totalW/2;
+  ROOT_UNITS.forEach(u => { place(u, x + u.w/2, 0); x += u.w + FAM_GAP; });
+
+  render();
+  fit();
+  document.getElementById('foot').textContent =
+    DATA.people.length + '명 · ' + (DATA.meta.updated || '');
+}
+
+/* 사람 하나를 '단위'로 — 결혼했으면 부부 단위, 아니면 혼자 */
+function buildUnit(personId){
+  const u = UNION_OF.get(personId) || null;
+  return {
+    person: personId,
+    union: u,
+    spouse: (u && u.partners.length > 1) ? u.partners[1] : null,
+    children: u ? u.children.map(buildUnit) : []
+  };
+}
+
+/* 서브트리 폭 계산 (아래에서 위로) */
+function measure(unit){
+  unit.children.forEach(measure);
+  unit.selfW = unit.spouse ? CARD_W*2 + COUPLE_GAP : CARD_W;
+  unit.childW = unit.children.length
+    ? unit.children.reduce((s,c)=>s+c.w, 0) + SIB_GAP*(unit.children.length-1)
+    : 0;
+  unit.w = Math.max(unit.selfW, unit.childW);
+}
+
+/* 위치 배정 */
+function place(unit, cx, depth){
+  unit.cx = cx;
+  unit.depth = depth;
+  unit.y = depth * (CARD_H + GEN_GAP);
+
+  // 부부면 혈족이 왼쪽, 배우자가 오른쪽. 자녀는 두 사람 사이에서 내려온다.
+  const half = (CARD_W + COUPLE_GAP) / 2;
+  unit.bloodX  = unit.spouse ? cx - half : cx;
+  unit.spouseX = unit.spouse ? cx + half : null;
+  unit.busX    = cx;
+
+  let x = cx - unit.childW/2;
+  unit.children.forEach(c => {
+    place(c, x + c.w/2, depth + 1);
+    x += c.w + SIB_GAP;
+  });
+}
+
+/* ────────────────────────────────────────────
+   그리기
+   ──────────────────────────────────────────── */
+const NS = 'http://www.w3.org/2000/svg';
+const el = (n, a={}) => { const e = document.createElementNS(NS, n); for(const k in a) e.setAttribute(k, a[k]); return e; };
+
+function genderColor(g){
+  return g === 'm' ? 'var(--cheong)' : g === 'f' ? 'var(--hong)' : 'var(--unknown)';
+}
+function formatBirth(b){
+  if(!b) return '';
+  if(b.length === 4) return "'" + b.slice(2);
+  const [y,m,d] = b.split('-');
+  return y + '.' + m + '.' + d;
+}
+
+function render(){
+  vp.innerHTML = '';
+  const gLinks = el('g'); vp.appendChild(gLinks);
+  const gCards = el('g'); vp.appendChild(gCards);
+
+  // 5남매를 잇는 점선 (부모 세대는 미상이라 그리지 않는다)
+  if(ROOT_UNITS.length > 1){
+    const xs = ROOT_UNITS.map(u => u.bloodX);
+    const barY = -GEN_GAP/2 - 6;
+    const p = el('path', { class:'sibbar', d:
+      `M${Math.min(...xs)},${barY} H${Math.max(...xs)}` });
+    gLinks.appendChild(p);
+    ROOT_UNITS.forEach(u => {
+      gLinks.appendChild(el('path', { class:'sibbar', d:`M${u.bloodX},${barY} V${u.y}` }));
+    });
+    const lbl = el('text', { class:'rootlabel', x:0, y:barY - 10 });
+    lbl.textContent = DATA.meta.rootLabel || '';
+    gLinks.appendChild(lbl);
+  }
+
+  ROOT_UNITS.forEach(u => drawUnit(u, gLinks, gCards));
+
+  // 경계 계산
+  const all = [];
+  const walk = u => { all.push(u); u.children.forEach(walk); };
+  ROOT_UNITS.forEach(walk);
+  const xsL = all.map(u => u.bloodX - CARD_W/2);
+  const xsR = all.map(u => (u.spouseX !== null ? u.spouseX : u.bloodX) + CARD_W/2);
+  const ysT = all.map(u => u.y);
+  const ysB = all.map(u => u.y + CARD_H);
+  BOUNDS = {
+    x: Math.min(...xsL) - PAD,
+    y: Math.min(...ysT) - PAD - 40,
+    w: (Math.max(...xsR) - Math.min(...xsL)) + PAD*2,
+    h: (Math.max(...ysB) - Math.min(...ysT)) + PAD*2 + 40
+  };
+}
+
+function drawUnit(unit, gLinks, gCards){
+  const p = PEOPLE.get(unit.person);
+  drawCard(gCards, p, unit.bloodX, unit.y);
+
+  if(unit.spouse){
+    const s = PEOPLE.get(unit.spouse);
+    drawCard(gCards, s, unit.spouseX, unit.y);
+    // 혼인선
+    const midY = unit.y + CARD_H/2;
+    gLinks.appendChild(el('path', { class:'marriage', d:
+      `M${unit.bloodX + CARD_W/2},${midY} H${unit.spouseX - CARD_W/2}` }));
+    gLinks.appendChild(el('circle', { class:'marriage-dot', cx:unit.cx, cy:midY, r:2.4 }));
+  }
+
+  if(unit.children.length){
+    const startY = unit.spouse ? unit.y + CARD_H/2 : unit.y + CARD_H;
+    const busY   = unit.y + CARD_H + GEN_GAP/2;
+    const childY = unit.y + CARD_H + GEN_GAP;
+
+    // 부부 사이(또는 카드 밑)에서 수직으로 내려옴
+    gLinks.appendChild(el('path', { class:'link', d:`M${unit.busX},${startY} V${busY}` }));
+
+    const anchors = unit.children.map(c => c.bloodX);
+    if(anchors.length > 1){
+      gLinks.appendChild(el('path', { class:'link', d:
+        `M${Math.min(...anchors)},${busY} H${Math.max(...anchors)}` }));
+    }
+    unit.children.forEach(c => {
+      gLinks.appendChild(el('path', { class:'link', d:`M${c.bloodX},${busY} V${childY}` }));
+    });
+
+    unit.children.forEach(c => drawUnit(c, gLinks, gCards));
+  }
+}
+
+function drawCard(g, person, cx, y){
+  const gc = el('g', { class:'card', 'data-id':person.id, 'data-name':person.name });
+  const x = cx - CARD_W/2;
+
+  gc.appendChild(el('rect', { class:'bg', x, y, width:CARD_W, height:CARD_H, rx:2 }));
+  // 성별 표식 — 왼쪽 세로 획
+  gc.appendChild(el('path', {
+    class:'tick', stroke:genderColor(person.gender),
+    d:`M${x + 7},${y + 11} V${y + CARD_H - 11}`
+  }));
+
+  const hasHanja = !!person.hanja;
+  const hasBirth = !!person.birth;
+  // 이름 세로 위치를 내용에 맞춰 조정
+  let nameY = y + (hasBirth || hasHanja ? 23 : 32);
+
+  const nm = el('text', { class:'nm', x:cx + 3, y:nameY });
+  nm.textContent = person.name;
+  gc.appendChild(nm);
+
+  if(hasHanja){
+    const hj = el('text', { class:'hj', x:cx + 3, y:nameY + 12 });
+    hj.textContent = person.hanja;
+    gc.appendChild(hj);
+  }
+  if(hasBirth){
+    const by = el('text', { class:'by', x:cx + 3, y:nameY + (hasHanja ? 25 : 17) });
+    by.textContent = formatBirth(person.birth);
+    gc.appendChild(by);
+  }
+
+  g.appendChild(gc);
+}
+
+/* ────────────────────────────────────────────
+   확대 / 축소 / 이동
+   ──────────────────────────────────────────── */
+let scale = 1, tx = 0, ty = 0;
+
+function apply(){
+  vp.setAttribute('transform', `translate(${tx},${ty}) scale(${scale})`);
+}
+function fit(){
+  const r = stage.getBoundingClientRect();
+  svg.setAttribute('viewBox', `0 0 ${r.width} ${r.height}`);
+  const s = Math.min(r.width / BOUNDS.w, r.height / BOUNDS.h);
+  scale = Math.min(s, 1.1);
+  tx = r.width/2  - (BOUNDS.x + BOUNDS.w/2) * scale;
+  ty = r.height/2 - (BOUNDS.y + BOUNDS.h/2) * scale;
+  apply();
+}
+function zoomAt(px, py, factor){
+  const next = Math.min(3.2, Math.max(0.15, scale * factor));
+  const k = next / scale;
+  tx = px - (px - tx) * k;
+  ty = py - (py - ty) * k;
+  scale = next;
+  apply();
+}
+
+stage.addEventListener('wheel', e => {
+  e.preventDefault();
+  zoomAt(e.clientX, e.clientY, e.deltaY < 0 ? 1.12 : 1/1.12);
+}, { passive:false });
+
+document.getElementById('zin').onclick  = () => { const r = stage.getBoundingClientRect(); zoomAt(r.width/2, r.height/2, 1.25); };
+document.getElementById('zout').onclick = () => { const r = stage.getBoundingClientRect(); zoomAt(r.width/2, r.height/2, 1/1.25); };
+document.getElementById('fit').onclick  = fit;
+
+/* 드래그 + 핀치 */
+const pts = new Map();
+let pinchD = 0, pinchC = null;
+
+stage.addEventListener('pointerdown', e => {
+  pts.set(e.pointerId, { x:e.clientX, y:e.clientY });
+  stage.setPointerCapture(e.pointerId);
+  if(pts.size === 1) stage.classList.add('dragging');
+});
+stage.addEventListener('pointermove', e => {
+  if(!pts.has(e.pointerId)) return;
+  const prev = pts.get(e.pointerId);
+  pts.set(e.pointerId, { x:e.clientX, y:e.clientY });
+
+  if(pts.size === 1){
+    tx += e.clientX - prev.x;
+    ty += e.clientY - prev.y;
+    apply();
+  } else if(pts.size === 2){
+    const [a, b] = [...pts.values()];
+    const d = Math.hypot(a.x - b.x, a.y - b.y);
+    const c = { x:(a.x + b.x)/2, y:(a.y + b.y)/2 };
+    if(pinchD){
+      zoomAt(c.x, c.y, d / pinchD);
+      tx += c.x - pinchC.x;
+      ty += c.y - pinchC.y;
+      apply();
+    }
+    pinchD = d; pinchC = c;
+  }
+});
+function endPtr(e){
+  pts.delete(e.pointerId);
+  if(pts.size < 2){ pinchD = 0; pinchC = null; }
+  if(pts.size === 0) stage.classList.remove('dragging');
+}
+stage.addEventListener('pointerup', endPtr);
+stage.addEventListener('pointercancel', endPtr);
+
+window.addEventListener('resize', () => {
+  const r = stage.getBoundingClientRect();
+  svg.setAttribute('viewBox', `0 0 ${r.width} ${r.height}`);
+});
+
+/* 이름 검색 — 맞는 사람만 남기고 나머지는 흐리게 */
+document.getElementById('q').addEventListener('input', e => {
+  const q = e.target.value.trim();
+  const cards = vp.querySelectorAll('.card');
+  if(!q){
+    cards.forEach(c => c.classList.remove('dim', 'hit'));
+    return;
+  }
+  cards.forEach(c => {
+    const hit = c.dataset.name.includes(q);
+    c.classList.toggle('hit', hit);
+    c.classList.toggle('dim', !hit);
+  });
+});
+</script>
+</body>
+</html>

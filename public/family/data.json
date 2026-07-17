@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "title": "남궁 가계도",
+    "subtitle": "南宮 家系圖",
+    "updated": "2026-07-17",
+    "rootLabel": "남궁 5남매"
+  },
+
+  "_howto": {
+    "사람추가": "people 배열에 {id, name, hanja?, gender, birth?} 추가. id는 겹치지 않는 영문/숫자.",
+    "부부맺기": "unions 배열에 {id, partners:[혈족id, 배우자id], children:[자녀id...]} 추가.",
+    "중요": "partners의 첫 번째가 이 집안 혈족, 두 번째가 배우자. 순서 지킬 것 (연결선이 혈족 기준으로 그려짐).",
+    "미혼": "unions에 안 넣으면 됨. 부모 union의 children에만 들어가면 자동으로 그려짐.",
+    "배우자모름": "partners에 혈족 한 명만 넣으면 됨 (예: u3).",
+    "생년": "연도만 알면 \"1984\", 정확한 날짜를 알면 \"2017-08-04\". 모르면 birth 생략.",
+    "성별": "m 또는 f. 모르면 생략하면 회색으로 표시됨."
+  },
+
+  "people": [
+    { "id": "ng_wook",     "name": "남궁욱",   "gender": "m" },
+    { "id": "cho_okjin",   "name": "조옥진",   "gender": "f" },
+    { "id": "ng_taek",     "name": "남궁택",   "gender": "m" },
+    { "id": "jang_eunsun", "name": "장은선",   "gender": "f" },
+    { "id": "ng_haehwan",  "name": "남궁해환", "hanja": "解歡", "gender": "m", "birth": "2017-08-04" },
+    { "id": "ng_jihye",    "name": "남궁지혜", "gender": "f", "birth": "1984" },
+    { "id": "yu_hyoseon",  "name": "유효선",   "gender": "m" },
+    { "id": "yu_sharon",   "name": "유샤론",   "gender": "m" },
+    { "id": "yu_ain",      "name": "유아인",   "hanja": "雅忍", "gender": "f", "birth": "2017-09-10" },
+
+    { "id": "ng_huisuk",   "name": "남궁희숙", "gender": "f", "birth": "1958" },
+    { "id": "jeon_dojin",  "name": "전도진",   "gender": "m" },
+    { "id": "jeon_migyeong","name": "전미경",  "gender": "f", "birth": "1983" },
+    { "id": "cho_gyusik",  "name": "조규식",   "gender": "m" },
+    { "id": "cho_hyeongchan","name": "조형찬", "gender": "m" },
+    { "id": "jeon_jangmi", "name": "전장미",   "gender": "f", "birth": "1985" },
+    { "id": "cho_ikwan",   "name": "조익완",   "gender": "m" },
+    { "id": "cho_seongmin","name": "조성민",   "gender": "m" },
+    { "id": "jeon_mina",   "name": "전미나",   "gender": "f", "birth": "1985" },
+    { "id": "kim_jinhyun", "name": "김진현",   "gender": "m" },
+    { "id": "kim_yuna",    "name": "김윤아",   "gender": "f" },
+    { "id": "kim_yunwoo",  "name": "김윤우",   "gender": "m" },
+    { "id": "jeon_yonghun","name": "전용훈",   "gender": "m", "birth": "1989" },
+    { "id": "jeon_eunmi",  "name": "전은미",   "gender": "f", "birth": "1992" },
+    { "id": "jeon_myeonghun","name": "전명훈", "gender": "m", "birth": "1995" },
+
+    { "id": "ng_eunsuk",   "name": "남궁은숙", "gender": "f" },
+    { "id": "lee_changho", "name": "이창호",   "gender": "m", "birth": "1988" },
+    { "id": "lee_hyeokho", "name": "이혁호",   "gender": "m", "birth": "1990" },
+
+    { "id": "ng_kwan",     "name": "남궁관",   "gender": "m" },
+    { "id": "lee_bokhyun", "name": "이복현",   "gender": "f" },
+    { "id": "ng_yeseul",   "name": "남궁예슬", "gender": "f", "birth": "1991" },
+    { "id": "ng_kwangung", "name": "남궁광웅", "gender": "m" },
+
+    { "id": "ng_sim",      "name": "남궁심",   "gender": "m" },
+    { "id": "kang_minsuk", "name": "강민숙",   "gender": "f" },
+    { "id": "ng_boseong",  "name": "남궁보성", "gender": "m" },
+    { "id": "ng_bora",     "name": "남궁보라", "gender": "f" }
+  ],
+
+  "unions": [
+    { "id": "u1", "partners": ["ng_wook", "cho_okjin"],      "children": ["ng_taek", "ng_jihye"] },
+    { "id": "u1a", "partners": ["ng_taek", "jang_eunsun"],   "children": ["ng_haehwan"] },
+    { "id": "u1b", "partners": ["ng_jihye", "yu_hyoseon"],   "children": ["yu_sharon", "yu_ain"] },
+
+    { "id": "u2", "partners": ["ng_huisuk", "jeon_dojin"],   "children": ["jeon_migyeong", "jeon_jangmi", "jeon_mina", "jeon_yonghun", "jeon_eunmi", "jeon_myeonghun"] },
+    { "id": "u2a", "partners": ["jeon_migyeong", "cho_gyusik"], "children": ["cho_hyeongchan"] },
+    { "id": "u2b", "partners": ["jeon_jangmi", "cho_ikwan"],    "children": ["cho_seongmin"] },
+    { "id": "u2c", "partners": ["jeon_mina", "kim_jinhyun"],    "children": ["kim_yuna", "kim_yunwoo"] },
+
+    { "id": "u3", "partners": ["ng_eunsuk"],                 "children": ["lee_changho", "lee_hyeokho"] },
+
+    { "id": "u4", "partners": ["ng_kwan", "lee_bokhyun"],    "children": ["ng_yeseul", "ng_kwangung"] },
+
+    { "id": "u5", "partners": ["ng_sim", "kang_minsuk"],     "children": ["ng_boseong", "ng_bora"] }
+  ],
+
+  "roots": ["u1", "u2", "u3", "u4", "u5"]
+}
