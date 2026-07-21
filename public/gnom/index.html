@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>그놈 목소리 — 보이스피싱 성문 대조 데모</title>
-<meta name="description" content="금융감독원·경찰이 공개한 실제 보이스피싱 사기범 목소리 6건의 성문(voiceprint)을 브라우저 온디바이스 AI로 대조하는 데모. 녹음은 기기 밖으로 나가지 않습니다.">
+<title>그놈 목소리 — 보이스피싱 성문 대조</title>
+<meta name="description" content="금융감독원·경찰이 공개한 실제 보이스피싱 사기범 목소리 6건의 성문(voiceprint)을 브라우저 온디바이스 AI로 대조. 성문+운율 5축 분석, 녹음은 기기 밖으로 나가지 않습니다.">
 <meta name="robots" content="noindex">
-<meta property="og:title" content="그놈 목소리 — 보이스피싱 성문 대조 데모">
-<meta property="og:description" content="그 목소리, 등록된 그놈입니까? 실제 사기범 공개 음성 6건과 온디바이스 성문 대조.">
+<meta property="og:title" content="그놈 목소리 — 보이스피싱 성문 대조">
+<meta property="og:description" content="그 목소리, 등록된 그놈입니까? 실제 사기범 공개 음성 6건과 온디바이스 성문·운율 대조.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -20,10 +20,19 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
-  background-image:radial-gradient(ellipse at 50% -10%,#16203255,transparent 60%)}
+  background-image:
+    radial-gradient(ellipse at 50% -10%,#16203255,transparent 60%),
+    repeating-linear-gradient(0deg,#ffffff04 0 1px,transparent 1px 48px),
+    repeating-linear-gradient(90deg,#ffffff03 0 1px,transparent 1px 48px)}
 .wrap{max-width:880px;margin:0 auto;padding:0 20px 80px}
 a{color:var(--cyan)}
 .mono{font-family:var(--mono)}
+
+/* HUD 코너 브래킷 */
+.corner{position:relative}
+.corner::before,.corner::after{content:'';position:absolute;width:13px;height:13px;border:2px solid #3fc1c94d;pointer-events:none}
+.corner::before{top:-1px;left:-1px;border-right:none;border-bottom:none}
+.corner::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
 
 /* 헤더 — 사건파일 */
 header{padding:52px 0 30px;border-bottom:2px solid var(--line);position:relative}
@@ -68,33 +77,60 @@ h2{font-size:26px;font-weight:700;margin:6px 0 6px;letter-spacing:-.01em}
 .step{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:13px;color:#c3c9d6}
 .step b{color:var(--ink);display:block;margin-bottom:3px}
 .step .mono{color:var(--cyan);font-size:11px}
-.recbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.recbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 #btn-rec{border:none;border-radius:10px;background:var(--red);color:#fff;font-family:var(--sans);font-weight:700;
   font-size:16px;padding:15px 30px;cursor:pointer;letter-spacing:.03em;box-shadow:0 4px 0 var(--red-d)}
 #btn-rec:active{transform:translateY(2px);box-shadow:0 2px 0 var(--red-d)}
 #btn-rec:disabled{opacity:.5;cursor:default}
+.led{width:9px;height:9px;border-radius:50%;background:#2a3550;flex:none}
+.led.rec{background:var(--red);animation:blink 1s infinite}
+.led.proc{background:var(--amber);animation:blink .5s infinite}
+@keyframes blink{50%{opacity:.25}}
 #rec-status{font-family:var(--mono);font-size:13px;color:var(--mut);min-height:20px}
-#meter{width:150px;height:10px;background:var(--panel2);border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+#meter{width:130px;height:10px;background:var(--panel2);border-radius:999px;overflow:hidden;border:1px solid var(--line)}
 #meter i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--cyan),var(--amber),var(--red))}
 
-/* 결과 차트 */
+/* 분석 터미널 로그 */
+#alog{display:none;margin-top:14px;background:#080b11;border:1px solid var(--line);border-radius:8px;
+  padding:10px 13px;font-family:var(--mono);font-size:11px;line-height:1.75;color:#6f7a93;
+  max-height:132px;overflow:hidden}
+#alog .t{color:#3fc1c9aa}
+#alog .hl{color:#c3c9d6}
+
+/* 결과 */
 #result{margin-top:24px;display:none}
-.verdict{border-radius:8px;padding:13px 16px;font-size:15px;font-weight:700;margin-bottom:18px}
+.verdict{border-radius:8px;padding:13px 16px;font-size:15px;font-weight:700;margin-bottom:16px}
 .verdict.safe{background:#12261c;color:#5dd39e;border:1px solid #1d4230}
 .verdict.warn{background:#2a2113;color:var(--amber);border:1px solid #4a3b16}
 .verdict.hit{background:#2b1214;color:#ff7b81;border:1px solid #5c2226}
 .verdict small{display:block;font-weight:400;font-size:12px;opacity:.85;margin-top:2px}
+.res-grid{display:grid;grid-template-columns:288px 1fr;gap:14px;align-items:start}
+.rbox{background:#0e131d;border:1px solid var(--line);border-radius:10px;padding:14px}
+.rb-head{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--mut);margin-bottom:8px}
+.rb-head b{color:var(--cyan);font-weight:600}
+#radar-svg{display:block;width:100%;height:auto}
+#radar-vals{margin-top:6px;display:flex;flex-direction:column;gap:3px}
+#radar-vals .rv{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--mut)}
+#radar-vals .rv b{color:#c3c9d6;font-weight:400}
+#radar-vals .rv .hi{color:var(--amber)}
 .chart{display:flex;flex-direction:column;gap:9px;position:relative;padding-top:18px}
-.th-line{position:absolute;top:0;bottom:0;left:calc(120px + (100% - 120px)*0.65);width:0;border-left:2px dashed #5c2226;z-index:0}
+.th-line{position:absolute;top:0;bottom:0;left:calc(112px + (100% - 112px)*0.65);width:0;border-left:2px dashed #5c2226;z-index:0}
 .th-line span{position:absolute;top:-4px;left:6px;font-family:var(--mono);font-size:10px;color:var(--red);white-space:nowrap}
-.bar-row{display:grid;grid-template-columns:120px 1fr 52px;gap:10px;align-items:center;position:relative;z-index:1}
-.bar-row .nm{font-size:13px;text-align:right}
+.bar-row{display:grid;grid-template-columns:104px 1fr 48px;gap:8px;align-items:center;position:relative;z-index:1;
+  cursor:pointer;border-radius:6px;padding:2px 4px;margin:-2px -4px}
+.bar-row:hover{background:#ffffff08}
+.bar-row.sel{background:#3fc1c912;outline:1px solid #3fc1c93a}
+.bar-row .nm{font-size:12.5px;text-align:right}
 .bar-row .nm small{display:block;font-size:10px;color:var(--mut);font-family:var(--mono)}
-.track{height:20px;background:var(--panel2);border-radius:4px;overflow:hidden}
+.track{height:18px;background:var(--panel2);border-radius:4px;overflow:hidden}
 .fill{height:100%;width:0%;border-radius:4px;background:#33507a;transition:width .8s cubic-bezier(.2,.8,.2,1)}
 .fill.top{background:linear-gradient(90deg,#7a4a33,var(--amber))}
 .fill.hit{background:linear-gradient(90deg,#7f2226,var(--red))}
-.bar-row .val{font-family:var(--mono);font-size:12.5px;color:var(--mut);text-align:left}
+.bar-row .val{font-family:var(--mono);font-size:12px;color:var(--mut);text-align:left}
+.rb-hint{font-size:11px;color:var(--mut);margin-top:10px}
+#qstats{margin-top:12px;font-family:var(--mono);font-size:11px;color:#5a6478;letter-spacing:.02em;
+  border-top:1px dashed var(--line);padding-top:10px}
+#qstats b{color:#8b93a7;font-weight:400}
 .note{font-size:11.5px;color:var(--mut);margin-top:14px}
 
 /* 기술 */
@@ -120,21 +156,23 @@ h2{font-size:26px;font-weight:700;margin:6px 0 6px;letter-spacing:-.01em}
 .rd b{color:var(--ink)}
 
 footer{margin-top:64px;border-top:1px solid var(--line);padding-top:18px;font-size:11.5px;color:var(--mut);line-height:1.8}
-@media(max-width:640px){.stamp{display:none}.lab-steps{grid-template-columns:1fr}.bar-row{grid-template-columns:86px 1fr 46px}.th-line{left:calc(86px + (100% - 86px)*0.65)}}
+@media(max-width:680px){.stamp{display:none}.lab-steps{grid-template-columns:1fr}
+  .res-grid{grid-template-columns:1fr}
+  .bar-row{grid-template-columns:86px 1fr 46px}.th-line{left:calc(94px + (100% - 94px)*0.65)}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <header>
-  <div class="case-no">CASE FILE · KR-VOICEPHISHING-2026 · ON-DEVICE VOICEPRINT DEMO</div>
+  <div class="case-no">CASE FILE · KR-VOICEPHISHING-2026 · ON-DEVICE VOICEPRINT LAB</div>
   <h1>그놈 <span class="red">목소리</span></h1>
   <p class="tagline">지금 전화기 너머 그 목소리 — <b>등록된 그놈</b>입니까?<br>
   금융감독원·경찰이 공개한 <b>실제 보이스피싱 사기범 음성 6건</b>의 성문(聲紋)을 추출해,
   브라우저 안에서 내 녹음과 직접 대조합니다.</p>
   <div class="stamp">EVIDENCE</div>
   <div class="badges">
-    <span class="badge hot">금융보안 공모전 데모</span>
+    <span class="badge hot">성문+운율 5축 분석</span>
     <span class="badge">온디바이스 — 녹음 미전송</span>
     <span class="badge">ECAPA-TDNN · 192-dim</span>
     <span class="badge">int8 ONNX 21MB</span>
@@ -152,7 +190,7 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding-top:18px;font-si
 <section>
   <div class="sec-tag">EXHIBIT 02</div>
   <h2>성문 대조 실험</h2>
-  <div class="lab">
+  <div class="lab corner">
     <div class="lab-steps">
       <div class="step"><b>실험 A — 그놈 목소리 들려주기</b>
         위 샘플 하나를 다른 기기(또는 이 폰 스피커)로 재생하면서 녹음해보라.
@@ -163,13 +201,29 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding-top:18px;font-si
     </div>
     <div class="recbar">
       <button id="btn-rec">● 녹음 시작 (6초)</button>
+      <span class="led" id="led"></span>
       <div id="meter"><i></i></div>
       <div id="rec-status"></div>
     </div>
+    <div id="alog"></div>
     <div id="result">
       <div class="verdict" id="verdict"></div>
-      <div class="chart" id="chart"></div>
-      <p class="note">유사도 = 성문 벡터 코사인. <span class="mono">0.65</span> 이상이면 동일 화자 의심(전화대역 기준 실측 캘리브레이션).
+      <div class="res-grid">
+        <div class="rbox corner">
+          <div class="rb-head">FEATURE RADAR · <b id="radar-t"></b></div>
+          <svg id="radar-svg" viewBox="0 0 260 236"></svg>
+          <div id="radar-vals"></div>
+          <p class="rb-hint">성문(음색)이 낮아도 음높이·억양·리듬이 함께 높으면 <b style="color:var(--amber)">변조 의심</b> 신호다.
+          오른쪽 막대를 누르면 다른 사기범 축으로 전환.</p>
+        </div>
+        <div class="rbox">
+          <div class="rb-head">VOICEPRINT MATCH · 성문 일치도</div>
+          <div class="chart" id="chart"></div>
+          <div id="qstats"></div>
+        </div>
+      </div>
+      <p class="note">성문 유사도 = ECAPA 벡터 코사인, <span class="mono">0.65</span> 이상이면 동일 화자 의심(전화대역 기준 실측 캘리브레이션).
+      운율 4축(음높이·억양 폭·리듬·페이스)은 녹음과 사기범 클립 양쪽을 <b>같은 코드로 측정</b>해 비교한다.
       이 수치는 데모용이며 법적 판단 근거가 아니다. 녹음은 분석 후 즉시 폐기되고 어디로도 전송되지 않는다.</p>
     </div>
   </div>
@@ -179,12 +233,14 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding-top:18px;font-si
   <div class="sec-tag">EXHIBIT 03</div>
   <h2>어떻게 저장하고 대조하나</h2>
   <p class="sec-sub">음성 파일을 그대로 저장·비교하는 게 아니다. 목소리의 결을 192개의 숫자로 압축한
-  <b>성문 벡터</b>만 저장한다 — 지문처럼, 원본 복원은 불가능하지만 대조는 가능한 형태다.</p>
+  <b>성문 벡터</b>만 저장한다 — 지문처럼, 원본 복원은 불가능하지만 대조는 가능한 형태다.
+  여기에 화자 습관이 담기는 <b>운율 특징</b>(음높이·억양·리듬·페이스)을 함께 측정한다.</p>
   <div class="pipeline">
     <div class="pl"><b>공개 음성 수집</b>금감원 '바로 이 목소리'·경찰 공개 자료에서 원본 확보</div>
     <div class="pl"><b>화자 자동 분리</b>3초 창으로 잘라 임베딩 후 군집화 — 내레이터·피해자를 걸러내고 사기범 발화만 선별</div>
     <div class="pl"><b>전화대역 정합</b>모든 음성을 300–3,400Hz 전화 대역으로 통일 — 채널 차이가 아니라 목소리 차이만 비교</div>
     <div class="pl"><b>성문 인코딩</b>ECAPA-TDNN(화자인식 표준 모델)으로 192차원 벡터화, int8 양자화로 21MB</div>
+    <div class="pl"><b>운율 측정</b>F0 추적(YIN)·음절률·발화 비율을 브라우저에서 직접 계산 — 변조에도 남는 말버릇 축</div>
     <div class="pl"><b>온디바이스 대조</b>브라우저 WASM으로 내 녹음을 같은 방식으로 인코딩 → 코사인 유사도. 서버 없음</div>
   </div>
   <div class="mtx">
@@ -199,7 +255,7 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding-top:18px;font-si
   <div class="sec-tag">EXHIBIT 04</div>
   <h2>한계, 그리고 로드맵</h2>
   <div class="road">
-    <div class="rd"><span class="tag done">DEMO</span><p><b>성문 대조 엔진</b> — 공개 사기범 음성 등록·온디바이스 실시간 대조 (이 페이지)</p></div>
+    <div class="rd"><span class="tag done">DEMO</span><p><b>성문+운율 대조 엔진</b> — 공개 사기범 음성 등록·온디바이스 실시간 대조 (이 페이지)</p></div>
     <div class="rd"><span class="tag next">NEXT</span><p><b>STT 내용 분석</b> — 성문은 '아는 그놈'만 잡는다. 통화 내용을 온디바이스 STT로 전사해
       "검찰·계좌·보안 앱 설치" 같은 시나리오 패턴을 함께 탐지하면 <b>처음 보는 그놈</b>도 잡는다.</p></div>
     <div class="rd"><span class="tag todo">TODO</span><p><b>전화 연동 앱</b> — 통화 오디오 훅 + 발신번호를 결합해 성문·내용·번호 3중 스코어로
@@ -211,7 +267,7 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding-top:18px;font-si
 <footer>
   음성 출처: 금융감독원 공식 유튜브 「보이스피싱 상습범, "바로 이 목소리"를 들어보세요!」 1·2·4·6·7편, 경찰 제공 음성(MBC PD수첩 공개분).
   보이스피싱 예방·연구 목적의 비상업 데모이며, 표시되는 유사도는 참고용이다.<br>
-  마이크 입력은 브라우저 안에서만 처리되고 저장·전송되지 않는다. · <a href="https://page.cocy.io/">page.cocy.io</a> · cocy.io 금융보안 공모전 아이디어 #2
+  마이크 입력은 브라우저 안에서만 처리되고 저장·전송되지 않는다. · <a href="https://page.cocy.io/">page.cocy.io</a>
 </footer>
 </div>
 
@@ -219,6 +275,9 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding-top:18px;font-si
 const $=id=>document.getElementById(id);
 let DB=null, worker=null, workerReady=false, modelLoading=null;
 const audioEls={};
+const PROS={};           // id -> 운율 특징 (사기범 기준)
+let Q=null;              // 마지막 쿼리: {pros, scores, byId}
+const PROS_CACHE_KEY='gnomProsV2';
 
 /* ---- 카드 렌더 ---- */
 fetch('gnom_db.json').then(r=>r.json()).then(db=>{
@@ -271,22 +330,122 @@ function renderMatrix(db){
   $('mtxTable').innerHTML=h;
 }
 
+/* ---- 분석 로그 ---- */
+let logT0=0;
+function logLine(txt,hl){
+  const el=$('alog');el.style.display='block';
+  const t=((performance.now()-logT0)/1000).toFixed(2).padStart(5,'0');
+  el.insertAdjacentHTML('beforeend',`<div><span class="t">[+${t}s]</span> ${hl?'<span class="hl">'+txt+'</span>':txt}</div>`);
+  while(el.children.length>7)el.removeChild(el.firstChild);
+}
+
 /* ---- 모델 로드 ---- */
 function loadModel(){
   if(modelLoading)return modelLoading;
   worker=new Worker('analyzer.js');
   modelLoading=(async()=>{
-    $('rec-status').textContent='성문 엔진 다운로드 중 (21MB, 최초 1회)…';
+    logLine('성문 엔진 다운로드 (ecapa_int8.onnx · 21MB · 최초 1회)…');
     const buf=await fetch('ecapa_int8.onnx').then(r=>r.arrayBuffer());
     worker.postMessage({type:'init',model:buf,db:DB},[buf]);
-    await new Promise((res,rej)=>{const h=ev=>{
+    await new Promise((res)=>{const h=ev=>{
       if(ev.data.type==='ready'){worker.removeEventListener('message',h);workerReady=true;res();}};
       worker.addEventListener('message',h);});
+    logLine('성문 엔진 준비 완료 — WASM 세션 활성',1);
   })();
   return modelLoading;
 }
 
-/* ---- 녹음 (전화대역 정합: 캡처 후 OfflineAudioContext로 300~3400Hz + 16kHz) ---- */
+/* ---- 전화대역 정합 (300~3400Hz + 16kHz) ---- */
+async function bandpass16k(pcm,srIn){
+  const oc=new OfflineAudioContext(1,Math.ceil(pcm.length*16000/srIn),16000);
+  const b=oc.createBuffer(1,pcm.length,srIn);b.copyToChannel(pcm,0);
+  const s=oc.createBufferSource();s.buffer=b;
+  const hp=oc.createBiquadFilter();hp.type='highpass';hp.frequency.value=300;
+  const lp=oc.createBiquadFilter();lp.type='lowpass';lp.frequency.value=3400;
+  s.connect(hp);hp.connect(lp);lp.connect(oc.destination);s.start();
+  return (await oc.startRendering()).getChannelData(0);
+}
+
+/* ---- 운율 특징 (F0·억양·리듬·페이스) — 녹음/사기범 클립 공용 ---- */
+function prosody(pcm){
+  const SR=16000,HOP=160,W=400,PW=640,TMIN=32,TMAX=320;
+  const nF=Math.max(0,Math.floor((pcm.length-PW)/HOP));
+  if(nF<20)return null;
+  const rmsA=new Float32Array(nF),f0A=new Float32Array(nF);
+  for(let f=0;f<nF;f++){const off=f*HOP;let q=0;
+    for(let i=0;i<W;i++){const v=pcm[off+i];q+=v*v;}rmsA[f]=Math.sqrt(q/W);}
+  const srt=[...rmsA].sort((a,b)=>a-b);
+  const actTh=Math.max(0.004,(srt[Math.floor(nF*0.9)]||0)*0.18);
+  const SPAN=PW-TMAX;
+  for(let f=0;f<nF;f++){
+    if(rmsA[f]<actTh)continue;
+    const off=f*HOP;if(off+PW>pcm.length)break;
+    let run=0,bt=0,bv=1e9;
+    for(let t=TMIN;t<=TMAX;t++){
+      let s=0;for(let i=0;i<SPAN;i++){const df=pcm[off+i]-pcm[off+i+t];s+=df*df;}
+      run+=s;const cm=s*(t-TMIN+1)/(run||1e-9);
+      if(cm<bv){bv=cm;bt=t;}
+    }
+    if(bv<0.45)f0A[f]=16000/bt;
+  }
+  const voiced=[];for(const v of f0A)if(v>0)voiced.push(v);
+  if(voiced.length<8)return null;
+  const st=voiced.map(v=>12*Math.log2(v/55)).sort((a,b)=>a-b);
+  const pick=(arr,p)=>arr[Math.min(arr.length-1,Math.floor(arr.length*p))];
+  // 음절률: 에너지 엔벨로프 피크
+  const env=new Float32Array(nF);
+  for(let f=0;f<nF;f++){let s=0,c=0;for(let k=-2;k<=2;k++){const j=f+k;
+    if(j>=0&&j<nF){s+=rmsA[j];c++;}}env[f]=s/c;}
+  const actEnv=[];for(let f=0;f<nF;f++)if(rmsA[f]>=actTh)actEnv.push(env[f]);
+  actEnv.sort((a,b)=>a-b);
+  const emed=pick(actEnv,0.5)||0;
+  let peaks=0,above=false,last=-100,active=0;
+  for(let f=0;f<nF;f++){
+    if(rmsA[f]>=actTh)active++;
+    const a=env[f]>emed*0.9&&rmsA[f]>=actTh;
+    if(a&&!above&&f-last>=12){peaks++;last=f;}
+    above=a;
+  }
+  const activeSec=active*HOP/SR;
+  const f0s=[...voiced].sort((a,b)=>a-b);
+  return {
+    f0hz:pick(f0s,0.5), f0st:pick(st,0.5), f0iqr:pick(st,0.75)-pick(st,0.25),
+    rate:activeSec>0.5?peaks/activeSec:0, pace:active/nF,
+  };
+}
+function prosSim(a,b){
+  if(!a||!b)return null;
+  const g=(d,s)=>Math.exp(-(d*d)/(2*s*s));
+  return {pitch:g(a.f0st-b.f0st,3.2),inton:g(a.f0iqr-b.f0iqr,2.6),
+          rhythm:g(a.rate-b.rate,1.1),pace:g(a.pace-b.pace,0.16)};
+}
+
+/* 사기범 기준 운율 — 클립을 같은 파이프라인으로 1회 측정 (localStorage 캐시) */
+let prosLoading=null;
+function ensurePros(){
+  if(prosLoading)return prosLoading;
+  prosLoading=(async()=>{
+    try{const c=JSON.parse(localStorage.getItem(PROS_CACHE_KEY)||'null');
+      if(c&&DB.every(d=>c[d.id])){Object.assign(PROS,c);
+        logLine('기준 운율 프로파일 로드 (캐시)');return;}}catch(e){}
+    const ac=new (window.AudioContext||window.webkitAudioContext)();
+    for(const d of DB){
+      const buf=await fetch('clips/'+d.id+'.mp3').then(r=>r.arrayBuffer());
+      const ab=await ac.decodeAudioData(buf);
+      let pcm=ab.getChannelData(0);
+      const maxN=Math.min(pcm.length,ab.sampleRate*15);
+      pcm=pcm.slice(0,maxN);
+      const bp=await bandpass16k(pcm,ab.sampleRate);
+      PROS[d.id]=prosody(bp);
+      logLine(`기준 운율 측정 ${d.id.toUpperCase()} — F0 ${PROS[d.id]?Math.round(PROS[d.id].f0hz)+'Hz':'—'}`);
+    }
+    ac.close();
+    try{localStorage.setItem(PROS_CACHE_KEY,JSON.stringify(PROS));}catch(e){}
+  })();
+  return prosLoading;
+}
+
+/* ---- 녹음 ---- */
 let recording=false;
 $('btn-rec').onclick=async()=>{
   if(recording)return;
@@ -294,6 +453,8 @@ $('btn-rec').onclick=async()=>{
   try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false,channelCount:1}});}
   catch(e){$('rec-status').textContent='마이크 권한이 필요하다 — 브라우저 설정 확인';return;}
   recording=true;$('btn-rec').disabled=true;$('result').style.display='none';
+  $('alog').innerHTML='';logT0=performance.now();$('led').className='led rec';
+  logLine('입력 스트림 개방 — 원시 캡처 (AGC/NS OFF)',1);
   const ac=new (window.AudioContext||window.webkitAudioContext)();
   const srIn=ac.sampleRate;
   const src=ac.createMediaStreamSource(stream);
@@ -310,52 +471,105 @@ $('btn-rec').onclick=async()=>{
   };
   async function stop(){
     proc.disconnect();src.disconnect();stream.getTracks().forEach(t=>t.stop());ac.close();
-    recording=false;
+    recording=false;$('led').className='led proc';
     const total=chunks.reduce((a,c)=>a+c.length,0);
     const pcm=new Float32Array(total);let o=0;for(const c of chunks){pcm.set(c,o);o+=c.length;}
+    logLine(`녹음 종료 — ${(total/srIn).toFixed(1)}s @ ${srIn}Hz`);
     $('rec-status').textContent='전화대역 정합 중…';
-    // 300~3400Hz 밴드패스 + 16kHz 리샘플 (사기범 성문과 동일 채널 조건)
-    const oc=new OfflineAudioContext(1,Math.ceil(pcm.length*16000/srIn),16000);
-    const b=oc.createBuffer(1,pcm.length,srIn);b.copyToChannel(pcm,0);
-    const s=oc.createBufferSource();s.buffer=b;
-    const hp=oc.createBiquadFilter();hp.type='highpass';hp.frequency.value=300;
-    const lp=oc.createBiquadFilter();lp.type='lowpass';lp.frequency.value=3400;
-    s.connect(hp);hp.connect(lp);lp.connect(oc.destination);s.start();
-    const rendered=(await oc.startRendering()).getChannelData(0);
+    logLine('전화대역 정합 300–3,400Hz → 16kHz 리샘플');
+    const rendered=await bandpass16k(pcm,srIn);
+    const prosP=ensurePros();
     await loadModel();
     $('rec-status').textContent='성문 대조 중…';
-    worker.onmessage=ev=>{
+    worker.onmessage=async ev=>{
       const m=ev.data;
       if(m.type==='progress')$('rec-status').textContent='성문 대조 중… ('+m.done+'구간)';
       if(m.type==='result'){$('btn-rec').disabled=false;
-        if(m.error==='silent'){$('rec-status').textContent='목소리가 안 들렸다 — 더 크게, 가까이서';return;}
-        if(m.error){$('rec-status').textContent='분석 오류: '+m.error;return;}
+        if(m.error==='silent'){$('rec-status').textContent='목소리가 안 들렸다 — 더 크게, 가까이서';$('led').className='led';return;}
+        if(m.error){$('rec-status').textContent='분석 오류: '+m.error;$('led').className='led';return;}
+        logLine(`성문 인코딩 완료 — ${m.windows}구간 평균 · 192-dim`,1);
+        const qp=prosody(rendered);
+        if(qp)logLine(`운율 측정 — F0 ${Math.round(qp.f0hz)}Hz · 리듬 ${qp.rate.toFixed(1)}/s · 발화율 ${(qp.pace*100).toFixed(0)}%`);
+        await prosP;
         $('rec-status').textContent='분석 완료 · '+m.windows+'구간 평균';
+        $('led').className='led';
+        Q={pros:qp,dur:(total/srIn),windows:m.windows};
         showResult(m.scores);}
     };
     worker.postMessage({type:'analyze',pcm:rendered});
   }
 };
 
+/* ---- 레이더 ---- */
+const AXES=[['timbre','음색·성문'],['pitch','음높이'],['inton','억양 폭'],['rhythm','리듬'],['pace','페이스']];
+function axisVals(id){
+  const cos=Q.scores.find(s=>s.id===id).cos;
+  const ps=prosSim(Q.pros,PROS[id]);
+  return {timbre:Math.max(0,cos),pitch:ps?ps.pitch:0,inton:ps?ps.inton:0,
+          rhythm:ps?ps.rhythm:0,pace:ps?ps.pace:0,hasPros:!!ps};
+}
+function renderRadar(id){
+  const d=Q.byId[id],v=axisVals(id);
+  $('radar-t').textContent=d.label;
+  const cx=130,cy=112,R=82;
+  const pt=(i,r)=>{const a=(-90+i*72)*Math.PI/180;return [cx+Math.cos(a)*r,cy+Math.sin(a)*r];};
+  let s='';
+  for(const g of [0.25,0.5,0.75,1]){
+    s+=`<polygon points="${AXES.map((_,i)=>pt(i,R*g).map(n=>n.toFixed(1)).join(',')).join(' ')}"
+      fill="none" stroke="${g===1?'#232c3f':'#1a2130'}" stroke-width="1"/>`;
+  }
+  AXES.forEach((_,i)=>{const [x,y]=pt(i,R);
+    s+=`<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#1a2130" stroke-width="1"/>`;});
+  // 임계 링(성문 축 기준 0.65 참고선)
+  s+=`<polygon points="${AXES.map((_,i)=>pt(i,R*0.65).map(n=>n.toFixed(1)).join(',')).join(' ')}"
+    fill="none" stroke="#5c2226" stroke-width="1" stroke-dasharray="4 3"/>`;
+  const vals=AXES.map(a=>Math.max(0.02,Math.min(1,v[a[0]])));
+  s+=`<polygon points="${vals.map((vv,i)=>pt(i,R*vv).map(n=>n.toFixed(1)).join(',')).join(' ')}"
+    fill="#e5484d2e" stroke="#e5484d" stroke-width="1.8" stroke-linejoin="round"/>`;
+  vals.forEach((vv,i)=>{const [x,y]=pt(i,R*vv);
+    s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6" fill="#e5484d"/>`;});
+  AXES.forEach((a,i)=>{const [x,y]=pt(i,R+22);
+    s+=`<text x="${x.toFixed(1)}" y="${(y+4).toFixed(1)}" text-anchor="middle"
+      font-family="IBM Plex Mono,monospace" font-size="10.5" fill="#8b93a7">${a[1]}</text>`;});
+  $('radar-svg').innerHTML=s;
+  $('radar-vals').innerHTML=AXES.map(a=>{
+    const vv=v[a[0]];
+    return `<div class="rv"><b>${a[1]}</b><span class="${vv>=0.65?'hi':''}">${(a[0]!=='timbre'&&!v.hasPros)?'측정불가':vv.toFixed(3)}</span></div>`;
+  }).join('');
+  document.querySelectorAll('.bar-row').forEach(r=>r.classList.toggle('sel',r.dataset.id===id));
+}
+
 /* ---- 결과 ---- */
+function prosAvg(id){const p=prosSim(Q.pros,PROS[id]);
+  return p?(p.pitch+p.inton+p.rhythm+p.pace)/4:0;}
 function showResult(scores){
   const byId=Object.fromEntries(DB.map(d=>[d.id,d]));
   scores.sort((a,b)=>b.cos-a.cos);
+  Q.scores=scores;Q.byId=byId;
   const top=scores[0];
+  const pa=prosAvg(top.id);
   const v=$('verdict');
   if(top.cos>=0.65){v.className='verdict hit';
     v.innerHTML=`⚠️ <b>${byId[top.id].label}</b> 성문과 강한 일치 — 코사인 ${top.cos.toFixed(3)}<small>등록된 사기범 음성과 동일 화자로 의심되는 수준. (샘플 재생 실험이라면 정상 동작이다)</small>`;}
   else if(top.cos>=0.5){v.className='verdict warn';
     v.innerHTML=`주의 — <b>${byId[top.id].label}</b>과 유사한 성문 (${top.cos.toFixed(3)})<small>동일 화자 단정 수준은 아니다. 대역·소음 영향일 수 있다.</small>`;}
+  else if(top.cos>=0.4&&pa>=0.72){v.className='verdict warn';
+    v.innerHTML=`변조 가능성 참고 — <b>${byId[top.id].label}</b> 운율 유사 (성문 ${top.cos.toFixed(3)} · 운율 ${pa.toFixed(3)})<small>성문은 불일치지만 음높이·억양·리듬 패턴이 가깝다. 변조된 목소리일 가능성을 배제하지 말 것.</small>`;}
   else{v.className='verdict safe';
     v.innerHTML=`등록된 그놈들과 불일치 — 최고 ${top.cos.toFixed(3)}<small>이 목소리는 등록 성문 6건 중 어느 것과도 동일 화자로 보이지 않는다.</small>`;}
   $('chart').innerHTML='<div class="th-line"><span>0.65 동일화자 의심</span></div>'+scores.map((s,i)=>{
     const d=byId[s.id];const pct=Math.max(2,Math.min(100,s.cos*100));
     const cls=s.cos>=0.65?'hit':i===0?'top':'';
-    return `<div class="bar-row"><div class="nm">${d.label}<small>${d.method.split('·')[0].trim()}</small></div>
+    return `<div class="bar-row" data-id="${s.id}"><div class="nm">${d.label}<small>${d.method.split('·')[0].trim()}</small></div>
       <div class="track"><div class="fill ${cls}" data-w="${pct}"></div></div>
       <div class="val">${s.cos.toFixed(3)}</div></div>`;}).join('');
+  document.querySelectorAll('.bar-row').forEach(r=>r.onclick=()=>renderRadar(r.dataset.id));
+  const qp=Q.pros;
+  $('qstats').innerHTML=qp
+    ?`QUERY · <b>${Q.dur.toFixed(1)}s</b> · 인코딩 <b>${Q.windows}구간</b> · F0 <b>${Math.round(qp.f0hz)}Hz</b> · 억양폭 <b>${qp.f0iqr.toFixed(1)}st</b> · 리듬 <b>${qp.rate.toFixed(1)}/s</b> · 발화율 <b>${(qp.pace*100).toFixed(0)}%</b>`
+    :`QUERY · <b>${Q.dur.toFixed(1)}s</b> · 인코딩 <b>${Q.windows}구간</b> · 운율 측정불가(발화 부족)`;
   $('result').style.display='block';
+  renderRadar(top.id);
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     document.querySelectorAll('.fill').forEach(f=>f.style.width=f.dataset.w+'%');}));
   $('result').scrollIntoView({behavior:'smooth',block:'nearest'});
