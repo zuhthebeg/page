@@ -45,6 +45,9 @@ h1 .rd{color:var(--red)}
 .lg{border:1px solid var(--line);background:#0d0f18cc;color:var(--mut);font-size:10.5px;font-weight:700;
   font-family:var(--sans);border-radius:999px;padding:3px 11px;cursor:pointer;letter-spacing:.06em}
 .lg.on{background:var(--red);border-color:var(--red);color:#fff}
+.sg{border:1px solid var(--line);background:#0d0f18cc;color:var(--mut);font-size:10.5px;font-weight:700;
+  font-family:var(--sans);border-radius:999px;padding:3px 12px;cursor:pointer;letter-spacing:.04em}
+.sg.on{background:var(--gold);border-color:var(--gold);color:#241a05}
 
 /* ── 지도 캔버스 ── */
 #stage{position:fixed;inset:0;cursor:grab;touch-action:none}
@@ -66,6 +69,11 @@ h1 .rd{color:var(--red)}
   border-left:5px solid var(--red);box-shadow:0 0 34px -8px #e6242966}
 .node.doom .tt{font-size:15px;color:#ffd9da}
 .node.doom .dday{margin-top:5px;font-family:var(--disp);font-size:17px;color:var(--gold)}
+.node{transition:left .55s cubic-bezier(.2,.8,.2,1),top .55s cubic-bezier(.2,.8,.2,1),border-color .15s,box-shadow .15s}
+.node.soon{border-color:var(--gold);border-left-color:var(--gold);box-shadow:0 0 22px -8px #f0b43c88}
+.node.soon .dday{margin-top:4px;font-family:var(--disp);font-size:14px;color:var(--gold)}
+.node.sw{width:190px;opacity:.62;border-style:dashed;border-left-style:solid;border-color:#3d3560;border-left-color:var(--vio)}
+.node.sw .tt{color:#b9a8ff}
 .lane-h{position:absolute;transform:translate(-50%,-50%);font-family:var(--disp);
   font-size:15px;color:var(--pc);letter-spacing:.06em;white-space:nowrap;opacity:.92}
 .lane-h small{display:block;font-family:var(--sans);font-weight:500;font-size:10px;color:var(--mut);letter-spacing:.04em;margin-top:2px}
@@ -118,6 +126,7 @@ footer a{color:#6a7089;text-decoration:none}
   <h1 id="hd-h1">마블 유니버스 <span class="rd">족보</span></h1>
   <div class="sub" id="hd-sub">아이언맨에서 <b>어벤져스: 둠스데이</b>까지 — 확대하고, 끌고, 눌러보세요</div>
   <div class="langs" id="langs"></div>
+  <div class="langs" id="sortctl" style="margin-top:6px"></div>
 </header>
 
 <div id="stage"><div id="map">
@@ -185,8 +194,43 @@ const FILMS=[
 {t:'캡틴 아메리카: 브레이브 뉴 월드',en:'Captain America: Brave New World',y:2025,ph:5,s:'샘 윌슨의 첫 단독 영화. 대통령이 된 로스 장군이 레드 헐크로 변모하는 사건의 전말.'},
 {t:'썬더볼츠*',en:'Thunderbolts*',y:2025,ph:5,s:'옐레나·버키 등 반영웅들이 세리와 만나 "뉴 어벤져스"를 자처하게 된다. 둠스데이 직전의 팀 셋업.'},
 {t:'판타스틱 4: 새로운 출발',en:'The Fantastic Four: First Steps',y:2025,ph:6,s:'레트로퓨처 세계(어스-828)의 마블 퍼스트 패밀리가 갤럭투스에 맞선다. 둠스데이로 직행하는 다리.',n:'작중 배경은 1960년대풍 별도 유니버스'},
-{t:'스파이더맨: 브랜드 뉴 데이',en:'Spider-Man: Brand New Day',y:2026,ph:6,s:'모두에게 잊힌 피터 파커의 새 출발. 둠스데이 직전 지상의 스파이더맨을 재정비하는 이야기.'},
+{t:'스파이더맨: 브랜드 뉴 데이',en:'Spider-Man: Brand New Day',y:2026,ph:6,soon:1,date:'2026-07-31',yt:'8TZMtslA3UY',
+ relL:{ko:'2026년 7월 31일 개봉',en:'In theaters July 31, 2026',ja:'2026年7月31日公開'},
+ s:'모두에게 잊힌 피터 파커의 새 출발. 둠스데이 직전 지상의 스파이더맨을 재정비하는 이야기. 존 번탈의 퍼니셔, 마크 러팔로의 헐크가 함께한다.'},
+/* 추가 D+ 시리즈 (rel = 개봉순 소수 슬롯) */
+{t:'왓 이프...?',en:'What If...?',y:2021,ph:4,sr:1,rel:26.5,jt:'ホワット・イフ...?',
+ s:'왓처가 멀티버스의 "만약"들을 관찰한다. 캡틴 카터 등 변주 세계관 — 멀티버스 사가의 애니메이션 실험실.',
+ s_en:"The Watcher observes the multiverse's what-ifs — Captain Carter and more. The animated laboratory of the Multiverse Saga.",
+ s_ja:'ウォッチャーがマルチバースの「もしも」を観察する。キャプテン・カーターなど変奏世界 — マルチバース・サーガのアニメ実験室。'},
+{t:'호크아이',en:'Hawkeye',y:2021,ph:4,sr:1,rel:28.5,jt:'ホークアイ',
+ s:'은퇴를 꿈꾸는 클린트와 신참 케이트 비숍의 크리스마스 소동. 옐레나와 킹핀이 얽힌다.',
+ s_en:'Clint dreams of retirement; rookie Kate Bishop drags him into a Christmas mess entangling Yelena and the Kingpin.',
+ s_ja:'引退を夢見るクリントと新人ケイト・ビショップのクリスマス騒動。エレーナとキングピンが絡む。'},
+{t:'미즈 마블',en:'Ms. Marvel',y:2022,ph:4,sr:1,rel:30.5,jt:'ミズ・マーベル',
+ s:'캡틴 마블의 열혈 팬 카말라 칸이 자신의 힘을 발견한다. 더 마블스로 직결.',
+ s_en:"Kamala Khan, Captain Marvel's biggest fan, discovers her own power. Leads straight into The Marvels.",
+ s_ja:'キャプテン・マーベルの大ファン、カマラ・カーンが自らの力に目覚める。マーベルズへ直結。'},
+{t:'시크릿 인베이전',en:'Secret Invasion',y:2023,ph:5,sr:1,rel:34.5,jt:'シークレット・インベージョン',
+ s:'변신 종족 스크럴의 지구 잠입 음모에 퓨리가 거의 홀로 맞선다.',
+ s_en:'Fury stands almost alone against a shape-shifting Skrull conspiracy infiltrating Earth.',
+ s_ja:'変身種族スクラルの地球潜入の陰謀に、フューリーがほぼ独りで立ち向かう。'},
+{t:'아가사 올 어롱',en:'Agatha All Along',y:2024,ph:5,sr:1,rel:36.5,jt:'アガサ:オール・アロング',
+ s:'힘을 잃은 아가사가 마녀의 길을 걸으며, 완다의 아들 빌리(위칸)가 등장한다.',
+ s_en:"A powerless Agatha walks the Witches' Road — and Wanda's son Billy (Wiccan) emerges.",
+ s_ja:'力を失ったアガサが魔女の道を歩み、ワンダの息子ビリー(ウィッカン)が現れる。'},
+{t:'데어데블: 본 어게인',en:'Daredevil: Born Again',y:2025,ph:5,sr:1,rel:37.5,jt:'デアデビル:ボーン・アゲイン',
+ s:'변호사 맷 머독과 시장이 된 킹핀의 재대결. 넷플릭스 데어데블의 MCU 정식 편입.',
+ s_en:'Lawyer Matt Murdock versus Mayor Kingpin, round two. The Netflix Daredevil formally joins the MCU.',
+ s_ja:'弁護士マット・マードックと市長になったキングピンの再対決。NETFLIX版デアデビルがMCUに正式合流。'},
+{t:'아이언하트',en:'Ironheart',y:2025,ph:5,sr:1,rel:38.5,jt:'アイアンハート',
+ s:'토니의 후계 천재 리리 윌리엄스가 기술과 마법의 경계에서 싸운다. 메피스토 등장.',
+ s_en:"Riri Williams, a genius heir to Tony's legacy, fights on the line between tech and magic. Mephisto appears.",
+ s_ja:'トニーの後継たる天才リリ・ウィリアムズが、技術と魔法の狭間で戦う。メフィスト登場。'},
 ];
+const SW={t:'어벤져스: 시크릿 워즈',en:'Avengers: Secret Wars',jt:'アベンジャーズ:シークレット・ウォーズ',y:2027,ph:6,sw:1,
+ s:'멀티버스 사가의 완결편. 둠스데이에서 이어지는 최종 전쟁 — 2027년 12월 17일 개봉 예정.',
+ s_en:'The conclusion of the Multiverse Saga — the final war that follows Doomsday. In theaters December 17, 2027.',
+ s_ja:'マルチバース・サーガの完結編。ドゥームズデイから続く最終戦争 — 2027年12月17日公開予定。'};
 const DOOM={t:'어벤져스: 둠스데이',en:'Avengers: Doomsday',y:2026,ph:6,
   date:'2026-12-18',
   s:'로버트 다우니 주니어가 닥터 둠으로 돌아온다. 루소 형제 연출로 어벤져스·판타스틱4·엑스맨까지 멀티버스의 히어로가 총집결하는 사가의 정점. 티저는 자비에 영재학교와 스티브 로저스의 귀환을 예고했다.',
@@ -199,19 +243,22 @@ const UI={
      hint:'🔍 휠·핀치로 확대 / 드래그로 이동 / 작품 클릭 → 요약',
      phase:n=>'페이즈 '+n, series:'디즈니+ 시리즈', apex:'페이즈 6 · 사가의 정점',
      release:'2026년 12월 18일 개봉', ytBtn:'▶ 공식 예고편 유튜브에서 보기',
-     foot:'비공식 팬 페이지 — 각 작품의 권리는 Marvel Studios에 있습니다'},
+     foot:'비공식 팬 페이지 — 각 작품의 권리는 Marvel Studios에 있습니다',
+     sortRel:'개봉순',sortStory:'스토리순',soonTag:'개봉 임박',swTag:'사가 완결 — 예정작'},
  en:{h1:'MARVEL UNIVERSE <span class="rd">FAMILY TREE</span>',
      sub:'From Iron Man to <b>Avengers: Doomsday</b> — zoom, drag, tap',
      hint:'🔍 Scroll/pinch to zoom · drag to pan · tap a title for its summary',
      phase:n=>'Phase '+n, series:'Disney+ series', apex:'Phase 6 · The apex of the saga',
      release:'In theaters December 18, 2026', ytBtn:'▶ Watch the official trailer on YouTube',
-     foot:'Unofficial fan page — all works © Marvel Studios'},
+     foot:'Unofficial fan page — all works © Marvel Studios',
+     sortRel:'Release',sortStory:'Story order',soonTag:'Coming soon',swTag:'Saga finale — upcoming'},
  ja:{h1:'マーベル・ユニバース <span class="rd">系譜</span>',
      sub:'アイアンマンから<b>アベンジャーズ:ドゥームズデイ</b>まで — 拡大して、動かして、タップ',
      hint:'🔍 ホイール・ピンチで拡大 / ドラッグで移動 / 作品タップ → あらすじ',
      phase:n=>'フェーズ'+n, series:'ディズニー+ シリーズ', apex:'フェーズ6 · サーガの頂点',
      release:'2026年12月18日公開', ytBtn:'▶ 公式予告編をYouTubeで見る',
-     foot:'非公式ファンページ — 各作品の権利はMarvel Studiosに帰属します'},
+     foot:'非公式ファンページ — 各作品の権利はMarvel Studiosに帰属します',
+     sortRel:'公開順',sortStory:'時系列',soonTag:'公開間近',swTag:'サーガ完結 — 予定作'},
 };
 const EN_TR=[
 {s:"Arms dealer Tony Stark builds his first suit after being kidnapped and declares 'I am Iron Man.' The starting point of the entire MCU.",n:"Where it all began — Nick Fury first mentions the 'Avengers Initiative' in the post-credits scene"},
@@ -299,8 +346,10 @@ const JA_TR=[
 {t:'ファンタスティック4:ファースト・ステップ',s:'レトロフューチャー世界(アース828)のファースト・ファミリーがギャラクタスに挑む。ドゥームズデイへ直結する橋。',n:'劇中は1960年代風の別ユニバース'},
 {t:'スパイダーマン:ブランド・ニュー・デイ',s:'世界に忘れられたピーター・パーカーの再出発。ドゥームズデイ直前、地上のスパイダーマンを再整備する物語。'},
 ];
-FILMS.forEach((f,i)=>{const e=EN_TR[i]||{},j=JA_TR[i]||{};
-  f.s_en=e.s;if(e.n)f.n_en=e.n;f.jt=j.t;f.s_ja=j.s;if(j.n)f.n_ja=j.n;});
+FILMS.forEach((f,i)=>{const e=EN_TR[i],j=JA_TR[i];
+  if(e){f.s_en=e.s;if(e.n)f.n_en=e.n;}
+  if(j){f.jt=j.t;f.s_ja=j.s;if(j.n)f.n_ja=j.n;}
+  if(f.rel===undefined)f.rel=i;});
 DOOM.jt='アベンジャーズ:ドゥームズデイ';
 DOOM.s_en="Robert Downey Jr. returns as Doctor Doom. Directed by the Russo brothers — the Avengers, the Fantastic Four and the X-Men converge across the multiverse at the saga's apex. The teaser revealed Xavier's school and the return of Steve Rogers.";
 DOOM.s_ja='ロバート・ダウニー・Jr.がドクター・ドゥームとして帰還。ルッソ兄弟の演出でアベンジャーズ、ファンタスティック4、X-MENまでマルチバースのヒーローが総集結するサーガの頂点。ティザーはエグゼビア学園とスティーブ・ロジャースの帰還を予告した。';
@@ -324,60 +373,99 @@ document.querySelectorAll('.lg').forEach(b=>b.onclick=()=>{
   localStorage.setItem('mv_lang',b.dataset.l);
   const u=new URL(location.href);u.searchParams.set('lang',b.dataset.l);location.href=u;});
 
-/* ── 좌표 배치: 페이즈별 세로 기둥(가문) 6개, 연대기 선이 기둥을 타고 흐른다 ── */
+/* ── 스토리(작중 시간)순 — 공식 타임라인 기준, 일부 추정 ── */
+const STORY=['Captain America: The First Avenger','Captain Marvel','Iron Man','Iron Man 2','The Incredible Hulk','Thor','The Avengers','Iron Man 3','Thor: The Dark World','Captain America: The Winter Soldier','Guardians of the Galaxy','Guardians of the Galaxy Vol. 2','Avengers: Age of Ultron','Ant-Man','Captain America: Civil War','Black Widow','Black Panther','Spider-Man: Homecoming','Doctor Strange','Thor: Ragnarok','Ant-Man and the Wasp','Avengers: Infinity War','Avengers: Endgame','Loki','What If...?','WandaVision','Spider-Man: Far From Home','The Falcon and the Winter Soldier','Shang-Chi and the Legend of the Ten Rings','Eternals','Spider-Man: No Way Home','Hawkeye','Doctor Strange in the Multiverse of Madness','Ms. Marvel','Thor: Love and Thunder','Black Panther: Wakanda Forever','Ant-Man and the Wasp: Quantumania','Guardians of the Galaxy Vol. 3','Secret Invasion','The Marvels','Agatha All Along','Deadpool & Wolverine','Captain America: Brave New World','Daredevil: Born Again','Thunderbolts*','Ironheart','The Fantastic Four: First Steps','Spider-Man: Brand New Day'];
+const STORY_IDX=Object.fromEntries(STORY.map((t,i)=>[t,i]));
+
+/* ── 좌표 배치: 페이즈 기둥(개봉순) ↔ 시간순 컬럼, 토글로 재배치 ── */
 const LANE_X={1:170,2:420,3:670,4:920,5:1170,6:1420};
 const TOP=190, GAP=112;
-const nodes=[...FILMS.map((f,i)=>({...f,i})),{...DOOM,i:FILMS.length,doom:1}];
-const cnt={};
-nodes.forEach(n=>{
-  const k=cnt[n.ph]=(cnt[n.ph]||0)+1;
-  n.px=LANE_X[n.ph]+(k%2?-30:30);
-  n.py=TOP+(k-1)*GAP;
-});
-const doomN=nodes[nodes.length-1];
-const maxY=Math.max(...nodes.slice(0,-1).map(n=>n.py));
-doomN.px=810;doomN.py=maxY+220;
-const W=1620,H=doomN.py+250;
+const nodes=[...FILMS.map(f=>({...f})),{...DOOM,doom:1},{...SW}];
+nodes.forEach(n=>{n.o=STORY_IDX[n.en]??999;});
+const doomN=nodes[nodes.length-2], swN=nodes[nodes.length-1];
+const films=nodes.filter(n=>!n.doom&&!n.sw);
+const W=1620;let curH=0;
 
 const map=document.getElementById('map'),stage=document.getElementById('stage');
-map.style.width=W+'px';map.style.height=H+'px';
-
-/* 레인 헤더 + 사가 태그 */
-let hh='';
-for(const ph of [1,2,3,4,5,6]){
-  const first=nodes.find(n=>n.ph===ph);
-  const years={1:'2008–2012',2:'2013–2015',3:'2016–2019',4:'2021–2022',5:'2023–2025',6:'2025–2026'}[ph];
-  hh+=`<div class="lane-h" style="--pc:${PH_COLOR[ph]};left:${LANE_X[ph]}px;top:${first.py-72}px">${L.phase(ph)}<small>${years}</small></div>`;
-}
-hh+=`<div class="saga-tag" style="left:420px;top:${TOP-138}px;color:#e62429">INFINITY SAGA</div>`;
-hh+=`<div class="saga-tag" style="left:1170px;top:${TOP-138}px;color:#8a63ff">MULTIVERSE SAGA</div>`;
-map.insertAdjacentHTML('beforeend',hh);
-
-/* 연결선 */
 const svg=document.getElementById('edges');
-svg.setAttribute('width',W);svg.setAttribute('height',H);
-let path='';
-nodes.forEach((n,i)=>{if(i&&!n.doom){const p=nodes[i-1];
-  path+=`<path d="M${p.px},${p.py} C${p.px},${(p.py+n.py)/2} ${n.px},${(p.py+n.py)/2} ${n.px},${n.py}"
-    fill="none" stroke="${PH_COLOR[n.ph]}44" stroke-width="2.5"/>`;}});
-// 족보 수렴: 각 페이즈 기둥의 마지막 작품 → 둠스데이
-for(const ph of [1,2,3,4,5,6]){
-  const last=[...nodes].filter(n=>n.ph===ph&&!n.doom).pop();
-  path+=`<path d="M${last.px},${last.py+34} C${last.px},${doomN.py-90} ${doomN.px},${doomN.py-160} ${doomN.px},${doomN.py-40}"
-    fill="none" stroke="#e6242938" stroke-width="2" stroke-dasharray="1 7" stroke-linecap="round"/>`;
-}
-svg.innerHTML=path;
 
-/* 노드 */
+/* 노드 엘리먼트 생성 (위치는 layout에서) */
 nodes.forEach(n=>{
   const el=document.createElement('div');
-  el.className='node'+(n.sr?' series':'')+(n.doom?' doom':'');
+  el.className='node'+(n.sr?' series':'')+(n.doom?' doom':'')+(n.soon?' soon':'')+(n.sw?' sw':'');
   el.style.setProperty('--pc',PH_COLOR[n.ph]);
-  el.style.left=n.px+'px';el.style.top=n.py+'px';
   el.innerHTML=`<div class="yr">${n.y}</div><div class="tt">${titleOf(n)}</div><div class="en">${subOf(n)}</div>`+
-    (n.doom?`<div class="dday" id="node-dday"></div>`:'');
-  el._node=n;
+    (n.doom?`<div class="dday" id="node-dday"></div>`:'')+
+    (n.soon?`<div class="dday" id="node-dday-bnd"></div>`:'');
+  el._node=n;n.el=el;
   map.appendChild(el);
+});
+
+/* 레인 헤더 + 사가 태그 (개봉순 모드 전용) */
+const YEARS={1:'2008–2012',2:'2013–2015',3:'2016–2019',4:'2021–2022',5:'2023–2025',6:'2025–2026'};
+let hh='';
+for(const ph of [1,2,3,4,5,6]){
+  hh+=`<div class="lane-h rel-only" style="--pc:${PH_COLOR[ph]};left:${LANE_X[ph]}px;top:${TOP-72}px">${L.phase(ph)}<small>${YEARS[ph]}</small></div>`;
+}
+hh+=`<div class="saga-tag rel-only" style="left:420px;top:${TOP-138}px;color:#e62429">INFINITY SAGA</div>`;
+hh+=`<div class="saga-tag rel-only" style="left:1170px;top:${TOP-138}px;color:#8a63ff">MULTIVERSE SAGA</div>`;
+map.insertAdjacentHTML('beforeend',hh);
+
+let MODE='rel';
+function layout(){
+  let orderList;
+  if(MODE==='rel'){
+    orderList=[...films].sort((a,b)=>a.rel-b.rel);
+    const cnt={};
+    orderList.forEach(n=>{
+      const k=cnt[n.ph]=(cnt[n.ph]||0)+1;
+      n.px=LANE_X[n.ph]+(k%2?-30:30);n.py=TOP+(k-1)*GAP;
+    });
+  }else{
+    orderList=[...films].sort((a,b)=>a.o-b.o);
+    const rows=Math.ceil(orderList.length/6);
+    orderList.forEach((n,i)=>{
+      const col=Math.floor(i/rows),row=i%rows;
+      n.px=LANE_X[col+1]+(row%2?-30:30);n.py=TOP+row*GAP;
+    });
+  }
+  const maxY=Math.max(...films.map(n=>n.py));
+  doomN.px=810;doomN.py=maxY+220;
+  swN.px=810;swN.py=doomN.py+150;
+  curH=swN.py+200;
+  map.style.width=W+'px';map.style.height=curH+'px';
+  document.querySelectorAll('.rel-only').forEach(e=>e.style.display=MODE==='rel'?'':'none');
+  nodes.forEach(n=>{
+    n.el.style.left=n.px+'px';n.el.style.top=n.py+'px';
+    const yr=n.el.querySelector('.yr');
+    yr.textContent=(MODE==='story'&&!n.doom&&!n.sw)?`#${n.o+1} · ${n.y}`:`${n.y}`;
+  });
+  /* 연결선 */
+  svg.setAttribute('width',W);svg.setAttribute('height',curH);
+  let path='';
+  orderList.forEach((n,i)=>{if(i){const p=orderList[i-1];
+    path+=`<path d="M${p.px},${p.py} C${p.px},${(p.py+n.py)/2} ${n.px},${(p.py+n.py)/2} ${n.px},${n.py}"
+      fill="none" stroke="${PH_COLOR[n.ph]}44" stroke-width="2.5"/>`;}});
+  // 족보 수렴: 각 기둥 마지막 → 둠스데이, 둠스데이 → 시크릿 워즈
+  const lastByCol={};
+  orderList.forEach(n=>{lastByCol[Math.round(n.px/250)]=n;});
+  for(const k in lastByCol){const last=lastByCol[k];
+    path+=`<path d="M${last.px},${last.py+34} C${last.px},${doomN.py-90} ${doomN.px},${doomN.py-160} ${doomN.px},${doomN.py-40}"
+      fill="none" stroke="#e6242938" stroke-width="2" stroke-dasharray="1 7" stroke-linecap="round"/>`;}
+  path+=`<path d="M${doomN.px},${doomN.py+40} L${swN.px},${swN.py-30}"
+    fill="none" stroke="#8a63ff55" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/>`;
+  svg.innerHTML=path;
+}
+layout();
+
+/* 정렬 토글 */
+document.getElementById('sortctl').innerHTML=
+  `<button class="sg on" data-m="rel">${L.sortRel}</button><button class="sg" data-m="story">${L.sortStory}</button>`;
+document.querySelectorAll('.sg').forEach(b=>b.onclick=()=>{
+  if(b.dataset.m===MODE)return;
+  MODE=b.dataset.m;
+  document.querySelectorAll('.sg').forEach(x=>x.classList.toggle('on',x.dataset.m===MODE));
+  layout();fit();
 });
 
 /* ── 팬/줌 ── */
@@ -385,7 +473,7 @@ let sc=1,tx=0,ty=0;
 function apply(){map.style.transform=`translate(${tx}px,${ty}px) scale(${sc})`;}
 function fit(){
   const vw=innerWidth,vh=innerHeight;
-  sc=Math.min((vw-40)/W,(vh-210)/H);
+  sc=Math.min((vw-40)/W,(vh-210)/curH);
   sc=Math.max(sc,0.12);
   tx=(vw-W*sc)/2;ty=128;apply();
 }
@@ -432,7 +520,12 @@ function dday(){
   const d=Math.max(0,Math.floor(ms/86400000));
   return {d, h:Math.max(0,Math.floor(ms/3600000)%24), m:Math.max(0,Math.floor(ms/60000)%60)};
 }
+function ddayTo(dateStr){
+  const t=new Date(dateStr+'T00:00:00+09:00'),ms=t-new Date();
+  return {d:Math.max(0,Math.floor(ms/86400000)),h:Math.max(0,Math.floor(ms/3600000)%24),m:Math.max(0,Math.floor(ms/60000)%60)};
+}
 document.getElementById('node-dday').textContent='D-'+dday().d;
+{const b=document.getElementById('node-dday-bnd');if(b){const bd=ddayTo('2026-07-31');b.textContent=(bd.d===0?'D-DAY':'D-'+bd.d)+' · '+L.soonTag;}}
 
 /* ── 상세 시트 ── */
 const sheet=document.getElementById('sheet'),body=document.getElementById('sheet-body');
@@ -440,6 +533,29 @@ let selEl=null;
 function openSheet(n,el){
   if(selEl)selEl.classList.remove('sel');selEl=el;el.classList.add('sel');
   const pc=PH_COLOR[n.ph];
+  if(n.soon){
+    const bd=ddayTo(n.date);
+    body.innerHTML=`<div class="doom-final" style="--pc:${pc}">
+      <span class="ph-tag" style="--pc:${pc}">${L.phase(n.ph)} · ${L.soonTag}</span>
+      <h2>${titleOf(n)}</h2><div class="en2">${LANG==='en'?'':n.en+' · '}${n.relL[LANG]}</div>
+      <div class="dd-count">
+        <div class="dd-cell"><b>${bd.d}</b><span>DAYS</span></div>
+        <div class="dd-cell"><b>${bd.h}</b><span>HOURS</span></div>
+        <div class="dd-cell"><b>${bd.m}</b><span>MIN</span></div>
+      </div>
+      <p class="sum">${sumOf(n)}</p>
+      <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${n.yt}" title="${n.en} Official Trailer"
+        allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+      <a class="open-yt" href="https://www.youtube.com/watch?v=${n.yt}" target="_blank" rel="noreferrer">${L.ytBtn}</a>
+    </div>`;
+    sheet.classList.add('open');return;
+  }
+  if(n.sw){
+    body.innerHTML=`<span class="ph-tag" style="--pc:#8a63ff">${L.swTag} · 2027</span>
+      <h2>${titleOf(n)}</h2><div class="en2">${LANG==='en'?'':n.en}</div>
+      <p class="sum">${sumOf(n)}</p>`;
+    sheet.classList.add('open');return;
+  }
   if(n.doom){
     const dd=dday();
     body.innerHTML=`<div class="doom-final" style="--pc:${pc}">
