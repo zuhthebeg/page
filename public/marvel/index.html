@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>마블 시네마틱 유니버스 족보 — 아이언맨(2008)부터 어벤져스: 둠스데이(2026)까지</title>
+<meta name="description" content="MCU 18년 연대기를 족보처럼 한눈에. 페이즈 1~6 영화 전작품 + 핵심 시리즈를 확대·이동하며 보고, 작품을 누르면 한 줄 요약. 마지막은 어벤져스: 둠스데이 개봉 카운트다운과 공식 예고편.">
+<meta name="keywords" content="마블 연대기, MCU 순서, 마블 영화 순서, 어벤져스 둠스데이, 둠스데이 개봉일, 둠스데이 예고편, 마블 족보, MCU 타임라인, 인피니티 사가, 멀티버스 사가">
+<link rel="canonical" href="https://page.cocy.io/marvel/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="마블 유니버스 족보 — 아이언맨부터 둠스데이까지 한눈에">
+<meta property="og:description" content="MCU 18년, 영화 39편의 연대기 지도. 확대해서 보고, 눌러서 요약 읽고, 둠스데이 카운트다운으로 마무리.">
+<meta property="og:url" content="https://page.cocy.io/marvel/">
+<meta property="og:image" content="https://page.cocy.io/marvel/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"마블 시네마틱 유니버스 족보 — 아이언맨부터 둠스데이까지","inLanguage":"ko","datePublished":"2026-07-21","author":{"@type":"Person","name":"cocy"},"publisher":{"@type":"Organization","name":"page.cocy.io"},"mainEntityOfPage":"https://page.cocy.io/marvel/"}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07080d; --ink:#eceef4; --mut:#8a90a3; --line:#1c2030;
+  --red:#e62429; --red-d:#8a1216; --gold:#f0b43c; --vio:#8a63ff; --blu:#3fa0ff; --grn:#39d98a;
+  --sans:'IBM Plex Sans KR',sans-serif; --disp:'Archivo Black',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);overflow:hidden;
+  background-image:radial-gradient(ellipse at 50% -20%,#1a1030 0%,transparent 55%),
+    radial-gradient(circle at 90% 100%,#160a0b 0%,transparent 40%)}
+
+/* ── 상단 헤더 ── */
+header{position:fixed;top:0;left:0;right:0;z-index:30;padding:14px 18px 10px;
+  background:linear-gradient(#07080df2,#07080dcc 70%,transparent);pointer-events:none}
+.kick{font-size:11px;letter-spacing:.22em;color:var(--red);font-weight:700}
+h1{font-family:var(--disp);font-size:clamp(20px,5.4vw,34px);letter-spacing:.01em;line-height:1.12;margin-top:4px}
+h1 .rd{color:var(--red)}
+.sub{font-size:12px;color:var(--mut);margin-top:5px}
+.sub b{color:var(--gold)}
+
+/* ── 지도 캔버스 ── */
+#stage{position:fixed;inset:0;cursor:grab;touch-action:none}
+#stage.drag{cursor:grabbing}
+#map{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform}
+#edges{position:absolute;top:0;left:0;overflow:visible;pointer-events:none}
+.node{position:absolute;transform:translate(-50%,-50%);width:158px;background:#0d0f18f2;
+  border:1px solid var(--line);border-left:4px solid var(--pc,#555);border-radius:9px;
+  padding:9px 11px 8px;cursor:pointer;transition:border-color .15s, box-shadow .15s}
+.node:hover{border-color:var(--pc);box-shadow:0 0 0 1px var(--pc), 0 8px 24px -10px #000}
+.node.sel{border-color:var(--pc);box-shadow:0 0 0 2px var(--pc)}
+.node .yr{font-size:10px;font-weight:700;color:var(--pc,#888);letter-spacing:.12em}
+.node .tt{font-size:12.5px;font-weight:700;line-height:1.3;margin-top:2px}
+.node .en{font-size:9.5px;color:var(--mut);margin-top:2px;line-height:1.25}
+.node.series{width:138px;background:#0a0c13d9;border-style:dashed;border-left-style:solid}
+.node.series .tt{font-size:11.5px}
+.node.series .yr::after{content:' · D+ 시리즈';color:var(--mut);letter-spacing:0}
+.node.doom{width:210px;background:linear-gradient(160deg,#170b0d,#0d0f18 60%);border:1px solid var(--red);
+  border-left:5px solid var(--red);box-shadow:0 0 34px -8px #e6242966}
+.node.doom .tt{font-size:15px;color:#ffd9da}
+.node.doom .dday{margin-top:5px;font-family:var(--disp);font-size:17px;color:var(--gold)}
+.lane-h{position:absolute;transform:translate(-50%,-50%);font-family:var(--disp);
+  font-size:15px;color:var(--pc);letter-spacing:.06em;white-space:nowrap;opacity:.92}
+.lane-h small{display:block;font-family:var(--sans);font-weight:500;font-size:10px;color:var(--mut);letter-spacing:.04em;margin-top:2px}
+.saga-tag{position:absolute;transform:translate(-50%,-50%);font-family:var(--disp);
+  font-size:30px;letter-spacing:.18em;opacity:.16;white-space:nowrap}
+
+/* ── 컨트롤 ── */
+#ctrl{position:fixed;right:14px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:30;display:flex;flex-direction:column;gap:8px}
+#ctrl button{width:42px;height:42px;border-radius:10px;border:1px solid var(--line);background:#11141fee;
+  color:var(--ink);font-size:18px;font-weight:700;cursor:pointer}
+#ctrl button:active{background:#1a1e2e}
+#hint{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));
+  z-index:25;font-size:11px;color:var(--mut);background:#0d0f18cc;border:1px solid var(--line);
+  border-radius:999px;padding:6px 14px;pointer-events:none;transition:opacity .5s}
+
+/* ── 상세 시트 ── */
+#sheet{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#0e1019;border-top:1px solid var(--line);
+  border-radius:16px 16px 0 0;padding:16px 20px calc(20px + env(safe-area-inset-bottom));
+  transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1);max-height:72vh;overflow-y:auto}
+#sheet.open{transform:translateY(0)}
+#sheet .grab{width:38px;height:4px;border-radius:99px;background:#2a2f42;margin:0 auto 12px}
+#sheet .ph-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--pc);
+  border:1px solid var(--pc);border-radius:999px;padding:2px 10px}
+#sheet h2{font-size:20px;font-weight:700;margin-top:8px;line-height:1.3}
+#sheet .en2{font-size:12px;color:var(--mut);margin-top:2px}
+#sheet .sum{font-size:14px;line-height:1.75;margin-top:12px;color:#c9cdda}
+#sheet .note{font-size:12px;color:var(--gold);margin-top:10px;line-height:1.6}
+#sheet .note::before{content:'※ '}
+#sheet-close{position:absolute;top:12px;right:14px;border:none;background:#1a1e2e;color:var(--mut);
+  width:30px;height:30px;border-radius:50%;font-size:14px;cursor:pointer}
+
+/* ── 둠스데이 피날레(시트 내부) ── */
+.doom-final .dd-count{display:flex;gap:8px;margin:14px 0 4px}
+.doom-final .dd-cell{flex:1;background:#151019;border:1px solid #3a1417;border-radius:10px;padding:10px 4px;text-align:center}
+.doom-final .dd-cell b{display:block;font-family:var(--disp);font-size:22px;color:var(--gold)}
+.doom-final .dd-cell span{font-size:10px;color:var(--mut);letter-spacing:.1em}
+.doom-final .yt{position:relative;margin-top:14px;border-radius:12px;overflow:hidden;border:1px solid #3a1417;aspect-ratio:16/9;background:#000}
+.doom-final .yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.doom-final .open-yt{display:block;text-align:center;margin-top:10px;font-size:12.5px;color:var(--ink);
+  background:var(--red);border-radius:9px;padding:11px;font-weight:700;text-decoration:none}
+footer{position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:20;font-size:10px;color:#4a4f61}
+footer a{color:#6a7089;text-decoration:none}
+@media(max-width:640px){#hint{bottom:auto;top:calc(96px + env(safe-area-inset-top))}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kick">MARVEL CINEMATIC UNIVERSE · 2008 → 2026</div>
+  <h1>마블 유니버스 <span class="rd">족보</span></h1>
+  <div class="sub">아이언맨에서 <b>어벤져스: 둠스데이</b>까지 — 확대하고, 끌고, 눌러보세요</div>
+</header>
+
+<div id="stage"><div id="map">
+  <svg id="edges"></svg>
+</div></div>
+
+<div id="ctrl">
+  <button id="z-in" aria-label="확대">＋</button>
+  <button id="z-out" aria-label="축소">－</button>
+  <button id="z-fit" aria-label="전체 보기" style="font-size:13px">⌂</button>
+</div>
+<div id="hint">🔍 휠·핀치로 확대 / 드래그로 이동 / 작품 클릭 → 요약</div>
+
+<div id="sheet">
+  <button id="sheet-close">✕</button>
+  <div class="grab"></div>
+  <div id="sheet-body"></div>
+</div>
+
+<footer><a href="https://page.cocy.io/">page.cocy.io</a> · 비공식 팬 페이지 — 각 작품의 권리는 Marvel Studios에 있습니다</footer>
+
+<script>
+const PH_COLOR={1:'#e62429',2:'#f0742f',3:'#f0b43c',4:'#8a63ff',5:'#3fa0ff',6:'#39d98a'};
+const PH_LABEL={1:'페이즈 1',2:'페이즈 2',3:'페이즈 3',4:'페이즈 4',5:'페이즈 5',6:'페이즈 6'};
+
+/* t=한국제목 en=영문 y=개봉연도 ph=페이즈 s=요약 n=비고 sr=시리즈 */
+const FILMS=[
+{t:'아이언맨',en:'Iron Man',y:2008,ph:1,s:'무기상 토니 스타크가 납치를 계기로 첫 수트를 만들고 "내가 아이언맨"이라 선언한다. MCU 전체의 출발점.',n:'모든 것이 시작된 작품 — 쿠키영상에서 닉 퓨리가 "어벤져스 계획"을 처음 언급'},
+{t:'인크레더블 헐크',en:'The Incredible Hulk',y:2008,ph:1,s:'감마선 사고로 헐크가 된 브루스 배너가 자신을 무기화하려는 군과 어보미네이션에 맞선다.'},
+{t:'아이언맨 2',en:'Iron Man 2',y:2010,ph:1,s:'아이언맨 공개 후의 토니. 아버지의 유산과 위플래시를 넘어서고, 블랙 위도우가 처음 등장한다.'},
+{t:'토르: 천둥의 신',en:'Thor',y:2011,ph:1,s:'오만함으로 지구에 추방된 아스가르드 왕자 토르가 망치 묠니르의 자격을 되찾는다. 로키 데뷔.'},
+{t:'퍼스트 어벤져',en:'Captain America: The First Avenger',y:2011,ph:1,s:'2차 대전, 약골 스티브 로저스가 슈퍼 솔져 캡틴 아메리카가 되어 히드라와 싸우고 얼음에 잠든다.',n:'작중 배경은 1943년 — 시간순으로는 MCU 최초 이야기'},
+{t:'어벤져스',en:'The Avengers',y:2012,ph:1,s:'로키와 치타우리 침공에 맞서 아이언맨·캡틴·토르·헐크·위도우·호크아이가 처음 한 팀이 된다. 뉴욕 전투.'},
+{t:'아이언맨 3',en:'Iron Man 3',y:2013,ph:2,s:'뉴욕 전투 후 불안장애에 시달리는 토니가 수트 없이도 자신이 영웅임을 증명한다.'},
+{t:'토르: 다크 월드',en:'Thor: The Dark World',y:2013,ph:2,s:'에테르(리얼리티 스톤)를 노리는 다크엘프에 맞서는 토르. 로키의 가짜 죽음과 왕좌 찬탈.'},
+{t:'캡틴 아메리카: 윈터 솔져',en:'Captain America: The Winter Soldier',y:2014,ph:2,s:'쉴드 내부에 잠복한 히드라의 실체가 드러나고, 스티브는 세뇌된 옛 친구 버키와 마주한다.'},
+{t:'가디언즈 오브 갤럭시',en:'Guardians of the Galaxy',y:2014,ph:2,s:'우주 잡범들이 파워 스톤을 둘러싼 싸움에서 얼떨결에 팀이 된다. MCU의 우주 파트 개막.'},
+{t:'어벤져스: 에이지 오브 울트론',en:'Avengers: Age of Ultron',y:2015,ph:2,s:'토니가 만든 AI 울트론의 폭주. 비전과 완다가 합류하고 소코비아의 비극이 내전의 씨앗이 된다.'},
+{t:'앤트맨',en:'Ant-Man',y:2015,ph:2,s:'좀도둑 스캇 랭이 핌 입자 수트로 줄어드는 히어로가 된다. 양자영역 떡밥의 시작.'},
+{t:'캡틴 아메리카: 시빌 워',en:'Captain America: Civil War',y:2016,ph:3,s:'히어로 등록제를 두고 아이언맨 진영과 캡틴 진영이 갈라선다. 스파이더맨·블랙팬서 데뷔.'},
+{t:'닥터 스트레인지',en:'Doctor Strange',y:2016,ph:3,s:'오만한 천재 외과의가 사고로 손을 잃고 마법사가 된다. 타임 스톤과 멀티버스 개념 첫 등장.'},
+{t:'가디언즈 오브 갤럭시 Vol.2',en:'Guardians of the Galaxy Vol. 2',y:2017,ph:3,s:'피터 퀼이 친아버지 에고의 실체와 마주한다. "가족"이라는 시리즈의 핵심 테마 완성.'},
+{t:'스파이더맨: 홈커밍',en:'Spider-Man: Homecoming',y:2017,ph:3,s:'토니의 후견 아래 성장하는 고등학생 피터 파커. 벌처와의 대결로 "친절한 이웃"의 자격을 증명.'},
+{t:'토르: 라그나로크',en:'Thor: Ragnarok',y:2017,ph:3,s:'죽음의 여신 헬라에게 아스가르드가 무너진다. 헐크와의 재회, 그리고 고향의 종말.'},
+{t:'블랙 팬서',en:'Black Panther',y:2018,ph:3,s:'와칸다의 왕 트찰라가 왕좌를 노리는 킬몽거와 맞서며 은둔 국가의 문을 세계에 연다.'},
+{t:'어벤져스: 인피니티 워',en:'Avengers: Infinity War',y:2018,ph:3,s:'타노스가 인피니티 스톤 6개를 모아 우주 절반을 지운다. 히어로들의 완패로 끝나는 충격의 결말.'},
+{t:'앤트맨과 와스프',en:'Ant-Man and the Wasp',y:2018,ph:3,s:'양자영역에서 재닛을 구출하는 이야기. 쿠키영상의 스냅 순간 스캇이 양자영역에 갇힌다.'},
+{t:'캡틴 마블',en:'Captain Marvel',y:2019,ph:3,s:'1995년, 기억을 잃은 캐럴 댄버스가 자신의 힘과 정체를 되찾는다. 퓨리 호출기의 주인.',n:'작중 배경 1995년'},
+{t:'어벤져스: 엔드게임',en:'Avengers: Endgame',y:2019,ph:3,s:'시간 강탈 작전으로 스냅을 되돌리고, 토니 스타크가 자신을 희생해 타노스를 이긴다. 인피니티 사가의 대단원.',n:'"I am Iron Man" — 아이언맨1에서 시작한 서사가 여기서 닫힌다'},
+{t:'스파이더맨: 파 프롬 홈',en:'Spider-Man: Far From Home',y:2019,ph:3,s:'토니를 잃은 세계에서 피터가 미스테리오의 기만에 맞선다. 정체가 폭로되며 사가가 끝난다.'},
+{t:'완다비전',en:'WandaVision',y:2021,ph:4,sr:1,s:'비전을 잃은 완다가 마을 하나를 시트콤 현실로 봉인한다. 스칼렛 위치의 각성 — 멀티버스 오브 매드니스로 직결.'},
+{t:'팔콘과 윈터 솔져',en:'The Falcon and the Winter Soldier',y:2021,ph:4,sr:1,s:'방패를 물려받은 샘 윌슨이 새 캡틴 아메리카가 되기까지. 브레이브 뉴 월드로 이어진다.'},
+{t:'로키',en:'Loki',y:2021,ph:4,sr:1,s:'TVA에 붙잡힌 로키가 시간의 수호자와 "정해진 시간선"의 비밀을 파헤친다. 멀티버스 사가의 진짜 시동.',n:'시즌2(2023)에서 로키가 시간선 전체를 떠받치는 존재가 된다'},
+{t:'블랙 위도우',en:'Black Widow',y:2021,ph:4,s:'시빌 워 직후, 나타샤가 자신을 만든 레드룸과 과거를 청산한다. 옐레나 데뷔.'},
+{t:'샹치와 텐 링즈의 전설',en:'Shang-Chi and the Legend of the Ten Rings',y:2021,ph:4,s:'아버지 웬우의 텐 링즈 조직에서 도망쳤던 샹치가 자신의 유산과 마주한다.'},
+{t:'이터널스',en:'Eternals',y:2021,ph:4,s:'수천 년간 지구를 지켜본 불멸의 존재들이 셀레스티얼의 탄생을 막을지 선택한다.'},
+{t:'스파이더맨: 노 웨이 홈',en:'Spider-Man: No Way Home',y:2021,ph:4,s:'정체 폭로를 지우려던 주문이 멀티버스를 연다. 세 명의 스파이더맨이 한 화면에.',n:'멀티버스가 대중적으로 폭발한 작품'},
+{t:'닥터 스트레인지: 대혼돈의 멀티버스',en:'Doctor Strange in the Multiverse of Madness',y:2022,ph:4,s:'차원을 넘나드는 아메리카 차베즈를 두고 스트레인지와 스칼렛 위치가 충돌한다. 인커전 개념 등장.'},
+{t:'토르: 러브 앤 썬더',en:'Thor: Love and Thunder',y:2022,ph:4,s:'신 도살자 고르에 맞서는 토르와 마이티 토르 제인. 토르가 딸 러브의 보호자가 된다.'},
+{t:'블랙 팬서: 와칸다 포에버',en:'Black Panther: Wakanda Forever',y:2022,ph:4,s:'채드윅 보즈먼을 기리며, 슈리가 네이머의 탈로칸과의 전쟁 속에서 새 블랙 팬서가 된다.'},
+{t:'앤트맨과 와스프: 퀀텀매니아',en:'Ant-Man and the Wasp: Quantumania',y:2023,ph:5,s:'양자영역에 갇힌 스캇 가족이 정복자 캉과 마주한다. 멀티버스 위협의 실체가 드러나기 시작.'},
+{t:'가디언즈 오브 갤럭시 Vol.3',en:'Guardians of the Galaxy Vol. 3',y:2023,ph:5,s:'로켓의 과거와 하이 에볼루셔너리. 가디언즈 1기의 작별 인사이자 시리즈 최고의 피날레.'},
+{t:'더 마블스',en:'The Marvels',y:2023,ph:5,s:'캐럴·모니카·카말라의 파워가 뒤엉킨다. 쿠키영상에서 엑스맨 세계관의 문이 열린다.'},
+{t:'데드풀과 울버린',en:'Deadpool & Wolverine',y:2024,ph:5,s:'TVA에 끌려간 데드풀이 울버린과 시간선을 구한다. 폭스 유니버스를 MCU에 정식으로 접붙인 작품.'},
+{t:'캡틴 아메리카: 브레이브 뉴 월드',en:'Captain America: Brave New World',y:2025,ph:5,s:'샘 윌슨의 첫 단독 영화. 대통령이 된 로스 장군이 레드 헐크로 변모하는 사건의 전말.'},
+{t:'썬더볼츠*',en:'Thunderbolts*',y:2025,ph:5,s:'옐레나·버키 등 반영웅들이 세리와 만나 "뉴 어벤져스"를 자처하게 된다. 둠스데이 직전의 팀 셋업.'},
+{t:'판타스틱 4: 새로운 출발',en:'The Fantastic Four: First Steps',y:2025,ph:6,s:'레트로퓨처 세계(어스-828)의 마블 퍼스트 패밀리가 갤럭투스에 맞선다. 둠스데이로 직행하는 다리.',n:'작중 배경은 1960년대풍 별도 유니버스'},
+{t:'스파이더맨: 브랜드 뉴 데이',en:'Spider-Man: Brand New Day',y:2026,ph:6,s:'모두에게 잊힌 피터 파커의 새 출발. 둠스데이 직전 지상의 스파이더맨을 재정비하는 이야기.'},
+];
+const DOOM={t:'어벤져스: 둠스데이',en:'Avengers: Doomsday',y:2026,ph:6,
+  date:'2026-12-18',
+  s:'로버트 다우니 주니어가 닥터 둠으로 돌아온다. 루소 형제 연출로 어벤져스·판타스틱4·엑스맨까지 멀티버스의 히어로가 총집결하는 사가의 정점. 티저는 자비에 영재학교와 스티브 로저스의 귀환을 예고했다.',
+  yt:'irVNGjRFZGk'};
+
+/* ── 좌표 배치: 페이즈별 세로 기둥(가문) 6개, 연대기 선이 기둥을 타고 흐른다 ── */
+const LANE_X={1:170,2:420,3:670,4:920,5:1170,6:1420};
+const TOP=190, GAP=112;
+const nodes=[...FILMS.map((f,i)=>({...f,i})),{...DOOM,i:FILMS.length,doom:1}];
+const cnt={};
+nodes.forEach(n=>{
+  const k=cnt[n.ph]=(cnt[n.ph]||0)+1;
+  n.px=LANE_X[n.ph]+(k%2?-30:30);
+  n.py=TOP+(k-1)*GAP;
+});
+const doomN=nodes[nodes.length-1];
+const maxY=Math.max(...nodes.slice(0,-1).map(n=>n.py));
+doomN.px=810;doomN.py=maxY+220;
+const W=1620,H=doomN.py+250;
+
+const map=document.getElementById('map'),stage=document.getElementById('stage');
+map.style.width=W+'px';map.style.height=H+'px';
+
+/* 레인 헤더 + 사가 태그 */
+let hh='';
+for(const ph of [1,2,3,4,5,6]){
+  const first=nodes.find(n=>n.ph===ph);
+  const years={1:'2008–2012',2:'2013–2015',3:'2016–2019',4:'2021–2022',5:'2023–2025',6:'2025–2026'}[ph];
+  hh+=`<div class="lane-h" style="--pc:${PH_COLOR[ph]};left:${LANE_X[ph]}px;top:${first.py-72}px">${PH_LABEL[ph]}<small>${years}</small></div>`;
+}
+hh+=`<div class="saga-tag" style="left:420px;top:${TOP-138}px;color:#e62429">INFINITY SAGA</div>`;
+hh+=`<div class="saga-tag" style="left:1170px;top:${TOP-138}px;color:#8a63ff">MULTIVERSE SAGA</div>`;
+map.insertAdjacentHTML('beforeend',hh);
+
+/* 연결선 */
+const svg=document.getElementById('edges');
+svg.setAttribute('width',W);svg.setAttribute('height',H);
+let path='';
+nodes.forEach((n,i)=>{if(i&&!n.doom){const p=nodes[i-1];
+  path+=`<path d="M${p.px},${p.py} C${p.px},${(p.py+n.py)/2} ${n.px},${(p.py+n.py)/2} ${n.px},${n.py}"
+    fill="none" stroke="${PH_COLOR[n.ph]}44" stroke-width="2.5"/>`;}});
+// 족보 수렴: 각 페이즈 기둥의 마지막 작품 → 둠스데이
+for(const ph of [1,2,3,4,5,6]){
+  const last=[...nodes].filter(n=>n.ph===ph&&!n.doom).pop();
+  path+=`<path d="M${last.px},${last.py+34} C${last.px},${doomN.py-90} ${doomN.px},${doomN.py-160} ${doomN.px},${doomN.py-40}"
+    fill="none" stroke="#e6242938" stroke-width="2" stroke-dasharray="1 7" stroke-linecap="round"/>`;
+}
+svg.innerHTML=path;
+
+/* 노드 */
+nodes.forEach(n=>{
+  const el=document.createElement('div');
+  el.className='node'+(n.sr?' series':'')+(n.doom?' doom':'');
+  el.style.setProperty('--pc',PH_COLOR[n.ph]);
+  el.style.left=n.px+'px';el.style.top=n.py+'px';
+  el.innerHTML=`<div class="yr">${n.y}</div><div class="tt">${n.t}</div><div class="en">${n.en}</div>`+
+    (n.doom?`<div class="dday" id="node-dday"></div>`:'');
+  el._node=n;
+  map.appendChild(el);
+});
+
+/* ── 팬/줌 ── */
+let sc=1,tx=0,ty=0;
+function apply(){map.style.transform=`translate(${tx}px,${ty}px) scale(${sc})`;}
+function fit(){
+  const vw=innerWidth,vh=innerHeight;
+  sc=Math.min((vw-40)/W,(vh-210)/H);
+  sc=Math.max(sc,0.12);
+  tx=(vw-W*sc)/2;ty=128;apply();
+}
+function zoomAt(cx,cy,f){
+  const ns=Math.min(2.2,Math.max(0.1,sc*f));
+  tx=cx-(cx-tx)*ns/sc;ty=cy-(cy-ty)*ns/sc;sc=ns;apply();
+}
+stage.addEventListener('wheel',e=>{e.preventDefault();zoomAt(e.clientX,e.clientY,e.deltaY<0?1.13:0.885);},{passive:false});
+let drag=null,pinch=null;
+stage.addEventListener('pointerdown',e=>{stage.setPointerCapture(e.pointerId);
+  if(drag&&drag.id!==e.pointerId){pinch={a:drag,b:{id:e.pointerId,x:e.clientX,y:e.clientY},d0:0,s0:sc};drag=null;}
+  else drag={id:e.pointerId,x:e.clientX,y:e.clientY,moved:0};
+  stage.classList.add('drag');});
+stage.addEventListener('pointermove',e=>{
+  if(pinch){const p=pinch;const t=(p.a.id===e.pointerId)?p.a:(p.b.id===e.pointerId?p.b:null);
+    if(!t)return;t.x=e.clientX;t.y=e.clientY;
+    const d=Math.hypot(p.a.x-p.b.x,p.a.y-p.b.y);
+    if(!p.d0){p.d0=d;return;}
+    zoomAt((p.a.x+p.b.x)/2,(p.a.y+p.b.y)/2,(d/p.d0)*(p.s0/sc));
+    return;}
+  if(drag&&drag.id===e.pointerId){tx+=e.clientX-drag.x;ty+=e.clientY-drag.y;
+    drag.moved+=Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y);
+    drag.x=e.clientX;drag.y=e.clientY;apply();}});
+function endP(e){if(pinch&&(pinch.a.id===e.pointerId||pinch.b.id===e.pointerId))pinch=null;
+  if(drag&&drag.id===e.pointerId){
+    if(drag.moved<8){ // 탭 판정 — setPointerCapture가 click을 가로채므로 여기서 처리
+      const el=document.elementFromPoint(e.clientX,e.clientY)?.closest('.node');
+      if(el&&el._node)openSheet(el._node,el);
+      else{sheet.classList.remove('open');if(selEl)selEl.classList.remove('sel');}
+    }
+    drag=null;
+  }
+  stage.classList.remove('drag');}
+stage.addEventListener('pointerup',endP);stage.addEventListener('pointercancel',endP);
+document.getElementById('z-in').onclick=()=>zoomAt(innerWidth/2,innerHeight/2,1.35);
+document.getElementById('z-out').onclick=()=>zoomAt(innerWidth/2,innerHeight/2,0.74);
+document.getElementById('z-fit').onclick=fit;
+addEventListener('resize',fit);
+
+/* ── D-day ── */
+function dday(){
+  const target=new Date('2026-12-18T00:00:00+09:00'), now=new Date();
+  const ms=target-now;
+  const d=Math.max(0,Math.floor(ms/86400000));
+  return {d, h:Math.max(0,Math.floor(ms/3600000)%24), m:Math.max(0,Math.floor(ms/60000)%60)};
+}
+document.getElementById('node-dday').textContent='D-'+dday().d;
+
+/* ── 상세 시트 ── */
+const sheet=document.getElementById('sheet'),body=document.getElementById('sheet-body');
+let selEl=null;
+function openSheet(n,el){
+  if(selEl)selEl.classList.remove('sel');selEl=el;el.classList.add('sel');
+  const pc=PH_COLOR[n.ph];
+  if(n.doom){
+    const dd=dday();
+    body.innerHTML=`<div class="doom-final" style="--pc:${pc}">
+      <span class="ph-tag" style="--pc:${pc}">페이즈 6 · 사가의 정점</span>
+      <h2>어벤져스: 둠스데이</h2><div class="en2">Avengers: Doomsday · 2026년 12월 18일 개봉</div>
+      <div class="dd-count">
+        <div class="dd-cell"><b>${dd.d}</b><span>DAYS</span></div>
+        <div class="dd-cell"><b>${dd.h}</b><span>HOURS</span></div>
+        <div class="dd-cell"><b>${dd.m}</b><span>MIN</span></div>
+      </div>
+      <p class="sum">${DOOM.s}</p>
+      <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${DOOM.yt}" title="Avengers: Doomsday Official Trailer"
+        allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+      <a class="open-yt" href="https://www.youtube.com/watch?v=${DOOM.yt}" target="_blank" rel="noreferrer">▶ 공식 예고편 유튜브에서 보기</a>
+    </div>`;
+  }else{
+    body.innerHTML=`<span class="ph-tag" style="--pc:${pc}">${PH_LABEL[n.ph]}${n.sr?' · 디즈니+ 시리즈':''} · ${n.y}</span>
+      <h2>${n.t}</h2><div class="en2">${n.en}</div>
+      <p class="sum">${n.s}</p>${n.n?`<p class="note">${n.n}</p>`:''}`;
+  }
+  sheet.classList.add('open');
+}
+document.getElementById('sheet-close').onclick=()=>{sheet.classList.remove('open');if(selEl)selEl.classList.remove('sel');};
+
+fit();
+setTimeout(()=>{document.getElementById('hint').style.opacity=0;},6000);
+</script>
+</body>
+</html>
