@@ -7,6 +7,10 @@
 <meta name="description" content="MCU 18년 연대기를 족보처럼 한눈에. 페이즈 1~6 영화 전작품 + 핵심 시리즈를 확대·이동하며 보고, 작품을 누르면 한 줄 요약. 마지막은 어벤져스: 둠스데이 개봉 카운트다운과 공식 예고편.">
 <meta name="keywords" content="마블 연대기, MCU 순서, 마블 영화 순서, 어벤져스 둠스데이, 둠스데이 개봉일, 둠스데이 예고편, 마블 족보, MCU 타임라인, 인피니티 사가, 멀티버스 사가">
 <link rel="canonical" href="https://page.cocy.io/marvel/">
+<link rel="alternate" hreflang="ko" href="https://page.cocy.io/marvel/?lang=ko">
+<link rel="alternate" hreflang="en" href="https://page.cocy.io/marvel/?lang=en">
+<link rel="alternate" hreflang="ja" href="https://page.cocy.io/marvel/?lang=ja">
+<link rel="alternate" hreflang="x-default" href="https://page.cocy.io/marvel/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="마블 유니버스 족보 — 아이언맨부터 둠스데이까지 한눈에">
 <meta property="og:description" content="MCU 18년, 영화 39편의 연대기 지도. 확대해서 보고, 눌러서 요약 읽고, 둠스데이 카운트다운으로 마무리.">
@@ -37,6 +41,10 @@ h1{font-family:var(--disp);font-size:clamp(20px,5.4vw,34px);letter-spacing:.01em
 h1 .rd{color:var(--red)}
 .sub{font-size:12px;color:var(--mut);margin-top:5px}
 .sub b{color:var(--gold)}
+.langs{display:flex;gap:5px;margin-top:9px;pointer-events:auto}
+.lg{border:1px solid var(--line);background:#0d0f18cc;color:var(--mut);font-size:10.5px;font-weight:700;
+  font-family:var(--sans);border-radius:999px;padding:3px 11px;cursor:pointer;letter-spacing:.06em}
+.lg.on{background:var(--red);border-color:var(--red);color:#fff}
 
 /* ── 지도 캔버스 ── */
 #stage{position:fixed;inset:0;cursor:grab;touch-action:none}
@@ -53,7 +61,7 @@ h1 .rd{color:var(--red)}
 .node .en{font-size:9.5px;color:var(--mut);margin-top:2px;line-height:1.25}
 .node.series{width:138px;background:#0a0c13d9;border-style:dashed;border-left-style:solid}
 .node.series .tt{font-size:11.5px}
-.node.series .yr::after{content:' · D+ 시리즈';color:var(--mut);letter-spacing:0}
+.node.series .yr::after{content:' · D+';color:var(--mut);letter-spacing:0}
 .node.doom{width:210px;background:linear-gradient(160deg,#170b0d,#0d0f18 60%);border:1px solid var(--red);
   border-left:5px solid var(--red);box-shadow:0 0 34px -8px #e6242966}
 .node.doom .tt{font-size:15px;color:#ffd9da}
@@ -107,8 +115,9 @@ footer a{color:#6a7089;text-decoration:none}
 
 <header>
   <div class="kick">MARVEL CINEMATIC UNIVERSE · 2008 → 2026</div>
-  <h1>마블 유니버스 <span class="rd">족보</span></h1>
-  <div class="sub">아이언맨에서 <b>어벤져스: 둠스데이</b>까지 — 확대하고, 끌고, 눌러보세요</div>
+  <h1 id="hd-h1">마블 유니버스 <span class="rd">족보</span></h1>
+  <div class="sub" id="hd-sub">아이언맨에서 <b>어벤져스: 둠스데이</b>까지 — 확대하고, 끌고, 눌러보세요</div>
+  <div class="langs" id="langs"></div>
 </header>
 
 <div id="stage"><div id="map">
@@ -183,6 +192,138 @@ const DOOM={t:'어벤져스: 둠스데이',en:'Avengers: Doomsday',y:2026,ph:6,
   s:'로버트 다우니 주니어가 닥터 둠으로 돌아온다. 루소 형제 연출로 어벤져스·판타스틱4·엑스맨까지 멀티버스의 히어로가 총집결하는 사가의 정점. 티저는 자비에 영재학교와 스티브 로저스의 귀환을 예고했다.',
   yt:'irVNGjRFZGk'};
 
+/* ── i18n ── */
+const UI={
+ ko:{h1:'마블 유니버스 <span class="rd">족보</span>',
+     sub:'아이언맨에서 <b>어벤져스: 둠스데이</b>까지 — 확대하고, 끌고, 눌러보세요',
+     hint:'🔍 휠·핀치로 확대 / 드래그로 이동 / 작품 클릭 → 요약',
+     phase:n=>'페이즈 '+n, series:'디즈니+ 시리즈', apex:'페이즈 6 · 사가의 정점',
+     release:'2026년 12월 18일 개봉', ytBtn:'▶ 공식 예고편 유튜브에서 보기',
+     foot:'비공식 팬 페이지 — 각 작품의 권리는 Marvel Studios에 있습니다'},
+ en:{h1:'MARVEL UNIVERSE <span class="rd">FAMILY TREE</span>',
+     sub:'From Iron Man to <b>Avengers: Doomsday</b> — zoom, drag, tap',
+     hint:'🔍 Scroll/pinch to zoom · drag to pan · tap a title for its summary',
+     phase:n=>'Phase '+n, series:'Disney+ series', apex:'Phase 6 · The apex of the saga',
+     release:'In theaters December 18, 2026', ytBtn:'▶ Watch the official trailer on YouTube',
+     foot:'Unofficial fan page — all works © Marvel Studios'},
+ ja:{h1:'マーベル・ユニバース <span class="rd">系譜</span>',
+     sub:'アイアンマンから<b>アベンジャーズ:ドゥームズデイ</b>まで — 拡大して、動かして、タップ',
+     hint:'🔍 ホイール・ピンチで拡大 / ドラッグで移動 / 作品タップ → あらすじ',
+     phase:n=>'フェーズ'+n, series:'ディズニー+ シリーズ', apex:'フェーズ6 · サーガの頂点',
+     release:'2026年12月18日公開', ytBtn:'▶ 公式予告編をYouTubeで見る',
+     foot:'非公式ファンページ — 各作品の権利はMarvel Studiosに帰属します'},
+};
+const EN_TR=[
+{s:"Arms dealer Tony Stark builds his first suit after being kidnapped and declares 'I am Iron Man.' The starting point of the entire MCU.",n:"Where it all began — Nick Fury first mentions the 'Avengers Initiative' in the post-credits scene"},
+{s:"Bruce Banner, turned into the Hulk by a gamma accident, fights the army that wants to weaponize him — and the Abomination."},
+{s:"Tony after going public as Iron Man — facing his father's legacy and Whiplash. Black Widow's first appearance."},
+{s:"Banished to Earth for his arrogance, the Asgardian prince proves himself worthy of Mjolnir again. Loki's debut."},
+{s:"WWII: scrawny Steve Rogers becomes super-soldier Captain America, fights HYDRA, and is frozen in the ice.",n:"Set in 1943 — chronologically the first MCU story"},
+{s:"Iron Man, Cap, Thor, Hulk, Widow and Hawkeye team up for the first time against Loki and the Chitauri. The Battle of New York."},
+{s:"Haunted by New York, Tony proves he is a hero even without the suit."},
+{s:"Thor faces the Dark Elves hunting the Aether (Reality Stone). Loki fakes his death and takes the throne."},
+{s:"HYDRA is revealed to have infested S.H.I.E.L.D., and Steve faces his brainwashed old friend Bucky."},
+{s:"A gang of space outlaws accidentally becomes a team in the fight over the Power Stone. The MCU's cosmic side begins."},
+{s:"Tony's AI Ultron goes rogue. Vision and Wanda join, and the tragedy of Sokovia plants the seeds of civil war."},
+{s:"Petty thief Scott Lang becomes a shrinking hero in the Pym Particle suit. The Quantum Realm is first teased."},
+{s:"The Sokovia Accords split the heroes into Team Iron Man and Team Cap. Spider-Man and Black Panther debut."},
+{s:"An arrogant genius surgeon loses the use of his hands and becomes a sorcerer. The Time Stone and the multiverse first appear."},
+{s:"Peter Quill confronts the truth about his father, Ego. The series' core theme — family — is completed."},
+{s:"High-schooler Peter Parker grows under Tony's mentorship, proving himself against the Vulture."},
+{s:"Hela, goddess of death, brings down Asgard. A reunion with Hulk — and the end of home."},
+{s:"King T'Challa faces Killmonger's claim to the throne and opens the hidden nation of Wakanda to the world."},
+{s:"Thanos gathers all six Infinity Stones and erases half the universe. The heroes lose."},
+{s:"The rescue of Janet from the Quantum Realm. In the post-credits, the Snap leaves Scott trapped inside it."},
+{s:"1995: an amnesiac Carol Danvers reclaims her power and identity. The owner of Fury's pager.",n:"Set in 1995"},
+{s:"The Time Heist undoes the Snap, and Tony Stark sacrifices himself to defeat Thanos. The grand finale of the Infinity Saga.",n:"'I am Iron Man' — the arc that began in 2008 closes here"},
+{s:"In a world without Tony, Peter faces Mysterio's deception. His identity is exposed as the saga ends."},
+{s:"Grieving Wanda seals a whole town inside a sitcom reality. The Scarlet Witch awakens — leading straight into Multiverse of Madness."},
+{s:"Sam Wilson inherits the shield and becomes the new Captain America. Leads into Brave New World."},
+{s:"Captured by the TVA, Loki uncovers the secret of the Sacred Timeline. The real ignition of the Multiverse Saga.",n:"In Season 2 (2023), Loki ends up holding the entire multiverse together"},
+{s:"Right after Civil War, Natasha settles her past with the Red Room. Yelena's debut."},
+{s:"Shang-Chi, who fled his father's Ten Rings organization, confronts his legacy."},
+{s:"Immortal beings who have watched over Earth for millennia must choose whether to stop a Celestial's birth."},
+{s:"A spell to erase Peter's exposed identity cracks open the multiverse. Three Spider-Men on one screen.",n:"The film that made the multiverse mainstream"},
+{s:"Strange and the Scarlet Witch clash over America Chavez, who can cross universes. Incursions are introduced."},
+{s:"Thor and Mighty Thor Jane face Gorr the God Butcher. Thor becomes guardian to Love."},
+{s:"Honoring Chadwick Boseman — Shuri becomes the new Black Panther amid the war with Namor's Talokan."},
+{s:"Scott's family is pulled into the Quantum Realm and meets Kang the Conqueror. The multiverse threat gets a face."},
+{s:"Rocket's past and the High Evolutionary. The original Guardians' farewell — the series' finest finale."},
+{s:"Carol, Monica and Kamala's powers get entangled. The post-credits opens the door to the X-Men universe."},
+{s:"Dragged in by the TVA, Deadpool saves his timeline with Wolverine. Fox's universe is officially grafted onto the MCU."},
+{s:"Sam Wilson's first solo film — the full story of President Ross turning into the Red Hulk."},
+{s:"Yelena, Bucky and other anti-heroes end up calling themselves the New Avengers. The team setup right before Doomsday."},
+{s:"Marvel's First Family fights Galactus in a retro-future world (Earth-828). The bridge straight into Doomsday.",n:"Set in a separate 1960s-style universe"},
+{s:"A fresh start for a Peter Parker the world has forgotten — regrouping Earth's Spider-Man just before Doomsday."},
+];
+const JA_TR=[
+{t:'アイアンマン',s:'武器商人トニー・スタークが拉致をきっかけに最初のスーツを作り、「私がアイアンマンだ」と宣言。MCU全体の出発点。',n:'すべての始まり — ポストクレジットでニック・フューリーが「アベンジャーズ計画」に初言及'},
+{t:'インクレディブル・ハルク',s:'ガンマ線事故でハルクとなったブルース・バナーが、自分を兵器化しようとする軍とアボミネーションに立ち向かう。'},
+{t:'アイアンマン2',s:'アイアンマン公表後のトニー。父の遺産とウィップラッシュを乗り越える。ブラック・ウィドウ初登場。'},
+{t:'マイティ・ソー',s:'傲慢さゆえ地球に追放されたアスガルドの王子ソーが、ムジョルニアの資格を取り戻す。ロキ初登場。'},
+{t:'キャプテン・アメリカ/ザ・ファースト・アベンジャー',s:'第二次大戦、ひ弱なスティーブ・ロジャースが超人兵士キャプテン・アメリカとなりヒドラと戦い、氷に眠る。',n:'劇中は1943年 — 時系列ではMCU最初の物語'},
+{t:'アベンジャーズ',s:'ロキとチタウリの侵攻に対し、6人のヒーローが初めてひとつのチームになる。ニューヨーク決戦。'},
+{t:'アイアンマン3',s:'NY決戦後、不安に苦しむトニーがスーツなしでも英雄であることを証明する。'},
+{t:'マイティ・ソー/ダーク・ワールド',s:'エーテル(リアリティ・ストーン)を狙うダークエルフとの戦い。ロキの偽装死と王座簒奪。'},
+{t:'キャプテン・アメリカ/ウィンター・ソルジャー',s:'シールド内部に潜むヒドラの実態が暴かれ、スティーブは洗脳された旧友バッキーと対峙する。'},
+{t:'ガーディアンズ・オブ・ギャラクシー',s:'宇宙のならず者たちがパワー・ストーンを巡る戦いで成り行きでチームに。MCU宇宙編の開幕。'},
+{t:'アベンジャーズ/エイジ・オブ・ウルトロン',s:'トニーが生んだAIウルトロンの暴走。ヴィジョンとワンダが加わり、ソコヴィアの悲劇が内戦の種になる。'},
+{t:'アントマン',s:'コソ泥スコット・ラングがピム粒子スーツで縮むヒーローに。量子世界の伏線が始まる。'},
+{t:'シビル・ウォー/キャプテン・アメリカ',s:'ヒーロー管理法を巡りアイアンマン派とキャップ派が決裂。スパイダーマンとブラックパンサーがデビュー。'},
+{t:'ドクター・ストレンジ',s:'傲慢な天才外科医が事故で手を失い、魔術師となる。タイム・ストーンとマルチバース概念の初登場。'},
+{t:'ガーディアンズ・オブ・ギャラクシー:リミックス',s:'ピーター・クイルが実父エゴの正体と向き合う。「家族」というシリーズの核心テーマが完成。'},
+{t:'スパイダーマン:ホームカミング',s:'トニーの後見のもと成長する高校生ピーター・パーカー。バルチャーとの対決で資格を証明する。'},
+{t:'マイティ・ソー バトルロイヤル',s:'死の女神ヘラにアスガルドが滅ぼされる。ハルクとの再会、そして故郷の終焉。'},
+{t:'ブラックパンサー',s:'ワカンダ王ティ・チャラが王座を狙うキルモンガーと対決し、隠遁国家の扉を世界に開く。'},
+{t:'アベンジャーズ/インフィニティ・ウォー',s:'サノスが6つのインフィニティ・ストーンを集め、宇宙の半分を消し去る。ヒーロー完敗の衝撃。'},
+{t:'アントマン&ワスプ',s:'量子世界からジャネットを救出する物語。ポストクレジットでスナップの瞬間、スコットが量子世界に取り残される。'},
+{t:'キャプテン・マーベル',s:'1995年、記憶を失ったキャロル・ダンヴァースが力と正体を取り戻す。フューリーのポケベルの主。',n:'劇中は1995年'},
+{t:'アベンジャーズ/エンドゲーム',s:'タイム強奪作戦でスナップを覆し、トニー・スタークが自らを犠牲にサノスを倒す。インフィニティ・サーガの大団円。',n:'"I am Iron Man" — 2008年に始まった物語がここで閉じる'},
+{t:'スパイダーマン:ファー・フロム・ホーム',s:'トニーを失った世界でピーターがミステリオの欺瞞に立ち向かう。正体が暴かれサーガが幕を閉じる。'},
+{t:'ワンダヴィジョン',s:'ヴィジョンを失ったワンダが町ひとつをシットコムの現実に封じる。スカーレット・ウィッチ覚醒。'},
+{t:'ファルコン&ウィンター・ソルジャー',s:'盾を受け継いだサム・ウィルソンが新キャプテン・アメリカになるまで。ブレイブ・ニュー・ワールドへ続く。'},
+{t:'ロキ',s:'TVAに捕まったロキが「神聖時間軸」の秘密を暴く。マルチバース・サーガの本当の始動。',n:'シーズン2(2023)でロキは時間軸全体を支える存在に'},
+{t:'ブラック・ウィドウ',s:'シビル・ウォー直後、ナターシャがレッドルームと過去を清算する。エレーナ初登場。'},
+{t:'シャン・チー/テン・リングスの伝説',s:'父ウェンウーのテン・リングズから逃げたシャン・チーが、自らの遺産と向き合う。'},
+{t:'エターナルズ',s:'数千年間地球を見守った不滅の存在たちが、セレスティアルの誕生を止めるか選択する。'},
+{t:'スパイダーマン:ノー・ウェイ・ホーム',s:'正体露見を消すための呪文がマルチバースを開く。3人のスパイダーマンが同じ画面に。',n:'マルチバースを大衆に広めた作品'},
+{t:'ドクター・ストレンジ/マルチバース・オブ・マッドネス',s:'次元を渡るアメリカ・チャベスを巡り、ストレンジとスカーレット・ウィッチが衝突。インカージョン概念登場。'},
+{t:'ソー:ラブ&サンダー',s:'神殺しゴアに立ち向かうソーとマイティ・ソーのジェーン。ソーは娘ラブの保護者に。'},
+{t:'ブラックパンサー/ワカンダ・フォーエバー',s:'チャドウィック・ボーズマンを悼み、シュリがネイモアのタロカンとの戦争の中で新たなブラックパンサーとなる。'},
+{t:'アントマン&ワスプ:クアントマニア',s:'量子世界に閉じ込められたスコット一家が征服者カーンと遭遇。マルチバースの脅威が姿を見せ始める。'},
+{t:'ガーディアンズ・オブ・ギャラクシー:VOLUME 3',s:'ロケットの過去とハイ・エボリューショナリー。ガーディアンズ1期の別れの挨拶にして最高のフィナーレ。'},
+{t:'マーベルズ',s:'キャロル、モニカ、カマラの力が絡み合う。ポストクレジットでX-MEN世界への扉が開く。'},
+{t:'デッドプール&ウルヴァリン',s:'TVAに連行されたデッドプールがウルヴァリンと時間軸を救う。FOXユニバースをMCUに正式接続。'},
+{t:'キャプテン・アメリカ:ブレイブ・ニュー・ワールド',s:'サム・ウィルソン初の単独映画。大統領ロスがレッドハルクへ変貌する事件の顛末。'},
+{t:'サンダーボルツ*',s:'エレーナやバッキーらアンチヒーローが「ニュー・アベンジャーズ」を名乗ることに。ドゥームズデイ直前のチーム結成。'},
+{t:'ファンタスティック4:ファースト・ステップ',s:'レトロフューチャー世界(アース828)のファースト・ファミリーがギャラクタスに挑む。ドゥームズデイへ直結する橋。',n:'劇中は1960年代風の別ユニバース'},
+{t:'スパイダーマン:ブランド・ニュー・デイ',s:'世界に忘れられたピーター・パーカーの再出発。ドゥームズデイ直前、地上のスパイダーマンを再整備する物語。'},
+];
+FILMS.forEach((f,i)=>{const e=EN_TR[i]||{},j=JA_TR[i]||{};
+  f.s_en=e.s;if(e.n)f.n_en=e.n;f.jt=j.t;f.s_ja=j.s;if(j.n)f.n_ja=j.n;});
+DOOM.jt='アベンジャーズ:ドゥームズデイ';
+DOOM.s_en="Robert Downey Jr. returns as Doctor Doom. Directed by the Russo brothers — the Avengers, the Fantastic Four and the X-Men converge across the multiverse at the saga's apex. The teaser revealed Xavier's school and the return of Steve Rogers.";
+DOOM.s_ja='ロバート・ダウニー・Jr.がドクター・ドゥームとして帰還。ルッソ兄弟の演出でアベンジャーズ、ファンタスティック4、X-MENまでマルチバースのヒーローが総集結するサーガの頂点。ティザーはエグゼビア学園とスティーブ・ロジャースの帰還を予告した。';
+
+const LANG=(()=>{const q=new URLSearchParams(location.search).get('lang');if(q&&UI[q])return q;
+  const sv=localStorage.getItem('mv_lang');if(sv&&UI[sv])return sv;
+  const nv=(navigator.language||'ko').slice(0,2);return UI[nv]?nv:'en';})();
+const L=UI[LANG];
+document.documentElement.lang=LANG;
+function titleOf(n){return LANG==='ko'?n.t:LANG==='ja'?(n.jt||n.en):n.en;}
+function subOf(n){return LANG==='ko'?n.en:LANG==='ja'?n.en:n.t;}
+function sumOf(n){return (LANG==='ko'?n.s:n['s_'+LANG])||n.s;}
+function noteOf(n){return LANG==='ko'?n.n:n['n_'+LANG];}
+document.getElementById('hd-h1').innerHTML=L.h1;
+document.getElementById('hd-sub').innerHTML=L.sub;
+document.getElementById('hint').textContent=L.hint;
+document.querySelector('footer').innerHTML='<a href="https://page.cocy.io/">page.cocy.io</a> · '+L.foot;
+document.getElementById('langs').innerHTML=['ko','en','ja'].map(l=>
+  `<button class="lg${l===LANG?' on':''}" data-l="${l}">${{ko:'한국어',en:'EN',ja:'日本語'}[l]}</button>`).join('');
+document.querySelectorAll('.lg').forEach(b=>b.onclick=()=>{
+  localStorage.setItem('mv_lang',b.dataset.l);
+  const u=new URL(location.href);u.searchParams.set('lang',b.dataset.l);location.href=u;});
+
 /* ── 좌표 배치: 페이즈별 세로 기둥(가문) 6개, 연대기 선이 기둥을 타고 흐른다 ── */
 const LANE_X={1:170,2:420,3:670,4:920,5:1170,6:1420};
 const TOP=190, GAP=112;
@@ -206,7 +347,7 @@ let hh='';
 for(const ph of [1,2,3,4,5,6]){
   const first=nodes.find(n=>n.ph===ph);
   const years={1:'2008–2012',2:'2013–2015',3:'2016–2019',4:'2021–2022',5:'2023–2025',6:'2025–2026'}[ph];
-  hh+=`<div class="lane-h" style="--pc:${PH_COLOR[ph]};left:${LANE_X[ph]}px;top:${first.py-72}px">${PH_LABEL[ph]}<small>${years}</small></div>`;
+  hh+=`<div class="lane-h" style="--pc:${PH_COLOR[ph]};left:${LANE_X[ph]}px;top:${first.py-72}px">${L.phase(ph)}<small>${years}</small></div>`;
 }
 hh+=`<div class="saga-tag" style="left:420px;top:${TOP-138}px;color:#e62429">INFINITY SAGA</div>`;
 hh+=`<div class="saga-tag" style="left:1170px;top:${TOP-138}px;color:#8a63ff">MULTIVERSE SAGA</div>`;
@@ -233,7 +374,7 @@ nodes.forEach(n=>{
   el.className='node'+(n.sr?' series':'')+(n.doom?' doom':'');
   el.style.setProperty('--pc',PH_COLOR[n.ph]);
   el.style.left=n.px+'px';el.style.top=n.py+'px';
-  el.innerHTML=`<div class="yr">${n.y}</div><div class="tt">${n.t}</div><div class="en">${n.en}</div>`+
+  el.innerHTML=`<div class="yr">${n.y}</div><div class="tt">${titleOf(n)}</div><div class="en">${subOf(n)}</div>`+
     (n.doom?`<div class="dday" id="node-dday"></div>`:'');
   el._node=n;
   map.appendChild(el);
@@ -302,22 +443,22 @@ function openSheet(n,el){
   if(n.doom){
     const dd=dday();
     body.innerHTML=`<div class="doom-final" style="--pc:${pc}">
-      <span class="ph-tag" style="--pc:${pc}">페이즈 6 · 사가의 정점</span>
-      <h2>어벤져스: 둠스데이</h2><div class="en2">Avengers: Doomsday · 2026년 12월 18일 개봉</div>
+      <span class="ph-tag" style="--pc:${pc}">${L.apex}</span>
+      <h2>${titleOf(n)}</h2><div class="en2">${LANG==='en'?'':'Avengers: Doomsday · '}${L.release}</div>
       <div class="dd-count">
         <div class="dd-cell"><b>${dd.d}</b><span>DAYS</span></div>
         <div class="dd-cell"><b>${dd.h}</b><span>HOURS</span></div>
         <div class="dd-cell"><b>${dd.m}</b><span>MIN</span></div>
       </div>
-      <p class="sum">${DOOM.s}</p>
+      <p class="sum">${sumOf(DOOM)}</p>
       <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${DOOM.yt}" title="Avengers: Doomsday Official Trailer"
         allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
-      <a class="open-yt" href="https://www.youtube.com/watch?v=${DOOM.yt}" target="_blank" rel="noreferrer">▶ 공식 예고편 유튜브에서 보기</a>
+      <a class="open-yt" href="https://www.youtube.com/watch?v=${DOOM.yt}" target="_blank" rel="noreferrer">${L.ytBtn}</a>
     </div>`;
   }else{
-    body.innerHTML=`<span class="ph-tag" style="--pc:${pc}">${PH_LABEL[n.ph]}${n.sr?' · 디즈니+ 시리즈':''} · ${n.y}</span>
-      <h2>${n.t}</h2><div class="en2">${n.en}</div>
-      <p class="sum">${n.s}</p>${n.n?`<p class="note">${n.n}</p>`:''}`;
+    body.innerHTML=`<span class="ph-tag" style="--pc:${pc}">${L.phase(n.ph)}${n.sr?' · '+L.series:''} · ${n.y}</span>
+      <h2>${titleOf(n)}</h2><div class="en2">${subOf(n)}</div>
+      <p class="sum">${sumOf(n)}</p>${noteOf(n)?`<p class="note">${noteOf(n)}</p>`:''}`;
   }
   sheet.classList.add('open');
 }
