@@ -128,6 +128,17 @@ h2{font-size:26px;font-weight:700;margin:6px 0 6px;letter-spacing:-.01em}
 .fill.hit{background:linear-gradient(90deg,#7f2226,var(--red))}
 .bar-row .val{font-family:var(--mono);font-size:12px;color:var(--mut);text-align:left}
 .rb-hint{font-size:11px;color:var(--mut);margin-top:10px}
+.stt-tgl{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;color:var(--mut);cursor:pointer;user-select:none}
+.stt-tgl input{accent-color:var(--cyan)}
+#stt-box{margin-top:14px}
+#stt-risk{font-weight:600}
+#stt-risk.r0{color:#5dd39e}#stt-risk.r1{color:var(--mut)}#stt-risk.r2{color:var(--amber)}#stt-risk.r3{color:#ff7b81}
+#stt-text{font-size:13.5px;color:#c3c9d6;line-height:1.85;min-height:22px}
+#stt-text mark{background:#e5484d26;color:#ff9ba0;border-radius:3px;padding:0 3px;font-weight:600}
+#stt-text .interim{color:#5a6478}
+#stt-cats{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.scat{font-family:var(--mono);font-size:11px;border:1px solid var(--line);border-radius:999px;padding:2px 9px;color:#5a6478}
+.scat.on{border-color:#5c2226;color:#ff7b81;background:#2b121466}
 #qstats{margin-top:12px;font-family:var(--mono);font-size:11px;color:#5a6478;letter-spacing:.02em;
   border-top:1px dashed var(--line);padding-top:10px}
 #qstats b{color:#8b93a7;font-weight:400}
@@ -172,7 +183,7 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding-top:18px;font-si
   브라우저 안에서 내 녹음과 직접 대조합니다.</p>
   <div class="stamp">EVIDENCE</div>
   <div class="badges">
-    <span class="badge hot">성문+운율 5축 분석</span>
+    <span class="badge hot">성문+운율+내용 3중 분석</span>
     <span class="badge">온디바이스 — 녹음 미전송</span>
     <span class="badge">ECAPA-TDNN · 192-dim</span>
     <span class="badge">int8 ONNX 21MB</span>
@@ -203,6 +214,7 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding-top:18px;font-si
       <button id="btn-rec">● 녹음 시작 (6초)</button>
       <span class="led" id="led"></span>
       <div id="meter"><i></i></div>
+      <label class="stt-tgl"><input type="checkbox" id="stt-on" checked> 내용 분석 (STT)</label>
       <div id="rec-status"></div>
     </div>
     <div id="alog"></div>
@@ -222,9 +234,17 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding-top:18px;font-si
           <div id="qstats"></div>
         </div>
       </div>
+      <div class="rbox corner" id="stt-box" style="display:none">
+        <div class="rb-head">CONTENT ANALYSIS · 통화 내용 <b id="stt-risk"></b></div>
+        <div id="stt-text"></div>
+        <div id="stt-cats"></div>
+        <p class="rb-hint" id="stt-note"></p>
+      </div>
       <p class="note">성문 유사도 = ECAPA 벡터 코사인, <span class="mono">0.65</span> 이상이면 동일 화자 의심(전화대역 기준 실측 캘리브레이션).
       운율 4축(음높이·억양 폭·리듬·페이스)은 녹음과 사기범 클립 양쪽을 <b>같은 코드로 측정</b>해 비교한다.
-      이 수치는 데모용이며 법적 판단 근거가 아니다. 녹음은 분석 후 즉시 폐기되고 어디로도 전송되지 않는다.</p>
+      내용 분석(STT)은 브라우저 내장 음성인식을 쓴다 — 크롬 등 일부 브라우저는 인식 처리를 위해 음성을 브라우저 제공사 서버로 보낼 수 있다.
+      토글을 끄면 완전 온디바이스로만 동작한다. 이 수치는 데모용이며 법적 판단 근거가 아니다.
+      성문·운율 분석용 녹음은 분석 후 즉시 폐기되고 어디로도 전송되지 않는다.</p>
     </div>
   </div>
 </section>
@@ -256,8 +276,9 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding-top:18px;font-si
   <h2>한계, 그리고 로드맵</h2>
   <div class="road">
     <div class="rd"><span class="tag done">DEMO</span><p><b>성문+운율 대조 엔진</b> — 공개 사기범 음성 등록·온디바이스 실시간 대조 (이 페이지)</p></div>
-    <div class="rd"><span class="tag next">NEXT</span><p><b>STT 내용 분석</b> — 성문은 '아는 그놈'만 잡는다. 통화 내용을 온디바이스 STT로 전사해
-      "검찰·계좌·보안 앱 설치" 같은 시나리오 패턴을 함께 탐지하면 <b>처음 보는 그놈</b>도 잡는다.</p></div>
+    <div class="rd"><span class="tag done">DEMO</span><p><b>STT 내용 분석 v1</b> — 성문은 '아는 그놈'만 잡는다. 통화 내용을 전사해
+      기관 사칭·수사 압박·금전 유도·앱 설치·고립 유도 5개 시나리오 패턴을 탐지, <b>처음 보는 그놈</b>도 잡는다 (이 페이지).
+      지금은 브라우저 내장 STT — 다음 단계는 whisper 계열 온디바이스 STT로 교체.</p></div>
     <div class="rd"><span class="tag todo">TODO</span><p><b>전화 연동 앱</b> — 통화 오디오 훅 + 발신번호를 결합해 성문·내용·번호 3중 스코어로
       통화 중 실시간 경고. 신고 데이터로 성문 DB가 계속 자란다 (금감원 신고 음성 연 3,959건).</p></div>
     <div class="rd"><span class="tag todo">TODO</span><p><b>AI 변조 대응</b> — 보이스 클로닝 사기 대비, 합성음 탐지(anti-spoofing) 모델 병행.</p></div>
@@ -445,6 +466,74 @@ function ensurePros(){
   return prosLoading;
 }
 
+/* ---- 통화 내용 STT (Web Speech API) ---- */
+const SR_CLS=window.SpeechRecognition||window.webkitSpeechRecognition;
+let sttRec=null,sttFinal='',sttInterim='',sttErr=null,sttEndP=null;
+function sttStart(){
+  sttFinal='';sttInterim='';sttErr=null;sttEndP=null;
+  if(!$('stt-on').checked)return;
+  if(!SR_CLS){sttErr='unsupported';return;}
+  try{
+    const r=new SR_CLS();sttRec=r;
+    r.lang='ko-KR';r.continuous=true;r.interimResults=true;
+    r.onresult=ev=>{let it='';
+      for(let i=ev.resultIndex;i<ev.results.length;i++){
+        const res=ev.results[i];
+        if(res.isFinal)sttFinal+=res[0].transcript+' ';else it+=res[0].transcript;}
+      sttInterim=it;};
+    r.onerror=ev=>{sttErr=ev.error;};
+    sttEndP=new Promise(res=>{r.onend=res;});
+    r.start();
+    logLine('내용 인식 시작 — Web Speech (ko-KR)');
+  }catch(e){sttErr='start-failed';sttRec=null;}
+}
+async function sttStop(){
+  if(!sttRec)return;
+  try{sttRec.stop();}catch(e){}
+  await Promise.race([sttEndP,new Promise(r=>setTimeout(r,1500))]);
+  sttRec=null;
+}
+const SCAM_CATS=[
+  ['기관 사칭',/검찰|검사|수사관|경찰|금융감독원|금감원|법원|국세청|우체국|택배|등기/g],
+  ['수사 압박',/구속|영장|체포|조사|사건|연루|범죄|피의자|명의|도용|불법|동결/g],
+  ['금전 유도',/계좌|이체|송금|현금|안전\s?계좌|보안\s?계좌|대출|통장|잔액|비밀번호|OTP|인증\s?번호/g],
+  ['앱·원격 설치',/어플|앱|설치|링크|원격|접속|다운로드|보안\s?프로그램/g],
+  ['고립 유도',/비밀로|발설|아무에게도|가족한테도|알리지|말하지\s?마|끊지\s?마/g],
+];
+const escHtml=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function renderStt(){
+  const box=$('stt-box');
+  if(!$('stt-on').checked){box.style.display='none';return;}
+  box.style.display='block';
+  const txt=(sttFinal+' '+sttInterim).trim().replace(/\s+/g,' ');
+  const risk=$('stt-risk');
+  if(!txt){
+    risk.textContent='';risk.className='';
+    $('stt-text').innerHTML='<span class="interim">'+(sttErr
+      ?'음성인식 사용 불가('+sttErr+') — Chrome 계열 브라우저에서 동작한다'
+      :'인식된 발화 없음 — 또렷하게 말하면 내용 분석이 동작한다')+'</span>';
+    $('stt-cats').innerHTML='';$('stt-note').textContent='';
+    return;
+  }
+  let hits=0;const chips=[];let marked=escHtml(txt);
+  for(const [nm,re] of SCAM_CATS){
+    const m=txt.match(re);const n=m?m.length:0;
+    if(n>0){hits++;marked=marked.replace(re,w=>'\u0001'+w+'\u0002');}
+    chips.push(`<span class="scat ${n?'on':''}">${nm}${n?' ×'+n:''}</span>`);
+  }
+  marked=marked.replace(/\u0001/g,'<mark>').replace(/\u0002/g,'</mark>');
+  const R=[['r0','CLEAR','알려진 사기 시나리오 패턴 없음.'],
+           ['r1','LOW','패턴 1종 — 일상 대화에도 나올 수 있는 수준이다.'],
+           ['r2','WARN','시나리오 패턴 2종 감지 — 성문이 불일치해도 처음 보는 그놈일 수 있다.'],
+           ['r3','HIGH RISK','전형적 보이스피싱 시나리오 조합이다. 성문 일치 여부와 무관하게 일단 끊는 게 맞다.']];
+  const [cls,label,note]=R[Math.min(hits,3)];
+  risk.textContent='· '+label;risk.className=cls;
+  $('stt-text').innerHTML='“'+marked+'”';
+  $('stt-cats').innerHTML=chips.join('');
+  $('stt-note').textContent=note;
+  logLine(`내용 분석 — ${txt.length}자 전사 · 패턴 ${hits}종`,hits>=2);
+}
+
 /* ---- 녹음 ---- */
 let recording=false;
 $('btn-rec').onclick=async()=>{
@@ -455,6 +544,7 @@ $('btn-rec').onclick=async()=>{
   recording=true;$('btn-rec').disabled=true;$('result').style.display='none';
   $('alog').innerHTML='';logT0=performance.now();$('led').className='led rec';
   logLine('입력 스트림 개방 — 원시 캡처 (AGC/NS OFF)',1);
+  sttStart();
   const ac=new (window.AudioContext||window.webkitAudioContext)();
   const srIn=ac.sampleRate;
   const src=ac.createMediaStreamSource(stream);
@@ -472,6 +562,7 @@ $('btn-rec').onclick=async()=>{
   async function stop(){
     proc.disconnect();src.disconnect();stream.getTracks().forEach(t=>t.stop());ac.close();
     recording=false;$('led').className='led proc';
+    const sttP=sttStop();
     const total=chunks.reduce((a,c)=>a+c.length,0);
     const pcm=new Float32Array(total);let o=0;for(const c of chunks){pcm.set(c,o);o+=c.length;}
     logLine(`녹음 종료 — ${(total/srIn).toFixed(1)}s @ ${srIn}Hz`);
@@ -494,7 +585,8 @@ $('btn-rec').onclick=async()=>{
         $('rec-status').textContent='분석 완료 · '+m.windows+'구간 평균';
         $('led').className='led';
         Q={pros:qp,dur:(total/srIn),windows:m.windows};
-        showResult(m.scores);}
+        showResult(m.scores);
+        await sttP;renderStt();}
     };
     worker.postMessage({type:'analyze',pcm:rendered});
   }
