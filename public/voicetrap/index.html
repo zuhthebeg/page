@@ -156,13 +156,13 @@ h1 span{color:var(--red)}
     <div class="tag">FINANCIAL SAFETY · 실전 훈련</div>
     <h1>보이스피싱<br><span>방어 훈련소</span></h1>
     <p class="lead">금융감독원·경찰이 공개한 실제 사기범 목소리로 하는 3라운드.<br>당신은 몇 초 만에 눈치채고, 입으로 끊어낼 수 있나?</p>
-    <button class="cta" style="margin-top:26px" onclick="toRound(1)">입소 · 1라운드 시작</button>
+    <button class="cta" style="margin-top:26px" onclick="startFlow()">입소 · 1라운드 시작</button>
     <div class="fine">🔒 마이크 입력과 성문 분석은 전부 이 기기 안에서만 처리됩니다. 녹음은 서버로 전송되지 않습니다.</div>
   </div></section>
 
   <!-- ROUND 1: LISTEN -->
   <section class="screen" id="s-r1"><div class="pad">
-    <div class="rtitle">ROUND 1 · 듣기</div>
+    <div class="rtitle">ROUND 2 · 듣기</div>
     <div class="rh">몇 초 만에 눈치챌까</div>
     <div class="rdesc">실제 사기범의 통화다. 듣다가 <b>"어? 이거 사기다" 싶은 순간</b> 아래 버튼을 눌러라.</div>
     <div class="player">
@@ -177,7 +177,7 @@ h1 span{color:var(--red)}
 
   <!-- ROUND 2: SPEAK -->
   <section class="screen" id="s-r2"><div class="pad">
-    <div class="rtitle">ROUND 2 · 말하기</div>
+    <div class="rtitle">ROUND 3 · 말하기</div>
     <div class="rh">입으로 끊어내기</div>
     <div class="rdesc">사기범이 <b>"안전계좌로 지금 이체하세요"</b>라고 압박한다.<br>실제로 <b>소리 내어</b> 응대해봐. 당신 말투가 방어인지 넘어감인지 판정한다.</div>
     <div class="player" style="padding:16px">
@@ -198,7 +198,7 @@ h1 span{color:var(--red)}
 
   <!-- ROUND 3: VOICEPRINT -->
   <section class="screen" id="s-r3"><div class="pad">
-    <div class="rtitle">ROUND 3 · 성문 판별</div>
+    <div class="rtitle">ROUND 1 · 성문 판별</div>
     <div class="rh">귀는 속아도, 성문은 안다</div>
     <div class="rdesc">익명으로 제보된 의심 통화다. 사람 귀로는 누군지 모른다.<br><b>이 목소리, 수배된 보이스피싱범일까?</b></div>
     <div class="player">
@@ -228,6 +228,7 @@ h1 span{color:var(--red)}
       <div class="micwrap"><div class="mic" id="r3mic">🎙️</div><div class="meter"><i id="r3meter"></i></div>
         <div class="mono" id="r3mestatus" style="font-size:12px;color:var(--mut)">버튼을 누르고 3초 말하세요</div></div>
       <button class="cta" id="r3mebtn" style="margin-top:14px" onclick="r3RecMe()">🎤 내 목소리 녹음 (3초)</button>
+      <button class="cta ghost" id="r3meskip" style="margin-top:10px" onclick="advance('r3')">마이크 없이 넘어가기</button>
     </div>
 
     <div id="r3result" style="display:none"></div>
@@ -243,23 +244,31 @@ let DB=null, clips=[], state={r1:null,r2:null,r3:null,userPcm:null};
 
 /* ---------- 공용 ---------- */
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');$(id).scrollTop=0;}
-function setStep(n){
-  $('top').classList.toggle('on',n>=1&&n<=3);
-  [1,2,3].forEach(i=>{const e=$('st'+i);e.className=i<n?'done':i===n?'cur':'';});
-  $('stlbl').textContent='라운드 '+n+' / 3';
-  $('stname').textContent=['','듣기','말하기','성문 판별'][n]||'';
+/* 라운드 순서 — 성문 판별(임팩트) 먼저 → 듣기 → 말하기 */
+const ORDER=['r3','r1','r2'];
+const RN={r1:'듣기',r2:'말하기',r3:'성문 판별'};
+const RSCREEN={r1:'s-r1',r2:'s-r2',r3:'s-r3'};
+function stepIdx(key){return ORDER.indexOf(key);}
+function nextName(key){const i=stepIdx(key);return i+1<ORDER.length?RN[ORDER[i+1]]:'결과';}
+function nextBtnLabel(key){const n=nextName(key);return n==='결과'?'훈련 결과 보기 →':'다음 · '+n+' 라운드 →';}
+function setStep(key){
+  const idx=stepIdx(key);
+  $('top').classList.toggle('on',idx>=0);
+  [1,2,3].forEach(i=>{const e=$('st'+i);e.className=(i-1)<idx?'done':(i-1)===idx?'cur':'';});
+  $('stlbl').textContent='라운드 '+(idx+1)+' / 3';
+  $('stname').textContent=RN[key]||'';
 }
 async function loadDB(){
   if(DB)return;
   DB=await fetch('../gnom/gnom_db.json').then(r=>r.json());
   clips=DB.map(d=>({id:d.id,label:d.label,src:d.src,span:d.span,file:'../gnom/'+d.clip}));
 }
-function toRound(n){
-  loadDB();
-  if(n===1){setStep(1);show('s-r1');}
-  if(n===2){setStep(2);show('s-r2');}
-  if(n===3){setStep(3);show('s-r3');r3Init();}
+function goRound(key){
+  loadDB();setStep(key);show(RSCREEN[key]);
+  if(key==='r3')r3Init();
 }
+function startFlow(){goRound(ORDER[0]);}
+function advance(key){const i=stepIdx(key);if(i+1<ORDER.length)goRound(ORDER[i+1]);else finish();}
 
 /* ---------- 오디오 재생 (span 구간) ---------- */
 let audioEl=null,audioStop=null;
@@ -282,7 +291,7 @@ function stopAudio(){if(audioStop){const s=audioStop;audioStop=null;s();}if(audi
 /* ============ ROUND 1 ============ */
 let r1t0=0,r1clip=null,r1playing=false;
 function r1Play(){
-  if(r1playing)return;
+  if(r1playing){stopAudio();r1playing=false;$('r1play').textContent='▶';$('r1wave').classList.remove('play');$('r1clk').textContent='일시정지 — 다시 누르면 재생';return;}
   const pick=clips[0]||{file:'../gnom/clips/g1.mp3',span:[47,80],label:'사기범 A',src:'금감원 공개'};
   r1clip=pick;
   r1playing=true;r1t0=performance.now();
@@ -317,7 +326,7 @@ function r1Flag(auto){
     </div>
     <div class="tech"><div class="t">🎣 이 통화에 심어진 것</div>
       <div class="d">기관 사칭(권위) + "동결·구속"(긴박감)으로 <b>생각할 시간</b>을 뺏는다. 목소리가 침착하고 사무적일수록 진짜 같다 — 그게 설계다.</div></div>
-    <button class="cta green" style="margin-top:14px" onclick="toRound(2)">2라운드 · 직접 응대하기 →</button>`;
+    <button class="cta green" style="margin-top:14px" onclick="advance('r1')">${nextBtnLabel('r1')}</button>`;
   $('r1result').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
@@ -379,7 +388,7 @@ function r2Judge(txt){
         ?'끊고 직접 확인하겠다는 태도가 잡혔다. 실제 상황에서 튀어나오는 건 이렇게 <b>연습된 말</b>이다.'
         :'응대에 협조·정보성 표현이 섞였다. 사기범은 이 틈을 파고든다. 정답은 딱 하나 — <b>"확인하고 제가 다시 걸겠습니다" 후 끊기.</b>'}</p>
     </div>
-    <button class="cta green" onclick="toRound(3)">3라운드 · 성문으로 잡기 →</button>`;
+    <button class="cta green" onclick="advance('r2')">${nextBtnLabel('r2')}</button>`;
   r2busy=false;
 }
 function r2Fallback(){
@@ -396,7 +405,7 @@ function r2Fallback(){
       $('r2result').innerHTML=`<div class="vcard ${o.win?'good':'bad'}"><div class="em">${o.win?'🛡️':'⚠️'}</div>
         <h3>${o.win?'방어 성공':'넘어갈 뻔했다'}</h3>
         <p>${o.win?'그 한 문장이 전부를 지킨다. 상대가 준 번호 말고 <b>공식 대표번호로 내가 직접</b>.':'"잠깐만"도 사기범에겐 기회다. 협조 신호를 주지 마라 — 바로 끊는 게 정답.'}</p></div>
-        <button class="cta green" onclick="toRound(3)">3라운드 · 성문으로 잡기 →</button>`;};
+        <button class="cta green" onclick="advance('r2')">${nextBtnLabel('r2')}</button>`;};
     box.appendChild(b);});
 }
 
@@ -407,10 +416,12 @@ async function r3Init(){
   r3clip=clips[2]||clips[1]||clips[0]; // 익명 음성 = 실제 그놈 클립
   $('r3clk').textContent='먼저 들어봐 — 누군지 감이 오나?';
 }
+let r3playing=false;
 function r3Play(){
   if(!r3clip)return;
-  $('r3play').textContent='❚❚';$('r3wave').classList.add('play');
-  playClip(r3clip.file,r3clip.span,10,()=>{$('r3play').textContent='▶';$('r3wave').classList.remove('play');});
+  if(r3playing){stopAudio();r3playing=false;$('r3play').textContent='▶';$('r3wave').classList.remove('play');$('r3clk').textContent='일시정지 — 다시 누르면 재생';return;}
+  r3playing=true;$('r3play').textContent='❚❚';$('r3wave').classList.add('play');$('r3clk').textContent='듣는 중…';
+  playClip(r3clip.file,r3clip.span,10,()=>{r3playing=false;$('r3play').textContent='▶';$('r3wave').classList.remove('play');});
 }
 async function bandpass16k(pcm,srIn){
   const oc=new OfflineAudioContext(1,Math.ceil(pcm.length*16000/srIn),16000);
@@ -530,7 +541,7 @@ function r3MeRender(r){
   const sc=r.scores.slice().sort((a,b)=>b.cos-a.cos);
   const userMax=Math.round(Math.max(0,sc[0].cos)*100);
   state.r3.userMax=userMax;
-  $('r3mestatus').textContent='대조 완료';$('r3mebtn').style.display='none';
+  $('r3mestatus').textContent='대조 완료';$('r3mebtn').style.display='none';var _sk=$('r3meskip');if(_sk)_sk.style.display='none';
   const scammerPct=state.r3.pct||0;
   $('r3me').insertAdjacentHTML('beforeend',`
     <div class="fp-lab" style="margin-top:16px">성문 지문 · 당신 목소리</div>
@@ -543,7 +554,7 @@ function r3MeRender(r){
       <h3>성문은 사람마다 고유하다</h3>
       <p>당신 목소리는 사기범 6명과 최고 <b>${userMax}%</b> — 완전히 다른 사람이라는 뜻. 성문(voiceprint)은 지문처럼 개인마다 다르다.<br><br>⚠️ 하지만 <b>AI 목소리 복제</b>는 이 지문까지 흉내낸다. 그래서 "아는 목소리"여도 <b>끊고 직접 확인</b>이 최후 방어선이다.</p>
     </div>
-    <button class="cta green" onclick="finish()">훈련 결과 보기 →</button>`);
+    <button class="cta green" onclick="advance('r3')">${nextBtnLabel('r3')}</button>`);
   drawFP('r3fpMe',r.q,'var(--green)');
   r3rec=false;
   $('r3me').scrollIntoView({behavior:'smooth',block:'end'});
@@ -581,8 +592,10 @@ function restart(){state={r1:null,r2:null,r3:null,userPcm:null};
   $('r2result').style.display='none';$('r2btn').style.display='block';$('r2btn').disabled=false;$('r2trans').style.display='none';$('r2choices').style.display='none';$('r2status').textContent='아래 버튼을 누르고 응대를 말하세요';
   $('r3guess').style.display='block';$('r3console').style.display='none';$('r3verdict').style.display='none';$('r3result').style.display='none';
   $('r3me').style.display='none';$('r3mebtn').style.display='block';$('r3mebtn').disabled=false;$('r3mestatus').textContent='버튼을 누르고 3초 말하세요';r3rec=false;
+  var _sk=$('r3meskip');if(_sk)_sk.style.display='block';
+  r1playing=false;r3playing=false;$('r1play').textContent='▶';$('r3play').textContent='▶';$('r1wave').classList.remove('play');$('r3wave').classList.remove('play');
   // 내 목소리 결과로 추가된 요소 제거
-  document.querySelectorAll('#r3me .fp-lab, #r3me .fp, #r3me .cmp, #r3me .vcard, #r3me .cta.green').forEach(e=>{if(e.id!=='r3fpA')e.remove();});
+  document.querySelectorAll('#r3me .fp-lab, #r3me .fp, #r3me .cmp, #r3me .vcard, #r3me .cta.green').forEach(e=>e.remove());
   show('s-intro');$('top').classList.remove('on');}
 </script>
 </body>
