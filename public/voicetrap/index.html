@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>낚이는 데 90초 — 보이스피싱 체험 시뮬레이션</title>
+<meta name="description" content="당신은 절대 안 당한다고 믿는다. 실제 수사기관 사칭 보이스피싱 수법을 90초 안에 직접 겪어보고, 당신을 흔든 조작 기법 4가지를 해부합니다.">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="낚이는 데 90초 — 보이스피싱 체험 시뮬레이션">
+<meta property="og:description" content="'나는 안 당한다'는 착각을 90초 만에 체험으로 깨는 금융안전 콘텐츠.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0e14; --panel:#121722; --panel2:#1a2130; --line:#232c3f;
+  --ink:#e8eaf0; --mut:#8b93a7; --red:#e5484d; --red-d:#7f2226;
+  --amber:#f5b93c; --green:#46b877; --cyan:#3fc1c9; --blue:#2f6bff;
+  --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans KR',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;
+  background-image:radial-gradient(ellipse at 50% -10%,#16203255,transparent 60%);
+  display:flex;justify-content:center}
+.app{width:100%;max-width:440px;min-height:100dvh;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.mono{font-family:var(--mono)}
+button{font-family:inherit;cursor:pointer;border:none}
+
+/* ===== risk bar ===== */
+.risk{position:sticky;top:0;z-index:20;background:#0b0e14ee;backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);padding:10px 16px 12px}
+.risk .row{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--mut);letter-spacing:.02em}
+.risk b{font-family:var(--mono);font-size:14px}
+.bar{height:8px;border-radius:99px;background:#1c2434;margin-top:6px;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,#46b877,#f5b93c 55%,#e5484d);transition:width .5s cubic-bezier(.3,1,.4,1)}
+
+/* ===== screens ===== */
+.screen{flex:1;display:none;flex-direction:column}
+.screen.on{display:flex}
+
+/* intro */
+.intro{justify-content:center;text-align:center;padding:40px 26px;gap:14px}
+.intro .tag{font-family:var(--mono);font-size:12px;color:var(--red);letter-spacing:.18em}
+.intro h1{font-size:34px;font-weight:700;line-height:1.15;letter-spacing:-.02em}
+.intro h1 span{color:var(--red)}
+.intro p{color:var(--mut);font-size:15px;max-width:320px;margin:0 auto}
+.cta{margin-top:14px;background:var(--red);color:#fff;font-weight:700;font-size:17px;
+  padding:16px 22px;border-radius:14px;box-shadow:0 8px 30px #e5484d33}
+.cta.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);box-shadow:none;font-weight:500}
+.fine{font-size:12px;color:#5a6377;margin-top:6px}
+
+/* incoming call */
+.call{justify-content:space-between;text-align:center;padding:56px 26px 40px;
+  background:radial-gradient(ellipse at 50% 30%,#241016,transparent 70%)}
+.call .who{font-size:13px;color:var(--mut);letter-spacing:.1em}
+.call .num{font-size:30px;font-weight:700;margin-top:6px}
+.call .sub{color:var(--amber);font-size:13px;margin-top:10px;font-family:var(--mono)}
+.avatar{width:96px;height:96px;border-radius:50%;margin:26px auto 0;
+  background:#2a1116;display:flex;align-items:center;justify-content:center;font-size:40px;
+  box-shadow:0 0 0 0 #e5484d55;animation:ring 1.4s infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 #e5484d44}70%{box-shadow:0 0 0 26px #e5484d00}100%{box-shadow:0 0 0 0 #e5484d00}}
+.callbtns{display:flex;justify-content:space-around;align-items:end}
+.cbtn{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;color:var(--mut)}
+.circ{width:66px;height:66px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px}
+.circ.no{background:var(--red)}.circ.yes{background:var(--green);animation:pulse 1.2s infinite}
+@keyframes pulse{50%{transform:scale(1.08)}}
+
+/* chat */
+.chatwrap{flex:1;display:flex;flex-direction:column}
+.chat{flex:1;overflow-y:auto;padding:18px 16px 8px;display:flex;flex-direction:column;gap:10px}
+.time{align-self:center;font-size:11px;color:#566;font-family:var(--mono);margin:2px 0 6px}
+.bub{max-width:82%;padding:11px 14px;border-radius:16px;font-size:15px;white-space:pre-wrap;word-break:break-word;
+  animation:pop .28s ease}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}}
+.them{align-self:flex-start;background:var(--panel2);border:1px solid var(--line);border-bottom-left-radius:5px}
+.them .nm{font-size:11px;color:var(--red);font-weight:700;margin-bottom:3px;letter-spacing:.02em}
+.me{align-self:flex-end;background:var(--blue);color:#fff;border-bottom-right-radius:5px}
+.sys{align-self:center;text-align:center;font-size:12.5px;color:var(--amber);background:#f5b93c14;
+  border:1px solid #f5b93c33;padding:8px 12px;border-radius:10px;max-width:92%}
+.typing{align-self:flex-start;background:var(--panel2);border:1px solid var(--line);padding:12px 16px;border-radius:16px;border-bottom-left-radius:5px}
+.typing i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--mut);margin:0 2px;animation:bl 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,60%,100%{opacity:.3}30%{opacity:1}}
+.choices{padding:10px 14px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;
+  border-top:1px solid var(--line);background:#0d111a}
+.choice{text-align:left;background:var(--panel);border:1px solid var(--line);color:var(--ink);
+  padding:13px 15px;border-radius:12px;font-size:14.5px;line-height:1.4;transition:.15s}
+.choice:active{transform:scale(.985);border-color:#3a4a63}
+.choice.safe-hint{border-left:3px solid #2f6bff55}
+
+/* reveal */
+.reveal{padding:30px 22px 60px;overflow-y:auto}
+.verdict{text-align:center;margin-bottom:22px}
+.verdict .em{font-size:52px}
+.verdict h2{font-size:26px;font-weight:700;margin-top:6px}
+.verdict p{color:var(--mut);font-size:14px;margin-top:6px}
+.score{font-family:var(--mono);font-size:15px;margin-top:12px;display:inline-block;padding:6px 14px;border-radius:99px;border:1px solid var(--line)}
+.sec-h{font-size:13px;color:var(--mut);letter-spacing:.14em;font-family:var(--mono);margin:26px 0 12px;text-transform:uppercase}
+.tech{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.tech.hit{border-color:var(--red-d);background:#1a1013}
+.tech .t{font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px}
+.tech .badge{font-size:10.5px;font-family:var(--mono);padding:2px 7px;border-radius:6px;background:#2a3145;color:var(--mut)}
+.tech.hit .badge{background:var(--red-d);color:#ffd7d9}
+.tech .q{font-size:13px;color:var(--mut);margin-top:7px;padding-left:11px;border-left:2px solid var(--line);font-style:italic}
+.tech .d{font-size:13.5px;margin-top:8px;color:#c8cede}
+.rules{background:linear-gradient(180deg,#10233a,#0d1a2e);border:1px solid #234;border-radius:16px;padding:18px 18px 6px;margin-top:14px}
+.rule{display:flex;gap:12px;margin-bottom:14px}
+.rule .n{font-family:var(--mono);font-weight:600;color:var(--cyan);font-size:18px;flex:none;width:22px}
+.rule .x{font-size:14.5px}
+.rule .x b{color:#fff}
+.foot{display:flex;flex-direction:column;gap:9px;margin-top:22px}
+.bonus{font-size:12px;color:#5a6377;text-align:center;margin-top:18px}
+.bonus a{color:var(--cyan)}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- RISK BAR -->
+  <div class="risk" id="riskbar" style="display:none">
+    <div class="row"><span>위험도 · 사기범이 원하는 곳까지</span><b id="riskv">0%</b></div>
+    <div class="bar"><i id="riskfill"></i></div>
+  </div>
+
+  <!-- INTRO -->
+  <section class="screen on intro" id="s-intro">
+    <div class="tag">FINANCIAL SAFETY · 체험 시뮬레이션</div>
+    <h1>낚이는 데<br><span>90초</span></h1>
+    <p>당신은 절대 안 당한다고 믿는다.<br>그 착각이 가장 위험하다. 직접 겪어봐.</p>
+    <button class="cta" onclick="start()">전화가 온다 →</button>
+    <div class="fine">실제 수사기관 사칭 수법을 재구성한 안전한 체험입니다.<br>실제 개인정보·계좌를 입력하지 않습니다.</div>
+  </section>
+
+  <!-- INCOMING CALL -->
+  <section class="screen call" id="s-call">
+    <div>
+      <div class="who">알 수 없음 · 발신</div>
+      <div class="num">02-530-XXXX</div>
+      <div class="sub">서울중앙지검 (표시)</div>
+      <div class="avatar">📞</div>
+    </div>
+    <div class="callbtns">
+      <button class="cbtn" onclick="declineCall()"><span class="circ no">✕</span>안 받기</button>
+      <button class="cbtn" onclick="answerCall()"><span class="circ yes">✓</span>받기</button>
+    </div>
+  </section>
+
+  <!-- CHAT -->
+  <section class="screen chatwrap" id="s-chat">
+    <div class="chat" id="chat"></div>
+    <div class="choices" id="choices"></div>
+  </section>
+
+  <!-- REVEAL -->
+  <section class="screen reveal" id="s-reveal"></section>
+
+</div>
+
+<script>
+// ---------- 조작 기법 정의 ----------
+const TECH = {
+  authority:  {name:'권위 도용', badge:'AUTHORITY',   d:'검사·수사관·금감원 직함과 사건번호로 "감히 거스를 수 없는 상대"를 연출한다. 진짜 기관은 전화로 수사하지 않는다.'},
+  urgency:    {name:'긴박감 조성', badge:'URGENCY',    d:'"오늘 안에", "구속영장"으로 생각할 시간을 뺏는다. 급할수록 판단이 멈춘다 — 그게 목적이다.'},
+  isolation:  {name:'고립 유도',  badge:'ISOLATION',  d:'"수사기밀이라 가족·은행에도 말하면 공범." 주변의 안전장치(가족·직원)를 스스로 끊게 만든다.'},
+  blockcheck: {name:'2차확인 차단', badge:'NO-VERIFY', d:'"전화 끊지 마세요." 당신이 진짜 기관에 직접 걸어 확인하는 단 한 번의 행동을 필사적으로 막는다.'},
+};
+
+let risk=0, hit={}, queue=false;
+const $=id=>document.getElementById(id);
+function setRisk(v){risk=Math.max(0,Math.min(100,v));$('riskv').textContent=risk+'%';$('riskfill').style.width=risk+'%';}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');}
+
+function start(){show('s-call');}
+function declineCall(){ // 모범 답안 조기 종료
+  $('riskbar').style.display='block'; setRisk(0);
+  show('s-chat'); $('choices').innerHTML='';
+  $('chat').innerHTML='';
+  sys('모르는 번호를 받지 않았다.');
+  setTimeout(()=>{ sys('몇 초 뒤, 문자가 왔다.'); },700);
+  setTimeout(()=>{ them('검찰','[서울중앙지검] 귀하 명의 계좌가 범죄에 연루되어 연락드립니다. 미회신 시 불이익...'); },1500);
+  setTimeout(()=>{ renderChoices([
+    {t:'🔗 문자 속 링크를 눌러 확인한다', risk:70, tech:'authority', to:'appinstall'},
+    {t:'🗑️ 무시하고, 검찰청 대표번호(1301)로 내가 직접 건다', risk:0, to:'safe'},
+  ]); },2400);
+}
+function answerCall(){
+  $('riskbar').style.display='block'; setRisk(0);
+  show('s-chat'); $('chat').innerHTML=''; $('choices').innerHTML='';
+  go('open');
+}
+
+// ---------- 대사 렌더 ----------
+function bubble(cls,html,nm){
+  const d=document.createElement('div'); d.className='bub '+cls;
+  if(nm) d.innerHTML='<div class="nm">'+nm+'</div>'+html; else d.innerHTML=html;
+  $('chat').appendChild(d); $('chat').scrollTop=$('chat').scrollHeight; return d;
+}
+function them(nm,t){return bubble('them',esc(t),nm);}
+function me(t){return bubble('me',esc(t));}
+function sys(t){return bubble('sys',t);}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function typing(cb,ms){
+  const d=document.createElement('div');d.className='typing';d.innerHTML='<i></i><i></i><i></i>';
+  $('chat').appendChild(d);$('chat').scrollTop=$('chat').scrollHeight;
+  setTimeout(()=>{d.remove();cb();},ms||900);
+}
+
+function renderChoices(list){
+  const c=$('choices');c.innerHTML='';
+  list.forEach(ch=>{
+    const b=document.createElement('button');
+    b.className='choice'+(ch.risk===0?' safe-hint':'');
+    b.textContent=ch.t;
+    b.onclick=()=>{
+      if(ch.say!==undefined? ch.say : true){ me(ch.sayText||ch.t.replace(/^[^ ]+ /,'')); }
+      if(ch.tech){ hit[ch.tech]=ch.quote||true; }
+      setRisk(risk+(ch.risk||0));
+      c.innerHTML='';
+      setTimeout(()=>go(ch.to),500);
+    };
+    c.appendChild(b);
+  });
+}
+
+// ---------- 시나리오 그래프 ----------
+const NODES={
+  open(){
+    them('김도현 검사','서울중앙지방검찰청 첨단범죄수사2부 김도현 검사입니다. 본인 확인 먼저 하겠습니다. ○○○ 씨 본인 맞으십니까?');
+    typing(()=>{
+      them('김도현 검사','귀하 명의 계좌가 \'대포통장\'으로 사용돼 피해자 37명, 피해액 4억 8천 사건에 연루됐습니다. 사건번호 2026형제48812호.');
+      renderChoices([
+        {t:'"네? 저는 그런 적 없는데요..." (일단 듣는다)', risk:15, tech:'authority', quote:'검사·사건번호로 압박', to:'scare'},
+        {t:'"검찰이 이런 걸 전화로 한다고요?" 되묻는다', risk:5, to:'push1'},
+        {t:'📵 바로 끊는다', risk:0, to:'safe'},
+      ]);
+    },1400);
+  },
+  push1(){
+    them('김도현 검사','당연히 의심하셔야죠. 그래서 공문 먼저 보내드립니다. 지금 이 통화, 녹취되고 있으니 협조 여부가 기록에 남습니다. 끊으시면 도주 우려로 간주됩니다.');
+    renderChoices([
+      {t:'"...알겠습니다, 말씀하세요" (계속 듣는다)', risk:20, tech:'urgency', quote:'"끊으면 도주 우려" — 못 끊게 만든다', to:'scare'},
+      {t:'"기록에 남기든 말든, 확인하고 다시 걸겠습니다" 끊는다', risk:0, to:'safe'},
+    ]);
+  },
+  scare(){
+    typing(()=>{
+      them('김도현 검사','지금부터가 중요합니다. 이 사건은 수사기밀이라 가족·지인·은행 직원 누구에게도 말하면 안 됩니다. 말하는 순간 공범으로 간주돼 함께 조사받습니다.');
+      renderChoices([
+        {t:'"알겠습니다. 아무한테도 말 안 할게요"', risk:25, tech:'isolation', quote:'"아무에게도 말하지 마라" — 안전장치 제거', to:'money'},
+        {t:'"불안한데 가족한테 물어보고..."', risk:8, to:'isoPush'},
+        {t:'📵 이상하다. 끊고 가족한테 전화한다', risk:0, to:'safe'},
+      ]);
+    },1200);
+  },
+  isoPush(){
+    them('김도현 검사','가족? 그 가족도 조사 대상이 될 수 있습니다. 지금 당신을 지켜줄 사람은 저뿐이에요. 저만 믿고 따라오세요. 다른 데 전화하면 수사 방해입니다.');
+    renderChoices([
+      {t:'"...네, 검사님만 믿겠습니다"', risk:22, tech:'isolation', quote:'"나만 믿어라" — 유일한 구조자 연기', to:'money'},
+      {t:'📵 "그 말이 제일 수상하네요." 끊는다', risk:0, to:'safe'},
+    ]);
+  },
+  money(){
+    typing(()=>{
+      them('김도현 검사','자금 검증이 필요합니다. 귀하 계좌가 깨끗한지 확인 후 즉시 돌려드립니다. 지금 불러드리는 \'금융안전계좌\'로 전액 이체하세요. 오늘 안에 안 하면 계좌 전부 동결됩니다.');
+      renderChoices([
+        {t:'"얼마를... 어디로 보내면 되나요?"', risk:30, tech:'urgency', quote:'"오늘 안에 안 하면 동결" — 시간 압박', to:'transfer'},
+        {t:'"안전계좌요? 검찰에 그런 게 있어요?" 의심한다', risk:5, to:'moneyPush'},
+        {t:'📵 "돈 얘기 나오는 순간 사기죠." 끊는다', risk:0, to:'safe'},
+      ]);
+    },1300);
+  },
+  moneyPush(){
+    them('김도현 검사','국가가 임시 보관하는 겁니다. 못 믿으시면 지금 은행 앱 켜서 저와 통화하면서 같이 진행하시죠. 절대 전화 끊지 마시고요. 끊으면 처음부터 다시입니다.');
+    renderChoices([
+      {t:'앱 켜고 통화 유지한 채 진행한다', risk:28, tech:'blockcheck', quote:'"전화 끊지 마세요" — 2차확인 원천 차단', to:'transfer'},
+      {t:'📵 "끊지 말라는 그 말, 딱 사기 매뉴얼이네요." 끊는다', risk:0, to:'safe'},
+    ]);
+  },
+  appinstall(){ // 문자 링크 경로
+    sys('링크를 눌렀다. \'검찰청 안전확인\' 앱 설치 화면이 뜬다.');
+    them('안내','앱을 설치하고 권한을 모두 허용하세요. 원격으로 계좌 안전을 점검해 드립니다.');
+    renderChoices([
+      {t:'설치하고 권한 모두 허용', risk:35, tech:'blockcheck', quote:'원격제어 앱 설치 유도', to:'transfer'},
+      {t:'📵 앱 삭제하고 1301로 직접 확인', risk:0, to:'safe'},
+    ]);
+  },
+  transfer(){
+    setRisk(100);
+    typing(()=>{
+      sys('당신은 \'금융안전계좌\'로 이체 버튼 앞에 섰다.');
+      them('김도현 검사','네, 그대로 진행하세요. 잘하고 계십니다. 끝나면 바로 돌려드릴게요.');
+      setTimeout(()=>end('scammed'),1300);
+    },1200);
+  },
+  safe(){
+    typing(()=>{
+      sys('당신은 통화를 끊었다.');
+      setTimeout(()=>end('safe'),700);
+    },700);
+  },
+};
+function go(k){ if(NODES[k]) NODES[k](); }
+
+// ---------- 엔딩 + 해부 ----------
+function end(kind){
+  const scammed = kind==='scammed';
+  const emj = scammed?'💸':'🛡️';
+  const title = scammed?'당했습니다':'잘 빠져나왔습니다';
+  const sub = scammed
+    ? '방금, 실제라면 당신의 돈은 3초 만에 사라졌습니다. 부끄러워할 일이 아닙니다 — 이게 설계된 함정이니까.'
+    : '끊고 직접 확인하는 그 한 번의 선택이 전부를 지켰습니다. 하지만 아래 함정들이 얼마나 촘촘했는지 보세요.';
+  const order=['authority','urgency','isolation','blockcheck'];
+  let techHtml='';
+  order.forEach(k=>{
+    const t=TECH[k]; const isHit=!!hit[k];
+    const q = (typeof hit[k]==='string') ? '<div class="q">이 지점에서 흔들림: '+hit[k]+'</div>' : '';
+    techHtml+=`<div class="tech${isHit?' hit':''}">
+      <div class="t">${isHit?'🔴':'⚪'} ${t.name} <span class="badge">${t.badge}</span></div>
+      ${q}<div class="d">${t.d}</div></div>`;
+  });
+  $('s-reveal').innerHTML=`
+    <div class="verdict">
+      <div class="em">${emj}</div>
+      <h2>${title}</h2>
+      <p>${sub}</p>
+      <div class="score mono">최종 위험도 ${risk}%</div>
+    </div>
+    <div class="sec-h">// 당신을 흔든 4가지 무기</div>
+    ${techHtml}
+    <div class="sec-h">// 이것만 기억하면 안 뚫린다</div>
+    <div class="rules">
+      <div class="rule"><div class="n">1</div><div class="x"><b>수사·금융기관은 전화로 돈·계좌·앱설치를 요구하지 않는다.</b> 그 순간이 곧 사기다.</div></div>
+      <div class="rule"><div class="n">2</div><div class="x"><b>끊고, 내가 직접 건다.</b> 상대가 준 번호 말고 공식 대표번호(검찰 1301·금감원 1332·은행 뒷면)로.</div></div>
+      <div class="rule"><div class="n">3</div><div class="x"><b>"아무한테도 말하지 마라"는 순간이 증거다.</b> 그때 가족·112에 바로 말하라.</div></div>
+    </div>
+    <div class="foot">
+      <button class="cta" onclick="reset()">다시 · 다른 선택으로</button>
+      <button class="cta ghost" onclick="reset()">친구에게 시켜보기</button>
+    </div>
+    <div class="bonus">보너스 · 실제 사기범 목소리를 성문으로 판별해보는 체험 → <a href="../gnom/">그놈 목소리</a></div>
+  `;
+  $('riskbar').style.display='none';
+  show('s-reveal');
+}
+function reset(){risk=0;hit={};setRisk(0);$('riskbar').style.display='none';show('s-intro');}
+</script>
+</body>
+</html>
