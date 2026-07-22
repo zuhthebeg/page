@@ -132,7 +132,7 @@ h1 span{color:var(--red)}
   <section class="screen on center" id="s-intro"><div class="pad">
     <div class="tag">FINANCIAL SAFETY · 실전 훈련</div>
     <h1>보이스피싱<br><span>방어 훈련소</span></h1>
-    <p class="lead">실제 금융감독원이 공개한 사기범 목소리로 하는 3라운드.<br>당신은 몇 초 만에 눈치채고, 입으로 끊어낼 수 있나?</p>
+    <p class="lead">금융감독원·경찰이 공개한 실제 사기범 목소리로 하는 3라운드.<br>당신은 몇 초 만에 눈치채고, 입으로 끊어낼 수 있나?</p>
     <button class="cta" style="margin-top:26px" onclick="toRound(1)">입소 · 1라운드 시작</button>
     <div class="fine">🔒 마이크 입력과 성문 분석은 전부 이 기기 안에서만 처리됩니다. 녹음은 서버로 전송되지 않습니다.</div>
   </div></section>
@@ -177,7 +177,7 @@ h1 span{color:var(--red)}
   <section class="screen" id="s-r3"><div class="pad">
     <div class="rtitle">ROUND 3 · 성문 판별</div>
     <div class="rh">귀는 속아도, 성문은 안다</div>
-    <div class="rdesc">익명으로 제보된 의심 통화다. 사람 귀로는 누군지 모른다.<br><b>이 목소리, 금감원에 등록된 그놈일까?</b></div>
+    <div class="rdesc">익명으로 제보된 의심 통화다. 사람 귀로는 누군지 모른다.<br><b>이 목소리, 수배된 보이스피싱범일까?</b></div>
     <div class="player">
       <div class="src">· 익명 제보 의심 음성 ·</div>
       <div class="wave" id="r3wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -185,7 +185,7 @@ h1 span{color:var(--red)}
       <div class="clk" id="r3clk">먼저 들어봐</div>
     </div>
     <div id="r3guess">
-      <button class="choice" onclick="r3Analyze(true)">🔴 등록된 사기범일 것 같다</button>
+      <button class="choice" onclick="r3Analyze(true)">🔴 수배된 보이스피싱범 같다</button>
       <button class="choice" onclick="r3Analyze(false)">🟢 그냥 일반인 같다</button>
     </div>
     <div class="vp" id="r3vp" style="display:none">
@@ -225,17 +225,22 @@ function toRound(n){
 }
 
 /* ---------- 오디오 재생 (span 구간) ---------- */
-let audioEl=null;
+let audioEl=null,audioStop=null;
+/* 클립 파일은 이미 잘린 발췌본이라 0초부터 재생한다(span은 원본 시각 메타라 seek 금지) */
 function playClip(file,span,dur,onEnd){
-  if(audioEl){audioEl.pause();audioEl=null;}
+  stopAudio();
   const a=new Audio(file);audioEl=a;a.preload='auto';
-  a.onloadedmetadata=()=>{a.currentTime=(span&&span[0])||0;a.play();};
-  const stopAt=((span&&span[0])||0)+dur;
-  a.ontimeupdate=()=>{if(a.currentTime>=stopAt){a.pause();if(onEnd)onEnd();}};
-  a.onended=()=>{if(onEnd)onEnd();};
-  a.play().catch(()=>{});
+  let fired=false,timer=null;
+  const finish=()=>{if(fired)return;fired=true;clearTimeout(timer);audioStop=null;if(onEnd)onEnd();};
+  audioStop=()=>{fired=true;clearTimeout(timer);try{a.pause();}catch(e){}};
+  const begin=()=>{a.play().then(()=>{timer=setTimeout(finish,dur*1000);}).catch(()=>{/* 자동재생 차단: 자동오답 처리하지 않음 */});};
+  a.addEventListener('canplay',begin,{once:true});
+  a.addEventListener('ended',finish);
+  a.load();
+  // 이미 캐시되어 canplay가 안 뜰 수 있으니 폴백
+  setTimeout(()=>{if(!fired&&!timer&&a.readyState>=2)begin();},300);
 }
-function stopAudio(){if(audioEl){audioEl.pause();audioEl=null;}}
+function stopAudio(){if(audioStop){const s=audioStop;audioStop=null;s();}if(audioEl){try{audioEl.pause();}catch(e){}audioEl=null;}}
 
 /* ============ ROUND 1 ============ */
 let r1t0=0,r1clip=null,r1playing=false;
@@ -401,8 +406,7 @@ async function r3Analyze(guess){
     const arr=await fetch(r3clip.file).then(r=>r.arrayBuffer());
     const ab=await ac.decodeAudioData(arr);
     let pcm=ab.getChannelData(0);
-    const s0=Math.floor(((r3clip.span&&r3clip.span[0])||0)*ab.sampleRate);
-    pcm=pcm.slice(s0,s0+ab.sampleRate*8);
+    pcm=pcm.slice(0,ab.sampleRate*8); // 발췌본은 0초부터
     r3pcm=await bandpass16k(pcm,ab.sampleRate);ac.close();
     $('r3log').textContent='성문 임베딩 추출 · 코사인 대조 중…';
     const scores=await new Promise((res,rej)=>{
@@ -427,7 +431,7 @@ function r3Render(scores){
       <div class="pct">${p}%</div></div>`;
   }).join('');
   $('r3bars').innerHTML=bars;
-  $('r3log').textContent=`대조 완료 · ${scores.length}명 등록 그놈과 비교 · 최고 일치 ${pct}%`;
+  $('r3log').textContent=`대조 완료 · 수배 사기범 성문 ${scores.length}건과 비교 · 최고 일치 ${pct}%`;
   const matched=pct>=60;
   const correct=(r3guessVal===matched);
   state.r3={pct,matched,correct};
@@ -435,10 +439,10 @@ function r3Render(scores){
   $('r3result').innerHTML=`
     <div class="vcard ${matched?'bad':'good'}">
       <div class="em">${matched?'🔴':'🟢'}</div>
-      <h3>${matched?'등록된 그놈 — '+lbl(top.id):'등록 명단에 없음'}</h3>
+      <h3>${matched?'성문 일치 — 알려진 사기범 '+lbl(top.id):'성문 불일치'}</h3>
       <p>${matched
-        ?'사람 귀로는 헷갈려도 <b>성문(voiceprint)은 '+pct+'% 일치</b>로 짚어낸다. 목소리가 친절해도 지문은 못 속인다.'
-        :'등록된 사기범과는 낮은 일치. 하지만 <b>처음 보는 그놈</b>은 명단에 없다 — 그래서 목소리만으론 절대 안심하면 안 된다.'}</p>
+        ?'사람 귀로는 헷갈려도 <b>성문(voiceprint)은 '+pct+'% 일치</b>로 짚어낸다. 목소리가 친절해도 성문은 못 속인다.'
+        :'알려진 사기범 성문과는 낮은 일치. 하지만 <b>새로운 그놈</b>은 대조 대상에 없다 — 그래서 목소리만으론 절대 안심하면 안 된다.'}</p>
       <div class="grade">당신의 예측 ${correct?'적중 ✓':'빗나감 ✗'}</div>
     </div>
     <button class="cta green" onclick="finish()">훈련 결과 보기 →</button>`;
@@ -462,7 +466,7 @@ function finish(){
     <div class="sec-h">// 라운드 리뷰</div>
     <div class="tech"><div class="t">👂 듣기 — ${r1.missed?'놓침':r1.sec+'초 감지'}</div><div class="d">${r1.missed||r1.sec>9?'초반에 못 끊으면 이미 늦다. 첫 문장이 "기관+사건번호"면 그 자체가 신호.':'초반 감지 성공. 이 촉을 유지하라.'}</div></div>
     <div class="tech"><div class="t">🎤 말하기 — ${r2.win?'방어':'넘어감'}</div><div class="d">${r2.win?'"확인하고 다시 걸겠습니다" 후 끊기 — 정답 태도.':'협조·정보성 응답 금지. 딱 한 문장으로 끊어라.'}</div></div>
-    <div class="tech"><div class="t">🔊 성문 — ${r3.matched?'등록 그놈 적발':'명단 외'} (${r3.pct||0}%)</div><div class="d">AI 성문은 귀가 놓친 걸 짚지만, 새 그놈·복제 목소리는 못 막는다. 결국 <b>행동수칙</b>이 최후 방어선.</div></div>
+    <div class="tech"><div class="t">🔊 성문 — ${r3.matched?'사기범 성문 일치':'불일치'} (${r3.pct||0}%)</div><div class="d">AI 성문은 귀가 놓친 걸 짚지만, 새 그놈·복제 목소리는 못 막는다. 결국 <b>행동수칙</b>이 최후 방어선.</div></div>
     <div class="sec-h">// 이것만 기억하면 안 뚫린다</div>
     <div class="rules">
       <div class="rule"><div class="n">1</div><div class="x"><b>수사·금융기관은 전화로 돈·계좌·앱설치를 요구하지 않는다.</b> 그 순간이 곧 사기다.</div></div>
