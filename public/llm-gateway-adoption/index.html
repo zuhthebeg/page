@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LLM 게이트웨이 사내 도입 검토 — 시맨틱 라우터 vs 멀티프로바이더 게이트웨이</title>
+<meta name="description" content="LLM Gateway 운영자 관점에서 vLLM Semantic Router와 OmniRoute를 사내 도입 기준(라우팅 정책·비용 거버넌스·관측성·키 보안·데이터 경계·벤더 성숙도)으로 비교하고, 컨트롤플레인 진화 로드맵을 제시하는 실무 검토 보고서.">
+<meta name="author" content="cocy">
+<link rel="canonical" href="https://page.cocy.io/llm-gateway-adoption/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLM 게이트웨이 사내 도입 검토 — 시맨틱 라우터 vs 멀티프로바이더 게이트웨이">
+<meta property="og:description" content="게이트웨이 운영자 관점의 3-way 비교(vLLM SR · OmniRoute · 자체 게이트웨이)와 도입 의사결정 매트릭스·거버넌스 체크리스트.">
+<meta property="og:url" content="https://page.cocy.io/llm-gateway-adoption/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"AnalysisNewsArticle","headline":"LLM 게이트웨이 사내 도입 검토 — 시맨틱 라우터 vs 멀티프로바이더 게이트웨이","author":{"@type":"Person","name":"cocy"},"datePublished":"2026-07-23","inLanguage":"ko","publisher":{"@type":"Organization","name":"cocy.io"},"about":["LLM Gateway","Semantic Routing","vLLM Semantic Router","OmniRoute","AI 인프라 도입"]}
+</script>
+<style>
+:root{
+  --bg:#f7f6f2; --paper:#fffdf9; --ink:#1c1e24; --sub:#585c66; --faint:#8a8f9a;
+  --line:#e4e0d6; --line2:#d6d2c6; --accent:#b8412e; --accent2:#1f5f8b; --good:#2e7d55; --warn:#b5820f;
+  --chip:#efece4;
+  --serif:'Newsreader',ui-serif,Georgia,serif;
+  --sans:'IBM Plex Sans KR',-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.68;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:0 22px}
+a{color:var(--accent2);text-decoration:none;border-bottom:1px solid #1f5f8b44}
+a:hover{border-bottom-color:var(--accent2)}
+.mono{font-family:var(--mono)}
+
+/* masthead */
+header.mast{border-bottom:2px solid var(--ink);margin-top:34px;padding-bottom:14px}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-family:var(--serif);font-weight:600;font-size:38px;line-height:1.12;letter-spacing:-.01em;margin:12px 0 10px}
+.dek{font-family:var(--serif);font-size:19px;color:var(--sub);line-height:1.5}
+.byline{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:16px}
+.byline b{color:var(--sub);font-weight:600}
+
+/* body */
+main{padding:8px 0 60px}
+h2{font-family:var(--serif);font-weight:600;font-size:25px;margin:38px 0 6px;padding-top:14px;letter-spacing:-.01em}
+h2 .n{font-family:var(--mono);font-size:14px;color:var(--accent);margin-right:10px;vertical-align:2px}
+h3{font-size:16px;font-weight:700;margin:22px 0 4px}
+p{margin:12px 0;font-size:16px}
+p.lead{font-size:17.5px}
+strong{font-weight:700}
+em{font-style:italic;color:var(--sub)}
+ul,ol{margin:12px 0 12px 4px;padding-left:20px}
+li{margin:6px 0}
+hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+.small{font-size:14px;color:var(--sub)}
+
+.lede-rule{width:52px;height:3px;background:var(--accent);margin:22px 0 4px}
+
+/* callout */
+.call{background:var(--paper);border:1px solid var(--line2);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:20px 0}
+.call.blue{border-left-color:var(--accent2)}
+.call.tl{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+
+/* table */
+.tblwrap{overflow-x:auto;margin:18px -4px;border:1px solid var(--line2);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:14px;background:var(--paper)}
+th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{background:#f0ede5;font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--sub);font-weight:600;position:sticky;top:0}
+tbody th{font-weight:700;color:var(--ink);white-space:nowrap;font-size:13.5px}
+td .mono{font-size:12.5px}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:5px;background:var(--chip);color:var(--sub)}
+.tag.g{background:#e2f0e8;color:var(--good)}
+.tag.r{background:#f4e2df;color:var(--accent)}
+.tag.w{background:#f5eed6;color:var(--warn)}
+.dot{font-weight:700}
+.dot.g{color:var(--good)}.dot.r{color:var(--accent)}.dot.w{color:var(--warn)}
+
+/* profile cards */
+.cards{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0}
+.card{background:var(--paper);border:1px solid var(--line2);border-radius:12px;padding:16px 18px}
+.card h3{margin-top:0;display:flex;align-items:baseline;gap:8px;font-size:17px}
+.card .lic{font-family:var(--mono);font-size:11px;color:var(--faint);margin-left:auto}
+.stat{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--mono);font-size:12px;color:var(--sub);margin:8px 0 4px}
+.stat b{color:var(--ink)}
+
+.foot{border-top:1px solid var(--line);margin-top:40px;padding:18px 0 50px;font-size:13px;color:var(--faint);font-family:var(--mono)}
+.foot a{color:var(--faint)}
+.src{font-size:12.5px;color:var(--faint)}
+.src li{margin:3px 0}
+
+@media(max-width:560px){
+  h1{font-size:30px}.dek{font-size:17px}h2{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Infra Review · LLM Gateway</div>
+    <h1>단일 엔드포인트 뒤의 선택:<br>사내 LLM 게이트웨이를 어디에 세울 것인가</h1>
+    <p class="dek">시맨틱 라우터(vLLM SR)와 멀티프로바이더 게이트웨이(OmniRoute)를 게이트웨이 운영자 관점에서 해부한다. 무엇을 도입하고, 무엇을 공부하고, 우리 게이트웨이를 어디로 진화시킬 것인가.</p>
+    <div class="byline">
+      <span><b>작성</b> cocy — LLM Gateway / Platform</span>
+      <span><b>일자</b> 2026-07-23</span>
+      <span><b>범위</b> 사내 도입 의사결정</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="lede-rule"></div>
+    <p class="lead">LLM 게이트웨이를 운영하는 입장에서 "라우터 하나 붙이자"는 말은 위험하다. 게이트웨이는 <strong>컨트롤 플레인</strong>이다 — 어느 요청이 어느 모델·어느 컴퓨트·어느 데이터 경계로 흐르는지를 결정하고, 그 결정을 <strong>관측·감사·통제</strong>할 수 있어야 한다. 최근 화제가 된 두 프로젝트, <strong>vLLM Semantic Router</strong>와 <strong>OmniRoute</strong>는 이름은 비슷해도 서로 다른 층에 산다. 개인 생산성 도구를 사내 표준 컨트롤 플레인으로 착각하면, 3개월 뒤 키 유출·거버넌스 부재로 되돌린다.</p>
+
+    <p>이 문서는 세 대상을 같은 기준으로 세운다: (1) vLLM SR, (2) OmniRoute, (3) 현재 우리가 운영 중인 자체 게이트웨이(서버리스 Worker + AI Gateway). 결론부터: <strong>쓸 것과 배울 것이 다르다.</strong></p>
+
+    <h2><span class="n">01</span>운영자의 평가축 — 도구 기능이 아니라 통제 가능성</h2>
+    <p>기능 목록은 마케팅이 정한다. 도입 여부는 <em>운영 가능성</em>이 정한다. 게이트웨이를 굴려본 사람이 실제로 보는 8개 축:</p>
+    <ol>
+      <li><strong>배포 모델</strong> — 서버리스 / 사이드카(Envoy) / 데스크톱-앱. 우리 SRE 운영 표준에 얹히나.</li>
+      <li><strong>라우팅 방식</strong> — 명시(모델명 지정) / 의미기반(요청 신호로 판단) / 프로바이더 폴백(쿼터 소진 시 전환). 정책을 <em>코드로</em> 표현·버전관리할 수 있나.</li>
+      <li><strong>비용 거버넌스</strong> — 캐싱, 무료티어 활용, 예산 상한, 요청별 원가 귀속.</li>
+      <li><strong>관측성·감사</strong> — 라우팅 결정 로그, 리플레이, 요청 추적. 사고 났을 때 "왜 이 모델로 갔나"를 복기할 수 있나.</li>
+      <li><strong>키·시크릿 보안</strong> — BYOK 키가 어디에 어떻게 저장되고, 누가 접근하나. 키 집중은 단일 유출점이다.</li>
+      <li><strong>데이터 경계·컴플라이언스</strong> — on-prem/edge로 민감 요청을 가둘 수 있나. 데이터 residency.</li>
+      <li><strong>벤더 성숙도·리스크</strong> — 라이선스, 소유 조직, 나이, 커뮤니티 실체, 릴리스 안정성.</li>
+      <li><strong>정책·확장성</strong> — 규칙→ML/RL 라우팅, 안전 필터, 플러그인. 조직이 커질 때 확장되나.</li>
+    </ol>
+
+    <h2><span class="n">02</span>대상 프로파일 — 하드팩트로 본 실체</h2>
+    <div class="cards">
+
+      <div class="card">
+        <h3>vLLM Semantic Router <span class="tag g">Apache-2.0</span> <span class="lic">Go</span></h3>
+        <div class="stat"><span>★ <b>5.0k</b></span><span>fork <b>770</b></span><span>생성 <b>2025-08</b></span><span>소유 <b>vllm-project(공식)</b></span><span>버전 <b>v0.3 Themis</b></span></div>
+        <p class="small">요청을 <strong>16개 신호군</strong>(의도·안전·도메인·난이도…)으로 분류해 이기종 모델풀로 <strong>의미기반 라우팅</strong>하는 시맨틱 라우터. 앱은 <span class="mono">/auto</span> 엔드포인트 하나만 호출하고, 라우터가 뒤에서 싼/센/로컬 모델을 조합한다. Envoy ExtProc 사이드카 또는 독립 데몬으로 배포. 12개 라우팅 알고리즘(규칙→지연 휴리스틱→RL), 시맨틱 캐싱, 환각 탐지, 안전 플러그인, 결정 리플레이. AMD 협업, arXiv 논문(WRP 아키텍처·signal-driven routing) 다수. <em>연구 성숙도는 높고 제품 성숙도는 0.x.</em></p>
+      </div>
+
+      <div class="card">
+        <h3>OmniRoute <span class="tag g">MIT</span> <span class="lic">TypeScript</span></h3>
+        <div class="stat"><span>★ <b>26.0k</b></span><span>fork <b>3.4k</b></span><span>생성 <b>2026-02(5개월)</b></span><span>contributor <b>≈278</b></span><span>버전 <b>v3.8.49</b></span></div>
+        <p class="small">단일 OpenAI 호환 엔드포인트로 <strong>278+ 프로바이더 / 500+ 모델</strong>을 통합하는 실용형 게이트웨이. 핵심은 <strong>무료티어 스태킹</strong>(43개 풀의 무료 한도를 합산해 잔량을 대시보드로), <strong>쿼터 소진 자동 폴백</strong>(재로그인 없이 다음 프로바이더로), <strong>토큰 압축</strong>(RTK+Caveman, 15–95% 주장). Claude Code·Codex·Cursor·Cline·Copilot에 바로 물리고 Desktop/PWA 제공. <em>개발자 비용 절감 도구로는 강력하나, 5개월 된 프로젝트에 ★26k는 실사용과 화제성이 섞여 있다 — README의 "500+ contributors"는 실측 ≈278로 과장.</em></p>
+      </div>
+
+      <div class="card">
+        <h3>자체 게이트웨이 (llm.cocy.io) <span class="tag">현행</span> <span class="lic">CF Worker</span></h3>
+        <div class="stat"><span>배포 <b>서버리스</b></span><span>라우팅 <b>명시(모델명)</b></span><span>폴백 <b>Claude→GPT</b></span><span>인증 <b>Bearer/BYOK</b></span></div>
+        <p class="small">Cloudflare Worker + AI Gateway 위에서 <strong>모델명으로 명시 라우팅</strong>. OpenAI 직접 경로 / 구독 CLI 경로 / Claude CLI 경로를 모델 alias로 분기하고, 실패 시 상위 폴백. 서버리스라 운영 부담이 낮고 리전 우회에 강하지만, <em>의미기반 라우팅·결정 감사·정책 관리가 없는 "얇은" 컨트롤 플레인</em>이다. 우리의 실전 레퍼런스이자, 이 검토의 개선 대상.</p>
+      </div>
+    </div>
+
+    <h2><span class="n">03</span>같은 자로 재기 — 도입 의사결정 매트릭스</h2>
+    <p>8개 축에 세 대상을 세운다. <span class="dot g">●</span> 강점 · <span class="dot w">●</span> 조건부 · <span class="dot r">●</span> 약점.</p>
+    <div class="tblwrap">
+    <table>
+      <thead><tr><th>평가축</th><th>vLLM SR</th><th>OmniRoute</th><th>자체 게이트웨이</th></tr></thead>
+      <tbody>
+        <tr><th>배포 모델</th>
+          <td><span class="dot w">●</span> Envoy 사이드카/데몬 — 운영부담 있음</td>
+          <td><span class="dot w">●</span> Node 앱/데스크톱 — 서버 상주 필요</td>
+          <td><span class="dot g">●</span> 서버리스 — 운영부담 최소</td></tr>
+        <tr><th>라우팅 방식</th>
+          <td><span class="dot g">●</span> 의미기반·정책·RL — <b>진짜 라우터</b></td>
+          <td><span class="dot w">●</span> 프로바이더 폴백 중심(쿼터/가용성)</td>
+          <td><span class="dot r">●</span> 명시(모델명)뿐 — 정책 없음</td></tr>
+        <tr><th>비용 거버넌스</th>
+          <td><span class="dot g">●</span> 시맨틱 캐싱 + 난이도별 모델 하향</td>
+          <td><span class="dot g">●</span> 무료티어 스태킹 + 토큰 압축</td>
+          <td><span class="dot w">●</span> AI Gateway 캐시 정도</td></tr>
+        <tr><th>관측성·감사</th>
+          <td><span class="dot g">●</span> 결정 로그·리플레이 내장</td>
+          <td><span class="dot w">●</span> 대시보드 있으나 감사 관점 약</td>
+          <td><span class="dot r">●</span> 로그 최소</td></tr>
+        <tr><th>키·시크릿 보안</th>
+          <td><span class="dot g">●</span> 자체호스팅·경계 내 처리</td>
+          <td><span class="dot r">●</span> 다수 BYOK 키 집중 = 단일 유출점</td>
+          <td><span class="dot w">●</span> Worker secret + BYOK 헤더</td></tr>
+        <tr><th>데이터 경계</th>
+          <td><span class="dot g">●</span> edge/private로 요청 가두기 설계</td>
+          <td><span class="dot r">●</span> 외부 프로바이더 다수 경유</td>
+          <td><span class="dot w">●</span> 로컬 경로 일부(튜닝 필요)</td></tr>
+        <tr><th>벤더 성숙도</th>
+          <td><span class="dot g">●</span> 공식 조직·Apache·논문, 단 0.x</td>
+          <td><span class="dot w">●</span> ★26k지만 5개월·개인 주도·과장 표기</td>
+          <td><span class="dot g">●</span> 우리 소유 — 통제 100%</td></tr>
+        <tr><th>정책·확장성</th>
+          <td><span class="dot g">●</span> 규칙→ML/RL, 안전 플러그인</td>
+          <td><span class="dot r">●</span> 정책 계층 사실상 없음</td>
+          <td><span class="dot r">●</span> 확장 여지만 있고 미구현</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="small">읽는 법: OmniRoute의 초록은 전부 <em>비용/편의</em> 축이고 빨강은 전부 <em>거버넌스/보안</em> 축이다. 이게 이 도구의 정체성이다 — 개인 생산성엔 강하고 컨트롤 플레인엔 약하다. vLLM SR은 정반대로 거버넌스·정책이 강하고 운영부담·성숙도가 약하다.</p>
+
+    <h2><span class="n">04</span>도입 시나리오별 답 — 하나의 정답은 없다</h2>
+
+    <h3>A. 개인·팀 개발 생산성 (코딩 에이전트 비용 절감)</h3>
+    <p><strong>→ OmniRoute, 단 자체호스팅 + 키 격리 전제.</strong> Claude Code/Codex에 물려 무료티어를 쌓고 쿼터 소진 시 자동 폴백하는 건 즉시 체감 이득이다. USER 원칙(유료 API 회피·무료/로컬 우선)과도 맞는다. 다만 <em>남의 호스팅 인스턴스(omniroute.online)에 키를 주지 말 것</em> — MIT라 직접 띄우고, 전용 키·감사 로그·아웃바운드 도메인 제한을 건다. 토큰 압축 15–95%는 best-case이며, 우리 실측(반복 JSON에서만 큼)으로 보수적으로 기대할 것.</p>
+
+    <h3>B. 팀 공용 게이트웨이 (우리 llm.cocy.io의 다음 단계)</h3>
+    <p><strong>→ 자체 게이트웨이를 "정책+폴백+관측성" 있는 미니 컨트롤 플레인으로 진화.</strong> OmniRoute를 통째로 표준화하기엔 거버넌스가 부족하고, vLLM SR을 얹기엔 서버리스 스택과 결이 다르다. 대신 두 프로젝트에서 <em>패턴</em>을 훔친다: OmniRoute의 쿼터-aware 폴백 로직, vLLM SR의 신호기반 난이도 라우팅(간단한 요청은 싼 모델로)·결정 로깅. 현재의 명시 라우팅 위에 이 두 층을 얹는 게 가장 현실적인 ROI다.</p>
+
+    <h3>C. 엔터프라이즈 에이전트 플랫폼 (사내 표준 후보)</h3>
+    <p><strong>→ vLLM SR을 PoC 대상으로.</strong> 조직 규모의 게이트웨이가 요구하는 것 — 의미기반 라우팅, 정책 as code, 결정 감사·리플레이, 데이터 경계, 안전 필터 — 을 아키텍처 수준에서 갖춘 유일한 후보다. WRP(Workload-Router-Pool) 논문은 사내 PoC 설계의 골격으로 쓸 만하다. 리스크는 0.x API churn과 Envoy 운영부담 — 그래서 <em>표준 채택이 아니라 통제된 PoC</em>로 시작한다.</p>
+
+    <h2><span class="n">05</span>도입 전 거버넌스 체크리스트</h2>
+    <p>어느 도구든 사내에 들이기 전 통과해야 하는 관문. 하나라도 막히면 도입이 아니라 실험으로 격하한다.</p>
+    <ul>
+      <li><strong>키 격리</strong> — BYOK 키는 게이트웨이 전용 vault/시크릿에. 개인 키 재사용·평문 저장 금지. 유출 시 폭발 반경 산정.</li>
+      <li><strong>아웃바운드 통제</strong> — 게이트웨이가 어느 외부 도메인으로 나가는지 화이트리스트. 민감 요청의 프로바이더 경유 금지 규칙.</li>
+      <li><strong>결정 감사</strong> — 요청→선택모델→근거를 로그로. 사고 복기 가능해야 도입 가치가 있다.</li>
+      <li><strong>폴백 SLO</strong> — 폴백이 품질 저하로 이어질 때의 허용선 정의. "싸게 됐지만 답이 틀렸다"를 측정.</li>
+      <li><strong>라이선스·데이터 약관</strong> — 무료티어 프로바이더의 데이터 학습 정책 확인(무료 = 데이터로 지불일 수 있음).</li>
+      <li><strong>벤더 이탈 대비</strong> — 0.x/개인 주도 프로젝트는 스냅샷 고정 + 우리 어댑터 뒤에 격리. 업스트림 급변에 서비스가 흔들리지 않게.</li>
+    </ul>
+
+    <h2><span class="n">06</span>결론</h2>
+    <div class="call blue">
+      <div class="tl">Bottom line</div>
+      <p style="margin:2px 0"><strong>OmniRoute는 쓰고, vLLM SR은 배우고, 우리 게이트웨이는 진화시킨다.</strong> OmniRoute는 개발 생산성 파일럿(자체호스팅·키 격리 전제)으로 당장 이득이 나는 도구다. vLLM SR은 엔터프라이즈 컨트롤 플레인의 참조 아키텍처이며 사내 PoC의 교본이다. 그리고 그 사이에서 우리 llm.cocy.io를 <em>얇은 프록시에서 정책·폴백·관측성을 갖춘 컨트롤 플레인으로</em> 끌어올리는 것이, 게이트웨이 운영자 포지션에서 가장 큰 레버다.</p>
+    </div>
+    <p>도구를 고르는 일이 아니라, 우리가 어떤 컨트롤 플레인을 소유할지를 정하는 일이다. 단일 엔드포인트 뒤에 무엇을 세우느냐가 곧 플랫폼의 성격을 정한다.</p>
+
+    <div class="foot">
+      <div class="src">
+      출처 · 실측(2026-07-23):
+      <ul>
+        <li>vLLM Semantic Router — github.com/vllm-project/semantic-router (★5.0k · Apache-2.0 · v0.3) · vllm-sr.ai</li>
+        <li>OmniRoute — github.com/diegosouzapw/OmniRoute (★26.0k · MIT · v3.8.49, 2026-02 생성) · GitHub API 기준 contributor ≈278</li>
+        <li>자체 게이트웨이 — llm.cocy.io (Cloudflare Worker + AI Gateway) 운영 구성</li>
+      </ul>
+      스타·라이선스·생성일은 GitHub API 실측값. 성능·비용 절감 수치는 벤더 주장이며 사내 실측 전까지 검증 대상으로 취급.
+      </div>
+      <p style="margin-top:16px">© 2026 cocy · LLM Gateway 도입 검토 · <a href="https://page.cocy.io">page.cocy.io</a></p>
+    </div>
+  </main>
+</div>
+</body>
+</html>
