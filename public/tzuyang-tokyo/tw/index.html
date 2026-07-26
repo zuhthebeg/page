@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>韓綜《Tzuyang幾餐》(쯔양몇끼)東京篇14家美食全地圖 · page.cocy.io</title>
+<meta name="description" content="韓國ENA/Netflix綜藝《Tzuyang幾餐》(쯔양몇끼)東京篇造訪的14家餐廳完整清單:店名、日文地址、招牌菜與座標,全部整理成互動地圖。資料來源為ENA官方公開的「東京美食清單1~3彈」。" />
+<link rel="canonical" href="https://page.cocy.io/tzuyang-tokyo/tw/" />
+<link rel="alternate" hreflang="ko" href="https://page.cocy.io/tzuyang-tokyo/" />
+<link rel="alternate" hreflang="en" href="https://page.cocy.io/tzuyang-tokyo/en/" />
+<link rel="alternate" hreflang="ja" href="https://page.cocy.io/tzuyang-tokyo/ja/" />
+<link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/tzuyang-tokyo/tw/" />
+<link rel="alternate" hreflang="x-default" href="https://page.cocy.io/tzuyang-tokyo/en/" />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="zh_TW" />
+<meta property="og:title" content="《Tzuyang幾餐》東京篇14家店 — 地圖總整理" />
+<meta property="og:description" content="店名、日文地址、招牌菜、座標一次收錄,ENA官方清單全14家。" />
+<meta property="og:url" content="https://page.cocy.io/tzuyang-tokyo/tw/" />
+<meta property="og:image" content="https://page.cocy.io/tzuyang-tokyo/og.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="《Tzuyang幾餐》東京篇14家店 — 地圖總整理" />
+<meta name="twitter:description" content="店名、日文地址、招牌菜、座標一次收錄,ENA官方清單全14家。" />
+<meta name="twitter:image" content="https://page.cocy.io/tzuyang-tokyo/og.jpg" />
+<meta property="article:published_time" content="2026-07-26" />
+<meta property="article:modified_time" content="2026-07-26" />
+<meta name="author" content="cocy" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../vendor/leaflet.css" />
+<style>
+:root{--display:"Noto Serif TC",serif;--body:"Noto Sans TC",sans-serif;--mono:"JetBrains Mono",monospace}
+:root{
+  --bg:#f5eddc; --paper:#fdf7ea; --ink:#2a1f16; --ink-soft:#5c4c3c; --muted:#94805f;
+  --lacquer:#a52a1c; --lacquer-deep:#7e1c12; --gold:#c2932f; --gold-soft:#e8d9ae;
+  --good:#3f7d4f; --l1:#b93425; --l2:#b8860b; --l3:#3f7d4f;
+  --line:rgba(42,31,22,.16); --line-soft:rgba(42,31,22,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:400;line-height:1.85;-webkit-font-smoothing:antialiased}
+b{font-weight:700;color:var(--ink)}
+a{color:var(--lacquer);text-decoration:none;border-bottom:1px solid rgba(165,42,28,.35)}
+
+/* ── hero band ── */
+.hero-band{position:relative;background:
+  radial-gradient(120% 90% at 85% 10%,#c23a28 0%,var(--lacquer) 45%,var(--lacquer-deep) 100%);
+  color:#f9edd8;overflow:hidden}
+.hero-band::before{content:"";position:absolute;inset:0;opacity:.13;pointer-events:none;
+  background-image:radial-gradient(circle at 50% 110%, transparent 38px, rgba(249,237,216,.5) 39px, transparent 41px);
+  background-size:88px 44px}
+.hero-band::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+.hero-in{position:relative;max-width:1080px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:end;gap:0 clamp(10px,3vw,40px);padding:clamp(44px,6vw,64px) clamp(20px,4vw,48px) 0;z-index:2}
+.hero-copy{padding-bottom:clamp(28px,5vw,56px)}
+.hero-kicker{font-family:var(--mono);font-size:.68rem;letter-spacing:.34em;text-transform:uppercase;color:var(--gold-soft);display:flex;align-items:center;gap:.7rem}
+.hero-kicker::before{content:"";width:26px;height:1px;background:var(--gold)}
+.hero-band h1{font-family:var(--display);font-weight:700;font-size:clamp(2.1rem,6vw,4rem);line-height:1.12;margin:.7rem 0 1rem;color:#fdf4e0;text-shadow:0 3px 18px rgba(0,0,0,.25)}
+.hero-band h1 .accent{color:var(--gold-soft)}
+.hero-lead{font-size:clamp(.92rem,1.6vw,1.02rem);line-height:1.85;color:#f3dfc2;max-width:52ch}
+.hero-lead b{color:#fff;font-weight:700}
+.hero-meta{display:flex;flex-wrap:wrap;gap:.45rem 1.3rem;margin-top:1.5rem;font-family:var(--mono);font-size:.74rem;color:#e5c99a}
+.hero-meta b{color:#fff;font-weight:500}
+.hero-art{position:relative;align-self:end;line-height:0}
+.hero-art img{width:100%;max-width:430px;display:block;margin:0 auto;
+  filter:drop-shadow(0 18px 40px rgba(0,0,0,.4));
+  -webkit-mask-image:linear-gradient(180deg,#000 82%,transparent 100%);mask-image:linear-gradient(180deg,#000 82%,transparent 100%)}
+.hero-num{position:absolute;right:clamp(8px,2vw,30px);top:8px;font-family:var(--display);font-weight:700;font-size:clamp(6rem,16vw,11rem);line-height:1;color:rgba(249,237,216,.1);z-index:1;user-select:none}
+@media(max-width:720px){
+  .hero-in{grid-template-columns:1fr}
+  .hero-copy{padding-bottom:0}
+  .hero-art{margin-top:1.2rem}
+  .hero-art img{max-width:78%;-webkit-mask-image:linear-gradient(180deg,#000 78%,transparent 100%);mask-image:linear-gradient(180deg,#000 78%,transparent 100%)}
+}
+
+/* ── ticker ── */
+.ticker{background:var(--ink);color:var(--gold-soft);overflow:hidden;white-space:nowrap;border-top:3px solid var(--gold);position:relative;z-index:3}
+.ticker-track{display:inline-flex;gap:2.6rem;padding:.55rem 0;font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;animation:tick 38s linear infinite}
+.ticker-track span{display:inline-flex;align-items:center;gap:2.6rem}
+.ticker-track i{font-style:normal;color:var(--gold);font-size:.6rem}
+@keyframes tick{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.ticker-track{animation:none}}
+
+/* ── stats ── */
+.stats{max-width:1080px;margin:clamp(18px,3vw,28px) auto 0;position:relative;z-index:4;padding:0 clamp(16px,4vw,48px)}
+.stats-in{background:var(--paper);border:1.5px solid var(--ink);border-radius:12px;box-shadow:6px 6px 0 var(--gold-soft);display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden}
+.stat{padding:1.1rem 1rem 1rem;text-align:center;position:relative}
+.stat+.stat::before{content:"";position:absolute;left:0;top:18%;bottom:18%;width:1px;background:var(--line-soft)}
+.stat .v{font-family:var(--display);font-weight:700;font-size:clamp(1.3rem,3.4vw,2rem);color:var(--lacquer);line-height:1.15}
+.stat .k{font-size:.72rem;color:var(--muted);letter-spacing:.05em;margin-top:.15rem}
+@media(max-width:560px){.stats-in{grid-template-columns:repeat(2,1fr)}.stat:nth-child(3)::before{display:none}}
+
+/* ── body doc ── */
+.doc{max-width:1080px;margin:0 auto;padding:clamp(28px,4vw,56px) clamp(20px,4vw,48px) clamp(40px,5vw,72px)}
+section[data-block]{margin-top:clamp(2.6rem,5vw,4rem)}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(1.4rem,2.6vw,1.8rem);margin-bottom:1.1rem;display:flex;align-items:baseline;gap:.75rem}
+h2 .n{font-family:var(--display);font-size:clamp(1.7rem,3vw,2.3rem);color:transparent;-webkit-text-stroke:1.4px var(--lacquer);font-weight:700;line-height:1}
+h2::after{content:"";flex:1;height:1px;background:var(--line-soft);margin-left:.4rem;align-self:center}
+.callout{background:#f8efdb;border:1px solid var(--line-soft);border-left:4px solid var(--gold);border-radius:8px;padding:1.05rem 1.25rem;margin:1.1rem 0;font-size:.93rem;color:var(--ink-soft)}
+.callout.warn{border-left-color:var(--lacquer);background:#f9e9df}
+.callout b{color:var(--lacquer)}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+
+/* ── filters ── */
+.filters{display:flex;flex-wrap:wrap;gap:.5rem;margin:.2rem 0 1rem}
+.fbtn{font-family:var(--body);font-size:.85rem;font-weight:500;padding:.46rem 1rem;border-radius:24px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink-soft);cursor:pointer;transition:.15s;display:flex;align-items:center;gap:.45rem}
+.fbtn .dot{width:9px;height:9px;border-radius:50%;background:var(--muted)}
+.fbtn[data-k="1"] .dot{background:var(--l1)}
+.fbtn[data-k="2"] .dot{background:var(--l2)}
+.fbtn[data-k="3"] .dot{background:var(--l3)}
+.fbtn:hover{border-color:var(--gold);transform:translateY(-1px)}
+.fbtn.on{background:var(--ink);color:#f5eddc;border-color:var(--ink)}
+.fbtn.on .dot{box-shadow:0 0 0 2px rgba(245,237,220,.4)}
+
+/* ── map ── */
+#map{height:min(66vh,540px);border-radius:12px;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--gold-soft);z-index:1;background:#eae2cf}
+.leaflet-container{font-family:var(--body)}
+.pin{display:flex;align-items:center;justify-content:center;width:29px;height:29px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);color:#fff;font-family:var(--mono);font-size:.78rem;font-weight:700;box-shadow:0 3px 9px rgba(0,0,0,.35);border:2px solid rgba(255,252,240,.9)}
+.pin span{transform:rotate(45deg)}
+.pin.l1{background:var(--l1)}.pin.l2{background:var(--l2)}.pin.l3{background:var(--l3)}
+.pin.dim{opacity:.25}
+.pop{font-family:var(--body);min-width:185px}
+.pop .pn{font-weight:700;font-size:1rem;color:var(--ink);display:block;margin-bottom:.1rem}
+.pop .pj{font-size:.78rem;color:var(--muted);display:block;margin-bottom:.35rem}
+.pop .pm{font-size:.85rem;color:var(--ink-soft);display:block;margin-bottom:.5rem}
+.pop a{font-size:.8rem;font-family:var(--mono)}
+.leaflet-popup-content{margin:12px 14px}
+.leaflet-popup-content-wrapper{border-radius:10px;border:1.5px solid var(--ink)}
+
+/* ── cards ── */
+.cards{display:grid;gap:1rem;margin-top:1.3rem}
+.card{border:1.5px solid var(--line);border-radius:12px;background:var(--paper);padding:1.15rem 1.25rem;display:grid;grid-template-columns:42px 1fr;gap:.2rem 1rem;align-items:start;transition:transform .18s cubic-bezier(.2,.7,.3,1),box-shadow .18s,border-color .18s;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;opacity:.85}
+.card.l1::before{background:var(--l1)}.card.l2::before{background:var(--l2)}.card.l3::before{background:var(--l3)}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 30px -16px rgba(42,31,22,.4);border-color:var(--gold)}
+.card.hide{display:none}
+.card .idx{grid-row:1/span 3;width:36px;height:36px;border-radius:50% 50% 50% 6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.85rem;font-weight:700;color:#fff;transform:rotate(-45deg);margin-top:.15rem}
+.card .idx span{transform:rotate(45deg)}
+.card.l1 .idx{background:var(--l1)}.card.l2 .idx{background:var(--l2)}.card.l3 .idx{background:var(--l3)}
+.card .top{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem}
+.card .nm{font-family:var(--display);font-weight:700;font-size:1.22rem;color:var(--ink);line-height:1.3}
+.card .ja{font-size:.8rem;color:var(--muted)}
+.card .ep{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .55rem;border-radius:12px;white-space:nowrap}
+.card.l1 .ep{background:rgba(185,52,37,.12);color:var(--l1)}
+.card.l2 .ep{background:rgba(184,134,11,.15);color:#8f6a09}
+.card.l3 .ep{background:rgba(63,125,79,.13);color:var(--l3)}
+.card .menu{font-size:.96rem;color:var(--ink);margin-top:.3rem;font-weight:500}
+.card .menu .ja2{color:var(--muted);font-size:.82rem;font-weight:400}
+.card .info{font-size:.84rem;color:var(--ink-soft);margin-top:.45rem;line-height:1.7}
+.card .info .lb{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-right:.4rem;font-weight:500}
+.card .acts{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.75rem}
+.card .acts a,.card .acts button{font-family:var(--body);font-size:.79rem;font-weight:500;padding:.36rem .8rem;border-radius:18px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink-soft);cursor:pointer;text-decoration:none;transition:.14s}
+.card .acts a:hover,.card .acts button:hover{border-color:var(--lacquer);color:var(--lacquer);background:#fff}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .5s cubic-bezier(.2,.7,.3,1),transform .5s cubic-bezier(.2,.7,.3,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+/* records */
+.recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1rem;margin-top:1.2rem}
+.rec{background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:1.05rem 1.15rem;font-size:.9rem;color:var(--ink-soft);line-height:1.75;position:relative}
+.rec b{display:block;font-family:var(--display);font-weight:700;font-size:1.02rem;color:var(--lacquer);margin-bottom:.3rem}
+.foodbanner{margin-top:1.4rem;border-radius:12px;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--gold-soft);overflow:hidden;line-height:0}
+.foodbanner img{width:100%;display:block}
+
+/* srcs / footer */
+.srcs{font-size:.86rem;color:var(--ink-soft)}
+.srcs li{margin-bottom:.5rem;list-style:none;padding-left:1.2rem;position:relative}
+.srcs li::before{content:"—";position:absolute;left:0;color:var(--gold);font-size:.8rem}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1.5px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(12px);background:var(--ink);color:#f5eddc;font-size:.85rem;padding:.62rem 1.15rem;border-radius:22px;opacity:0;pointer-events:none;transition:.2s;z-index:999}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* language switcher */
+.langbar{position:absolute;top:0;right:0;left:0;z-index:5;display:flex;gap:.35rem;justify-content:flex-end;padding:14px clamp(16px,3vw,32px)}
+.langbar .lang{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;padding:.24rem .66rem;border-radius:14px;border:1px solid rgba(249,237,216,.35);color:#f0dcbb;background:rgba(0,0,0,.14);text-decoration:none}
+.langbar .lang:hover{border-color:var(--gold);color:#fff}
+.langbar .lang.on{background:#f5eddc;border-color:#f5eddc;color:var(--lacquer-deep);font-weight:500}
+
+/* side art */
+.sidewrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,240px);gap:1.4rem;align-items:start}
+.side-art{line-height:0;position:sticky;top:20px}
+.side-art img{width:100%;border-radius:12px;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--gold-soft)}
+.side-art .cap{line-height:1.5;font-size:.72rem;color:var(--muted);font-family:var(--mono);margin-top:.6rem;text-align:center}
+@media(max-width:700px){.sidewrap{grid-template-columns:1fr}.side-art{position:static;max-width:230px;margin:0 auto}}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "《Tzuyang幾餐》東京篇14家店 — 地圖總整理", "description": "韓國ENA/Netflix綜藝《Tzuyang幾餐》(쯔양몇끼)東京篇造訪的14家餐廳完整清單:店名、日文地址、招牌菜與座標,全部整理成互動地圖。資料來源為ENA官方公開的「東京美食清單1~3彈」。", "url": "https://page.cocy.io/tzuyang-tokyo/tw/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/tzuyang-tokyo/tw/"}, "datePublished": "2026-07-26", "dateModified": "2026-07-26", "inLanguage": "zh-Hant", "image": "https://page.cocy.io/tzuyang-tokyo/og.jpg", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true, "about": {"@type": "TVSeries", "name": "쯔양몇끼", "alternateName": ["Tzuyang, How Many Meals?", "チュヤン何食"]}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "name": "《Tzuyang幾餐》東京篇14家店 — 地圖總整理", "numberOfItems": 14, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "Restaurant", "name": "イマカツ 六本木本店", "alternateName": "Imakatsu 六本木本店", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区六本木4-12-5 フェニキア ルクソス 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.664528, "longitude": 139.731506}, "servesCuisine": "ささみかつ", "url": "https://r.gnavi.co.jp/rgtmjm950000/"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "Restaurant", "name": "ラ ブティック ドゥ ジョエル・ロブション 六本木ヒルズ店", "alternateName": "Joël Robuchon 麵包舖 六本木之丘店", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区六本木6-10-1 六本木ヒルズ ヒルサイド 2F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.660206, "longitude": 139.729202}, "servesCuisine": "ローズクロワッサン", "url": "https://tabelog.com/tokyo/A1307/A130701/13020237/"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "Restaurant", "name": "赤身専門 にくがとう 六本木ヒルズ店", "alternateName": "赤身專門 Nikugatou 六本木之丘店", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区六本木6-10-1 六本木ヒルズ ウェストウォーク 5F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.660206, "longitude": 139.729202}, "servesCuisine": "赤身焼肉", "url": "https://www.roppongihills.com/gourmet_shops/0299.html"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "Restaurant", "name": "マロリーポークステーキ 中目黒店", "alternateName": "Mallory 豬排 中目黑店", "address": {"@type": "PostalAddress", "streetAddress": "東京都目黒区上目黒3-5-20", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.642349, "longitude": 139.696548}, "servesCuisine": "ポークステーキ", "url": "https://mallorypork.com/nakameguro/"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "Restaurant", "name": "原宿 鳥久", "alternateName": "原宿 鳥久", "address": {"@type": "PostalAddress", "streetAddress": "東京都渋谷区神宮前3-27-17 T.S TOW BLDG 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.671791, "longitude": 139.708618}, "servesCuisine": "焼鳥おまかせコース", "url": "https://tabelog.com/tokyo/A1306/A130601/13004738/"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "Restaurant", "name": "くいしんぼう がぶ", "alternateName": "Kuishinbou Gabu(がぶ)", "address": {"@type": "PostalAddress", "streetAddress": "東京都品川区小山3-2-3", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.620518, "longitude": 139.702911}, "servesCuisine": "がぶ丼", "url": "https://retty.me/area/PRE13/ARE13/SUB705/100001692822/"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "Restaurant", "name": "松阪牛炭火焼肉 東海亭", "alternateName": "松阪牛炭火燒肉 東海亭", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区西麻布1-13-16", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.6608514, "longitude": 139.7232977}, "servesCuisine": "松阪牛A5炭火焼肉", "url": "http://www.toukaitei.jp/"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "Restaurant", "name": "唐揚げ 一筋", "alternateName": "唐揚一筋", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区赤坂3-20-9 岩澤ビル 2F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.6762653, "longitude": 139.7360961}, "servesCuisine": "唐揚げ丼 / 食べ放題", "url": "https://www.hotpepper.jp/strJ001154782/"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "Restaurant", "name": "赤坂ふきぬき 本店", "alternateName": "赤坂 Fukinuki 本店", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区赤坂3-6-11", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.67331, "longitude": 139.738348}, "servesCuisine": "関東風ひつまぶし / 大うな丼 / 骨せんべい / う巻き", "url": "https://www.fukinuki.jp/"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "Restaurant", "name": "支那そば やぐら亭", "alternateName": "支那そば 矢倉亭", "address": {"@type": "PostalAddress", "streetAddress": "東京都渋谷区本町2-32-2", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.683567, "longitude": 139.682114}, "servesCuisine": "宇宙一辛い味噌らーめん ほたる", "url": "https://ramendb.supleks.jp/s/5472.html"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "Restaurant", "name": "鉄板中華 青山シャンウェイ 本店", "alternateName": "鐵板中華 青山Shanway 本店", "address": {"@type": "PostalAddress", "streetAddress": "東京都渋谷区千駄ヶ谷4-29-12 北参道ダイヤモンドパレス 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.681152, "longitude": 139.703934}, "servesCuisine": "柔らか蒸し鶏のねぎ醤油 / 毛沢東スペアリブ / 黒炒飯", "url": "http://shanway.jp/"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "Restaurant", "name": "辛ちゃん 1号店", "alternateName": "辛Chan 1號店", "address": {"@type": "PostalAddress", "streetAddress": "東京都新宿区大久保1-1-9 新宿フラワーハイホーム 1F 107", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.698269, "longitude": 139.705948}, "servesCuisine": "豚焼き肉 / カンジャンセウ / キムチチゲ", "url": "https://www.wowsokb.jp/sinchang/"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "Restaurant", "name": "ミート矢澤 五反田", "alternateName": "Meat矢澤 五反田", "address": {"@type": "PostalAddress", "streetAddress": "東京都品川区西五反田2-15-13 ニューハイツ西五反田 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.6260151, "longitude": 139.7206051}, "servesCuisine": "ハンバーグ / シャトーブリアンステーキ", "url": "https://maps.app.goo.gl/kc93D8j6SitGErm97"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "Restaurant", "name": "スシロー 五反田店", "alternateName": "壽司郎 五反田店", "address": {"@type": "PostalAddress", "streetAddress": "東京都品川区西五反田1-3-8 五反田Placeビル B1", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.625572, "longitude": 139.722275}, "servesCuisine": "回転寿司 / うどん / プリン", "url": "https://www.akindo-sushiro.co.jp/"}}]}</script>
+</head>
+<body>
+
+<header class="hero-band">
+  <nav class="langbar"><a class="lang" href="https://page.cocy.io/tzuyang-tokyo/" hreflang="ko">한국어</a><a class="lang" href="https://page.cocy.io/tzuyang-tokyo/en/" hreflang="en">English</a><a class="lang" href="https://page.cocy.io/tzuyang-tokyo/ja/" hreflang="ja">日本語</a><a class="lang on" href="https://page.cocy.io/tzuyang-tokyo/tw/" hreflang="zh-Hant">繁體中文</a></nav>
+  <div class="hero-num">14</div>
+  <div class="hero-in">
+    <div class="hero-copy">
+      <div class="hero-kicker">FOOD MAP · Tzuyang 東京篇</div>
+      <h1>《Tzuyang幾餐》<br><span class="accent">東京篇的14家店</span></h1>
+      <p class="hero-lead">韓國ENA綜藝<b>《Tzuyang幾餐》(쯔양몇끼,Netflix可收看)</b>東京篇造訪的店家,店名、日文地址、招牌菜、座標全部整理成地圖。節目裡把招牌都遮住了,但<b>ENA官方帳號在播出後以「東京美食清單1~3彈」直接公開了店名與地址</b>。本頁完整收錄那份清單(14家),並另行查證每一筆座標。</p>
+      <div class="hero-meta">
+        <span><b>整理</b> page.cocy.io · 2026-07-26</span>
+        <span><b>來源</b> ENA官方美食清單1~3彈</span>
+        <span><b>店家</b> 14家 · 全在東京</span>
+      </div>
+    </div>
+    <div class="hero-art"><img src="../img/hero.webp" alt="被拉麵、壽司、漢堡排包圍的大胃王角色插畫" width="832" height="1216" fetchpriority="high" /></div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true"><div class="ticker-track"><span><i>◆</i>炸雞里肌12人份<i>◆</i>玫瑰可頌<i>◆</i>和牛赤身燒肉<i>◆</i>2kg豬排<i>◆</i>串燒無菜單<i>◆</i>烤牛肉丼<i>◆</i>松阪牛A5<i>◆</i>唐揚吃到飽<i>◆</i>關東風鰻魚三吃<i>◆</i>宇宙第一辣拉麵<i>◆</i>蔥醬蒸雞<i>◆</i>醬油生蝦<i>◆</i>夏多布里昂<i>◆</i>壽司127盤</span><span><i>◆</i>炸雞里肌12人份<i>◆</i>玫瑰可頌<i>◆</i>和牛赤身燒肉<i>◆</i>2kg豬排<i>◆</i>串燒無菜單<i>◆</i>烤牛肉丼<i>◆</i>松阪牛A5<i>◆</i>唐揚吃到飽<i>◆</i>關東風鰻魚三吃<i>◆</i>宇宙第一辣拉麵<i>◆</i>蔥醬蒸雞<i>◆</i>醬油生蝦<i>◆</i>夏多布里昂<i>◆</i>壽司127盤</span></div></div>
+
+<div class="stats"><div class="stats-in"><div class="stat"><div class="v">14家</div><div class="k">登場店家全收錄</div></div><div class="stat"><div class="v">127盤</div><div class="k">迴轉壽司紀錄</div></div><div class="stat"><div class="v">¥9萬+</div><div class="k">一餐燒肉</div></div><div class="stat"><div class="v">103年</div><div class="k">最老鰻魚老舖</div></div></div></div>
+
+<main class="doc">
+  <section data-block="intro">
+    <div class="callout"><b>為什麼搜尋不到正確店家</b> — 因為節目遮了招牌,許多排在搜尋前面的部落格直接<b>拿真實存在但毫無關聯的東京店家</b>,附上地址和地圖當成正解。本頁不用那些二手推測,只採用ENA官方直接公開的清單。</div>
+  </section>
+
+  <section data-block="map">
+    <h2><span class="n">01</span> 地圖</h2>
+    <div class="filters" id="filters">
+      <button class="fbtn on" data-k="all">全部14家</button>
+      <button class="fbtn" data-k="1"><i class="dot"></i>1彈 · 秋成勳篇</button>
+      <button class="fbtn" data-k="2"><i class="dot"></i>2彈 · 金在中篇</button>
+      <button class="fbtn" data-k="3"><i class="dot"></i>3彈 · 最終日</button>
+    </div>
+    <div id="map"></div>
+    <p class="note" style="margin-top:.6rem">點圖釘看店家資訊。點下方卡片,地圖會移動到該店。</p>
+  </section>
+
+  <section data-block="list">
+    <h2><span class="n">02</span> 店家清單</h2>
+    <div class="sidewrap">
+      <div class="cards" id="cards"></div>
+      <aside class="side-art">
+        <img src="../img/sushi.webp" alt="疊起壽司盤的角色插畫" width="832" height="1216" loading="lazy" />
+        <div class="cap">127盤紀錄 · 壽司郎五反田</div>
+      </aside>
+    </div>
+  </section>
+
+  <section data-block="episodes">
+    <h2><span class="n">03</span> 節目中的紀錄</h2>
+    <div class="recs">
+      <div class="rec rv"><b>迴轉壽司127盤</b> — 壽司郎五反田店,外加烏龍麵和布丁</div>
+      <div class="rec rv"><b>一餐9萬日圓的燒肉</b> — 光是夏多布里昂150g就約1萬4千日圓</div>
+      <div class="rec rv"><b>3kg豬排</b> — Mallory豬排。不過目前公開菜單最大是2kg(奧林帕斯),推測是節目特別加點</div>
+      <div class="rec rv"><b>0.5辣就超辣</b> — 矢倉亭的「宇宙第一辣味噌拉麵 螢」,辣椒直接揉進麵條裡</div>
+      <div class="rec rv"><b>東京最高額的一餐</b> — Meat矢澤五反田,秋成勳15年以上的老主顧店</div>
+      <div class="rec rv"><b>《孤獨的美食家》場景</b> — Shanway出現在第4季第9集(2021年從神宮前搬到北參道)</div>
+    </div>
+    <div class="foodbanner rv"><img src="../img/food.webp" alt="拉麵・鰻魚丼・漢堡排插畫" width="1216" height="832" loading="lazy" /></div>
+  </section>
+
+  <section data-block="caveat">
+    <h2><span class="n">04</span> 出發前須知</h2>
+    <div class="callout warn">節目播出後<b>排隊人潮可能變多</b>。Fukinuki、東海亭、鳥久這類預約制或套餐為主的店,出發前請先確認是否需要訂位。營業時間、公休日與價格可能變動,建議再到各店官方頁面確認一次。</div>
+    <ul class="srcs">
+      <li><b>座標來源</b> — 4家為OpenStreetMap店面POI,其餘10家取自日本國土地理院(GSI)地址檢索API的街區座標。</li>
+      <li><b>座標相同的2家</b> — Joël Robuchon與Nikugatou都在六本木之丘(六本木6-10-1)內,樓層不同。</li>
+      <li><b>地址更正</b> — ENA把辛Chan的地址寫成「新宿Flower大樓」,實際建物名稱是<b>新宿フラワーハイホーム</b>1F 107室。</li>
+      <li><b>與集數的對應</b> — 三份清單依「秋成勳篇→金在中篇→東京最終日」順序發布,與播出集數的對應為依發布順序與新聞稿的推定。</li>
+    </ul>
+  </section>
+
+  <section data-block="sources">
+    <h2><span class="n">05</span> 資料來源</h2>
+    <ul class="srcs">
+      <li><a href="https://www.facebook.com/channel.ena/posts/1614396747354408" target="_blank" rel="noopener">ENA官方 — 東京美食清單1彈</a></li>
+      <li><a href="https://www.facebook.com/channel.ena/posts/1618332886960794" target="_blank" rel="noopener">ENA官方 — 東京美食清單2彈</a></li>
+      <li><a href="https://www.facebook.com/channel.ena/posts/1625172059610210" target="_blank" rel="noopener">ENA官方 — 東京美食清單3彈</a></li>
+      <li><a href="https://ktena.co.kr/bbs/board.php?bo_table=variety&amp;wr_id=143" target="_blank" rel="noopener">ENA節目頁</a> · <a href="https://www.netflix.com/kr/title/82929668" target="_blank" rel="noopener">Netflix</a></li>
+      <li>座標: <a href="https://msearch.gsi.go.jp/" target="_blank" rel="noopener">國土地理院地址檢索</a> · <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noopener">OSM Nominatim</a> · 地圖圖資 © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> 貢獻者</li>
+    </ul>
+  </section>
+
+  <div class="foot">
+    <span>page.cocy.io / tzuyang-tokyo</span>
+    <span>2026-07-26</span>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script src="../vendor/leaflet.js"></script>
+<script>
+const PLACES=[{"l": 1, "no": 1, "name": "Imakatsu 六本木本店", "ja": "イマカツ 六本木本店", "menu": "炸雞里肌排(雞柳豬排)", "menuJa": "ささみかつ", "addr": "東京都港区六本木4-12-5 フェニキア ルクソス 1F", "area": "六本木・港區", "note": "", "lat": 35.664528, "lon": 139.731506, "url": "https://r.gnavi.co.jp/rgtmjm950000/"}, {"l": 1, "no": 2, "name": "Joël Robuchon 麵包舖 六本木之丘店", "ja": "ラ ブティック ドゥ ジョエル・ロブション 六本木ヒルズ店", "menu": "玫瑰可頌", "menuJa": "ローズクロワッサン", "addr": "東京都港区六本木6-10-1 六本木ヒルズ ヒルサイド 2F", "area": "六本木之丘・港區", "note": "", "lat": 35.660206, "lon": 139.729202, "url": "https://tabelog.com/tokyo/A1307/A130701/13020237/"}, {"l": 1, "no": 3, "name": "赤身專門 Nikugatou 六本木之丘店", "ja": "赤身専門 にくがとう 六本木ヒルズ店", "menu": "燒肉(和牛赤身)", "menuJa": "赤身焼肉", "addr": "東京都港区六本木6-10-1 六本木ヒルズ ウェストウォーク 5F", "area": "六本木之丘・港區", "note": "", "lat": 35.660206, "lon": 139.729202, "url": "https://www.roppongihills.com/gourmet_shops/0299.html"}, {"l": 1, "no": 4, "name": "Mallory 豬排 中目黑店", "ja": "マロリーポークステーキ 中目黒店", "menu": "豬排(270g~2kg)", "menuJa": "ポークステーキ", "addr": "東京都目黒区上目黒3-5-20", "area": "中目黑・目黑區", "note": "午餐 ¥1,000起 / 晚餐 ¥1,500起", "lat": 35.642349, "lon": 139.696548, "url": "https://mallorypork.com/nakameguro/"}, {"l": 1, "no": 5, "name": "原宿 鳥久", "ja": "原宿 鳥久", "menu": "串燒無菜單套餐", "menuJa": "焼鳥おまかせコース", "addr": "東京都渋谷区神宮前3-27-17 T.S TOW BLDG 1F", "area": "原宿・澀谷區", "note": "晚餐約 ¥12,000", "lat": 35.671791, "lon": 139.708618, "url": "https://tabelog.com/tokyo/A1306/A130601/13004738/"}, {"l": 2, "no": 1, "name": "Kuishinbou Gabu(がぶ)", "ja": "くいしんぼう がぶ", "menu": "烤牛肉丼", "menuJa": "がぶ丼", "addr": "東京都品川区小山3-2-3", "area": "武藏小山・品川區", "note": "180g ¥1,600 / 270g ¥2,300 / 453g ¥3,850", "lat": 35.620518, "lon": 139.702911, "url": "https://retty.me/area/PRE13/ARE13/SUB705/100001692822/"}, {"l": 2, "no": 2, "name": "松阪牛炭火燒肉 東海亭", "ja": "松阪牛炭火焼肉 東海亭", "menu": "松阪牛A5炭火燒肉", "menuJa": "松阪牛A5炭火焼肉", "addr": "東京都港区西麻布1-13-16", "area": "西麻布・港區", "note": "推薦套餐11道 ¥8,800", "lat": 35.6608514, "lon": 139.7232977, "url": "http://www.toukaitei.jp/"}, {"l": 2, "no": 3, "name": "唐揚一筋", "ja": "唐揚げ 一筋", "menu": "唐揚丼・唐揚吃到飽", "menuJa": "唐揚げ丼 / 食べ放題", "addr": "東京都港区赤坂3-20-9 岩澤ビル 2F", "area": "赤坂・港區", "note": "午餐 ~¥999 / 吃到飽 ¥3,000", "lat": 35.6762653, "lon": 139.7360961, "url": "https://www.hotpepper.jp/strJ001154782/"}, {"l": 2, "no": 4, "name": "赤坂 Fukinuki 本店", "ja": "赤坂ふきぬき 本店", "menu": "關東風鰻魚三吃・特大鰻魚丼・鰻骨仙貝・鰻魚玉子燒", "menuJa": "関東風ひつまぶし / 大うな丼 / 骨せんべい / う巻き", "addr": "東京都港区赤坂3-6-11", "area": "赤坂・港區", "note": "1923年創業老舖", "lat": 35.67331, "lon": 139.738348, "url": "https://www.fukinuki.jp/"}, {"l": 2, "no": 5, "name": "支那そば 矢倉亭", "ja": "支那そば やぐら亭", "menu": "宇宙第一辣味噌拉麵「螢」", "menuJa": "宇宙一辛い味噌らーめん ほたる", "addr": "東京都渋谷区本町2-32-2", "area": "初台・澀谷區", "note": "1辣約 ¥1,080", "lat": 35.683567, "lon": 139.682114, "url": "https://ramendb.supleks.jp/s/5472.html"}, {"l": 3, "no": 1, "name": "鐵板中華 青山Shanway 本店", "ja": "鉄板中華 青山シャンウェイ 本店", "menu": "蔥醬蒸雞・毛澤東排骨・黑炒飯", "menuJa": "柔らか蒸し鶏のねぎ醤油 / 毛沢東スペアリブ / 黒炒飯", "addr": "東京都渋谷区千駄ヶ谷4-29-12 北参道ダイヤモンドパレス 1F", "area": "北參道・澀谷區", "note": "《孤獨的美食家》拍攝店", "lat": 35.681152, "lon": 139.703934, "url": "http://shanway.jp/"}, {"l": 3, "no": 2, "name": "辛Chan 1號店", "ja": "辛ちゃん 1号店", "menu": "烤豬肉・醬油生蝦・泡菜鍋", "menuJa": "豚焼き肉 / カンジャンセウ / キムチチゲ", "addr": "東京都新宿区大久保1-1-9 新宿フラワーハイホーム 1F 107", "area": "新大久保・新宿區", "note": "醬油生蝦 ¥2,500", "lat": 35.698269, "lon": 139.705948, "url": "https://www.wowsokb.jp/sinchang/"}, {"l": 3, "no": 3, "name": "Meat矢澤 五反田", "ja": "ミート矢澤 五反田", "menu": "漢堡排・夏多布里昂牛排", "menuJa": "ハンバーグ / シャトーブリアンステーキ", "addr": "東京都品川区西五反田2-15-13 ニューハイツ西五反田 1F", "area": "五反田・品川區", "note": "節目中東京最高額的一餐", "lat": 35.6260151, "lon": 139.7206051, "url": "https://maps.app.goo.gl/kc93D8j6SitGErm97"}, {"l": 3, "no": 4, "name": "壽司郎 五反田店", "ja": "スシロー 五反田店", "menu": "迴轉壽司・烏龍麵・布丁", "menuJa": "回転寿司 / うどん / プリン", "addr": "東京都品川区西五反田1-3-8 五反田Placeビル B1", "area": "五反田・品川區", "note": "127盤紀錄", "lat": 35.625572, "lon": 139.722275, "url": "https://www.akindo-sushiro.co.jp/"}];
+const LABEL={"1": "1彈 · 秋成勳篇", "2": "2彈 · 金在中篇", "3": "3彈 · 最終日"};
+const UI={"lb_addr": "地址", "lb_area": "位置", "lb_note": "備註", "a_focus": "在地圖上看", "a_copy": "複製地址", "a_gmap": "Google地圖 ↗", "a_site": "店家資訊 ↗", "copied": "已複製地址", "copyfail": "複製失敗"};
+
+const map=L.map('map',{scrollWheelZoom:false}).setView([35.664,139.715],12);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+
+const gmapUrl=p=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.ja+' '+p.addr)}`;
+const markers=[];
+PLACES.forEach((p,i)=>{
+  const icon=L.divIcon({html:`<div class="pin l${p.l}"><span>${p.no}</span></div>`,className:'',iconSize:[29,29],iconAnchor:[14,27],popupAnchor:[0,-24]});
+  const m=L.marker([p.lat,p.lon],{icon}).addTo(map).bindPopup(
+    `<div class="pop"><b class="pn">${p.name}</b><span class="pj">${p.ja}</span><span class="pm">${p.menu}</span><a href="${gmapUrl(p)}" target="_blank" rel="noopener">${UI.a_gmap}</a></div>`);
+  m._li=p.l; markers.push(m);
+  m.on('click',()=>{const c=document.getElementById('c'+i); if(c) c.scrollIntoView({behavior:'smooth',block:'center'});});
+});
+map.fitBounds(L.featureGroup(markers).getBounds().pad(0.12));
+
+document.getElementById('cards').innerHTML=PLACES.map((p,i)=>`<div class="card rv l${p.l}" id="c${i}" data-i="${i}">
+  <div class="idx"><span>${p.no}</span></div>
+  <div class="top"><span class="nm">${p.name}</span><span class="ja">${p.ja}</span><span class="ep">${LABEL[p.l]}</span></div>
+  <div class="menu">${p.menu} <span class="ja2">${p.menuJa}</span></div>
+  <div class="info">
+    <div><span class="lb">${UI.lb_addr}</span>${p.addr}</div>
+    <div><span class="lb">${UI.lb_area}</span>${p.area}${p.note?` <span class="lb" style="margin-left:.6rem">${UI.lb_note}</span>${p.note}`:''}</div>
+    <div class="acts">
+      <button data-act="focus">${UI.a_focus}</button>
+      <button data-act="copy" data-v="${p.addr}">${UI.a_copy}</button>
+      <a href="${gmapUrl(p)}" target="_blank" rel="noopener">${UI.a_gmap}</a>
+      ${p.url?`<a href="${p.url}" target="_blank" rel="noopener">${UI.a_site}</a>`:''}
+    </div>
+  </div>
+</div>`).join('');
+
+const toast=document.getElementById('toast');let tt;
+const say=m=>{toast.textContent=m;toast.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove('on'),1800);};
+
+document.getElementById('cards').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  const i=+b.closest('.card').dataset.i;
+  if(b.dataset.act==='focus'){
+    document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'});
+    map.setView([PLACES[i].lat,PLACES[i].lon],17,{animate:true});
+    markers[i].openPopup();
+  } else {
+    navigator.clipboard.writeText(b.dataset.v).then(()=>say(UI.copied)).catch(()=>say(UI.copyfail));
+  }
+});
+
+document.getElementById('filters').addEventListener('click',e=>{
+  const b=e.target.closest('.fbtn'); if(!b) return;
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.toggle('on',x===b));
+  const k=b.dataset.k, shown=[];
+  markers.forEach((m,i)=>{
+    const on = k==='all' || String(m._li)===k;
+    const el=m.getElement(); if(el) el.querySelector('.pin').classList.toggle('dim',!on);
+    document.getElementById('c'+i).classList.toggle('hide',!on);
+    if(on) shown.push(m);
+  });
+  if(shown.length) map.fitBounds(L.featureGroup(shown).getBounds().pad(0.15));
+});
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

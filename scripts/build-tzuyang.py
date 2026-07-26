@@ -14,9 +14,23 @@ OUT = {
     "ko": "public/tzuyang-tokyo/index.html",
     "en": "public/tzuyang-tokyo/en/index.html",
     "ja": "public/tzuyang-tokyo/ja/index.html",
+    "tw": "public/tzuyang-tokyo/tw/index.html",
 }
-HREF = {"ko": BASE, "en": BASE + "en/", "ja": BASE + "ja/"}
-VENDOR = {"ko": "vendor", "en": "../vendor", "ja": "../vendor"}
+HREF = {"ko": BASE, "en": BASE + "en/", "ja": BASE + "ja/", "tw": BASE + "tw/"}
+VENDOR = {"ko": "vendor", "en": "../vendor", "ja": "../vendor", "tw": "../vendor"}
+IMGP = {"ko": "img/", "en": "../img/", "ja": "../img/", "tw": "../img/"}
+HREFLANG = {"ko": "ko", "en": "en", "ja": "ja", "tw": "zh-Hant"}
+OGLOC = {"ko": "ko_KR", "en": "en_US", "ja": "ja_JP", "tw": "zh_TW"}
+FONTS = {
+    "ko": ("https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap",
+           '"Gowun Batang","Noto Sans KR",serif', '"Noto Sans KR",sans-serif'),
+    "en": ("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap",
+           '"Fraunces",serif', '"Noto Sans KR",sans-serif'),
+    "ja": ("https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap",
+           '"Shippori Mincho",serif', '"Noto Sans JP",sans-serif'),
+    "tw": ("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap",
+           '"Noto Serif TC",serif', '"Noto Sans TC",sans-serif'),
+}
 
 # ── 가게 데이터 (ENA 공식 「도쿄 맛집리스트 1~3탄」 기준) ────────────────────
 PLACES = [
@@ -144,6 +158,24 @@ PLACES = [
       jp_note="127皿完食"),
 ]
 
+# 대만 번체 번역 (키 = (리스트탄, 번호))
+TW = {
+ (1,1): dict(name="Imakatsu 六本木本店", menu="炸雞里肌排(雞柳豬排)", area="六本木・港區", note=""),
+ (1,2): dict(name="Joël Robuchon 麵包舖 六本木之丘店", menu="玫瑰可頌", area="六本木之丘・港區", note=""),
+ (1,3): dict(name="赤身專門 Nikugatou 六本木之丘店", menu="燒肉(和牛赤身)", area="六本木之丘・港區", note=""),
+ (1,4): dict(name="Mallory 豬排 中目黑店", menu="豬排(270g~2kg)", area="中目黑・目黑區", note="午餐 ¥1,000起 / 晚餐 ¥1,500起"),
+ (1,5): dict(name="原宿 鳥久", menu="串燒無菜單套餐", area="原宿・澀谷區", note="晚餐約 ¥12,000"),
+ (2,1): dict(name="Kuishinbou Gabu(がぶ)", menu="烤牛肉丼", area="武藏小山・品川區", note="180g ¥1,600 / 270g ¥2,300 / 453g ¥3,850"),
+ (2,2): dict(name="松阪牛炭火燒肉 東海亭", menu="松阪牛A5炭火燒肉", area="西麻布・港區", note="推薦套餐11道 ¥8,800"),
+ (2,3): dict(name="唐揚一筋", menu="唐揚丼・唐揚吃到飽", area="赤坂・港區", note="午餐 ~¥999 / 吃到飽 ¥3,000"),
+ (2,4): dict(name="赤坂 Fukinuki 本店", menu="關東風鰻魚三吃・特大鰻魚丼・鰻骨仙貝・鰻魚玉子燒", area="赤坂・港區", note="1923年創業老舖"),
+ (2,5): dict(name="支那そば 矢倉亭", menu="宇宙第一辣味噌拉麵「螢」", area="初台・澀谷區", note="1辣約 ¥1,080"),
+ (3,1): dict(name="鐵板中華 青山Shanway 本店", menu="蔥醬蒸雞・毛澤東排骨・黑炒飯", area="北參道・澀谷區", note="《孤獨的美食家》拍攝店"),
+ (3,2): dict(name="辛Chan 1號店", menu="烤豬肉・醬油生蝦・泡菜鍋", area="新大久保・新宿區", note="醬油生蝦 ¥2,500"),
+ (3,3): dict(name="Meat矢澤 五反田", menu="漢堡排・夏多布里昂牛排", area="五反田・品川區", note="節目中東京最高額的一餐"),
+ (3,4): dict(name="壽司郎 五反田店", menu="迴轉壽司・烏龍麵・布丁", area="五反田・品川區", note="127盤紀錄"),
+}
+
 SRC = {
     "l1": "https://www.facebook.com/channel.ena/posts/1614396747354408",
     "l2": "https://www.facebook.com/channel.ena/posts/1618332886960794",
@@ -159,7 +191,12 @@ T = {
  desc="ENA·넷플릭스 예능 「쯔양몇끼」 일본 도쿄편에 나온 맛집 14곳을 상호·주소·대표메뉴와 함께 지도에 정리했습니다. ENA 공식 맛집리스트 1~3탄 전체.",
  ogt="쯔양몇끼 도쿄편 맛집 14곳 — 지도로 정리",
  ogd="ENA 공식 맛집리스트 1~3탄 전체를 상호·일본어 주소·대표메뉴·좌표까지 지도에 찍어 정리했습니다.",
- kicker="FOOD MAP · 쯔양몇끼 도쿄편", h1="쯔양몇끼 도쿄 맛집 14곳",
+ kicker="FOOD MAP · 쯔양몇끼 도쿄편", h1='쯔양몇끼<br><span class="accent">도쿄 맛집 14곳</span>',
+ stats=[("14곳","등장 가게 전부"),("127접시","회전초밥 기록"),("¥90,000+","야키니쿠 한 끼"),("103년","최고령 장어 노포")],
+ ticker=["닭안심카츠 12인분","장미향 크루아상","와규 붉은살 야키니쿠","돼지 스테이크 2kg","야키토리 오마카세","로스트비프 덮밥","마츠자카규 A5","가라아게 뷔페","관동풍 히츠마부시","우주에서 제일 매운 라멘","파간장 찜닭","간장새우","샤토브리앙","초밥 127접시"],
+ art_hero="먹방 중인 캐릭터 일러스트 — 라멘과 초밥, 함박스테이크에 둘러싸인 모습",
+ art_side="초밥 접시를 쌓아 올린 캐릭터 일러스트", art_side_cap="127접시의 기록 · 스시로 고탄다",
+ art_food="라멘 · 장어덮밥 · 함박스테이크 일러스트",
  lead='ENA 예능 <b>「쯔양몇끼」</b> 일본 도쿄편에 나온 가게들을 상호·일본어 주소·대표메뉴·좌표까지 정리하고 지도에 찍었습니다. 방송에서는 간판을 가렸지만, <b>ENA 공식 채널이 방송 후 「도쿄 맛집리스트 1~3탄」으로 상호와 주소를 직접 공개</b>했습니다. 그 리스트 전체(14곳)를 그대로 옮기고 좌표만 따로 확인했습니다.',
  m1="정리", m1v="page.cocy.io · " + DATE, m2="출처", m2v="ENA 공식 맛집리스트 1~3탄",
  m3="가게", m3v="14곳 · 전부 도쿄",
@@ -192,7 +229,12 @@ T = {
  desc="Every restaurant visited in the Tokyo episodes of the Korean show “Tzuyang, How Many Meals?” (ENA / Netflix), with real names, Japanese addresses, signature dishes and an interactive map. Based on ENA's own official lists.",
  ogt="Tzuyang Tokyo Food Map — all 14 restaurants",
  ogd="Real names, Japanese addresses, signature dishes and coordinates for every stop of the Tokyo trip.",
- kicker="FOOD MAP · TZUYANG IN TOKYO", h1="Tzuyang's Tokyo: All 14 Restaurants",
+ kicker="FOOD MAP · TZUYANG IN TOKYO", h1='Tzuyang\'s Tokyo<br><span class="accent">All 14 Restaurants</span>',
+ stats=[("14","restaurants mapped"),("127","sushi plates"),("¥90k+","one yakiniku meal"),("103 yrs","oldest eel house")],
+ ticker=["12 servings of chicken katsu","rose croissant","lean wagyu yakiniku","2kg pork steak","yakitori omakase","roast beef bowl","A5 Matsusaka beef","karaage buffet","Kanto hitsumabushi","the spiciest ramen in the universe","steamed chicken in scallion soy","soy shrimp","chateaubriand","127 plates of sushi"],
+ art_hero="Illustration of a mukbang character surrounded by ramen, sushi and hamburg steak",
+ art_side="Character stacking sushi plates", art_side_cap="The 127-plate record · Sushiro Gotanda",
+ art_food="Illustration of ramen, eel bowl and hamburg steak",
  lead='Every restaurant from the Tokyo episodes of the Korean variety show <b>“Tzuyang, How Many Meals?”</b> (ENA / Netflix), with real names, Japanese addresses, signature dishes and coordinates — plotted on a map. The show blurred the signboards, but <b>ENA later published the names and addresses itself</b> in three official “Tokyo restaurant list” posts. This page reproduces those lists and adds verified coordinates.',
  m1="Compiled", m1v="page.cocy.io · " + DATE, m2="Source", m2v="ENA official lists 1–3",
  m3="Places", m3v="14 · all in Tokyo",
@@ -225,7 +267,12 @@ T = {
  desc="ENA・Netflixの韓国バラエティ『チュヤン何食（쯔양몇끼）』東京編に登場した14店を、店名・住所・看板メニュー・座標つきで地図にまとめました。ENA公式「東京グルメリスト1〜3弾」全掲載店。",
  ogt="『チュヤン何食』東京編に出た14店 — 地図まとめ",
  ogd="ENA公式リスト1〜3弾の全14店を、店名・住所・看板メニュー・座標つきで地図に。",
- kicker="FOOD MAP · チュヤン何食 東京編", h1="『チュヤン何食』東京編の14店",
+ kicker="FOOD MAP · チュヤン何食 東京編", h1='『チュヤン何食』<br><span class="accent">東京編の14店</span>',
+ stats=[("14店","登場店舗すべて"),("127皿","回転寿司の記録"),("¥9万+","焼肉ひと食"),("103年","最古の鰻老舗")],
+ ticker=["ささみかつ12人前","ローズクロワッサン","赤身焼肉","ポークステーキ2kg","焼鳥おまかせ","ローストビーフ丼","松阪牛A5","唐揚げ食べ放題","関東風ひつまぶし","宇宙一辛いらーめん","蒸し鶏のねぎ醤油","カンジャンセウ","シャトーブリアン","寿司127皿"],
+ art_hero="ラーメン・寿司・ハンバーグに囲まれたモクバンキャラクターのイラスト",
+ art_side="寿司皿を積み上げるキャラクター", art_side_cap="127皿の記録 · スシロー五反田",
+ art_food="ラーメン・鰻丼・ハンバーグのイラスト",
  lead='ENAのバラエティ<b>『チュヤン何食』（쯔양몇끼）</b>東京編に登場した店を、店名・住所・看板メニュー・座標までまとめて地図に落としました。番組では看板を隠していましたが、<b>ENA公式が放送後に「東京グルメリスト1〜3弾」として店名と住所を自ら公開</b>しています。そのリスト全14店をそのまま採録し、座標だけ別途確認しました。',
  m1="作成", m1v="page.cocy.io · " + DATE, m2="出典", m2v="ENA公式グルメリスト1〜3弾",
  m3="店舗", m3v="14店 · すべて東京",
@@ -253,24 +300,68 @@ T = {
        f'<a href="{SRC["ena"]}" target="_blank" rel="noopener">ENA 番組ページ</a> · <a href="{SRC["nf"]}" target="_blank" rel="noopener">Netflix</a>',
        '座標: <a href="https://msearch.gsi.go.jp/" target="_blank" rel="noopener">国土地理院 住所検索</a> · <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noopener">OSM Nominatim</a> · 地図タイル © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'],
 ),
+"tw": dict(
+ lang="tw", title="韓綜《Tzuyang幾餐》(쯔양몇끼)東京篇14家美食全地圖 · page.cocy.io",
+ desc="韓國ENA/Netflix綜藝《Tzuyang幾餐》(쯔양몇끼)東京篇造訪的14家餐廳完整清單:店名、日文地址、招牌菜與座標,全部整理成互動地圖。資料來源為ENA官方公開的「東京美食清單1~3彈」。",
+ ogt="《Tzuyang幾餐》東京篇14家店 — 地圖總整理",
+ ogd="店名、日文地址、招牌菜、座標一次收錄,ENA官方清單全14家。",
+ kicker="FOOD MAP · Tzuyang 東京篇", h1='《Tzuyang幾餐》<br><span class="accent">東京篇的14家店</span>',
+ stats=[("14家","登場店家全收錄"),("127盤","迴轉壽司紀錄"),("¥9萬+","一餐燒肉"),("103年","最老鰻魚老舖")],
+ ticker=["炸雞里肌12人份","玫瑰可頌","和牛赤身燒肉","2kg豬排","串燒無菜單","烤牛肉丼","松阪牛A5","唐揚吃到飽","關東風鰻魚三吃","宇宙第一辣拉麵","蔥醬蒸雞","醬油生蝦","夏多布里昂","壽司127盤"],
+ art_hero="被拉麵、壽司、漢堡排包圍的大胃王角色插畫",
+ art_side="疊起壽司盤的角色插畫", art_side_cap="127盤紀錄 · 壽司郎五反田",
+ art_food="拉麵・鰻魚丼・漢堡排插畫",
+ lead='韓國ENA綜藝<b>《Tzuyang幾餐》(쯔양몇끼,Netflix可收看)</b>東京篇造訪的店家,店名、日文地址、招牌菜、座標全部整理成地圖。節目裡把招牌都遮住了,但<b>ENA官方帳號在播出後以「東京美食清單1~3彈」直接公開了店名與地址</b>。本頁完整收錄那份清單(14家),並另行查證每一筆座標。',
+ m1="整理", m1v="page.cocy.io · " + DATE, m2="來源", m2v="ENA官方美食清單1~3彈",
+ m3="店家", m3v="14家 · 全在東京",
+ warn='<b>為什麼搜尋不到正確店家</b> — 因為節目遮了招牌,許多排在搜尋前面的部落格直接<b>拿真實存在但毫無關聯的東京店家</b>,附上地址和地圖當成正解。本頁不用那些二手推測,只採用ENA官方直接公開的清單。',
+ s1="地圖", s2="店家清單", s3="節目中的紀錄", s4="出發前須知", s5="資料來源",
+ fall="全部14家", f1="1彈 · 秋成勳篇", f2="2彈 · 金在中篇", f3="3彈 · 最終日",
+ maphint="點圖釘看店家資訊。點下方卡片,地圖會移動到該店。",
+ lb_addr="地址", lb_area="位置", lb_note="備註",
+ a_focus="在地圖上看", a_copy="複製地址", a_gmap="Google地圖 ↗", a_site="店家資訊 ↗",
+ copied="已複製地址", copyfail="複製失敗",
+ eps=["<b>迴轉壽司127盤</b> — 壽司郎五反田店,外加烏龍麵和布丁",
+      "<b>一餐9萬日圓的燒肉</b> — 光是夏多布里昂150g就約1萬4千日圓",
+      "<b>3kg豬排</b> — Mallory豬排。不過目前公開菜單最大是2kg(奧林帕斯),推測是節目特別加點",
+      "<b>0.5辣就超辣</b> — 矢倉亭的「宇宙第一辣味噌拉麵 螢」,辣椒直接揉進麵條裡",
+      "<b>東京最高額的一餐</b> — Meat矢澤五反田,秋成勳15年以上的老主顧店",
+      "<b>《孤獨的美食家》場景</b> — Shanway出現在第4季第9集(2021年從神宮前搬到北參道)"],
+ caveat='節目播出後<b>排隊人潮可能變多</b>。Fukinuki、東海亭、鳥久這類預約制或套餐為主的店,出發前請先確認是否需要訂位。營業時間、公休日與價格可能變動,建議再到各店官方頁面確認一次。',
+ notes=["<b>座標來源</b> — 4家為OpenStreetMap店面POI,其餘10家取自日本國土地理院(GSI)地址檢索API的街區座標。",
+        "<b>座標相同的2家</b> — Joël Robuchon與Nikugatou都在六本木之丘(六本木6-10-1)內,樓層不同。",
+        "<b>地址更正</b> — ENA把辛Chan的地址寫成「新宿Flower大樓」,實際建物名稱是<b>新宿フラワーハイホーム</b>1F 107室。",
+        "<b>與集數的對應</b> — 三份清單依「秋成勳篇→金在中篇→東京最終日」順序發布,與播出集數的對應為依發布順序與新聞稿的推定。"],
+ srcs=[f'<a href="{SRC["l1"]}" target="_blank" rel="noopener">ENA官方 — 東京美食清單1彈</a>',
+       f'<a href="{SRC["l2"]}" target="_blank" rel="noopener">ENA官方 — 東京美食清單2彈</a>',
+       f'<a href="{SRC["l3"]}" target="_blank" rel="noopener">ENA官方 — 東京美食清單3彈</a>',
+       f'<a href="{SRC["ena"]}" target="_blank" rel="noopener">ENA節目頁</a> · <a href="{SRC["nf"]}" target="_blank" rel="noopener">Netflix</a>',
+       '座標: <a href="https://msearch.gsi.go.jp/" target="_blank" rel="noopener">國土地理院地址檢索</a> · <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noopener">OSM Nominatim</a> · 地圖圖資 © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> 貢獻者'],
+),
 }
 
-SWITCH = [("ko", "한국어"), ("en", "English"), ("ja", "日本語")]
+SWITCH = [("ko", "한국어"), ("en", "English"), ("ja", "日本語"), ("tw", "繁體中文")]
+
+
+def loc(p, lang, field):
+    """언어별 로컬라이즈 필드. tw는 TW 딕셔너리, 나머지는 PLACES 인라인 필드."""
+    if lang == "tw":
+        return TW[(p["l"], p["no"])][field]
+    key = {"ko": "ko", "en": "en", "ja": "jp"}[lang]
+    return p[key] if field == "name" else p[f"{key}_{field}"]
 
 
 def places_for(lang):
-    key = {"ko": "ko", "en": "en", "ja": "jp"}[lang]
     out = []
     for p in PLACES:
-        out.append(dict(l=p["l"], no=p["no"], name=p[key], ja=p["ja"],
-                        menu=p[f"{key}_menu"], menuJa=p["menu_ja"], addr=p["addr"],
-                        area=p[f"{key}_area"], note=p[f"{key}_note"],
+        out.append(dict(l=p["l"], no=p["no"], name=loc(p, lang, "name"), ja=p["ja"],
+                        menu=loc(p, lang, "menu"), menuJa=p["menu_ja"], addr=p["addr"],
+                        area=loc(p, lang, "area"), note=loc(p, lang, "note"),
                         lat=p["lat"], lon=p["lon"], url=p["url"]))
     return out
 
 
 def jsonld(lang, t):
-    key = {"ko": "ko", "en": "en", "ja": "jp"}[lang]
     items = []
     for i, p in enumerate(PLACES, 1):
         items.append({
@@ -278,7 +369,7 @@ def jsonld(lang, t):
             "item": {
                 "@type": "Restaurant",
                 "name": p["ja"],
-                "alternateName": p[key],
+                "alternateName": loc(p, lang, "name"),
                 "address": {"@type": "PostalAddress", "streetAddress": p["addr"],
                             "addressLocality": "Tokyo", "addressCountry": "JP"},
                 "geo": {"@type": "GeoCoordinates", "latitude": p["lat"], "longitude": p["lon"]},
@@ -290,7 +381,7 @@ def jsonld(lang, t):
         "@context": "https://schema.org", "@type": "Article",
         "headline": t["ogt"], "description": t["desc"], "url": HREF[lang],
         "mainEntityOfPage": {"@type": "WebPage", "@id": HREF[lang]},
-        "datePublished": DATE, "dateModified": DATE, "inLanguage": lang,
+        "datePublished": DATE, "dateModified": DATE, "inLanguage": HREFLANG[lang],
         "image": BASE + "og.jpg",
         "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"},
         "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"},
@@ -309,15 +400,20 @@ CSS = open(os.path.join(os.path.dirname(__file__), "tzuyang.css"), encoding="utf
 def build(lang):
     t = T[lang]
     v = VENDOR[lang]
+    ip = IMGP[lang]
+    font_url, disp, body = FONTS[lang]
     art, lst = jsonld(lang, t)
     alts = "\n".join(
-        f'<link rel="alternate" hreflang="{k}" href="{HREF[k]}" />' for k in ("ko", "en", "ja")
+        f'<link rel="alternate" hreflang="{HREFLANG[k]}" href="{HREF[k]}" />' for k in OUT
     ) + f'\n<link rel="alternate" hreflang="x-default" href="{HREF["en"]}" />'
     sw = "".join(
-        f'<a class="lang{" on" if k == lang else ""}" href="{HREF[k]}" hreflang="{k}">{label}</a>'
+        f'<a class="lang{" on" if k == lang else ""}" href="{HREF[k]}" hreflang="{HREFLANG[k]}">{label}</a>'
         for k, label in SWITCH
     )
-    eps = "\n".join(f"      <li>{x}</li>" for x in t["eps"])
+    stats = "".join(f'<div class="stat"><div class="v">{sv}</div><div class="k">{sk}</div></div>'
+                    for sv, sk in t["stats"])
+    tick = "".join(f'<i>◆</i>{x}' for x in t["ticker"])
+    eps = "\n".join(f'      <div class="rec rv">{x.replace("<b>","<b>",1)}</div>' for x in t["eps"])
     notes = "\n".join(f"      <li>{x}</li>" for x in t["notes"])
     srcs = "\n".join(f"      <li>{x}</li>" for x in t["srcs"])
     data = json.dumps(places_for(lang), ensure_ascii=False)
@@ -327,7 +423,7 @@ def build(lang):
                       "a_site", "copied", "copyfail")}, ensure_ascii=False)
 
     return f"""<!DOCTYPE html>
-<html lang="{lang}">
+<html lang="{HREFLANG[lang]}">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -336,7 +432,7 @@ def build(lang):
 <link rel="canonical" href="{HREF[lang]}" />
 {alts}
 <meta property="og:type" content="article" />
-<meta property="og:locale" content="{ {'ko':'ko_KR','en':'en_US','ja':'ja_JP'}[lang] }" />
+<meta property="og:locale" content="{OGLOC[lang]}" />
 <meta property="og:title" content="{t["ogt"]}" />
 <meta property="og:description" content="{t["ogd"]}" />
 <meta property="og:url" content="{HREF[lang]}" />
@@ -350,26 +446,40 @@ def build(lang):
 <meta name="author" content="cocy" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="{font_url}" rel="stylesheet" />
 <link rel="stylesheet" href="{v}/leaflet.css" />
 <style>
+:root{{--display:{disp};--body:{body};--mono:"JetBrains Mono",monospace}}
 {CSS}</style>
 <script type="application/ld+json">{art}</script>
 <script type="application/ld+json">{lst}</script>
 </head>
 <body>
-<article class="doc">
-  <nav class="langbar">{sw}</nav>
 
-  <section data-block="hero">
-    <div class="kicker">{t["kicker"]}</div>
-    <h1>{t["h1"]}</h1>
-    <p class="lead">{t["lead"]}</p>
-    <div class="meta">
-      <span><b>{t["m1"]}</b> {t["m1v"]}</span>
-      <span><b>{t["m2"]}</b> {t["m2v"]}</span>
-      <span><b>{t["m3"]}</b> {t["m3v"]}</span>
+<header class="hero-band">
+  <nav class="langbar">{sw}</nav>
+  <div class="hero-num">14</div>
+  <div class="hero-in">
+    <div class="hero-copy">
+      <div class="hero-kicker">{t["kicker"]}</div>
+      <h1>{t["h1"]}</h1>
+      <p class="hero-lead">{t["lead"]}</p>
+      <div class="hero-meta">
+        <span><b>{t["m1"]}</b> {t["m1v"]}</span>
+        <span><b>{t["m2"]}</b> {t["m2v"]}</span>
+        <span><b>{t["m3"]}</b> {t["m3v"]}</span>
+      </div>
     </div>
+    <div class="hero-art"><img src="{ip}hero.webp" alt="{t["art_hero"]}" width="832" height="1216" fetchpriority="high" /></div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true"><div class="ticker-track"><span>{tick}</span><span>{tick}</span></div></div>
+
+<div class="stats"><div class="stats-in">{stats}</div></div>
+
+<main class="doc">
+  <section data-block="intro">
     <div class="callout">{t["warn"]}</div>
   </section>
 
@@ -387,14 +497,21 @@ def build(lang):
 
   <section data-block="list">
     <h2><span class="n">02</span> {t["s2"]}</h2>
-    <div class="cards" id="cards"></div>
+    <div class="sidewrap">
+      <div class="cards" id="cards"></div>
+      <aside class="side-art">
+        <img src="{ip}sushi.webp" alt="{t["art_side"]}" width="832" height="1216" loading="lazy" />
+        <div class="cap">{t["art_side_cap"]}</div>
+      </aside>
+    </div>
   </section>
 
   <section data-block="episodes">
     <h2><span class="n">03</span> {t["s3"]}</h2>
-    <ul class="srcs">
+    <div class="recs">
 {eps}
-    </ul>
+    </div>
+    <div class="foodbanner rv"><img src="{ip}food.webp" alt="{t["art_food"]}" width="1216" height="832" loading="lazy" /></div>
   </section>
 
   <section data-block="caveat">
@@ -416,7 +533,7 @@ def build(lang):
     <span>page.cocy.io / tzuyang-tokyo</span>
     <span>{DATE}</span>
   </div>
-</article>
+</main>
 <div class="toast" id="toast"></div>
 
 <script src="{v}/leaflet.js"></script>
@@ -431,7 +548,7 @@ L.tileLayer('https://tile.openstreetmap.org/{{z}}/{{x}}/{{y}}.png',{{maxZoom:19,
 const gmapUrl=p=>`https://www.google.com/maps/search/?api=1&query=${{encodeURIComponent(p.ja+' '+p.addr)}}`;
 const markers=[];
 PLACES.forEach((p,i)=>{{
-  const icon=L.divIcon({{html:`<div class="pin l${{p.l}}"><span>${{p.no}}</span></div>`,className:'',iconSize:[28,28],iconAnchor:[14,26],popupAnchor:[0,-24]}});
+  const icon=L.divIcon({{html:`<div class="pin l${{p.l}}"><span>${{p.no}}</span></div>`,className:'',iconSize:[29,29],iconAnchor:[14,27],popupAnchor:[0,-24]}});
   const m=L.marker([p.lat,p.lon],{{icon}}).addTo(map).bindPopup(
     `<div class="pop"><b class="pn">${{p.name}}</b><span class="pj">${{p.ja}}</span><span class="pm">${{p.menu}}</span><a href="${{gmapUrl(p)}}" target="_blank" rel="noopener">${{UI.a_gmap}}</a></div>`);
   m._li=p.l; markers.push(m);
@@ -439,8 +556,8 @@ PLACES.forEach((p,i)=>{{
 }});
 map.fitBounds(L.featureGroup(markers).getBounds().pad(0.12));
 
-document.getElementById('cards').innerHTML=PLACES.map((p,i)=>`<div class="card l${{p.l}}" id="c${{i}}" data-i="${{i}}">
-  <div class="idx">${{p.no}}</div>
+document.getElementById('cards').innerHTML=PLACES.map((p,i)=>`<div class="card rv l${{p.l}}" id="c${{i}}" data-i="${{i}}">
+  <div class="idx"><span>${{p.no}}</span></div>
   <div class="top"><span class="nm">${{p.name}}</span><span class="ja">${{p.ja}}</span><span class="ep">${{LABEL[p.l]}}</span></div>
   <div class="menu">${{p.menu}} <span class="ja2">${{p.menuJa}}</span></div>
   <div class="info">
@@ -482,6 +599,9 @@ document.getElementById('filters').addEventListener('click',e=>{{
   }});
   if(shown.length) map.fitBounds(L.featureGroup(shown).getBounds().pad(0.15));
 }});
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{{if(e.isIntersecting){{e.target.classList.add('in');io.unobserve(e.target);}}}}),{{threshold:.08}});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>

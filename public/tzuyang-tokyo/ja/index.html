@@ -9,6 +9,7 @@
 <link rel="alternate" hreflang="ko" href="https://page.cocy.io/tzuyang-tokyo/" />
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/tzuyang-tokyo/en/" />
 <link rel="alternate" hreflang="ja" href="https://page.cocy.io/tzuyang-tokyo/ja/" />
+<link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/tzuyang-tokyo/tw/" />
 <link rel="alternate" hreflang="x-default" href="https://page.cocy.io/tzuyang-tokyo/en/" />
 <meta property="og:type" content="article" />
 <meta property="og:locale" content="ja_JP" />
@@ -25,115 +26,194 @@
 <meta name="author" content="cocy" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../vendor/leaflet.css" />
 <style>
+:root{--display:"Shippori Mincho",serif;--body:"Noto Sans JP",sans-serif;--mono:"JetBrains Mono",monospace}
 :root{
-  --bg:#f6f3ee; --paper:#fffdf9; --ink:#221f1a; --ink-soft:#574f45; --muted:#8f8779;
-  --accent:#c0473a; --accent-2:#d98a3a; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
-  --l1:#c0473a; --l2:#b8860b; --l3:#3f7d4f;
-  --line:rgba(34,31,26,.13); --line-soft:rgba(34,31,26,.07);
-  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+  --bg:#f5eddc; --paper:#fdf7ea; --ink:#2a1f16; --ink-soft:#5c4c3c; --muted:#94805f;
+  --lacquer:#a52a1c; --lacquer-deep:#7e1c12; --gold:#c2932f; --gold-soft:#e8d9ae;
+  --good:#3f7d4f; --l1:#b93425; --l2:#b8860b; --l3:#3f7d4f;
+  --line:rgba(42,31,22,.16); --line-soft:rgba(42,31,22,.08);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
-.doc{background:var(--paper);max-width:880px;margin:40px auto;padding:clamp(24px,5vw,64px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(34,31,26,.4)}
-.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
-h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.12;margin:.5rem 0 .6rem;letter-spacing:-.01em}
-.lead{color:var(--ink-soft);font-size:1.05rem;max-width:62ch}
-.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted);font-family:var(--mono)}
-.meta b{color:var(--ink-soft);font-weight:400}
-section[data-block]{margin-top:3rem}
-h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
-h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
-p{margin-bottom:1rem}
-b{font-weight:500;color:var(--ink)}
-a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(192,71,58,.3)}
-.callout{background:#faf1ec;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
-.callout.warn{background:#fbf4e6;border-left:3px solid var(--warn)}
-.callout b{color:var(--accent)}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:400;line-height:1.85;-webkit-font-smoothing:antialiased}
+b{font-weight:700;color:var(--ink)}
+a{color:var(--lacquer);text-decoration:none;border-bottom:1px solid rgba(165,42,28,.35)}
+
+/* ── hero band ── */
+.hero-band{position:relative;background:
+  radial-gradient(120% 90% at 85% 10%,#c23a28 0%,var(--lacquer) 45%,var(--lacquer-deep) 100%);
+  color:#f9edd8;overflow:hidden}
+.hero-band::before{content:"";position:absolute;inset:0;opacity:.13;pointer-events:none;
+  background-image:radial-gradient(circle at 50% 110%, transparent 38px, rgba(249,237,216,.5) 39px, transparent 41px);
+  background-size:88px 44px}
+.hero-band::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+.hero-in{position:relative;max-width:1080px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:end;gap:0 clamp(10px,3vw,40px);padding:clamp(44px,6vw,64px) clamp(20px,4vw,48px) 0;z-index:2}
+.hero-copy{padding-bottom:clamp(28px,5vw,56px)}
+.hero-kicker{font-family:var(--mono);font-size:.68rem;letter-spacing:.34em;text-transform:uppercase;color:var(--gold-soft);display:flex;align-items:center;gap:.7rem}
+.hero-kicker::before{content:"";width:26px;height:1px;background:var(--gold)}
+.hero-band h1{font-family:var(--display);font-weight:700;font-size:clamp(2.1rem,6vw,4rem);line-height:1.12;margin:.7rem 0 1rem;color:#fdf4e0;text-shadow:0 3px 18px rgba(0,0,0,.25)}
+.hero-band h1 .accent{color:var(--gold-soft)}
+.hero-lead{font-size:clamp(.92rem,1.6vw,1.02rem);line-height:1.85;color:#f3dfc2;max-width:52ch}
+.hero-lead b{color:#fff;font-weight:700}
+.hero-meta{display:flex;flex-wrap:wrap;gap:.45rem 1.3rem;margin-top:1.5rem;font-family:var(--mono);font-size:.74rem;color:#e5c99a}
+.hero-meta b{color:#fff;font-weight:500}
+.hero-art{position:relative;align-self:end;line-height:0}
+.hero-art img{width:100%;max-width:430px;display:block;margin:0 auto;
+  filter:drop-shadow(0 18px 40px rgba(0,0,0,.4));
+  -webkit-mask-image:linear-gradient(180deg,#000 82%,transparent 100%);mask-image:linear-gradient(180deg,#000 82%,transparent 100%)}
+.hero-num{position:absolute;right:clamp(8px,2vw,30px);top:8px;font-family:var(--display);font-weight:700;font-size:clamp(6rem,16vw,11rem);line-height:1;color:rgba(249,237,216,.1);z-index:1;user-select:none}
+@media(max-width:720px){
+  .hero-in{grid-template-columns:1fr}
+  .hero-copy{padding-bottom:0}
+  .hero-art{margin-top:1.2rem}
+  .hero-art img{max-width:78%;-webkit-mask-image:linear-gradient(180deg,#000 78%,transparent 100%);mask-image:linear-gradient(180deg,#000 78%,transparent 100%)}
+}
+
+/* ── ticker ── */
+.ticker{background:var(--ink);color:var(--gold-soft);overflow:hidden;white-space:nowrap;border-top:3px solid var(--gold);position:relative;z-index:3}
+.ticker-track{display:inline-flex;gap:2.6rem;padding:.55rem 0;font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;animation:tick 38s linear infinite}
+.ticker-track span{display:inline-flex;align-items:center;gap:2.6rem}
+.ticker-track i{font-style:normal;color:var(--gold);font-size:.6rem}
+@keyframes tick{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.ticker-track{animation:none}}
+
+/* ── stats ── */
+.stats{max-width:1080px;margin:clamp(18px,3vw,28px) auto 0;position:relative;z-index:4;padding:0 clamp(16px,4vw,48px)}
+.stats-in{background:var(--paper);border:1.5px solid var(--ink);border-radius:12px;box-shadow:6px 6px 0 var(--gold-soft);display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden}
+.stat{padding:1.1rem 1rem 1rem;text-align:center;position:relative}
+.stat+.stat::before{content:"";position:absolute;left:0;top:18%;bottom:18%;width:1px;background:var(--line-soft)}
+.stat .v{font-family:var(--display);font-weight:700;font-size:clamp(1.3rem,3.4vw,2rem);color:var(--lacquer);line-height:1.15}
+.stat .k{font-size:.72rem;color:var(--muted);letter-spacing:.05em;margin-top:.15rem}
+@media(max-width:560px){.stats-in{grid-template-columns:repeat(2,1fr)}.stat:nth-child(3)::before{display:none}}
+
+/* ── body doc ── */
+.doc{max-width:1080px;margin:0 auto;padding:clamp(28px,4vw,56px) clamp(20px,4vw,48px) clamp(40px,5vw,72px)}
+section[data-block]{margin-top:clamp(2.6rem,5vw,4rem)}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(1.4rem,2.6vw,1.8rem);margin-bottom:1.1rem;display:flex;align-items:baseline;gap:.75rem}
+h2 .n{font-family:var(--display);font-size:clamp(1.7rem,3vw,2.3rem);color:transparent;-webkit-text-stroke:1.4px var(--lacquer);font-weight:700;line-height:1}
+h2::after{content:"";flex:1;height:1px;background:var(--line-soft);margin-left:.4rem;align-self:center}
+.callout{background:#f8efdb;border:1px solid var(--line-soft);border-left:4px solid var(--gold);border-radius:8px;padding:1.05rem 1.25rem;margin:1.1rem 0;font-size:.93rem;color:var(--ink-soft)}
+.callout.warn{border-left-color:var(--lacquer);background:#f9e9df}
+.callout b{color:var(--lacquer)}
 .note{font-size:.84rem;color:var(--muted);font-style:italic}
 
-/* filters */
+/* ── filters ── */
 .filters{display:flex;flex-wrap:wrap;gap:.5rem;margin:.2rem 0 1rem}
-.fbtn{font-family:var(--body);font-size:.84rem;font-weight:400;padding:.42rem .95rem;border-radius:22px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer;transition:.13s;display:flex;align-items:center;gap:.42rem}
+.fbtn{font-family:var(--body);font-size:.85rem;font-weight:500;padding:.46rem 1rem;border-radius:24px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink-soft);cursor:pointer;transition:.15s;display:flex;align-items:center;gap:.45rem}
 .fbtn .dot{width:9px;height:9px;border-radius:50%;background:var(--muted)}
 .fbtn[data-k="1"] .dot{background:var(--l1)}
 .fbtn[data-k="2"] .dot{background:var(--l2)}
 .fbtn[data-k="3"] .dot{background:var(--l3)}
-.fbtn:hover{border-color:var(--muted)}
-.fbtn.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-.fbtn.on .dot{box-shadow:0 0 0 2px rgba(255,255,255,.35)}
+.fbtn:hover{border-color:var(--gold);transform:translateY(-1px)}
+.fbtn.on{background:var(--ink);color:#f5eddc;border-color:var(--ink)}
+.fbtn.on .dot{box-shadow:0 0 0 2px rgba(245,237,220,.4)}
 
-/* map */
-#map{height:min(66vh,520px);border-radius:8px;border:1px solid var(--line);z-index:1;background:#e8e4dc}
+/* ── map ── */
+#map{height:min(66vh,540px);border-radius:12px;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--gold-soft);z-index:1;background:#eae2cf}
 .leaflet-container{font-family:var(--body)}
-.pin{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);color:#fff;font-family:var(--mono);font-size:.76rem;font-weight:500;box-shadow:0 3px 8px rgba(0,0,0,.3);border:2px solid rgba(255,255,255,.85)}
+.pin{display:flex;align-items:center;justify-content:center;width:29px;height:29px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);color:#fff;font-family:var(--mono);font-size:.78rem;font-weight:700;box-shadow:0 3px 9px rgba(0,0,0,.35);border:2px solid rgba(255,252,240,.9)}
 .pin span{transform:rotate(45deg)}
 .pin.l1{background:var(--l1)}.pin.l2{background:var(--l2)}.pin.l3{background:var(--l3)}
-.pin.dim{opacity:.28}
-.pop{font-family:var(--body);min-width:180px}
-.pop .pn{font-weight:500;font-size:.98rem;color:var(--ink);display:block;margin-bottom:.1rem}
+.pin.dim{opacity:.25}
+.pop{font-family:var(--body);min-width:185px}
+.pop .pn{font-weight:700;font-size:1rem;color:var(--ink);display:block;margin-bottom:.1rem}
 .pop .pj{font-size:.78rem;color:var(--muted);display:block;margin-bottom:.35rem}
-.pop .pm{font-size:.84rem;color:var(--ink-soft);display:block;margin-bottom:.5rem}
+.pop .pm{font-size:.85rem;color:var(--ink-soft);display:block;margin-bottom:.5rem}
 .pop a{font-size:.8rem;font-family:var(--mono)}
 .leaflet-popup-content{margin:12px 14px}
+.leaflet-popup-content-wrapper{border-radius:10px;border:1.5px solid var(--ink)}
 
-/* cards */
-.cards{display:grid;gap:.9rem;margin-top:1.2rem}
-.card{border:1px solid var(--line);border-radius:8px;background:#fff;padding:1.05rem 1.15rem;display:grid;grid-template-columns:38px 1fr;gap:.2rem .9rem;align-items:start}
+/* ── cards ── */
+.cards{display:grid;gap:1rem;margin-top:1.3rem}
+.card{border:1.5px solid var(--line);border-radius:12px;background:var(--paper);padding:1.15rem 1.25rem;display:grid;grid-template-columns:42px 1fr;gap:.2rem 1rem;align-items:start;transition:transform .18s cubic-bezier(.2,.7,.3,1),box-shadow .18s,border-color .18s;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;opacity:.85}
+.card.l1::before{background:var(--l1)}.card.l2::before{background:var(--l2)}.card.l3::before{background:var(--l3)}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 30px -16px rgba(42,31,22,.4);border-color:var(--gold)}
 .card.hide{display:none}
-.card .idx{grid-row:1/span 3;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.82rem;font-weight:500;color:#fff}
+.card .idx{grid-row:1/span 3;width:36px;height:36px;border-radius:50% 50% 50% 6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.85rem;font-weight:700;color:#fff;transform:rotate(-45deg);margin-top:.15rem}
+.card .idx span{transform:rotate(45deg)}
 .card.l1 .idx{background:var(--l1)}.card.l2 .idx{background:var(--l2)}.card.l3 .idx{background:var(--l3)}
 .card .top{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem}
-.card .nm{font-family:var(--display);font-weight:600;font-size:1.16rem;color:var(--ink);line-height:1.3}
-.card .ja{font-size:.8rem;color:var(--muted);font-weight:300}
-.card .ep{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.16rem .5rem;border-radius:12px;white-space:nowrap}
-.card.l1 .ep{background:rgba(192,71,58,.12);color:var(--l1)}
-.card.l2 .ep{background:rgba(184,134,11,.14);color:var(--l2)}
+.card .nm{font-family:var(--display);font-weight:700;font-size:1.22rem;color:var(--ink);line-height:1.3}
+.card .ja{font-size:.8rem;color:var(--muted)}
+.card .ep{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .55rem;border-radius:12px;white-space:nowrap}
+.card.l1 .ep{background:rgba(185,52,37,.12);color:var(--l1)}
+.card.l2 .ep{background:rgba(184,134,11,.15);color:#8f6a09}
 .card.l3 .ep{background:rgba(63,125,79,.13);color:var(--l3)}
-.card .menu{font-size:.95rem;color:var(--ink);margin-top:.3rem}
-.card .menu .ja2{color:var(--muted);font-size:.82rem}
-.card .info{font-size:.83rem;color:var(--ink-soft);margin-top:.45rem;line-height:1.65}
-.card .info .lb{font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:.4rem}
-.card .acts{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem}
-.card .acts a,.card .acts button{font-family:var(--body);font-size:.78rem;padding:.32rem .72rem;border-radius:16px;border:1px solid var(--line);background:#fdfcfa;color:var(--ink-soft);cursor:pointer;text-decoration:none;transition:.13s}
-.card .acts a:hover,.card .acts button:hover{border-color:var(--accent);color:var(--accent)}
-@media(max-width:560px){
-  .doc{margin:0;border:none;border-radius:0;box-shadow:none}
-  .card{grid-template-columns:30px 1fr;gap:.2rem .7rem;padding:.95rem}
-  .card .idx{width:28px;height:28px;font-size:.74rem}
-}
-.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
-.srcs{font-size:.82rem;color:var(--ink-soft)}
-.srcs li{margin-bottom:.4rem;list-style:none;padding-left:1.1rem;position:relative}
-.srcs li::before{content:"→";position:absolute;left:0;color:var(--accent);font-size:.75rem}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(12px);background:var(--ink);color:#fff;font-size:.84rem;padding:.6rem 1.1rem;border-radius:20px;opacity:0;pointer-events:none;transition:.2s;z-index:999}
+.card .menu{font-size:.96rem;color:var(--ink);margin-top:.3rem;font-weight:500}
+.card .menu .ja2{color:var(--muted);font-size:.82rem;font-weight:400}
+.card .info{font-size:.84rem;color:var(--ink-soft);margin-top:.45rem;line-height:1.7}
+.card .info .lb{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-right:.4rem;font-weight:500}
+.card .acts{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.75rem}
+.card .acts a,.card .acts button{font-family:var(--body);font-size:.79rem;font-weight:500;padding:.36rem .8rem;border-radius:18px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink-soft);cursor:pointer;text-decoration:none;transition:.14s}
+.card .acts a:hover,.card .acts button:hover{border-color:var(--lacquer);color:var(--lacquer);background:#fff}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .5s cubic-bezier(.2,.7,.3,1),transform .5s cubic-bezier(.2,.7,.3,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+/* records */
+.recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1rem;margin-top:1.2rem}
+.rec{background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:1.05rem 1.15rem;font-size:.9rem;color:var(--ink-soft);line-height:1.75;position:relative}
+.rec b{display:block;font-family:var(--display);font-weight:700;font-size:1.02rem;color:var(--lacquer);margin-bottom:.3rem}
+.foodbanner{margin-top:1.4rem;border-radius:12px;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--gold-soft);overflow:hidden;line-height:0}
+.foodbanner img{width:100%;display:block}
+
+/* srcs / footer */
+.srcs{font-size:.86rem;color:var(--ink-soft)}
+.srcs li{margin-bottom:.5rem;list-style:none;padding-left:1.2rem;position:relative}
+.srcs li::before{content:"—";position:absolute;left:0;color:var(--gold);font-size:.8rem}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1.5px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(12px);background:var(--ink);color:#f5eddc;font-size:.85rem;padding:.62rem 1.15rem;border-radius:22px;opacity:0;pointer-events:none;transition:.2s;z-index:999}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* language switcher */
-.langbar{display:flex;gap:.35rem;justify-content:flex-end;margin:-.6rem 0 1.4rem}
-.langbar .lang{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;padding:.22rem .62rem;border-radius:14px;border:1px solid var(--line);color:var(--muted);background:#fff;text-decoration:none}
-.langbar .lang:hover{border-color:var(--accent);color:var(--accent)}
-.langbar .lang.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.langbar{position:absolute;top:0;right:0;left:0;z-index:5;display:flex;gap:.35rem;justify-content:flex-end;padding:14px clamp(16px,3vw,32px)}
+.langbar .lang{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;padding:.24rem .66rem;border-radius:14px;border:1px solid rgba(249,237,216,.35);color:#f0dcbb;background:rgba(0,0,0,.14);text-decoration:none}
+.langbar .lang:hover{border-color:var(--gold);color:#fff}
+.langbar .lang.on{background:#f5eddc;border-color:#f5eddc;color:var(--lacquer-deep);font-weight:500}
+
+/* side art */
+.sidewrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,240px);gap:1.4rem;align-items:start}
+.side-art{line-height:0;position:sticky;top:20px}
+.side-art img{width:100%;border-radius:12px;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--gold-soft)}
+.side-art .cap{line-height:1.5;font-size:.72rem;color:var(--muted);font-family:var(--mono);margin-top:.6rem;text-align:center}
+@media(max-width:700px){.sidewrap{grid-template-columns:1fr}.side-art{position:static;max-width:230px;margin:0 auto}}
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "『チュヤン何食』東京編に出た14店 — 地図まとめ", "description": "ENA・Netflixの韓国バラエティ『チュヤン何食（쯔양몇끼）』東京編に登場した14店を、店名・住所・看板メニュー・座標つきで地図にまとめました。ENA公式「東京グルメリスト1〜3弾」全掲載店。", "url": "https://page.cocy.io/tzuyang-tokyo/ja/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/tzuyang-tokyo/ja/"}, "datePublished": "2026-07-26", "dateModified": "2026-07-26", "inLanguage": "ja", "image": "https://page.cocy.io/tzuyang-tokyo/og.jpg", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true, "about": {"@type": "TVSeries", "name": "쯔양몇끼", "alternateName": ["Tzuyang, How Many Meals?", "チュヤン何食"]}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "name": "『チュヤン何食』東京編に出た14店 — 地図まとめ", "numberOfItems": 14, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "Restaurant", "name": "イマカツ 六本木本店", "alternateName": "イマカツ 六本木本店", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区六本木4-12-5 フェニキア ルクソス 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.664528, "longitude": 139.731506}, "servesCuisine": "ささみかつ", "url": "https://r.gnavi.co.jp/rgtmjm950000/"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "Restaurant", "name": "ラ ブティック ドゥ ジョエル・ロブション 六本木ヒルズ店", "alternateName": "ラ ブティック ドゥ ジョエル・ロブション 六本木ヒルズ店", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区六本木6-10-1 六本木ヒルズ ヒルサイド 2F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.660206, "longitude": 139.729202}, "servesCuisine": "ローズクロワッサン", "url": "https://tabelog.com/tokyo/A1307/A130701/13020237/"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "Restaurant", "name": "赤身専門 にくがとう 六本木ヒルズ店", "alternateName": "赤身専門 にくがとう 六本木ヒルズ店", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区六本木6-10-1 六本木ヒルズ ウェストウォーク 5F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.660206, "longitude": 139.729202}, "servesCuisine": "赤身焼肉", "url": "https://www.roppongihills.com/gourmet_shops/0299.html"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "Restaurant", "name": "マロリーポークステーキ 中目黒店", "alternateName": "マロリーポークステーキ 中目黒店", "address": {"@type": "PostalAddress", "streetAddress": "東京都目黒区上目黒3-5-20", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.642349, "longitude": 139.696548}, "servesCuisine": "ポークステーキ", "url": "https://mallorypork.com/nakameguro/"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "Restaurant", "name": "原宿 鳥久", "alternateName": "原宿 鳥久", "address": {"@type": "PostalAddress", "streetAddress": "東京都渋谷区神宮前3-27-17 T.S TOW BLDG 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.671791, "longitude": 139.708618}, "servesCuisine": "焼鳥おまかせコース", "url": "https://tabelog.com/tokyo/A1306/A130601/13004738/"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "Restaurant", "name": "くいしんぼう がぶ", "alternateName": "くいしんぼう がぶ", "address": {"@type": "PostalAddress", "streetAddress": "東京都品川区小山3-2-3", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.620518, "longitude": 139.702911}, "servesCuisine": "がぶ丼", "url": "https://retty.me/area/PRE13/ARE13/SUB705/100001692822/"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "Restaurant", "name": "松阪牛炭火焼肉 東海亭", "alternateName": "松阪牛炭火焼肉 東海亭", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区西麻布1-13-16", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.6608514, "longitude": 139.7232977}, "servesCuisine": "松阪牛A5炭火焼肉", "url": "http://www.toukaitei.jp/"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "Restaurant", "name": "唐揚げ 一筋", "alternateName": "唐揚げ 一筋", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区赤坂3-20-9 岩澤ビル 2F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.6762653, "longitude": 139.7360961}, "servesCuisine": "唐揚げ丼 / 食べ放題", "url": "https://www.hotpepper.jp/strJ001154782/"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "Restaurant", "name": "赤坂ふきぬき 本店", "alternateName": "赤坂ふきぬき 本店", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区赤坂3-6-11", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.67331, "longitude": 139.738348}, "servesCuisine": "関東風ひつまぶし / 大うな丼 / 骨せんべい / う巻き", "url": "https://www.fukinuki.jp/"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "Restaurant", "name": "支那そば やぐら亭", "alternateName": "支那そば やぐら亭", "address": {"@type": "PostalAddress", "streetAddress": "東京都渋谷区本町2-32-2", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.683567, "longitude": 139.682114}, "servesCuisine": "宇宙一辛い味噌らーめん ほたる", "url": "https://ramendb.supleks.jp/s/5472.html"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "Restaurant", "name": "鉄板中華 青山シャンウェイ 本店", "alternateName": "鉄板中華 青山シャンウェイ 本店", "address": {"@type": "PostalAddress", "streetAddress": "東京都渋谷区千駄ヶ谷4-29-12 北参道ダイヤモンドパレス 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.681152, "longitude": 139.703934}, "servesCuisine": "柔らか蒸し鶏のねぎ醤油 / 毛沢東スペアリブ / 黒炒飯", "url": "http://shanway.jp/"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "Restaurant", "name": "辛ちゃん 1号店", "alternateName": "辛ちゃん 1号店", "address": {"@type": "PostalAddress", "streetAddress": "東京都新宿区大久保1-1-9 新宿フラワーハイホーム 1F 107", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.698269, "longitude": 139.705948}, "servesCuisine": "豚焼き肉 / カンジャンセウ / キムチチゲ", "url": "https://www.wowsokb.jp/sinchang/"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "Restaurant", "name": "ミート矢澤 五反田", "alternateName": "ミート矢澤 五反田", "address": {"@type": "PostalAddress", "streetAddress": "東京都品川区西五反田2-15-13 ニューハイツ西五反田 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.6260151, "longitude": 139.7206051}, "servesCuisine": "ハンバーグ / シャトーブリアンステーキ", "url": "https://maps.app.goo.gl/kc93D8j6SitGErm97"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "Restaurant", "name": "スシロー 五反田店", "alternateName": "スシロー 五反田店", "address": {"@type": "PostalAddress", "streetAddress": "東京都品川区西五反田1-3-8 五反田Placeビル B1", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.625572, "longitude": 139.722275}, "servesCuisine": "回転寿司 / うどん / プリン", "url": "https://www.akindo-sushiro.co.jp/"}}]}</script>
 </head>
 <body>
-<article class="doc">
-  <nav class="langbar"><a class="lang" href="https://page.cocy.io/tzuyang-tokyo/" hreflang="ko">한국어</a><a class="lang" href="https://page.cocy.io/tzuyang-tokyo/en/" hreflang="en">English</a><a class="lang on" href="https://page.cocy.io/tzuyang-tokyo/ja/" hreflang="ja">日本語</a></nav>
 
-  <section data-block="hero">
-    <div class="kicker">FOOD MAP · チュヤン何食 東京編</div>
-    <h1>『チュヤン何食』東京編の14店</h1>
-    <p class="lead">ENAのバラエティ<b>『チュヤン何食』（쯔양몇끼）</b>東京編に登場した店を、店名・住所・看板メニュー・座標までまとめて地図に落としました。番組では看板を隠していましたが、<b>ENA公式が放送後に「東京グルメリスト1〜3弾」として店名と住所を自ら公開</b>しています。そのリスト全14店をそのまま採録し、座標だけ別途確認しました。</p>
-    <div class="meta">
-      <span><b>作成</b> page.cocy.io · 2026-07-26</span>
-      <span><b>出典</b> ENA公式グルメリスト1〜3弾</span>
-      <span><b>店舗</b> 14店 · すべて東京</span>
+<header class="hero-band">
+  <nav class="langbar"><a class="lang" href="https://page.cocy.io/tzuyang-tokyo/" hreflang="ko">한국어</a><a class="lang" href="https://page.cocy.io/tzuyang-tokyo/en/" hreflang="en">English</a><a class="lang on" href="https://page.cocy.io/tzuyang-tokyo/ja/" hreflang="ja">日本語</a><a class="lang" href="https://page.cocy.io/tzuyang-tokyo/tw/" hreflang="zh-Hant">繁體中文</a></nav>
+  <div class="hero-num">14</div>
+  <div class="hero-in">
+    <div class="hero-copy">
+      <div class="hero-kicker">FOOD MAP · チュヤン何食 東京編</div>
+      <h1>『チュヤン何食』<br><span class="accent">東京編の14店</span></h1>
+      <p class="hero-lead">ENAのバラエティ<b>『チュヤン何食』（쯔양몇끼）</b>東京編に登場した店を、店名・住所・看板メニュー・座標までまとめて地図に落としました。番組では看板を隠していましたが、<b>ENA公式が放送後に「東京グルメリスト1〜3弾」として店名と住所を自ら公開</b>しています。そのリスト全14店をそのまま採録し、座標だけ別途確認しました。</p>
+      <div class="hero-meta">
+        <span><b>作成</b> page.cocy.io · 2026-07-26</span>
+        <span><b>出典</b> ENA公式グルメリスト1〜3弾</span>
+        <span><b>店舗</b> 14店 · すべて東京</span>
+      </div>
     </div>
+    <div class="hero-art"><img src="../img/hero.webp" alt="ラーメン・寿司・ハンバーグに囲まれたモクバンキャラクターのイラスト" width="832" height="1216" fetchpriority="high" /></div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true"><div class="ticker-track"><span><i>◆</i>ささみかつ12人前<i>◆</i>ローズクロワッサン<i>◆</i>赤身焼肉<i>◆</i>ポークステーキ2kg<i>◆</i>焼鳥おまかせ<i>◆</i>ローストビーフ丼<i>◆</i>松阪牛A5<i>◆</i>唐揚げ食べ放題<i>◆</i>関東風ひつまぶし<i>◆</i>宇宙一辛いらーめん<i>◆</i>蒸し鶏のねぎ醤油<i>◆</i>カンジャンセウ<i>◆</i>シャトーブリアン<i>◆</i>寿司127皿</span><span><i>◆</i>ささみかつ12人前<i>◆</i>ローズクロワッサン<i>◆</i>赤身焼肉<i>◆</i>ポークステーキ2kg<i>◆</i>焼鳥おまかせ<i>◆</i>ローストビーフ丼<i>◆</i>松阪牛A5<i>◆</i>唐揚げ食べ放題<i>◆</i>関東風ひつまぶし<i>◆</i>宇宙一辛いらーめん<i>◆</i>蒸し鶏のねぎ醤油<i>◆</i>カンジャンセウ<i>◆</i>シャトーブリアン<i>◆</i>寿司127皿</span></div></div>
+
+<div class="stats"><div class="stats-in"><div class="stat"><div class="v">14店</div><div class="k">登場店舗すべて</div></div><div class="stat"><div class="v">127皿</div><div class="k">回転寿司の記録</div></div><div class="stat"><div class="v">¥9万+</div><div class="k">焼肉ひと食</div></div><div class="stat"><div class="v">103年</div><div class="k">最古の鰻老舗</div></div></div></div>
+
+<main class="doc">
+  <section data-block="intro">
     <div class="callout"><b>なぜ検索しても出てこなかったのか</b> — 番組が店名を伏せたため、検索上位のブログの多くが<b>実在するが無関係な東京の店</b>を住所や地図つきで断定的に紹介しています。このページはそうした二次推測を使わず、ENAが直接公開したリストのみを典拠にしています。</div>
   </section>
 
@@ -151,19 +231,26 @@ a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(192,71,5
 
   <section data-block="list">
     <h2><span class="n">02</span> 店舗一覧</h2>
-    <div class="cards" id="cards"></div>
+    <div class="sidewrap">
+      <div class="cards" id="cards"></div>
+      <aside class="side-art">
+        <img src="../img/sushi.webp" alt="寿司皿を積み上げるキャラクター" width="832" height="1216" loading="lazy" />
+        <div class="cap">127皿の記録 · スシロー五反田</div>
+      </aside>
+    </div>
   </section>
 
   <section data-block="episodes">
     <h2><span class="n">03</span> 番組内の記録</h2>
-    <ul class="srcs">
-      <li><b>回転寿司127皿</b> — スシロー五反田店で寿司127皿＋うどん＋プリン</li>
-      <li><b>焼肉一食で約9万円</b> — シャトーブリアン150gだけで約1万4千円</li>
-      <li><b>ポークステーキ3kg</b> — マロリーポークステーキ。ただし現行の公開メニューの最大は2kg（オリンポス）のため、特別オーダーか表記の差と思われます</li>
-      <li><b>0.5辛でも激辛</b> — やぐら亭の「宇宙一辛い味噌らーめん ほたる」。麺自体にハバネロを練り込んでいます</li>
-      <li><b>東京での最高額</b> — ミート矢澤 五反田。秋山成勲が15年以上通う常連店</li>
-      <li><b>『孤独のグルメ』登場店</b> — 青山シャンウェイはseason4第9話の店（2021年に神宮前から北参道へ移転）</li>
-    </ul>
+    <div class="recs">
+      <div class="rec rv"><b>回転寿司127皿</b> — スシロー五反田店で寿司127皿＋うどん＋プリン</div>
+      <div class="rec rv"><b>焼肉一食で約9万円</b> — シャトーブリアン150gだけで約1万4千円</div>
+      <div class="rec rv"><b>ポークステーキ3kg</b> — マロリーポークステーキ。ただし現行の公開メニューの最大は2kg（オリンポス）のため、特別オーダーか表記の差と思われます</div>
+      <div class="rec rv"><b>0.5辛でも激辛</b> — やぐら亭の「宇宙一辛い味噌らーめん ほたる」。麺自体にハバネロを練り込んでいます</div>
+      <div class="rec rv"><b>東京での最高額</b> — ミート矢澤 五反田。秋山成勲が15年以上通う常連店</div>
+      <div class="rec rv"><b>『孤独のグルメ』登場店</b> — 青山シャンウェイはseason4第9話の店（2021年に神宮前から北参道へ移転）</div>
+    </div>
+    <div class="foodbanner rv"><img src="../img/food.webp" alt="ラーメン・鰻丼・ハンバーグのイラスト" width="1216" height="832" loading="lazy" /></div>
   </section>
 
   <section data-block="caveat">
@@ -192,7 +279,7 @@ a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(192,71,5
     <span>page.cocy.io / tzuyang-tokyo</span>
     <span>2026-07-26</span>
   </div>
-</article>
+</main>
 <div class="toast" id="toast"></div>
 
 <script src="../vendor/leaflet.js"></script>
@@ -207,7 +294,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribu
 const gmapUrl=p=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.ja+' '+p.addr)}`;
 const markers=[];
 PLACES.forEach((p,i)=>{
-  const icon=L.divIcon({html:`<div class="pin l${p.l}"><span>${p.no}</span></div>`,className:'',iconSize:[28,28],iconAnchor:[14,26],popupAnchor:[0,-24]});
+  const icon=L.divIcon({html:`<div class="pin l${p.l}"><span>${p.no}</span></div>`,className:'',iconSize:[29,29],iconAnchor:[14,27],popupAnchor:[0,-24]});
   const m=L.marker([p.lat,p.lon],{icon}).addTo(map).bindPopup(
     `<div class="pop"><b class="pn">${p.name}</b><span class="pj">${p.ja}</span><span class="pm">${p.menu}</span><a href="${gmapUrl(p)}" target="_blank" rel="noopener">${UI.a_gmap}</a></div>`);
   m._li=p.l; markers.push(m);
@@ -215,8 +302,8 @@ PLACES.forEach((p,i)=>{
 });
 map.fitBounds(L.featureGroup(markers).getBounds().pad(0.12));
 
-document.getElementById('cards').innerHTML=PLACES.map((p,i)=>`<div class="card l${p.l}" id="c${i}" data-i="${i}">
-  <div class="idx">${p.no}</div>
+document.getElementById('cards').innerHTML=PLACES.map((p,i)=>`<div class="card rv l${p.l}" id="c${i}" data-i="${i}">
+  <div class="idx"><span>${p.no}</span></div>
   <div class="top"><span class="nm">${p.name}</span><span class="ja">${p.ja}</span><span class="ep">${LABEL[p.l]}</span></div>
   <div class="menu">${p.menu} <span class="ja2">${p.menuJa}</span></div>
   <div class="info">
@@ -258,6 +345,9 @@ document.getElementById('filters').addEventListener('click',e=>{
   });
   if(shown.length) map.fitBounds(L.featureGroup(shown).getBounds().pad(0.15));
 });
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
