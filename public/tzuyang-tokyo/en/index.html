@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tzuyang Tokyo Food Map — All 14 Restaurants from the Netflix Show · page.cocy.io</title>
+<meta name="description" content="Every restaurant visited in the Tokyo episodes of the Korean show “Tzuyang, How Many Meals?” (ENA / Netflix), with real names, Japanese addresses, signature dishes and an interactive map. Based on ENA's own official lists." />
+<link rel="canonical" href="https://page.cocy.io/tzuyang-tokyo/en/" />
+<link rel="alternate" hreflang="ko" href="https://page.cocy.io/tzuyang-tokyo/" />
+<link rel="alternate" hreflang="en" href="https://page.cocy.io/tzuyang-tokyo/en/" />
+<link rel="alternate" hreflang="ja" href="https://page.cocy.io/tzuyang-tokyo/ja/" />
+<link rel="alternate" hreflang="x-default" href="https://page.cocy.io/tzuyang-tokyo/en/" />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:title" content="Tzuyang Tokyo Food Map — all 14 restaurants" />
+<meta property="og:description" content="Real names, Japanese addresses, signature dishes and coordinates for every stop of the Tokyo trip." />
+<meta property="og:url" content="https://page.cocy.io/tzuyang-tokyo/en/" />
+<meta property="og:image" content="https://page.cocy.io/tzuyang-tokyo/og.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Tzuyang Tokyo Food Map — all 14 restaurants" />
+<meta name="twitter:description" content="Real names, Japanese addresses, signature dishes and coordinates for every stop of the Tokyo trip." />
+<meta name="twitter:image" content="https://page.cocy.io/tzuyang-tokyo/og.jpg" />
+<meta property="article:published_time" content="2026-07-26" />
+<meta property="article:modified_time" content="2026-07-26" />
+<meta name="author" content="cocy" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../vendor/leaflet.css" />
+<style>
+:root{
+  --bg:#f6f3ee; --paper:#fffdf9; --ink:#221f1a; --ink-soft:#574f45; --muted:#8f8779;
+  --accent:#c0473a; --accent-2:#d98a3a; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --l1:#c0473a; --l2:#b8860b; --l3:#3f7d4f;
+  --line:rgba(34,31,26,.13); --line-soft:rgba(34,31,26,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:880px;margin:40px auto;padding:clamp(24px,5vw,64px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(34,31,26,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.12;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:62ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+b{font-weight:500;color:var(--ink)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(192,71,58,.3)}
+.callout{background:#faf1ec;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout.warn{background:#fbf4e6;border-left:3px solid var(--warn)}
+.callout b{color:var(--accent)}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+
+/* filters */
+.filters{display:flex;flex-wrap:wrap;gap:.5rem;margin:.2rem 0 1rem}
+.fbtn{font-family:var(--body);font-size:.84rem;font-weight:400;padding:.42rem .95rem;border-radius:22px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer;transition:.13s;display:flex;align-items:center;gap:.42rem}
+.fbtn .dot{width:9px;height:9px;border-radius:50%;background:var(--muted)}
+.fbtn[data-k="1"] .dot{background:var(--l1)}
+.fbtn[data-k="2"] .dot{background:var(--l2)}
+.fbtn[data-k="3"] .dot{background:var(--l3)}
+.fbtn:hover{border-color:var(--muted)}
+.fbtn.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.fbtn.on .dot{box-shadow:0 0 0 2px rgba(255,255,255,.35)}
+
+/* map */
+#map{height:min(66vh,520px);border-radius:8px;border:1px solid var(--line);z-index:1;background:#e8e4dc}
+.leaflet-container{font-family:var(--body)}
+.pin{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);color:#fff;font-family:var(--mono);font-size:.76rem;font-weight:500;box-shadow:0 3px 8px rgba(0,0,0,.3);border:2px solid rgba(255,255,255,.85)}
+.pin span{transform:rotate(45deg)}
+.pin.l1{background:var(--l1)}.pin.l2{background:var(--l2)}.pin.l3{background:var(--l3)}
+.pin.dim{opacity:.28}
+.pop{font-family:var(--body);min-width:180px}
+.pop .pn{font-weight:500;font-size:.98rem;color:var(--ink);display:block;margin-bottom:.1rem}
+.pop .pj{font-size:.78rem;color:var(--muted);display:block;margin-bottom:.35rem}
+.pop .pm{font-size:.84rem;color:var(--ink-soft);display:block;margin-bottom:.5rem}
+.pop a{font-size:.8rem;font-family:var(--mono)}
+.leaflet-popup-content{margin:12px 14px}
+
+/* cards */
+.cards{display:grid;gap:.9rem;margin-top:1.2rem}
+.card{border:1px solid var(--line);border-radius:8px;background:#fff;padding:1.05rem 1.15rem;display:grid;grid-template-columns:38px 1fr;gap:.2rem .9rem;align-items:start}
+.card.hide{display:none}
+.card .idx{grid-row:1/span 3;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.82rem;font-weight:500;color:#fff}
+.card.l1 .idx{background:var(--l1)}.card.l2 .idx{background:var(--l2)}.card.l3 .idx{background:var(--l3)}
+.card .top{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem}
+.card .nm{font-family:var(--display);font-weight:600;font-size:1.16rem;color:var(--ink);line-height:1.3}
+.card .ja{font-size:.8rem;color:var(--muted);font-weight:300}
+.card .ep{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.16rem .5rem;border-radius:12px;white-space:nowrap}
+.card.l1 .ep{background:rgba(192,71,58,.12);color:var(--l1)}
+.card.l2 .ep{background:rgba(184,134,11,.14);color:var(--l2)}
+.card.l3 .ep{background:rgba(63,125,79,.13);color:var(--l3)}
+.card .menu{font-size:.95rem;color:var(--ink);margin-top:.3rem}
+.card .menu .ja2{color:var(--muted);font-size:.82rem}
+.card .info{font-size:.83rem;color:var(--ink-soft);margin-top:.45rem;line-height:1.65}
+.card .info .lb{font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:.4rem}
+.card .acts{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem}
+.card .acts a,.card .acts button{font-family:var(--body);font-size:.78rem;padding:.32rem .72rem;border-radius:16px;border:1px solid var(--line);background:#fdfcfa;color:var(--ink-soft);cursor:pointer;text-decoration:none;transition:.13s}
+.card .acts a:hover,.card .acts button:hover{border-color:var(--accent);color:var(--accent)}
+@media(max-width:560px){
+  .doc{margin:0;border:none;border-radius:0;box-shadow:none}
+  .card{grid-template-columns:30px 1fr;gap:.2rem .7rem;padding:.95rem}
+  .card .idx{width:28px;height:28px;font-size:.74rem}
+}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.srcs{font-size:.82rem;color:var(--ink-soft)}
+.srcs li{margin-bottom:.4rem;list-style:none;padding-left:1.1rem;position:relative}
+.srcs li::before{content:"→";position:absolute;left:0;color:var(--accent);font-size:.75rem}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(12px);background:var(--ink);color:#fff;font-size:.84rem;padding:.6rem 1.1rem;border-radius:20px;opacity:0;pointer-events:none;transition:.2s;z-index:999}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* language switcher */
+.langbar{display:flex;gap:.35rem;justify-content:flex-end;margin:-.6rem 0 1.4rem}
+.langbar .lang{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;padding:.22rem .62rem;border-radius:14px;border:1px solid var(--line);color:var(--muted);background:#fff;text-decoration:none}
+.langbar .lang:hover{border-color:var(--accent);color:var(--accent)}
+.langbar .lang.on{background:var(--ink);border-color:var(--ink);color:#fff}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Tzuyang Tokyo Food Map — all 14 restaurants", "description": "Every restaurant visited in the Tokyo episodes of the Korean show “Tzuyang, How Many Meals?” (ENA / Netflix), with real names, Japanese addresses, signature dishes and an interactive map. Based on ENA's own official lists.", "url": "https://page.cocy.io/tzuyang-tokyo/en/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/tzuyang-tokyo/en/"}, "datePublished": "2026-07-26", "dateModified": "2026-07-26", "inLanguage": "en", "image": "https://page.cocy.io/tzuyang-tokyo/og.jpg", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true, "about": {"@type": "TVSeries", "name": "쯔양몇끼", "alternateName": ["Tzuyang, How Many Meals?", "チュヤン何食"]}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "name": "Tzuyang Tokyo Food Map — all 14 restaurants", "numberOfItems": 14, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "Restaurant", "name": "イマカツ 六本木本店", "alternateName": "Imakatsu Roppongi", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区六本木4-12-5 フェニキア ルクソス 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.664528, "longitude": 139.731506}, "servesCuisine": "ささみかつ", "url": "https://r.gnavi.co.jp/rgtmjm950000/"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "Restaurant", "name": "ラ ブティック ドゥ ジョエル・ロブション 六本木ヒルズ店", "alternateName": "La Boutique de Joël Robuchon, Roppongi Hills", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区六本木6-10-1 六本木ヒルズ ヒルサイド 2F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.660206, "longitude": 139.729202}, "servesCuisine": "ローズクロワッサン", "url": "https://tabelog.com/tokyo/A1307/A130701/13020237/"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "Restaurant", "name": "赤身専門 にくがとう 六本木ヒルズ店", "alternateName": "Nikugatou Roppongi Hills", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区六本木6-10-1 六本木ヒルズ ウェストウォーク 5F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.660206, "longitude": 139.729202}, "servesCuisine": "赤身焼肉", "url": "https://www.roppongihills.com/gourmet_shops/0299.html"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "Restaurant", "name": "マロリーポークステーキ 中目黒店", "alternateName": "Mallory Pork Steak Nakameguro", "address": {"@type": "PostalAddress", "streetAddress": "東京都目黒区上目黒3-5-20", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.642349, "longitude": 139.696548}, "servesCuisine": "ポークステーキ", "url": "https://mallorypork.com/nakameguro/"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "Restaurant", "name": "原宿 鳥久", "alternateName": "Harajuku Torihisa", "address": {"@type": "PostalAddress", "streetAddress": "東京都渋谷区神宮前3-27-17 T.S TOW BLDG 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.671791, "longitude": 139.708618}, "servesCuisine": "焼鳥おまかせコース", "url": "https://tabelog.com/tokyo/A1306/A130601/13004738/"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "Restaurant", "name": "くいしんぼう がぶ", "alternateName": "Kuishinbou Gabu", "address": {"@type": "PostalAddress", "streetAddress": "東京都品川区小山3-2-3", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.620518, "longitude": 139.702911}, "servesCuisine": "がぶ丼", "url": "https://retty.me/area/PRE13/ARE13/SUB705/100001692822/"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "Restaurant", "name": "松阪牛炭火焼肉 東海亭", "alternateName": "Toukaitei", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区西麻布1-13-16", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.6608514, "longitude": 139.7232977}, "servesCuisine": "松阪牛A5炭火焼肉", "url": "http://www.toukaitei.jp/"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "Restaurant", "name": "唐揚げ 一筋", "alternateName": "Karaage Hitosuji", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区赤坂3-20-9 岩澤ビル 2F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.6762653, "longitude": 139.7360961}, "servesCuisine": "唐揚げ丼 / 食べ放題", "url": "https://www.hotpepper.jp/strJ001154782/"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "Restaurant", "name": "赤坂ふきぬき 本店", "alternateName": "Akasaka Fukinuki", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区赤坂3-6-11", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.67331, "longitude": 139.738348}, "servesCuisine": "関東風ひつまぶし / 大うな丼 / 骨せんべい / う巻き", "url": "https://www.fukinuki.jp/"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "Restaurant", "name": "支那そば やぐら亭", "alternateName": "Shina Soba Yagura-tei", "address": {"@type": "PostalAddress", "streetAddress": "東京都渋谷区本町2-32-2", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.683567, "longitude": 139.682114}, "servesCuisine": "宇宙一辛い味噌らーめん ほたる", "url": "https://ramendb.supleks.jp/s/5472.html"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "Restaurant", "name": "鉄板中華 青山シャンウェイ 本店", "alternateName": "Aoyama Shanway", "address": {"@type": "PostalAddress", "streetAddress": "東京都渋谷区千駄ヶ谷4-29-12 北参道ダイヤモンドパレス 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.681152, "longitude": 139.703934}, "servesCuisine": "柔らか蒸し鶏のねぎ醤油 / 毛沢東スペアリブ / 黒炒飯", "url": "http://shanway.jp/"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "Restaurant", "name": "辛ちゃん 1号店", "alternateName": "Shinchan 1st Store", "address": {"@type": "PostalAddress", "streetAddress": "東京都新宿区大久保1-1-9 新宿フラワーハイホーム 1F 107", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.698269, "longitude": 139.705948}, "servesCuisine": "豚焼き肉 / カンジャンセウ / キムチチゲ", "url": "https://www.wowsokb.jp/sinchang/"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "Restaurant", "name": "ミート矢澤 五反田", "alternateName": "Meat Yazawa Gotanda", "address": {"@type": "PostalAddress", "streetAddress": "東京都品川区西五反田2-15-13 ニューハイツ西五反田 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.6260151, "longitude": 139.7206051}, "servesCuisine": "ハンバーグ / シャトーブリアンステーキ", "url": "https://maps.app.goo.gl/kc93D8j6SitGErm97"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "Restaurant", "name": "スシロー 五反田店", "alternateName": "Sushiro Gotanda", "address": {"@type": "PostalAddress", "streetAddress": "東京都品川区西五反田1-3-8 五反田Placeビル B1", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.625572, "longitude": 139.722275}, "servesCuisine": "回転寿司 / うどん / プリン", "url": "https://www.akindo-sushiro.co.jp/"}}]}</script>
+</head>
+<body>
+<article class="doc">
+  <nav class="langbar"><a class="lang" href="https://page.cocy.io/tzuyang-tokyo/" hreflang="ko">한국어</a><a class="lang on" href="https://page.cocy.io/tzuyang-tokyo/en/" hreflang="en">English</a><a class="lang" href="https://page.cocy.io/tzuyang-tokyo/ja/" hreflang="ja">日本語</a></nav>
+
+  <section data-block="hero">
+    <div class="kicker">FOOD MAP · TZUYANG IN TOKYO</div>
+    <h1>Tzuyang's Tokyo: All 14 Restaurants</h1>
+    <p class="lead">Every restaurant from the Tokyo episodes of the Korean variety show <b>“Tzuyang, How Many Meals?”</b> (ENA / Netflix), with real names, Japanese addresses, signature dishes and coordinates — plotted on a map. The show blurred the signboards, but <b>ENA later published the names and addresses itself</b> in three official “Tokyo restaurant list” posts. This page reproduces those lists and adds verified coordinates.</p>
+    <div class="meta">
+      <span><b>Compiled</b> page.cocy.io · 2026-07-26</span>
+      <span><b>Source</b> ENA official lists 1–3</span>
+      <span><b>Places</b> 14 · all in Tokyo</span>
+    </div>
+    <div class="callout"><b>Why search results were useless</b> — because the show hid the signboards, many blogs ranking on top simply <b>picked real but unrelated Tokyo restaurants</b> and presented them with addresses and maps as fact. This page uses only the lists ENA published directly.</div>
+  </section>
+
+  <section data-block="map">
+    <h2><span class="n">01</span> Map</h2>
+    <div class="filters" id="filters">
+      <button class="fbtn on" data-k="all">All 14</button>
+      <button class="fbtn" data-k="1"><i class="dot"></i>List 1 · with Choo Sung-hoon</button>
+      <button class="fbtn" data-k="2"><i class="dot"></i>List 2 · with Kim Jaejoong</button>
+      <button class="fbtn" data-k="3"><i class="dot"></i>List 3 · final day</button>
+    </div>
+    <div id="map"></div>
+    <p class="note" style="margin-top:.6rem">Tap a pin for details. Tapping a card below moves the map to that restaurant.</p>
+  </section>
+
+  <section data-block="list">
+    <h2><span class="n">02</span> The restaurants</h2>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section data-block="episodes">
+    <h2><span class="n">03</span> Records from the show</h2>
+    <ul class="srcs">
+      <li><b>127 plates of sushi</b> — at Sushiro Gotanda, plus udon and pudding</li>
+      <li><b>A ¥90,000 yakiniku meal</b> — 150g of chateaubriand alone ran about ¥14,000</li>
+      <li><b>A 3kg pork steak</b> — at Mallory Pork Steak. Note the largest size on the current public menu is 2kg (“Olympus”), so this was likely a special order</li>
+      <li><b>Even level 0.5 is brutal</b> — Yagura-tei's “spiciest miso ramen in the universe” kneads habanero into the noodles themselves</li>
+      <li><b>The single most expensive meal</b> — Meat Yazawa Gotanda, a place Choo Sung-hoon has been going to for over 15 years</li>
+      <li><b>A Kodoku no Gurume location</b> — Shanway appeared in season 4, episode 9 (moved from Jingumae to Kita-Sando in 2021)</li>
+    </ul>
+  </section>
+
+  <section data-block="caveat">
+    <h2><span class="n">04</span> Before you go</h2>
+    <div class="callout warn">Expect <b>longer queues</b> right after the broadcast. Places like Fukinuki, Toukaitei and Torihisa are reservation-based or course-only — check before you go. Hours, closing days and prices change; verify on each restaurant's own page.</div>
+    <ul class="srcs">
+      <li><b>Coordinates</b> — 4 are exact storefront POIs from OpenStreetMap; the other 10 come from the Geospatial Information Authority of Japan (GSI) address lookup, accurate to the building block.</li>
+      <li><b>Two identical coordinates</b> — Joël Robuchon and Nikugatou are both inside Roppongi Hills (6-10-1 Roppongi), on different floors.</li>
+      <li><b>Address correction</b> — ENA wrote “Shinjuku Flower Building” for Shinchan; the actual building is <b>Shinjuku Flower High Home</b>, 1F #107.</li>
+      <li><b>Episode mapping</b> — the three lists were posted in the order: Choo Sung-hoon leg, Kim Jaejoong leg, final day. Mapping them to broadcast episode numbers is inferred from posting order and press releases.</li>
+    </ul>
+  </section>
+
+  <section data-block="sources">
+    <h2><span class="n">05</span> Sources</h2>
+    <ul class="srcs">
+      <li><a href="https://www.facebook.com/channel.ena/posts/1614396747354408" target="_blank" rel="noopener">ENA official — Tokyo restaurant list 1</a></li>
+      <li><a href="https://www.facebook.com/channel.ena/posts/1618332886960794" target="_blank" rel="noopener">ENA official — Tokyo restaurant list 2</a></li>
+      <li><a href="https://www.facebook.com/channel.ena/posts/1625172059610210" target="_blank" rel="noopener">ENA official — Tokyo restaurant list 3</a></li>
+      <li><a href="https://ktena.co.kr/bbs/board.php?bo_table=variety&amp;wr_id=143" target="_blank" rel="noopener">ENA programme page</a> · <a href="https://www.netflix.com/kr/title/82929668" target="_blank" rel="noopener">Netflix</a></li>
+      <li>Coordinates: <a href="https://msearch.gsi.go.jp/" target="_blank" rel="noopener">GSI address search</a> · <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noopener">OSM Nominatim</a> · map tiles © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors</li>
+    </ul>
+  </section>
+
+  <div class="foot">
+    <span>page.cocy.io / tzuyang-tokyo</span>
+    <span>2026-07-26</span>
+  </div>
+</article>
+<div class="toast" id="toast"></div>
+
+<script src="../vendor/leaflet.js"></script>
+<script>
+const PLACES=[{"l": 1, "no": 1, "name": "Imakatsu Roppongi", "ja": "イマカツ 六本木本店", "menu": "Chicken tender katsu", "menuJa": "ささみかつ", "addr": "東京都港区六本木4-12-5 フェニキア ルクソス 1F", "area": "Roppongi, Minato", "note": "", "lat": 35.664528, "lon": 139.731506, "url": "https://r.gnavi.co.jp/rgtmjm950000/"}, {"l": 1, "no": 2, "name": "La Boutique de Joël Robuchon, Roppongi Hills", "ja": "ラ ブティック ドゥ ジョエル・ロブション 六本木ヒルズ店", "menu": "Rose croissant", "menuJa": "ローズクロワッサン", "addr": "東京都港区六本木6-10-1 六本木ヒルズ ヒルサイド 2F", "area": "Roppongi Hills, Minato", "note": "", "lat": 35.660206, "lon": 139.729202, "url": "https://tabelog.com/tokyo/A1307/A130701/13020237/"}, {"l": 1, "no": 3, "name": "Nikugatou Roppongi Hills", "ja": "赤身専門 にくがとう 六本木ヒルズ店", "menu": "Yakiniku (lean wagyu)", "menuJa": "赤身焼肉", "addr": "東京都港区六本木6-10-1 六本木ヒルズ ウェストウォーク 5F", "area": "Roppongi Hills, Minato", "note": "", "lat": 35.660206, "lon": 139.729202, "url": "https://www.roppongihills.com/gourmet_shops/0299.html"}, {"l": 1, "no": 4, "name": "Mallory Pork Steak Nakameguro", "ja": "マロリーポークステーキ 中目黒店", "menu": "Pork steak (270g–2kg)", "menuJa": "ポークステーキ", "addr": "東京都目黒区上目黒3-5-20", "area": "Nakameguro, Meguro", "note": "Lunch from ¥1,000 / dinner from ¥1,500", "lat": 35.642349, "lon": 139.696548, "url": "https://mallorypork.com/nakameguro/"}, {"l": 1, "no": 5, "name": "Harajuku Torihisa", "ja": "原宿 鳥久", "menu": "Yakitori omakase course", "menuJa": "焼鳥おまかせコース", "addr": "東京都渋谷区神宮前3-27-17 T.S TOW BLDG 1F", "area": "Harajuku, Shibuya", "note": "Dinner around ¥12,000", "lat": 35.671791, "lon": 139.708618, "url": "https://tabelog.com/tokyo/A1306/A130601/13004738/"}, {"l": 2, "no": 1, "name": "Kuishinbou Gabu", "ja": "くいしんぼう がぶ", "menu": "Roast beef rice bowl", "menuJa": "がぶ丼", "addr": "東京都品川区小山3-2-3", "area": "Musashi-Koyama, Shinagawa", "note": "180g ¥1,600 / 270g ¥2,300 / 453g ¥3,850", "lat": 35.620518, "lon": 139.702911, "url": "https://retty.me/area/PRE13/ARE13/SUB705/100001692822/"}, {"l": 2, "no": 2, "name": "Toukaitei", "ja": "松阪牛炭火焼肉 東海亭", "menu": "A5 Matsusaka beef charcoal yakiniku", "menuJa": "松阪牛A5炭火焼肉", "addr": "東京都港区西麻布1-13-16", "area": "Nishi-Azabu, Minato", "note": "11-course set ¥8,800", "lat": 35.6608514, "lon": 139.7232977, "url": "http://www.toukaitei.jp/"}, {"l": 2, "no": 3, "name": "Karaage Hitosuji", "ja": "唐揚げ 一筋", "menu": "Karaage rice bowl · all-you-can-eat karaage", "menuJa": "唐揚げ丼 / 食べ放題", "addr": "東京都港区赤坂3-20-9 岩澤ビル 2F", "area": "Akasaka, Minato", "note": "Lunch under ¥999 / buffet ¥3,000", "lat": 35.6762653, "lon": 139.7360961, "url": "https://www.hotpepper.jp/strJ001154782/"}, {"l": 2, "no": 4, "name": "Akasaka Fukinuki", "ja": "赤坂ふきぬき 本店", "menu": "Kanto-style hitsumabushi · jumbo eel bowl · eel bone crackers · eel omelette", "menuJa": "関東風ひつまぶし / 大うな丼 / 骨せんべい / う巻き", "addr": "東京都港区赤坂3-6-11", "area": "Akasaka, Minato", "note": "Founded 1923", "lat": 35.67331, "lon": 139.738348, "url": "https://www.fukinuki.jp/"}, {"l": 2, "no": 5, "name": "Shina Soba Yagura-tei", "ja": "支那そば やぐら亭", "menu": "“Hotaru” — the spiciest miso ramen in the universe", "menuJa": "宇宙一辛い味噌らーめん ほたる", "addr": "東京都渋谷区本町2-32-2", "area": "Hatsudai, Shibuya", "note": "Level 1 around ¥1,080", "lat": 35.683567, "lon": 139.682114, "url": "https://ramendb.supleks.jp/s/5472.html"}, {"l": 3, "no": 1, "name": "Aoyama Shanway", "ja": "鉄板中華 青山シャンウェイ 本店", "menu": "Steamed chicken in scallion soy · Mao spare ribs · black fried rice", "menuJa": "柔らか蒸し鶏のねぎ醤油 / 毛沢東スペアリブ / 黒炒飯", "addr": "東京都渋谷区千駄ヶ谷4-29-12 北参道ダイヤモンドパレス 1F", "area": "Kita-Sando, Shibuya", "note": "Featured in Kodoku no Gurume", "lat": 35.681152, "lon": 139.703934, "url": "http://shanway.jp/"}, {"l": 3, "no": 2, "name": "Shinchan 1st Store", "ja": "辛ちゃん 1号店", "menu": "Grilled pork · soy-marinated shrimp · kimchi jjigae", "menuJa": "豚焼き肉 / カンジャンセウ / キムチチゲ", "addr": "東京都新宿区大久保1-1-9 新宿フラワーハイホーム 1F 107", "area": "Shin-Okubo, Shinjuku", "note": "Korean restaurant · shrimp ¥2,500", "lat": 35.698269, "lon": 139.705948, "url": "https://www.wowsokb.jp/sinchang/"}, {"l": 3, "no": 3, "name": "Meat Yazawa Gotanda", "ja": "ミート矢澤 五反田", "menu": "Hamburg steak · chateaubriand steak", "menuJa": "ハンバーグ / シャトーブリアンステーキ", "addr": "東京都品川区西五反田2-15-13 ニューハイツ西五反田 1F", "area": "Gotanda, Shinagawa", "note": "Highest single-meal bill of the Tokyo trip", "lat": 35.6260151, "lon": 139.7206051, "url": "https://maps.app.goo.gl/kc93D8j6SitGErm97"}, {"l": 3, "no": 4, "name": "Sushiro Gotanda", "ja": "スシロー 五反田店", "menu": "Conveyor-belt sushi · udon · pudding", "menuJa": "回転寿司 / うどん / プリン", "addr": "東京都品川区西五反田1-3-8 五反田Placeビル B1", "area": "Gotanda, Shinagawa", "note": "127 plates in one sitting", "lat": 35.625572, "lon": 139.722275, "url": "https://www.akindo-sushiro.co.jp/"}];
+const LABEL={"1": "List 1 · with Choo Sung-hoon", "2": "List 2 · with Kim Jaejoong", "3": "List 3 · final day"};
+const UI={"lb_addr": "Address", "lb_area": "Area", "lb_note": "Note", "a_focus": "Show on map", "a_copy": "Copy address", "a_gmap": "Google Maps ↗", "a_site": "Restaurant info ↗", "copied": "Address copied", "copyfail": "Copy failed"};
+
+const map=L.map('map',{scrollWheelZoom:false}).setView([35.664,139.715],12);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+
+const gmapUrl=p=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.ja+' '+p.addr)}`;
+const markers=[];
+PLACES.forEach((p,i)=>{
+  const icon=L.divIcon({html:`<div class="pin l${p.l}"><span>${p.no}</span></div>`,className:'',iconSize:[28,28],iconAnchor:[14,26],popupAnchor:[0,-24]});
+  const m=L.marker([p.lat,p.lon],{icon}).addTo(map).bindPopup(
+    `<div class="pop"><b class="pn">${p.name}</b><span class="pj">${p.ja}</span><span class="pm">${p.menu}</span><a href="${gmapUrl(p)}" target="_blank" rel="noopener">${UI.a_gmap}</a></div>`);
+  m._li=p.l; markers.push(m);
+  m.on('click',()=>{const c=document.getElementById('c'+i); if(c) c.scrollIntoView({behavior:'smooth',block:'center'});});
+});
+map.fitBounds(L.featureGroup(markers).getBounds().pad(0.12));
+
+document.getElementById('cards').innerHTML=PLACES.map((p,i)=>`<div class="card l${p.l}" id="c${i}" data-i="${i}">
+  <div class="idx">${p.no}</div>
+  <div class="top"><span class="nm">${p.name}</span><span class="ja">${p.ja}</span><span class="ep">${LABEL[p.l]}</span></div>
+  <div class="menu">${p.menu} <span class="ja2">${p.menuJa}</span></div>
+  <div class="info">
+    <div><span class="lb">${UI.lb_addr}</span>${p.addr}</div>
+    <div><span class="lb">${UI.lb_area}</span>${p.area}${p.note?` <span class="lb" style="margin-left:.6rem">${UI.lb_note}</span>${p.note}`:''}</div>
+    <div class="acts">
+      <button data-act="focus">${UI.a_focus}</button>
+      <button data-act="copy" data-v="${p.addr}">${UI.a_copy}</button>
+      <a href="${gmapUrl(p)}" target="_blank" rel="noopener">${UI.a_gmap}</a>
+      ${p.url?`<a href="${p.url}" target="_blank" rel="noopener">${UI.a_site}</a>`:''}
+    </div>
+  </div>
+</div>`).join('');
+
+const toast=document.getElementById('toast');let tt;
+const say=m=>{toast.textContent=m;toast.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove('on'),1800);};
+
+document.getElementById('cards').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  const i=+b.closest('.card').dataset.i;
+  if(b.dataset.act==='focus'){
+    document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'});
+    map.setView([PLACES[i].lat,PLACES[i].lon],17,{animate:true});
+    markers[i].openPopup();
+  } else {
+    navigator.clipboard.writeText(b.dataset.v).then(()=>say(UI.copied)).catch(()=>say(UI.copyfail));
+  }
+});
+
+document.getElementById('filters').addEventListener('click',e=>{
+  const b=e.target.closest('.fbtn'); if(!b) return;
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.toggle('on',x===b));
+  const k=b.dataset.k, shown=[];
+  markers.forEach((m,i)=>{
+    const on = k==='all' || String(m._li)===k;
+    const el=m.getElement(); if(el) el.querySelector('.pin').classList.toggle('dim',!on);
+    document.getElementById('c'+i).classList.toggle('hide',!on);
+    if(on) shown.push(m);
+  });
+  if(shown.length) map.fitBounds(L.featureGroup(shown).getBounds().pad(0.15));
+});
+</script>
+</body>
+</html>
