@@ -552,11 +552,12 @@ PLACES.forEach((p,i)=>{{
   const m=L.marker([p.lat,p.lon],{{icon}}).addTo(map).bindPopup(
     `<div class="pop"><b class="pn">${{p.name}}</b><span class="pj">${{p.ja}}</span><span class="pm">${{p.menu}}</span><a href="${{gmapUrl(p)}}" target="_blank" rel="noopener">${{UI.a_gmap}}</a></div>`);
   m._li=p.l; markers.push(m);
-  m.on('click',()=>{{const c=document.getElementById('c'+i); if(c) c.scrollIntoView({{behavior:'smooth',block:'center'}});}});
+  m.on('click',()=>{{const c=document.getElementById('c'+i); if(c){{c.classList.add('open');c.scrollIntoView({{behavior:'smooth',block:'center'}});}}}});
 }});
 map.fitBounds(L.featureGroup(markers).getBounds().pad(0.12));
 
 document.getElementById('cards').innerHTML=PLACES.map((p,i)=>`<div class="card rv l${{p.l}}" id="c${{i}}" data-i="${{i}}">
+  <span class="tgl">▾</span>
   <div class="idx"><span>${{p.no}}</span></div>
   <div class="top"><span class="nm">${{p.name}}</span><span class="ja">${{p.ja}}</span><span class="ep">${{LABEL[p.l]}}</span></div>
   <div class="menu">${{p.menu}} <span class="ja2">${{p.menuJa}}</span></div>
@@ -576,7 +577,12 @@ const toast=document.getElementById('toast');let tt;
 const say=m=>{{toast.textContent=m;toast.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove('on'),1800);}};
 
 document.getElementById('cards').addEventListener('click',e=>{{
-  const b=e.target.closest('button'); if(!b) return;
+  const b=e.target.closest('button');
+  if(!b){{
+    const c=e.target.closest('.card');
+    if(c && !e.target.closest('a') && matchMedia('(max-width:700px)').matches) c.classList.toggle('open');
+    return;
+  }}
   const i=+b.closest('.card').dataset.i;
   if(b.dataset.act==='focus'){{
     document.getElementById('map').scrollIntoView({{behavior:'smooth',block:'center'}});

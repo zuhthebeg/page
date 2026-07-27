@@ -69,8 +69,8 @@ a{color:var(--lacquer);text-decoration:none;border-bottom:1px solid rgba(165,42,
 @media(max-width:720px){
   .hero-in{grid-template-columns:1fr}
   .hero-copy{padding-bottom:0}
-  .hero-art{margin-top:1.2rem}
-  .hero-art img{max-width:78%;-webkit-mask-image:linear-gradient(180deg,#000 78%,transparent 100%);mask-image:linear-gradient(180deg,#000 78%,transparent 100%)}
+  .hero-art{margin-top:.9rem}
+  .hero-art img{max-width:58%;-webkit-mask-image:linear-gradient(180deg,#000 72%,transparent 100%);mask-image:linear-gradient(180deg,#000 72%,transparent 100%)}
 }
 
 /* ── ticker ── */
@@ -183,7 +183,21 @@ h2::after{content:"";flex:1;height:1px;background:var(--line-soft);margin-left:.
 .side-art{line-height:0;position:sticky;top:20px}
 .side-art img{width:100%;border-radius:12px;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--gold-soft)}
 .side-art .cap{line-height:1.5;font-size:.72rem;color:var(--muted);font-family:var(--mono);margin-top:.6rem;text-align:center}
-@media(max-width:700px){.sidewrap{grid-template-columns:1fr}.side-art{position:static;max-width:230px;margin:0 auto}}
+@media(max-width:700px){.sidewrap{grid-template-columns:1fr}.side-art{display:none}}
+
+/* mobile compact: accordion cards */
+.card .tgl{display:none}
+@media(max-width:700px){
+  .cards{gap:.6rem}
+  .card{padding:.8rem 2.1rem .8rem .9rem;grid-template-columns:32px 1fr;gap:.15rem .7rem;cursor:pointer}
+  .card .idx{width:28px;height:28px;font-size:.72rem;grid-row:1/span 2}
+  .card .nm{font-size:1.05rem}
+  .card .menu{margin-top:.1rem;font-size:.88rem}
+  .card .info{display:none;cursor:auto}
+  .card.open .info{display:block}
+  .card .tgl{display:flex;align-items:center;justify-content:center;position:absolute;right:.55rem;top:.8rem;width:22px;height:22px;color:var(--gold);font-size:.8rem;transition:transform .18s}
+  .card.open .tgl{transform:rotate(180deg)}
+}
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Tzuyang Tokyo Food Map — all 14 restaurants", "description": "Every restaurant visited in the Tokyo episodes of the Korean show “Tzuyang, How Many Meals?” (ENA / Netflix), with real names, Japanese addresses, signature dishes and an interactive map. Based on ENA's own official lists.", "url": "https://page.cocy.io/tzuyang-tokyo/en/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/tzuyang-tokyo/en/"}, "datePublished": "2026-07-26", "dateModified": "2026-07-26", "inLanguage": "en", "image": "https://page.cocy.io/tzuyang-tokyo/og.jpg", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true, "about": {"@type": "TVSeries", "name": "쯔양몇끼", "alternateName": ["Tzuyang, How Many Meals?", "チュヤン何食"]}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "name": "Tzuyang Tokyo Food Map — all 14 restaurants", "numberOfItems": 14, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "Restaurant", "name": "イマカツ 六本木本店", "alternateName": "Imakatsu Roppongi", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区六本木4-12-5 フェニキア ルクソス 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.664528, "longitude": 139.731506}, "servesCuisine": "ささみかつ", "url": "https://r.gnavi.co.jp/rgtmjm950000/"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "Restaurant", "name": "ラ ブティック ドゥ ジョエル・ロブション 六本木ヒルズ店", "alternateName": "La Boutique de Joël Robuchon, Roppongi Hills", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区六本木6-10-1 六本木ヒルズ ヒルサイド 2F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.660206, "longitude": 139.729202}, "servesCuisine": "ローズクロワッサン", "url": "https://tabelog.com/tokyo/A1307/A130701/13020237/"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "Restaurant", "name": "赤身専門 にくがとう 六本木ヒルズ店", "alternateName": "Nikugatou Roppongi Hills", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区六本木6-10-1 六本木ヒルズ ウェストウォーク 5F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.660206, "longitude": 139.729202}, "servesCuisine": "赤身焼肉", "url": "https://www.roppongihills.com/gourmet_shops/0299.html"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "Restaurant", "name": "マロリーポークステーキ 中目黒店", "alternateName": "Mallory Pork Steak Nakameguro", "address": {"@type": "PostalAddress", "streetAddress": "東京都目黒区上目黒3-5-20", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.642349, "longitude": 139.696548}, "servesCuisine": "ポークステーキ", "url": "https://mallorypork.com/nakameguro/"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "Restaurant", "name": "原宿 鳥久", "alternateName": "Harajuku Torihisa", "address": {"@type": "PostalAddress", "streetAddress": "東京都渋谷区神宮前3-27-17 T.S TOW BLDG 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.671791, "longitude": 139.708618}, "servesCuisine": "焼鳥おまかせコース", "url": "https://tabelog.com/tokyo/A1306/A130601/13004738/"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "Restaurant", "name": "くいしんぼう がぶ", "alternateName": "Kuishinbou Gabu", "address": {"@type": "PostalAddress", "streetAddress": "東京都品川区小山3-2-3", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.620518, "longitude": 139.702911}, "servesCuisine": "がぶ丼", "url": "https://retty.me/area/PRE13/ARE13/SUB705/100001692822/"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "Restaurant", "name": "松阪牛炭火焼肉 東海亭", "alternateName": "Toukaitei", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区西麻布1-13-16", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.6608514, "longitude": 139.7232977}, "servesCuisine": "松阪牛A5炭火焼肉", "url": "http://www.toukaitei.jp/"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "Restaurant", "name": "唐揚げ 一筋", "alternateName": "Karaage Hitosuji", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区赤坂3-20-9 岩澤ビル 2F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.6762653, "longitude": 139.7360961}, "servesCuisine": "唐揚げ丼 / 食べ放題", "url": "https://www.hotpepper.jp/strJ001154782/"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "Restaurant", "name": "赤坂ふきぬき 本店", "alternateName": "Akasaka Fukinuki", "address": {"@type": "PostalAddress", "streetAddress": "東京都港区赤坂3-6-11", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.67331, "longitude": 139.738348}, "servesCuisine": "関東風ひつまぶし / 大うな丼 / 骨せんべい / う巻き", "url": "https://www.fukinuki.jp/"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "Restaurant", "name": "支那そば やぐら亭", "alternateName": "Shina Soba Yagura-tei", "address": {"@type": "PostalAddress", "streetAddress": "東京都渋谷区本町2-32-2", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.683567, "longitude": 139.682114}, "servesCuisine": "宇宙一辛い味噌らーめん ほたる", "url": "https://ramendb.supleks.jp/s/5472.html"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "Restaurant", "name": "鉄板中華 青山シャンウェイ 本店", "alternateName": "Aoyama Shanway", "address": {"@type": "PostalAddress", "streetAddress": "東京都渋谷区千駄ヶ谷4-29-12 北参道ダイヤモンドパレス 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.681152, "longitude": 139.703934}, "servesCuisine": "柔らか蒸し鶏のねぎ醤油 / 毛沢東スペアリブ / 黒炒飯", "url": "http://shanway.jp/"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "Restaurant", "name": "辛ちゃん 1号店", "alternateName": "Shinchan 1st Store", "address": {"@type": "PostalAddress", "streetAddress": "東京都新宿区大久保1-1-9 新宿フラワーハイホーム 1F 107", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.698269, "longitude": 139.705948}, "servesCuisine": "豚焼き肉 / カンジャンセウ / キムチチゲ", "url": "https://www.wowsokb.jp/sinchang/"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "Restaurant", "name": "ミート矢澤 五反田", "alternateName": "Meat Yazawa Gotanda", "address": {"@type": "PostalAddress", "streetAddress": "東京都品川区西五反田2-15-13 ニューハイツ西五反田 1F", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.6260151, "longitude": 139.7206051}, "servesCuisine": "ハンバーグ / シャトーブリアンステーキ", "url": "https://maps.app.goo.gl/kc93D8j6SitGErm97"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "Restaurant", "name": "スシロー 五反田店", "alternateName": "Sushiro Gotanda", "address": {"@type": "PostalAddress", "streetAddress": "東京都品川区西五反田1-3-8 五反田Placeビル B1", "addressLocality": "Tokyo", "addressCountry": "JP"}, "geo": {"@type": "GeoCoordinates", "latitude": 35.625572, "longitude": 139.722275}, "servesCuisine": "回転寿司 / うどん / プリン", "url": "https://www.akindo-sushiro.co.jp/"}}]}</script>
@@ -298,11 +312,12 @@ PLACES.forEach((p,i)=>{
   const m=L.marker([p.lat,p.lon],{icon}).addTo(map).bindPopup(
     `<div class="pop"><b class="pn">${p.name}</b><span class="pj">${p.ja}</span><span class="pm">${p.menu}</span><a href="${gmapUrl(p)}" target="_blank" rel="noopener">${UI.a_gmap}</a></div>`);
   m._li=p.l; markers.push(m);
-  m.on('click',()=>{const c=document.getElementById('c'+i); if(c) c.scrollIntoView({behavior:'smooth',block:'center'});});
+  m.on('click',()=>{const c=document.getElementById('c'+i); if(c){c.classList.add('open');c.scrollIntoView({behavior:'smooth',block:'center'});}});
 });
 map.fitBounds(L.featureGroup(markers).getBounds().pad(0.12));
 
 document.getElementById('cards').innerHTML=PLACES.map((p,i)=>`<div class="card rv l${p.l}" id="c${i}" data-i="${i}">
+  <span class="tgl">▾</span>
   <div class="idx"><span>${p.no}</span></div>
   <div class="top"><span class="nm">${p.name}</span><span class="ja">${p.ja}</span><span class="ep">${LABEL[p.l]}</span></div>
   <div class="menu">${p.menu} <span class="ja2">${p.menuJa}</span></div>
@@ -322,7 +337,12 @@ const toast=document.getElementById('toast');let tt;
 const say=m=>{toast.textContent=m;toast.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove('on'),1800);};
 
 document.getElementById('cards').addEventListener('click',e=>{
-  const b=e.target.closest('button'); if(!b) return;
+  const b=e.target.closest('button');
+  if(!b){
+    const c=e.target.closest('.card');
+    if(c && !e.target.closest('a') && matchMedia('(max-width:700px)').matches) c.classList.toggle('open');
+    return;
+  }
   const i=+b.closest('.card').dataset.i;
   if(b.dataset.act==='focus'){
     document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'});
