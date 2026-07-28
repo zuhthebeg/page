@@ -229,7 +229,7 @@ h1 span{color:var(--red)}
   <section class="screen" id="s-r4"><div class="pad">
     <div class="rtitle">ROUND 2 · AI 복제 판별</div>
     <div class="rh">귀로는 못 잡는다</div>
-    <div class="rdesc">같은 사람 목소리처럼 들리는 두 통화. <b>하나는 실제 사기범 녹음, 하나는 그 목소리를 AI가 복제</b>한 것이다.<br>둘 다 들어보고 — <b>AI는 어느 쪽?</b></div>
+    <div class="rdesc">세 통화, 전부 <b>같은 사람 목소리</b>다. 이 중 <b>실제 사기범 육성은 하나뿐</b> — 나머지 둘은 그 목소리를 학습한 AI 복제다.<br>다 들어보고 <b>진짜를 찾아라.</b></div>
     <div class="ab">
       <div class="abcard">
         <div class="ablbl">클립 A <span class="r4tag" id="r4tagA"></span></div>
@@ -241,11 +241,17 @@ h1 span{color:var(--red)}
         <div class="wave" id="r4waveB"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         <button class="abplay" id="r4playB" onclick="r4Play('B')">▶ 클립 B 재생</button>
       </div>
+      <div class="abcard">
+        <div class="ablbl">클립 C <span class="r4tag" id="r4tagC"></span></div>
+        <div class="wave" id="r4waveC"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <button class="abplay" id="r4playC" onclick="r4Play('C')">▶ 클립 C 재생</button>
+      </div>
     </div>
     <div id="r4guess">
-      <div class="r4q">AI 복제는 어느 쪽인가?</div>
-      <button class="choice" onclick="r4Guess('A')">🅐 클립 A가 AI 복제다</button>
-      <button class="choice" onclick="r4Guess('B')">🅑 클립 B가 AI 복제다</button>
+      <div class="r4q">실제 사기범 육성은 어느 것인가?</div>
+      <button class="choice" onclick="r4Guess('A')">🅐 클립 A가 진짜다</button>
+      <button class="choice" onclick="r4Guess('B')">🅑 클립 B가 진짜다</button>
+      <button class="choice" onclick="r4Guess('C')">🅒 클립 C가 진짜다</button>
     </div>
     <div id="r4result" style="display:none"></div>
   </div></section>
@@ -499,39 +505,45 @@ function r3MeRender(r){
 }
 
 /* ============ ROUND 4-slot (AI 복제 판별) ============ */
-let r4A=null,r4B=null,r4done=false,r4playing=null;
+let r4clips=null,r4done=false,r4playing=null;
+const R4SLOTS=['A','B','C'];
 function r4Init(){
-  const real={file:'clips/vt-real.mp3',isAI:false};
-  const ai={file:'clips/vt-ai.mp3',isAI:true};
-  if(Math.random()<0.5){r4A=real;r4B=ai;}else{r4A=ai;r4B=real;}
+  const pool=[
+    {file:'clips/vt-real.mp3',isAI:false},
+    {file:'clips/vt-ai.mp3',isAI:true},   // 같은 멘트 클론
+    {file:'clips/vt-ai2.mp3',isAI:true},  // 다른 사기멘트 클론
+  ];
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  r4clips={A:pool[0],B:pool[1],C:pool[2]};
 }
 function r4StopAll(){
   stopAudio();r4playing=null;
-  ['A','B'].forEach(s=>{$('r4play'+s).textContent='▶ 클립 '+s+' 재생';$('r4wave'+s).classList.remove('play');});
+  R4SLOTS.forEach(s=>{$('r4play'+s).textContent='▶ 클립 '+s+' 재생';$('r4wave'+s).classList.remove('play');});
 }
 function r4Play(slot){
   if(r4playing===slot){r4StopAll();return;}
   r4StopAll();
-  const clip=slot==='A'?r4A:r4B;if(!clip)return;
+  const clip=r4clips&&r4clips[slot];if(!clip)return;
   r4playing=slot;$('r4play'+slot).textContent='❚❚ 정지';$('r4wave'+slot).classList.add('play');
-  playClip(clip.file,null,8,()=>{if(r4playing===slot){r4playing=null;$('r4play'+slot).textContent='▶ 클립 '+slot+' 재생';$('r4wave'+slot).classList.remove('play');}});
+  playClip(clip.file,null,12,()=>{if(r4playing===slot){r4playing=null;$('r4play'+slot).textContent='▶ 클립 '+slot+' 재생';$('r4wave'+slot).classList.remove('play');}});
 }
 function r4Guess(slot){
   if(r4done)return;r4done=true;r4StopAll();
-  const chosen=slot==='A'?r4A:r4B;
-  const correct=chosen.isAI, aiSlot=r4A.isAI?'A':'B';
-  state.r4={correct,aiSlot};
-  ['A','B'].forEach(s=>{const c=s==='A'?r4A:r4B;const t=$('r4tag'+s);
+  const chosen=r4clips[slot];
+  const correct=!chosen.isAI;
+  const realSlot=R4SLOTS.find(s=>!r4clips[s].isAI);
+  state.r4={correct,realSlot};
+  R4SLOTS.forEach(s=>{const c=r4clips[s];const t=$('r4tag'+s);
     t.textContent=c.isAI?'AI 복제':'실제 녹음';t.className='r4tag '+(c.isAI?'ai':'real');});
   $('r4guess').style.display='none';
   $('r4result').style.display='block';
   $('r4result').innerHTML=`
     <div class="vcard ${correct?'good':'bad'}">
       <div class="em">${correct?'🎯':'🫥'}</div>
-      <h3>${correct?'맞혔다 — 클립 '+slot+'가 AI':'빗나갔다 — AI는 클립 '+aiSlot}</h3>
+      <h3>${correct?'맞혔다 — 클립 '+slot+'가 진짜':'속았다 — 진짜는 클립 '+realSlot}</h3>
       <p>${correct
-        ?'용케 잡았다. 하지만 실제 상황엔 <b>옆에 비교할 진짜가 없다.</b> 한 통만 걸려오면 이 정도는 대부분 속는다.'
-        :'구분 못 했다 — 오히려 정상이다. <b>사람 귀로는 거의 못 잡는다.</b>'}</p>
+        ?'용케 잡았다. 하지만 실제 상황엔 <b>옆에 비교할 클립이 없다.</b> 한 통만 걸려오면 이 정도는 대부분 속는다.'
+        :'AI 복제를 진짜로 골랐다 — 오히려 정상이다. <b>사람 귀로는 거의 못 잡는다.</b>'}</p>
     </div>
     <div class="tech"><div class="t">🧬 방금 무슨 일이 있었나</div>
       <div class="d">실제 사기범 통화 <b>몇 초</b>면 그 목소리를 학습해 <b>하지 않은 말</b>을 시킬 수 있다. 가족·지인 목소리도 예외가 아니다 — 짧은 영상·통화 한 번이면 재료가 된다.</div></div>
@@ -569,9 +581,9 @@ function finish(){
     <div class="bonus">이 훈련의 성문 엔진 원본 → <a href="../gnom/">그놈 목소리</a></div>`;
 }
 function restart(){state={r1:null,r3:null,r4:null,userPcm:null};
-  $('r4guess').style.display='block';$('r4result').style.display='none';r4done=false;r4playing=null;r4A=null;r4B=null;
-  $('r4tagA').textContent='';$('r4tagA').className='r4tag';$('r4tagB').textContent='';$('r4tagB').className='r4tag';
-  $('r4playA').textContent='▶ 클립 A 재생';$('r4playB').textContent='▶ 클립 B 재생';$('r4waveA').classList.remove('play');$('r4waveB').classList.remove('play');
+  $('r4guess').style.display='block';$('r4result').style.display='none';r4done=false;r4playing=null;r4clips=null;
+  R4SLOTS.forEach(s=>{$('r4tag'+s).textContent='';$('r4tag'+s).className='r4tag';
+    $('r4play'+s).textContent='▶ 클립 '+s+' 재생';$('r4wave'+s).classList.remove('play');});
   $('r1result').style.display='none';$('r1tap').disabled=true;$('r1tap').textContent='🚩 지금, 사기라고 느꼈다';
   $('r3guess').style.display='block';$('r3console').style.display='none';$('r3verdict').style.display='none';$('r3result').style.display='none';
   $('r3me').style.display='none';$('r3mebtn').style.display='block';$('r3mebtn').disabled=false;$('r3mestatus').textContent='버튼을 누르고 3초 말하세요';r3rec=false;
