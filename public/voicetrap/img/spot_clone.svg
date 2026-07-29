@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- 같은 수화기 3개, 가운데만 주홍 -->
+  <g>
+    <g transform="translate(6 44) rotate(-20 27 18)">
+      <path d="M4 18 Q27 4 50 18" stroke="#211c17" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <circle cx="6" cy="20" r="7" fill="#211c17"/><circle cx="48" cy="20" r="7" fill="#211c17"/>
+    </g>
+    <g transform="translate(38 30) rotate(-20 27 18)">
+      <path d="M4 18 Q27 4 50 18" stroke="#bc3729" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <circle cx="6" cy="20" r="7" fill="#bc3729"/><circle cx="48" cy="20" r="7" fill="#bc3729"/>
+    </g>
+    <g transform="translate(70 44) rotate(-20 27 18)">
+      <path d="M4 18 Q27 4 50 18" stroke="#211c17" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <circle cx="6" cy="20" r="7" fill="#211c17"/><circle cx="48" cy="20" r="7" fill="#211c17"/>
+    </g>
+  </g>
+</svg>

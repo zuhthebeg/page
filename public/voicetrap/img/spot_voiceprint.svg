@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <g stroke="#211c17" stroke-width="3" fill="none" stroke-linecap="round">
+    <!-- 지문 융선 (동심 원호) -->
+    <path d="M60 30 A30 30 0 0 1 90 60"/>
+    <path d="M60 22 A38 38 0 0 1 98 60"/>
+    <path d="M60 38 A22 22 0 0 1 82 60"/>
+    <path d="M30 60 A30 30 0 0 1 44 35"/>
+    <path d="M22 60 A38 38 0 0 1 40 28"/>
+    <path d="M38 60 A22 22 0 0 1 50 41"/>
+  </g>
+  <!-- 파형으로 변한 융선 (주홍) -->
+  <path d="M26 74 l6 -9 l6 12 l6 -14 l6 12 l6 -9 l6 12 l6 -14 l6 12 l6 -9 l6 11 l6 -7"
+        stroke="#bc3729" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M34 88 l6 -6 l6 8 l6 -10 l6 8 l6 -6 l6 8 l6 -10 l6 8 l6 -6"
+        stroke="#211c17" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+</svg>

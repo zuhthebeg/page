@@ -49,6 +49,12 @@ h1.quote .q{color:var(--red)}
 .lead b{font-weight:700}
 .stat{margin-top:18px;font-size:13px;color:var(--mut)}
 
+/* 일러스트 */
+.heroart{margin:22px -6px 0}
+.heroart img{width:100%;display:block;mix-blend-mode:multiply}
+.spot{width:88px;height:88px;float:right;margin:-4px 0 10px 14px;mix-blend-mode:multiply}
+.spot img{width:100%;display:block}
+
 /* 라운드 헤더 */
 .rnum{font-family:var(--serif);font-weight:900;font-size:15px;color:var(--red);margin-bottom:10px}
 .rh{font-family:var(--serif);font-weight:900;font-size:27px;line-height:1.3;margin-bottom:10px;letter-spacing:-.01em}
@@ -167,13 +173,15 @@ h1.quote .q{color:var(--red)}
     <h1 class="quote"><span class="q">“여보세요,<br>검찰청입니다.”</span></h1>
     <p class="lead">이 한마디로 시작되는 전화가 한 해 <b>8천억 원 넘는 피해</b>를 만듭니다.<br><br>
     지금부터 들려드리는 목소리는 전부 <b>실제 사기범의 육성</b>입니다. 세 가지 시험 — 당신은 몇 개나 통과할까요?</p>
-    <button class="cta red" style="margin-top:28px" onclick="startFlow()">첫 번째 시험 시작</button>
+    <div class="heroart"><img src="img/hero.svg" alt=""></div>
+    <button class="cta red" style="margin-top:14px" onclick="startFlow()">첫 번째 시험 시작</button>
     <div class="fine">마이크 소리와 분석 결과는 휴대폰 밖으로 나가지 않습니다. 서버로는 아무것도 보내지 않아요.</div>
   </div></section>
 
   <!-- 시험 3: 촉 (듣기) -->
   <section class="screen" id="s-r1"><div class="pad">
     <div class="rnum">세 번째 시험</div>
+    <div class="spot"><img src="img/spot_ear.svg" alt=""></div>
     <div class="rh">몇 초 만에<br>눈치챌 수 있을까요</div>
     <div class="rdesc">실제 사기범의 통화입니다. 듣다가 <b>‘이거 사기다’ 싶은 순간</b>, 아래 버튼을 누르세요.</div>
     <div class="player">
@@ -189,6 +197,7 @@ h1.quote .q{color:var(--red)}
   <!-- 시험 1: 성문 대조 -->
   <section class="screen" id="s-r3"><div class="pad">
     <div class="rnum">첫 번째 시험</div>
+    <div class="spot"><img src="img/spot_voiceprint.svg" alt=""></div>
     <div class="rh">귀는 속아도,<br>성문은 압니다</div>
     <div class="rdesc">익명으로 제보된 의심 통화입니다. 사람 귀로는 누군지 알 수 없어요.<br><b>이 목소리, 수배 중인 보이스피싱범일까요?</b></div>
     <div class="player">
@@ -227,6 +236,7 @@ h1.quote .q{color:var(--red)}
   <!-- 시험 2: AI 복제 판별 -->
   <section class="screen" id="s-r4"><div class="pad">
     <div class="rnum">두 번째 시험</div>
+    <div class="spot"><img src="img/spot_clone.svg" alt=""></div>
     <div class="rh">셋 중 진짜는<br>하나뿐입니다</div>
     <div class="rdesc">세 통화 모두 <b>같은 사람 목소리</b>로 들립니다. 실제 사기범의 육성은 하나뿐 — 나머지 둘은 통화 몇 초를 학습한 <b>AI가 흉내 낸 목소리</b>입니다.<br>전부 들어보고, 진짜를 찾아보세요.</div>
     <div class="ab">
@@ -310,6 +320,11 @@ function playClip(file,span,dur,onEnd){
 }
 function stopAudio(){if(audioStop){const s=audioStop;audioStop=null;s();}if(audioEl){try{audioEl.pause();}catch(e){}audioEl=null;}}
 
+/* 정오답 효과음 (본 오디오와 별도 채널) */
+const SFX={correct:new Audio('clips/sfx-correct.mp3'),wrong:new Audio('clips/sfx-wrong.mp3')};
+Object.values(SFX).forEach(a=>{a.preload='auto';a.volume=0.55;});
+function playSfx(ok){const a=ok?SFX.correct:SFX.wrong;try{a.currentTime=0;a.play().catch(()=>{});}catch(e){}}
+
 /* ============ 시험: 촉 (듣기) ============ */
 let r1t0=0,r1clip=null,r1playing=false;
 function r1Play(){
@@ -336,6 +351,7 @@ function r1Flag(auto){
   state.r1={sec:+sec.toFixed(1),missed:!!auto};
   $('r1tap').disabled=true;$('r1tap').textContent=auto?'통화가 끝났습니다':sec.toFixed(1)+'초에 눌렀습니다';
   const good=!auto&&sec<=9;
+  playSfx(good);
   const msg=auto
     ? '통화가 끝날 때까지 누르지 못했어요. 실제였다면 이미 이체 지시까지 들은 시간입니다.'
     : (good?'초반에 잡아냈습니다. 이 감각이 실제 상황에서 당신을 지킵니다.':'눌렀지만 조금 늦었어요 — 실제 피해자 대부분이 이 구간을 놓칩니다.');
@@ -439,6 +455,7 @@ async function r3Analyze(guess){
   const top=scores[0],pct=Math.round(Math.max(0,Math.min(1,top.cos))*100);
   const matched=pct>=55,correct=(r3guessVal===matched);
   state.r3={pct,matched,correct,scammerQ:q};
+  playSfx(correct);
   drawFP('r3fpA',q,'var(--red)');
   $('r3bars').innerHTML=barsHtml(scores);
   $('r3gsub').textContent='가장 비슷한 성문 · '+lbl(top.id);
@@ -530,6 +547,7 @@ function r4Guess(slot){
   const correct=!chosen.isAI;
   const realSlot=R4SLOTS.find(s=>!r4clips[s].isAI);
   state.r4={correct,realSlot};
+  playSfx(correct);
   R4SLOTS.forEach(s=>{const c=r4clips[s];const t=$('r4tag'+s);
     t.textContent=c.isAI?'AI 복제':'실제 육성';t.className='r4tag '+(c.isAI?'ai':'real');});
   $('r4guess').style.display='none';

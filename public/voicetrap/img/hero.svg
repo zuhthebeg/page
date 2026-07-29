@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 340" fill="none">
+  <!-- 긴 주홍 그림자 -->
+  <ellipse cx="330" cy="292" rx="240" ry="26" fill="#bc3729" opacity="0.15"/>
+  <!-- 울리는 음파 (수화기 위) -->
+  <g stroke="#bc3729" stroke-width="5" stroke-linecap="round" fill="none">
+    <path d="M446 96 Q470 128 446 160"/>
+    <path d="M466 78 Q506 128 466 178" opacity="0.75"/>
+    <path d="M486 62 Q542 128 486 194" opacity="0.5"/>
+  </g>
+  <!-- 수화기: 굵은 곡선 핸들 + 양끝 컵 -->
+  <g transform="rotate(-28 300 210)">
+    <path d="M150 150 Q300 90 450 150" stroke="#211c17" stroke-width="26" fill="none" stroke-linecap="round"/>
+    <g fill="#211c17">
+      <path d="M120 150 q0 -40 40 -40 l24 0 q40 0 40 40 l0 34 q0 40 -40 40 l-24 0 q-40 0 -40 -40 Z"/>
+      <path d="M416 150 q0 -40 40 -40 l24 0 q40 0 40 40 l0 34 q0 40 -40 40 l-24 0 q-40 0 -40 -40 Z"/>
+    </g>
+    <!-- 이어피스 구멍 -->
+    <circle cx="172" cy="168" r="9" fill="#f7f3ec"/>
+    <circle cx="488" cy="168" r="9" fill="#f7f3ec"/>
+  </g>
+  <!-- 꼬인 전화선 -->
+  <path d="M300 300 q30 -8 22 20 t-22 22 t22 20 t-22 22" stroke="#211c17" stroke-width="6" fill="none" stroke-linecap="round"/>
+</svg>
