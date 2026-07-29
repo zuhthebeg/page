@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>64GB 맥 한 대에서 2.8조 파라미터 — Deltafin 분석 · page.cocy.io</title>
+<meta name="description" content="2.8T 파라미터 MoE 모델 Kimi K3를 64GB M1 Max 한 대에서 돌린 Deltafin 프로젝트 분석. 토큰당 25.8GB를 SSD에서 읽는 I/O 엔지니어링, 20분/토큰→15초/토큰 최적화 과정, 그리고 '양자화는 I/O 레짐을 바꾼다'는 교훈." />
+<link rel="canonical" href="https://page.cocy.io/deltafin-k3/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="64GB 맥 한 대에서 2.8조 파라미터 — Deltafin이 Kimi K3를 굴린 방법" />
+<meta property="og:description" content="1.56TB 모델을 64GB 맥에서 · 토큰당 25.8GB SSD 읽기 · 20분/토큰→14.6초/토큰 · 판정: 챗봇으론 불가, 엔지니어링 교본으론 일독" />
+<meta property="og:url" content="https://page.cocy.io/deltafin-k3/" />
+<meta property="article:published_time" content="2026-07-30" />
+<meta property="article:modified_time" content="2026-07-30" />
+<meta name="author" content="cocy" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f4f6f5; --paper:#fdfffe; --ink:#1d2422; --ink-soft:#4e5a56; --muted:#84908c;
+  --accent:#2e6e5e; --accent-2:#3d8a76; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(29,36,34,.13); --line-soft:rgba(29,36,34,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(29,36,34,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5.5vw,2.9rem);line-height:1.15;margin:.5rem 0 .6rem;letter-spacing:-.01em;word-break:keep-all}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:60ch;word-break:keep-all}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem;word-break:keep-all}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem;word-break:keep-all}
+a{color:var(--accent-2)}
+
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#f2f7f5);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--ink);margin-top:.2rem;word-break:keep-all}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1;white-space:nowrap}
+.score small{font-size:.9rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.no{background:rgba(168,68,58,.12);color:var(--bad)}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.warn{background:rgba(184,134,11,.14);color:var(--warn)}
+
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.9rem}
+th,td{text-align:left;padding:.7rem .6rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:500}
+.b-good{color:var(--good)}.b-warn{color:var(--warn)}.b-bad{color:var(--bad)}
+.num{font-family:var(--mono);font-size:.85rem}
+
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft);word-break:keep-all}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+
+.note{font-size:.84rem;color:var(--muted);font-style:italic;word-break:keep-all}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+@media(max-width:640px){table{font-size:.8rem}th,td{padding:.55rem .4rem}}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "64GB 맥 한 대에서 2.8조 파라미터 — Deltafin이 Kimi K3를 굴린 방법", "description": "2.8T 파라미터 MoE 모델 Kimi K3를 64GB M1 Max 한 대에서 돌린 Deltafin 프로젝트 분석. 토큰당 25.8GB SSD 읽기, 20분/토큰에서 15초/토큰까지의 I/O 최적화, '양자화는 I/O 레짐을 바꾼다'는 교훈.", "url": "https://page.cocy.io/deltafin-k3/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/deltafin-k3/"}, "datePublished": "2026-07-30", "dateModified": "2026-07-30", "inLanguage": "ko", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true}</script>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Tech Analysis · Local LLM Engineering</div>
+    <h1>64GB 맥 한 대에서 2.8조 파라미터 — Deltafin이 Kimi K3를 굴린 방법</h1>
+    <p class="lead">가중치만 <b>1.56TB</b>인 MoE 모델 <b>Kimi K3</b>(2.8T 파라미터)를, RAM 64GB짜리 <b>M1 Max 한 대</b>에서 실행한 오픈소스 프로젝트 <a href="https://github.com/gavamedia/deltafin" target="_blank" rel="noopener">Deltafin</a>이 공개됐다. VRAM도 클러스터도 없이 "모델은 SSD에 두고, 토큰마다 필요한 조각만 읽는다"는 접근이다. 레포 문서와 공개 벤치마크를 직접 읽고 숫자를 검증했다.</p>
+    <div class="meta">
+      <span><b>작성</b> 2026-07-30</span>
+      <span><b>대상</b> gavamedia/deltafin (Kimi K3 로컬 추론 엔진)</span>
+      <span><b>방법</b> 레포 README·벤치마크·커뮤니티 실측(PR #2) 직접 확인</span>
+      <span><b>발견 경로</b> <a href="https://www.threads.com/@ohyoung.park/post/DbWr1uIE2m4" target="_blank" rel="noopener">@ohyoung.park 스레드</a></span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">판정</div>
+          <div class="v-main">챗봇으로는 못 쓴다. 엔지니어링 교본으로는 일독 가치.</div>
+        </div>
+        <div class="score">14.6<small>초/토큰</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag yes">✓ 1.56TB 모델이 64GB 맥에서 실제로 돈다</span>
+        <span class="tag yes">✓ 20분/토큰 → 14.6초/토큰 (~82×) 최적화 과정 전부 공개</span>
+        <span class="tag warn">△ 분당 4.1토큰 — 실용 챗봇 아님</span>
+        <span class="tag no">✗ 서비스·에이전트 백엔드로는 부적합</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="what">
+    <h2><span class="n">01</span> 무엇이 공개됐나</h2>
+    <p>Kimi K3는 Moonshot AI의 2.8조 파라미터 Mixture-of-Experts 모델이다. MXFP4 양자화 기준 가중치가 safetensors 96개 샤드, 약 1.56TB — 어지간한 워크스테이션 RAM에도, 당연히 어떤 단일 GPU에도 안 들어간다. Deltafin은 이걸 Apple Silicon 맥(및 Linux)에서 돌리는 추론 엔진으로, Moonshot의 모델링 코드를 수정 없이 그대로 쓰고 CUDA 전용 커널만 순수 PyTorch 심으로 대체했다.</p>
+    <table>
+      <thead><tr><th>항목</th><th>값</th></tr></thead>
+      <tbody>
+        <tr><td>총 파라미터</td><td class="num">~2.8T (MoE)</td></tr>
+        <tr><td>가중치 총량</td><td class="num">~1.56TB (MXFP4, 96 shards)</td></tr>
+        <tr><td>라우팅 전문가</td><td class="num">82,432개 (~1.45TB) — 레이어당 896개 중 16개 선택 × 92 레이어</td></tr>
+        <tr><td>상주 스파인 (어텐션·공유전문가·임베딩)</td><td class="num">~114GB bf16 → int8 변환 시 ~60GB</td></tr>
+        <tr><td>토큰 1개당 읽는 전문가 데이터</td><td class="num">16 × 92 = 25.8GB</td></tr>
+        <tr><td>측정 하드웨어</td><td class="num">M1 Max · 10코어 CPU · 32코어 GPU · 64GB · 내장 NVMe</td></tr>
+      </tbody>
+    </table>
+    <p class="note">핵심 관찰은 단순하다: MoE는 토큰 하나를 만들 때 자기 몸의 극히 일부만 쓴다. 그러면 전체를 메모리에 올릴 필요 없이, 그 일부만 그때그때 디스크에서 읽으면 된다 — 문제는 그 "일부"가 토큰마다 25.8GB라는 것.</p>
+  </section>
+
+  <section data-block="how">
+    <h2><span class="n">02</span> 두 가지 모드 — 디스크가 모델 저장소가 된다</h2>
+    <p>메모리 계층이 VRAM→RAM에서 한 칸 더 내려가 <b>RAM→SSD→HTTP</b>까지 확장된다. 전문가 전체를 로컬 SSD에 두는 <b>full 모드</b>와, 215GB만 받고 나머지는 Hugging Face CDN에 HTTP 범위 요청(range request)으로 전문가 하나씩 가져와 캐시하는 <b>stream 모드</b>가 있다.</p>
+    <table>
+      <thead><tr><th></th><th>--full (권장)</th><th>--stream</th></tr></thead>
+      <tbody>
+        <tr><td>필요 디스크</td><td class="num">~1.7TB</td><td class="num">~215GB</td></tr>
+        <tr><td>다운로드</td><td class="num">5~10시간 (이어받기 가능)</td><td class="num">~30분</td></tr>
+        <tr><td>이후 속도</td><td class="num b-good">14.6초/토큰 (중앙값)</td><td class="num b-bad">캐시 미스 시 ~3분+/토큰</td></tr>
+        <tr><td>추론 중 네트워크</td><td class="num">불필요</td><td class="num">상시 필요</td></tr>
+      </tbody>
+    </table>
+    <p>차이의 원인은 하나다. 토큰당 25.8GB의 전문가 읽기가 로컬 NVMe에서는 약 4초, 네트워크 너머에서는 분 단위가 된다. "일단 215GB로 시작해서 나중에 나머지를 채우는" 점진 경로도 지원한다.</p>
+  </section>
+
+  <section data-block="numbers">
+    <h2><span class="n">03</span> 숫자 — 20분/토큰에서 14.6초/토큰까지</h2>
+    <p>레포가 밝힌 최초 동작 버전과 현재 버전의 격차가 이 프로젝트의 본체다. 같은 M1 Max에서 측정된 유지보수자 기준값(6회 풀모델 실행 중앙값, 탐욕 디코딩·fp32 정밀도·전문가 전체 로컬)이다.</p>
+    <table>
+      <thead><tr><th>지표</th><th>최초 동작 버전</th><th>현재</th><th>개선</th></tr></thead>
+      <tbody>
+        <tr><td>프리필 / 첫 토큰 (5토큰 프롬프트)</td><td class="num">2,429초</td><td class="num b-good">28.0초</td><td class="num">~87×</td></tr>
+        <tr><td>정상 디코드 (전문가 로컬)</td><td class="num">~20분/토큰</td><td class="num b-good">14.6초/토큰</td><td class="num">~82×</td></tr>
+        <tr><td>디코드 (전문가 스트리밍)</td><td class="num">~20분/토큰</td><td class="num b-warn">~3분/토큰</td><td class="num">네트워크 바운드</td></tr>
+      </tbody>
+    </table>
+    <p>82배를 만든 개별 최적화도 수치와 함께 공개돼 있다:</p>
+    <ul class="clean">
+      <li><b>병렬 pread + F_NOCACHE</b> — 전문가 읽기를 토큰당 40초 → 4.3초로. OS 페이지캐시를 일부러 우회해서(25.8GB짜리 일회성 읽기가 캐시를 오염시키니까) 커널 복사 비용을 제거했다.</li>
+      <li><b>int8 스파인 + 커스텀 Metal 역양자화 커널</b> — 레이어 로딩 118ms → 21ms. 상주 가중치를 bf16 대신 int8로 저장하고 GPU에서 풀어 쓴다.</li>
+      <li><b>패킹된 int8 출력 헤드</b> — 디코드 +17.3%, 헤드 저장 공간 4.7GB → 1.17GB.</li>
+      <li><b>무손실 n-gram 추측 디코딩</b> — 초안이 수락되면 한 번의 forward로 토큰 2개. 거부돼도 상태를 비트 단위로 복원해 출력이 참조 시퀀스와 정확히 일치한다.</li>
+      <li><b>완전 재현 가능한 실행</b> — 탐욕 디코딩 + 정확한 fp32 수치로, 같은 프롬프트는 매번 같은 토큰을 낸다. 벤치마크마다 토큰 오라클로 정답을 대조했다.</li>
+    </ul>
+    <p>현재 병목도 정직하게 적혀 있다: 디코드 시간 14.6초 중 약 7.5초가 <b>53GB int8 스파인을 매 토큰 다시 읽는 디스크 대역폭</b>이다. 64GB 호스트에서는 스파인이 전문가 읽기용 페이지캐시와 공존할 수 없어서 매번 재독이 불가피하다 — RAM이 더 크면 이 비용이 통째로 사라진다.</p>
+  </section>
+
+  <section data-block="insight">
+    <h2><span class="n">04</span> 가장 값진 데이터 — 양자화는 I/O 레짐을 바꾼다</h2>
+    <p>커뮤니티 기여자가 NVIDIA DGX Spark(128GB 통합 메모리)에서 보고한 4개 구성 비교(<a href="https://github.com/gavamedia/deltafin/pull/2" target="_blank" rel="noopener">PR #2</a>, 동일 출력 확인)가 이 보고서에서 제일 가져갈 만한 대목이다.</p>
+    <table>
+      <thead><tr><th>구성</th><th>총 시간</th><th>연산</th><th>프리로드 대기</th></tr></thead>
+      <tbody>
+        <tr><td>bf16 스파인 + CPU</td><td class="num b-bad">865초</td><td class="num">299초</td><td class="num b-bad">504초</td></tr>
+        <tr><td>bf16 스파인 + CUDA</td><td class="num b-bad">858초</td><td class="num">160초</td><td class="num b-bad">676초</td></tr>
+        <tr><td>int8 스파인 + CPU</td><td class="num b-warn">649초</td><td class="num">327초</td><td class="num b-good">2초</td></tr>
+        <tr><td>int8 스파인 + CUDA</td><td class="num b-good">221초</td><td class="num">184초</td><td class="num b-good">18초</td></tr>
+      </tbody>
+    </table>
+    <p>스파인을 bf16(107GB)에서 int8(53GB)로 바꾸면 바이트가 절반이니 2배 빨라져야 할 것 같지만, 실제로는 <b>end-to-end 4배</b>가 나왔다. 이유: 107GB 스파인이 메모리를 다 먹으면 전문가 읽기용 페이지캐시가 사라져서 프리로드 대기가 수백 초로 폭발한다. 53GB로 줄이는 순간 캐시 헤드룸이 생기고 대기가 붕괴한다(504초 → 2초).</p>
+    <p><b>양자화의 이득이 산술 비용 절감이 아니라 메모리 레짐 전환에서 나온 것이다.</b> "모델이 메모리에 들어가냐"를 이분법으로 볼 게 아니라, 가중치·캐시·버퍼가 한 메모리 풀을 두고 경쟁하는 시스템으로 봐야 한다는 얘기 — 12GB GPU에서 GGUF 양자화·CPU 오프로드 조합의 성패가 갈리는 이유도 정확히 이 메커니즘이다.</p>
+  </section>
+
+  <section data-block="reality">
+    <h2><span class="n">05</span> 현실 확인 — 무엇에 쓸 수 있고 무엇에 못 쓰나</h2>
+    <ul class="clean">
+      <li><b>챗봇 ✗.</b> 중앙값 14.6초/토큰 = 분당 4.1토큰. K3는 추론(thinking) 모델이라 답 전에 생각부터 하는데, 그 생각도 분당 4토큰으로 흘러나온다. 짧은 답 하나에 몇십 분이다.</li>
+      <li><b>에이전트 백엔드 ✗.</b> OpenAI 호환 API 서버(/v1/chat/completions, 스트리밍 포함)가 있긴 하지만, 레포 스스로 "에이전트는 호기심 대상이지 워크플로우가 아니다"라고 못 박는다. 긴 시스템 프롬프트의 프리필 비용이 치명적이고, 동시 요청 1개 제한에 greedy 고정이다.</li>
+      <li><b>연구·검증 도구 ✓.</b> 완전 결정론적 실행이라 같은 프롬프트가 항상 같은 토큰을 낸다. 프런티어급 MoE의 라우터 선택을 로컬에서 트레이스로 뜰 수 있고(K3_TRACE), API 뒤에 숨은 모델을 비트 단위로 재현하며 뜯어볼 수 있다는 건 연구자에겐 실제 가치다.</li>
+      <li><b>방향 제시 ✓.</b> MoE 스파스성을 스토리지 계층까지 확장한 실증. "활성 파라미터만큼의 메모리 + 총 파라미터만큼의 SSD"라는 사이징 공식이 성립함을 보였다. SSD가 지금보다 2~3배 빨라지면(PCIe 6 시대) 이 접근의 속도 등급이 한 단계 올라간다.</li>
+    </ul>
+  </section>
+
+  <section data-block="conclusion">
+    <h2><span class="n">06</span> 결론</h2>
+    <p><b>"돌아간다"와 "쓸 수 있다"는 다르다.</b> Deltafin은 전자를 82배 최적화로 증명했고, 후자가 아니라는 것도 스스로 정직하게 문서화했다. 분당 4.1토큰은 어떤 실용 시나리오에도 못 들어간다.</p>
+    <p>그런데도 일독을 권하는 이유는, 이 레포가 <b>로컬 LLM I/O 엔지니어링의 드문 교본</b>이기 때문이다. 페이지캐시 우회(F_NOCACHE), 이중 버퍼 레이어 로딩, 무손실 추측 디코딩, 그리고 무엇보다 "양자화가 연산이 아니라 I/O 레짐을 바꾼다"는 DGX Spark 4배 데이터 — 전부 재현 가능한 수치와 함께 공개돼 있다. 초대형 MoE를 개인 하드웨어에서 만지는 시대의 물리 법칙이 어떻게 생겼는지, 이만큼 구체적으로 보여주는 자료는 흔치 않다.</p>
+    <p class="note">출처: <a href="https://github.com/gavamedia/deltafin" target="_blank" rel="noopener">github.com/gavamedia/deltafin</a> (README·벤치마크, 2026-07-29 열람) · 발견 경로: <a href="https://www.threads.com/@ohyoung.park/post/DbWr1uIE2m4" target="_blank" rel="noopener">@ohyoung.park의 스레드 소개글</a>. 본문 수치는 레포 공개 벤치마크와 PR #2 커뮤니티 실측을 직접 대조한 것이며, 자체 실행 검증은 하지 않았다(1.7TB 디스크 요건).</p>
+  </section>
+
+  <div class="foot">
+    <span>made on page.cocy.io</span>
+    <span>판정: 실용 불가 · 교본 가치 有 · 14.6s/token</span>
+  </div>
+</article>
+</body>
+</html>
