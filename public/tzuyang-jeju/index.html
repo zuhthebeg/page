@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>쯔양몇끼 제주편 맛집 10곳 — 위치·메뉴 지도 정리 · page.cocy.io</title>
+<meta name="description" content="ENA 예능 「쯔양몇끼」 제주편(7·9회)에 나온 맛집 중 상호·주소가 뉴스·기록으로 확인되는 10곳만 지도에 정리했습니다. 상호가 특정되지 않는 곳은 제외했습니다." />
+<link rel="canonical" href="https://page.cocy.io/tzuyang-jeju/" />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:title" content="쯔양몇끼 제주편 맛집 10곳 — 지도로 정리" />
+<meta property="og:description" content="상호·주소가 확인되는 곳만 지도에 찍었습니다. 7회 제주 1일차 8곳 + 9회 서귀포 2곳." />
+<meta property="og:url" content="https://page.cocy.io/tzuyang-jeju/" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="쯔양몇끼 제주편 맛집 10곳 — 지도로 정리" />
+<meta name="twitter:description" content="상호·주소가 확인되는 곳만 지도에 찍었습니다. 7회 제주 1일차 8곳 + 9회 서귀포 2곳." />
+<meta property="article:published_time" content="2026-07-30" />
+<meta property="article:modified_time" content="2026-07-30" />
+<meta name="author" content="cocy" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../tzuyang-tokyo/vendor/leaflet.css" />
+<style>
+:root{--display:"Gowun Batang","Noto Sans KR",serif;--body:"Noto Sans KR",sans-serif;--mono:"JetBrains Mono",monospace}
+:root{
+  --bg:#eef2ea; --paper:#fbfdf6; --ink:#20291f; --ink-soft:#4b5647; --muted:#889280;
+  --lacquer:#2e6b45; --lacquer-deep:#1f4d31; --gold:#c2932f; --gold-soft:#e8dcae;
+  --good:#3f7d4f; --l1:#2e6b45; --l2:#b8860b;
+  --line:rgba(32,41,31,.16); --line-soft:rgba(32,41,31,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:400;line-height:1.85;-webkit-font-smoothing:antialiased}
+b{font-weight:700;color:var(--ink)}
+a{color:var(--lacquer);text-decoration:none;border-bottom:1px solid rgba(46,107,69,.35)}
+
+.hero-band{position:relative;background:radial-gradient(120% 90% at 85% 10%,#3a8258 0%,var(--lacquer) 45%,var(--lacquer-deep) 100%);color:#f2f7ea;overflow:hidden}
+.hero-band::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.3;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+.hero-in{position:relative;max-width:820px;margin:0 auto;padding:clamp(56px,7vw,80px) clamp(20px,4vw,48px) clamp(44px,6vw,64px);z-index:2}
+.hero-kicker{font-family:var(--mono);font-size:.68rem;letter-spacing:.34em;text-transform:uppercase;color:var(--gold-soft);display:flex;align-items:center;gap:.7rem}
+.hero-kicker::before{content:"";width:26px;height:1px;background:var(--gold)}
+.hero-band h1{font-family:var(--display);font-weight:700;font-size:clamp(2rem,5.5vw,3.4rem);line-height:1.15;margin:.7rem 0 1rem;color:#fbf7e8;text-shadow:0 3px 18px rgba(0,0,0,.2)}
+.hero-band h1 .accent{color:var(--gold-soft)}
+.hero-lead{font-size:clamp(.92rem,1.6vw,1.02rem);line-height:1.85;color:#e6f0dd;max-width:60ch}
+.hero-lead b{color:#fff;font-weight:700}
+.hero-meta{display:flex;flex-wrap:wrap;gap:.45rem 1.3rem;margin-top:1.5rem;font-family:var(--mono);font-size:.74rem;color:#d9ecc9}
+.hero-meta b{color:#fff;font-weight:500}
+
+.ticker{background:var(--ink);color:var(--gold-soft);overflow:hidden;white-space:nowrap;border-top:3px solid var(--gold);position:relative;z-index:3}
+.ticker-track{display:inline-flex;gap:2.6rem;padding:.55rem 0;font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;animation:tick 34s linear infinite}
+.ticker-track span{display:inline-flex;align-items:center;gap:2.6rem}
+.ticker-track i{font-style:normal;color:var(--gold);font-size:.6rem}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+.stats{background:var(--paper);border-bottom:1.5px solid var(--line)}
+.stats-in{max-width:820px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;padding:1.4rem clamp(20px,4vw,48px)}
+.stat{text-align:center}
+.stat .v{font-family:var(--display);font-weight:700;font-size:1.5rem;color:var(--lacquer)}
+.stat .k{font-size:.72rem;color:var(--muted);margin-top:.2rem}
+@media(max-width:560px){.stats-in{grid-template-columns:repeat(2,1fr);row-gap:1rem}}
+
+.doc{max-width:820px;margin:0 auto;padding:clamp(28px,6vw,56px) clamp(20px,4vw,48px) 4rem}
+section[data-block]{margin-top:2.6rem}
+h2{font-family:var(--display);font-weight:700;font-size:1.4rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.78rem;color:var(--lacquer);font-weight:500}
+p{margin-bottom:1rem}
+
+.callout{background:linear-gradient(180deg,#fff,#f3f8ec);border:1.5px solid var(--line);border-left:4px solid var(--lacquer);border-radius:8px;padding:1.1rem 1.3rem;font-size:.92rem;color:var(--ink-soft)}
+.callout b{color:var(--ink)}
+.callout.warn{border-left-color:var(--gold);background:linear-gradient(180deg,#fff,#faf5e8)}
+
+.filters{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.9rem}
+.fbtn{font-family:var(--body);font-size:.82rem;font-weight:500;padding:.4rem 1rem;border-radius:20px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;gap:.4rem}
+.fbtn .dot{width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block}
+.fbtn.on{background:var(--ink);color:var(--gold-soft);border-color:var(--ink)}
+#map{height:420px;border-radius:12px;border:1.5px solid var(--line);overflow:hidden;z-index:0}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+
+.pin{width:29px;height:29px;border-radius:50% 50% 50% 6px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:.8rem;font-weight:700;transform:rotate(45deg);box-shadow:0 3px 8px rgba(0,0,0,.35)}
+.pin span{transform:rotate(-45deg)}
+.pin.l1{background:var(--l1)}.pin.l2{background:var(--l2)}
+.pin.dim{opacity:.25}
+.pop{font-family:var(--body);min-width:170px}
+.pop .pn{font-weight:700;font-size:1rem;color:var(--ink);display:block;margin-bottom:.35rem}
+.pop .pm{font-size:.85rem;color:var(--ink-soft);display:block;margin-bottom:.5rem}
+.pop a{font-size:.8rem;font-family:var(--mono)}
+.leaflet-popup-content{margin:12px 14px}
+.leaflet-popup-content-wrapper{border-radius:10px;border:1.5px solid var(--ink)}
+
+.cards{display:grid;gap:1rem;margin-top:1.3rem}
+.card{border:1.5px solid var(--line);border-radius:12px;background:var(--paper);padding:1.15rem 1.25rem;display:grid;grid-template-columns:42px 1fr;gap:.2rem 1rem;align-items:start;transition:transform .18s cubic-bezier(.2,.7,.3,1),box-shadow .18s,border-color .18s;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;opacity:.85}
+.card.l1::before{background:var(--l1)}.card.l2::before{background:var(--l2)}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 30px -16px rgba(32,41,31,.4);border-color:var(--gold)}
+.card.hide{display:none}
+.card .idx{grid-row:1/span 3;width:36px;height:36px;border-radius:50% 50% 50% 6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.85rem;font-weight:700;color:#fff;transform:rotate(-45deg);margin-top:.15rem}
+.card .idx span{transform:rotate(45deg)}
+.card.l1 .idx{background:var(--l1)}.card.l2 .idx{background:var(--l2)}
+.card .top{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem}
+.card .nm{font-family:var(--display);font-weight:700;font-size:1.2rem;color:var(--ink);line-height:1.3}
+.card .ep{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .55rem;border-radius:12px;white-space:nowrap}
+.card.l1 .ep{background:rgba(46,107,69,.13);color:var(--l1)}
+.card.l2 .ep{background:rgba(184,134,11,.15);color:#8f6a09}
+.card .menu{font-size:.96rem;color:var(--ink);margin-top:.3rem;font-weight:500}
+.card .info{font-size:.84rem;color:var(--ink-soft);margin-top:.45rem;line-height:1.7}
+.card .info .lb{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-right:.4rem;font-weight:500}
+.card .acts{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.75rem}
+.card .acts a,.card .acts button{font-family:var(--body);font-size:.79rem;font-weight:500;padding:.36rem .8rem;border-radius:18px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink-soft);cursor:pointer;text-decoration:none;transition:.14s}
+.card .acts a:hover,.card .acts button:hover{border-color:var(--lacquer);color:var(--lacquer);background:#fff}
+
+.rv{opacity:0;transform:translateY(16px);transition:opacity .5s cubic-bezier(.2,.7,.3,1),transform .5s cubic-bezier(.2,.7,.3,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+.recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-top:1.2rem}
+.rec{background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:1.05rem 1.15rem;font-size:.9rem;color:var(--ink-soft);line-height:1.75}
+.rec b{display:block;font-family:var(--display);font-weight:700;font-size:1.02rem;color:var(--lacquer);margin-bottom:.3rem}
+
+.srcs{font-size:.86rem;color:var(--ink-soft)}
+.srcs li{margin-bottom:.5rem;list-style:none;padding-left:1.2rem;position:relative}
+.srcs li::before{content:"—";position:absolute;left:0;color:var(--gold);font-size:.8rem}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1.5px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(12px);background:var(--ink);color:#eef2ea;font-size:.85rem;padding:.62rem 1.15rem;border-radius:22px;opacity:0;pointer-events:none;transition:.2s;z-index:999}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.card .tgl{display:none}
+@media(max-width:700px){
+  .cards{gap:.6rem}
+  .card{padding:.8rem 2.1rem .8rem .9rem;grid-template-columns:32px 1fr;gap:.15rem .7rem;cursor:pointer}
+  .card .idx{width:28px;height:28px;font-size:.72rem;grid-row:1/span 2}
+  .card .nm{font-size:1.05rem}
+  .card .menu{margin-top:.1rem;font-size:.88rem}
+  .card .info{display:none;cursor:auto}
+  .card.open .info{display:block;grid-column:1/-1}
+  .card .tgl{display:flex;align-items:center;justify-content:center;position:absolute;right:.55rem;top:.8rem;width:22px;height:22px;color:var(--gold);font-size:.8rem;transition:transform .18s}
+  .card.open .tgl{transform:rotate(180deg)}
+}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "쯔양몇끼 제주편 맛집 10곳 — 지도로 정리", "description": "ENA 예능 「쯔양몇끼」 제주편(7·9회)에 나온 맛집 중 상호·주소가 확인되는 10곳만 지도에 정리했습니다.", "url": "https://page.cocy.io/tzuyang-jeju/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/tzuyang-jeju/"}, "datePublished": "2026-07-30", "dateModified": "2026-07-30", "inLanguage": "ko", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true, "about": {"@type": "TVSeries", "name": "쯔양몇끼", "alternateName": ["Tzuyang, How Many Meals?"]}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "name": "쯔양몇끼 제주편 맛집 10곳 — 지도로 정리", "numberOfItems": 10, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "Restaurant", "name": "먹돌고기국수 제주본점", "address": {"@type": "PostalAddress", "streetAddress": "제주특별자치도 제주시 공항로1길 14", "addressLocality": "Jeju", "addressCountry": "KR"}, "geo": {"@type": "GeoCoordinates", "latitude": 33.5036058, "longitude": 126.5002587}, "servesCuisine": "고기국수"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "Restaurant", "name": "모찌마루", "address": {"@type": "PostalAddress", "streetAddress": "제주특별자치도 제주시 공항로1길 14 삼영교통사옥 지하1층", "addressLocality": "Jeju", "addressCountry": "KR"}, "geo": {"@type": "GeoCoordinates", "latitude": 33.5036058, "longitude": 126.5002587}, "servesCuisine": "과일모찌"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "Restaurant", "name": "꿈낭밥집", "address": {"@type": "PostalAddress", "streetAddress": "제주특별자치도 제주시 애월읍 유수암평화길 242", "addressLocality": "Jeju", "addressCountry": "KR"}, "geo": {"@type": "GeoCoordinates", "latitude": 33.4236410, "longitude": 126.4079468}, "servesCuisine": "보리굴비"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "Restaurant", "name": "유라케 오메기떡", "address": {"@type": "PostalAddress", "streetAddress": "제주특별자치도 제주시 용해로 114", "addressLocality": "Jeju", "addressCountry": "KR"}, "geo": {"@type": "GeoCoordinates", "latitude": 33.5118983, "longitude": 126.5029600}, "servesCuisine": "오메기떡"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "Restaurant", "name": "김희선 제주몸국", "address": {"@type": "PostalAddress", "streetAddress": "제주특별자치도 제주시 어영길 45-6", "addressLocality": "Jeju", "addressCountry": "KR"}, "geo": {"@type": "GeoCoordinates", "latitude": 33.5163400, "longitude": 126.4994600}, "servesCuisine": "몸국"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "Restaurant", "name": "백가네꽃게새우전문", "address": {"@type": "PostalAddress", "streetAddress": "제주특별자치도 제주시 동광로6길 9", "addressLocality": "Jeju", "addressCountry": "KR"}, "geo": {"@type": "GeoCoordinates", "latitude": 33.5003413, "longitude": 126.5326838}, "servesCuisine": "간장게장·꽃게탕"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "Restaurant", "name": "안다미로 늘봄흑염소", "address": {"@type": "PostalAddress", "streetAddress": "제주특별자치도 제주시 구남로6길 45", "addressLocality": "Jeju", "addressCountry": "KR"}, "geo": {"@type": "GeoCoordinates", "latitude": 33.4879889, "longitude": 126.5357385}, "servesCuisine": "흑염소전골"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "Restaurant", "name": "제주 돌격한우", "address": {"@type": "PostalAddress", "streetAddress": "제주특별자치도 제주시 연동11길 12", "addressLocality": "Jeju", "addressCountry": "KR"}, "geo": {"@type": "GeoCoordinates", "latitude": 33.4877878, "longitude": 126.4932457}, "servesCuisine": "한우"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "Restaurant", "name": "영춘반점", "address": {"@type": "PostalAddress", "streetAddress": "제주특별자치도 서귀포시 중앙로 154", "addressLocality": "Seogwipo", "addressCountry": "KR"}, "geo": {"@type": "GeoCoordinates", "latitude": 33.2583568, "longitude": 126.5603128}, "servesCuisine": "영춘면·탕수육"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "Restaurant", "name": "옛날순대", "address": {"@type": "PostalAddress", "streetAddress": "제주특별자치도 서귀포시 중앙로 155", "addressLocality": "Seogwipo", "addressCountry": "KR"}, "geo": {"@type": "GeoCoordinates", "latitude": 33.2583991, "longitude": 126.5598738}, "servesCuisine": "순대백반"}}]}</script>
+</head>
+<body>
+
+<header class="hero-band">
+  <div class="hero-in">
+    <div class="hero-kicker">FOOD MAP · 쯔양몇끼 제주편</div>
+    <h1>쯔양몇끼<br><span class="accent">제주 맛집 10곳</span></h1>
+    <p class="hero-lead">ENA 예능 <b>「쯔양몇끼」</b> 제주편(7·9회)에는 훨씬 많은 가게가 등장했지만, 방송에서 상호를 가린 곳이 많아 <b>뉴스·기록으로 상호와 주소가 실제 확인되는 곳만</b> 골라 지도에 찍었습니다. 도쿄편처럼 방송사가 공식 리스트를 낸 적은 아직 없어서, 근거가 불분명한 곳은 이 페이지에서 뺐습니다.</p>
+    <div class="hero-meta">
+      <span><b>정리</b> page.cocy.io · 2026-07-30</span>
+      <span><b>기준</b> 상호·주소 확인된 곳만</span>
+      <span><b>가게</b> 10곳 · 제주시 8 · 서귀포 2</span>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true"><div class="ticker-track"><span><i>◆</i>제주 고기국수<i>◆</i>흑돼지 육전<i>◆</i>애월 보리굴비<i>◆</i>오메기떡<i>◆</i>제주 몸국<i>◆</i>꽃게탕<i>◆</i>흑염소 전골<i>◆</i>마농갈비살 한우<i>◆</i>40년 전통 영춘면<i>◆</i>서귀포 순대백반</span><span><i>◆</i>제주 고기국수<i>◆</i>흑돼지 육전<i>◆</i>애월 보리굴비<i>◆</i>오메기떡<i>◆</i>제주 몸국<i>◆</i>꽃게탕<i>◆</i>흑염소 전골<i>◆</i>마농갈비살 한우<i>◆</i>40년 전통 영춘면<i>◆</i>서귀포 순대백반</span></div></div>
+
+<div class="stats"><div class="stats-in"><div class="stat"><div class="v">10곳</div><div class="k">상호·주소 확인</div></div><div class="stat"><div class="v">12시간</div><div class="k">제주 1일차 먹방</div></div><div class="stat"><div class="v">40년</div><div class="k">영춘반점 전통</div></div><div class="stat"><div class="v">8,000원</div><div class="k">옛날순대 순대백반</div></div></div></div>
+
+<main class="doc">
+  <section data-block="intro">
+    <div class="callout"><b>왜 14곳이 아니라 10곳인가</b> — 도쿄편은 ENA가 방송 후 「맛집리스트」를 직접 게시해 상호·주소를 공개했습니다. 제주편은 아직 그런 공식 리스트가 없어서, 뉴스 기사·지역 매체가 실명으로 확인한 곳만 실었습니다. 8회(한림)와 9회 나머지 일부는 상호 자체가 어디서도 특정되지 않아 제외했습니다 — 자세한 목록은 아래 04번 섹션에.</div>
+  </section>
+
+  <section data-block="map">
+    <h2><span class="n">01</span> 지도</h2>
+    <div class="filters" id="filters">
+      <button class="fbtn on" data-k="all">전체 10곳</button>
+      <button class="fbtn" data-k="1"><i class="dot"></i>7회 · 제주 1일차</button>
+      <button class="fbtn" data-k="2"><i class="dot"></i>9회 · 서귀포</button>
+    </div>
+    <div id="map"></div>
+    <p class="note" style="margin-top:.6rem">핀을 누르면 가게 정보가 뜹니다. 아래 목록의 카드를 누르면 지도가 그 가게로 이동합니다.</p>
+  </section>
+
+  <section data-block="list">
+    <h2><span class="n">02</span> 가게 목록</h2>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section data-block="episodes">
+    <h2><span class="n">03</span> 방송에서 나온 기록</h2>
+    <div class="recs">
+      <div class="rec rv"><b>숫자를 못 셀 만큼 왔어요</b> — 먹돌고기국수 제주본점, 최홍만이 밝힌 단골 이력. 제주공항에서 차로 5분</div>
+      <div class="rec rv"><b>녹찻물에 만 보리굴비</b> — 꿈낭밥집, 최홍만이 직접 추천한 애월 밥상</div>
+      <div class="rec rv"><b>이 국물 보온병에 담아가면 안 돼?</b> — 백가네꽃게새우전문, 꽃게탕 국물에 대한 반응</div>
+      <div class="rec rv"><b>흑염소 편견을 깬 담백함</b> — 안다미로 늘봄흑염소, 향이 강할 거란 선입견과 달리 부드러운 국물</div>
+      <div class="rec rv"><b>12시간 여정의 마지막</b> — 제주 돌격한우, 제주 1일차 먹방을 마무리한 곳</div>
+      <div class="rec rv"><b>서귀포 40년 노포</b> — 영춘반점, 이름과 같은 메뉴 「영춘면」이 대표. 짜장면·탕수육도 함께</div>
+      <div class="rec rv"><b>서귀포고 앞 8,000원 순대백반</b> — 옛날순대, 순대·내장을 기호에 맞게 섞어 주문 가능</div>
+    </div>
+  </section>
+
+  <section data-block="caveat">
+    <h2><span class="n">04</span> 이 페이지에서 뺀 것들</h2>
+    <div class="callout warn">방송에는 이보다 훨씬 많은 가게가 나왔지만, 아래는 <b>상호 자체가 뉴스·블로그 어디서도 확정되지 않아</b> 지도에 넣지 않았습니다. 나중에 상호가 확인되면 추가하겠습니다.</div>
+    <ul class="srcs">
+      <li><b>8회 · 한림 5곳</b> — 김밥집(고사리김밥)·갈치조림집(협재)·꽈배기집·갈치구이집·떡집. 지역(한림)만 보도됐고 정확한 상호·주소는 확인되지 않았습니다.</li>
+      <li><b>8회 · 다금바리</b> — 5kg 기준 약 140만 원짜리 자연산 다금바리가 등장했지만 식당 상호는 공개되지 않았습니다.</li>
+      <li><b>9회 · 서귀포 성산 3곳</b> — 보말칼국수·성게칼국수·흑돼지아강발 식당(성산읍 고성리·섭지코지 인근으로만 보도), 문어해물라면집, 전복죽(갱이죽)집. 지역만 알려지고 상호는 미확인입니다.</li>
+      <li><b>좌표 근사치</b> — 김희선 제주몸국의 도로명(어영길)이 지도 데이터(OSM)에 없어, 좌표는 행정동(용담삼동) 중심점으로 근사했습니다. 실제 위치는 상호로 검색해 확인하는 걸 권합니다.</li>
+    </ul>
+  </section>
+
+  <section data-block="sources">
+    <h2><span class="n">05</span> 출처</h2>
+    <ul class="srcs">
+      <li><a href="https://fixframe.co.kr/zzuyang-jeju-restaurants-episode7/" target="_blank" rel="noopener">쯔양몇끼 7회 제주 맛집 총정리 — fixframe.co.kr</a> (제주 1일차 8곳 상호·주소)</li>
+      <li><a href="https://lluckkk.tistory.com/entry/%EC%AF%94%EC%96%91%EB%AA%87%EB%81%BC-%EC%A0%9C%EC%A3%BC-%EC%A4%91%EA%B5%AD%EC%A7%91-%EC%A7%9C%EC%9E%A5%EB%A9%B4-%ED%83%95%EC%88%98%EC%9C%A1-%EB%A7%9B%EC%A7%91-%EC%8B%9D%EB%8B%B9-%EC%9C%84%EC%B9%98-%EC%96%B4%EB%94%94" target="_blank" rel="noopener">쯔양몇끼 제주 중국집 위치 — lluckkk.tistory.com</a> (영춘반점 주소·전화)</li>
+      <li><a href="https://www.seogwipo.co.kr/news/articleView.html?idxno=208518" target="_blank" rel="noopener">서귀포신문 — 옛날순대 식당 방문기</a></li>
+      <li>매장 상세 주소 대조: <a href="https://polle.com" target="_blank" rel="noopener">polle.com</a> 매장 정보 페이지</li>
+      <li>좌표: <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noopener">OSM Nominatim</a> · 지도 타일 © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> 기여자</li>
+    </ul>
+  </section>
+
+  <div class="foot">
+    <span>page.cocy.io / tzuyang-jeju</span>
+    <span>2026-07-30</span>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script src="../tzuyang-tokyo/vendor/leaflet.js"></script>
+<script>
+const PLACES=[
+{"l":1,"no":1,"name":"먹돌고기국수 제주본점","menu":"고기국수 · 흑돼지 육전 · 돔베고기","addr":"제주특별자치도 제주시 공항로1길 14","area":"제주공항 인근 · 제주시","note":"제주공항에서 차량 약 5분, 최홍만 단골집","lat":33.5036058,"lon":126.5002587},
+{"l":1,"no":2,"name":"모찌마루","menu":"딸기모찌 · 한라봉모찌 · 생초콜릿모찌","addr":"제주특별자치도 제주시 공항로1길 14 삼영교통사옥 지하1층","area":"제주공항 인근 · 제주시","note":"","lat":33.5036058,"lon":126.5002587},
+{"l":1,"no":3,"name":"꿈낭밥집","menu":"보리굴비 · 돌게장 · 청국장","addr":"제주특별자치도 제주시 애월읍 유수암평화길 242","area":"애월읍 · 제주시","note":"최홍만 추천, 녹찻물에 보리굴비를 올려 먹는 상차림","lat":33.4236410,"lon":126.4079468},
+{"l":1,"no":4,"name":"유라케 오메기떡","menu":"오메기떡","addr":"제주특별자치도 제주시 용해로 114","area":"제주시","note":"","lat":33.5118983,"lon":126.5029600},
+{"l":1,"no":5,"name":"김희선 제주몸국","menu":"몸국 · 몸국수제비","addr":"제주특별자치도 제주시 어영길 45-6","area":"용담 · 제주시","note":"좌표는 행정동(용담삼동) 중심점 근사치","lat":33.5163400,"lon":126.4994600},
+{"l":1,"no":6,"name":"백가네꽃게새우전문","menu":"간장게장 · 양념게장 · 꽃게탕","addr":"제주특별자치도 제주시 동광로6길 9","area":"이도2동 · 제주시","note":"","lat":33.5003413,"lon":126.5326838},
+{"l":1,"no":7,"name":"안다미로 늘봄흑염소","menu":"흑염소 전골 · 흑염소 수육","addr":"제주특별자치도 제주시 구남로6길 45","area":"이도2동 · 제주시","note":"","lat":33.4879889,"lon":126.5357385},
+{"l":1,"no":8,"name":"제주 돌격한우","menu":"마농갈비살 · 1++ 한우","addr":"제주특별자치도 제주시 연동11길 12","area":"신제주 · 제주시","note":"제주 1일차 먹방의 마지막 코스","lat":33.4877878,"lon":126.4932457},
+{"l":2,"no":1,"name":"영춘반점","menu":"영춘면 · 탕수육 · 짜장면","addr":"제주특별자치도 서귀포시 중앙로 154","area":"서귀포 시내 · 서귀포시","note":"40년 전통 노포 · 0507-1420-5156","lat":33.2583568,"lon":126.5603128,"url":"https://map.naver.com/p/entry/place/1047996048"},
+{"l":2,"no":2,"name":"옛날순대","menu":"순대백반 · 순댓국","addr":"제주특별자치도 서귀포시 중앙로 155","area":"서귀포 시내 · 서귀포시","note":"서귀포고등학교 앞, 순대백반 8,000원","lat":33.2583991,"lon":126.5598738}
+];
+const LABEL={"1":"7회 · 제주 1일차","2":"9회 · 서귀포"};
+const UI={"lb_addr":"주소","lb_area":"위치","lb_note":"비고","a_focus":"지도에서 보기","a_copy":"주소 복사","a_gmap":"구글맵 ↗","a_site":"가게 정보 ↗","copied":"주소를 복사했습니다","copyfail":"복사에 실패했습니다"};
+
+const map=L.map('map',{scrollWheelZoom:false}).setView([33.45,126.5],10);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+
+const gmapUrl=p=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+' '+p.addr)}`;
+const markers=[];
+PLACES.forEach((p,i)=>{
+  const icon=L.divIcon({html:`<div class="pin l${p.l}"><span>${p.no}</span></div>`,className:'',iconSize:[29,29],iconAnchor:[14,27],popupAnchor:[0,-24]});
+  const m=L.marker([p.lat,p.lon],{icon}).addTo(map).bindPopup(
+    `<div class="pop"><b class="pn">${p.name}</b><span class="pm">${p.menu}</span><a href="${gmapUrl(p)}" target="_blank" rel="noopener">${UI.a_gmap}</a></div>`);
+  m._li=p.l; markers.push(m);
+  m.on('click',()=>{const c=document.getElementById('c'+i); if(c){c.classList.add('open');c.scrollIntoView({behavior:'smooth',block:'center'});}});
+});
+map.fitBounds(L.featureGroup(markers).getBounds().pad(0.25));
+
+document.getElementById('cards').innerHTML=PLACES.map((p,i)=>`<div class="card rv l${p.l}" id="c${i}" data-i="${i}">
+  <span class="tgl">▾</span>
+  <div class="idx"><span>${p.no}</span></div>
+  <div class="top"><span class="nm">${p.name}</span><span class="ep">${LABEL[p.l]}</span></div>
+  <div class="menu">${p.menu}</div>
+  <div class="info">
+    <div><span class="lb">${UI.lb_addr}</span>${p.addr}</div>
+    <div><span class="lb">${UI.lb_area}</span>${p.area}${p.note?` <span class="lb" style="margin-left:.6rem">${UI.lb_note}</span>${p.note}`:''}</div>
+    <div class="acts">
+      <button data-act="focus">${UI.a_focus}</button>
+      <button data-act="copy" data-v="${p.addr}">${UI.a_copy}</button>
+      <a href="${gmapUrl(p)}" target="_blank" rel="noopener">${UI.a_gmap}</a>
+      ${p.url?`<a href="${p.url}" target="_blank" rel="noopener">${UI.a_site}</a>`:''}
+    </div>
+  </div>
+</div>`).join('');
+
+const toast=document.getElementById('toast');let tt;
+const say=m=>{toast.textContent=m;toast.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove('on'),1800);};
+
+document.getElementById('cards').addEventListener('click',e=>{
+  const b=e.target.closest('button');
+  if(!b){
+    const c=e.target.closest('.card');
+    if(c && !e.target.closest('a') && matchMedia('(max-width:700px)').matches) c.classList.toggle('open');
+    return;
+  }
+  const i=+b.closest('.card').dataset.i;
+  if(b.dataset.act==='focus'){
+    document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'});
+    map.setView([PLACES[i].lat,PLACES[i].lon],17,{animate:true});
+    markers[i].openPopup();
+  } else {
+    navigator.clipboard.writeText(b.dataset.v).then(()=>say(UI.copied)).catch(()=>say(UI.copyfail));
+  }
+});
+
+document.getElementById('filters').addEventListener('click',e=>{
+  const b=e.target.closest('.fbtn'); if(!b) return;
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.toggle('on',x===b));
+  const k=b.dataset.k, shown=[];
+  markers.forEach((m,i)=>{
+    const on = k==='all' || String(m._li)===k;
+    const el=m.getElement(); if(el) el.querySelector('.pin').classList.toggle('dim',!on);
+    document.getElementById('c'+i).classList.toggle('hide',!on);
+    if(on) shown.push(m);
+  });
+  if(shown.length) map.fitBounds(L.featureGroup(shown).getBounds().pad(0.25));
+});
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
