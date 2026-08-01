@@ -19,7 +19,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="../../i18n.js?v=20260801a"></script>
+<script src="../../i18n.js?v=20260801b"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -68,6 +68,18 @@ body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(-
 .langbar{display:flex;gap:6px;justify-content:center;margin-bottom:12px}
 .lang-btn{background:var(--panel2);border:1px solid transparent;color:var(--mut);border-radius:20px;padding:5px 12px;font-size:11.5px;font-weight:700;cursor:pointer}
 .lang-btn.on{background:var(--lime);color:var(--bg);border-color:var(--lime)}
+.sheet{position:fixed;inset:0;background:rgba(10,9,20,.75);display:flex;align-items:flex-end;justify-content:center;z-index:60}
+.sheet.hide{display:none}
+.sheet .box{background:var(--panel);border-radius:16px 16px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));width:100%;max-width:480px}
+.sheet .st{font-size:11px;color:var(--mut);font-weight:700}
+.sheet .sh{font-size:15px;font-weight:800;margin:4px 0 2px;line-height:1.35}
+.sheet .sm{font-size:11.5px;color:var(--mut);margin-bottom:14px}
+.sheet .act{display:block;width:100%;border:none;border-radius:10px;padding:13px;font-size:13.5px;font-weight:800;cursor:pointer;margin-bottom:8px;text-align:center;text-decoration:none;box-sizing:border-box}
+.sheet .act.primary{background:var(--lime);color:var(--bg)}
+.sheet .act.second{background:var(--panel2);color:var(--txt)}
+.sheet .act[disabled]{opacity:.55;cursor:default}
+.sheet .hint{font-size:10.5px;color:var(--mut);text-align:center;margin:-2px 0 10px}
+.sheet .cancel{background:none;border:none;color:var(--mut);font-size:12px;cursor:pointer;display:block;width:100%;padding:8px}
 </style>
 </head>
 <body>
@@ -80,6 +92,18 @@ body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(-
   </div>
   <div class="filters" id="filters" style="display:none"></div>
   <div id="contentList"></div>
+</div>
+
+<div class="sheet hide" id="sheet">
+  <div class="box">
+    <div class="st" id="sheetKicker"></div>
+    <div class="sh" id="sheetTitle"></div>
+    <div class="sm" id="sheetMeta"></div>
+    <a class="act primary" id="sheetGo" target="_blank" rel="noreferrer"></a>
+    <button class="act second" id="sheetLog"></button>
+    <div class="hint" id="sheetHint"></div>
+    <button class="cancel" id="sheetCancel"></button>
+  </div>
 </div>
 
 <div class="gate hide" id="gate">
@@ -160,7 +184,7 @@ function renderContent(){
     const t = pick(c,'title');
     const isSearch = c.external_link && c.external_link.includes('results?search_query');
     const linkHtml = c.external_link
-      ? `<a href="${c.external_link}" target="_blank" rel="noreferrer">
+      ? `<a href="${c.external_link}" data-open="${c.id}" target="_blank" rel="noreferrer">
           <span class="type">${TYPE_ICON[c.type]||'❓'}</span>
           <span class="body"><div class="title">${t}${isSearch?' <span class="searchlink">'+T.searchSuffix+'</span>':''}</div><div class="meta">${fmtMeta(c)}</div>${pick(c,'note_public')?`<div class="note">${pick(c,'note_public')}</div>`:''}</span>
         </a>`
@@ -172,6 +196,10 @@ function renderContent(){
   }).join('') || ('<div class="loading">'+T.emptyCategory+'</div>');
 
   document.querySelectorAll('.vote').forEach(b => b.onclick = () => vote(b.dataset.id, b));
+  document.querySelectorAll('[data-open]').forEach(a => a.onclick = (e) => {
+    e.preventDefault();
+    openSheet(DATA.content.find(c => c.id === a.dataset.open));
+  });
 }
 
 async function vote(contentId, btn){
@@ -197,6 +225,60 @@ function updateSortUI(){
   $('sortBtn').textContent = SORT==='interest' ? T.toYear : T.toPopular;
 }
 $('sortBtn').onclick = () => { SORT = SORT==='interest' ? 'year' : 'interest'; updateSortUI(); renderContent(); };
+
+// 시청 액션 시트 — 링크로 나가기 전에 '로그에 시청기록 남기기'를 제안한다.
+const LOG_API = 'https://log.cocy.io/api/external/watch';
+let SHEET_ITEM = null;
+
+function openSheet(c){
+  if(!c) return;
+  SHEET_ITEM = c;
+  $('sheetKicker').textContent = T.actionTitle;
+  $('sheetTitle').textContent = pick(c,'title');
+  $('sheetMeta').innerHTML = fmtMeta(c);
+  const go = $('sheetGo');
+  go.textContent = T.goLink;
+  if(c.external_link){ go.href = c.external_link; go.style.display='block'; }
+  else { go.style.display='none'; }
+  const lg = $('sheetLog');
+  lg.textContent = T.addLog; lg.disabled = false;
+  $('sheetHint').textContent = T.addLogHint;
+  $('sheetCancel').textContent = T.close;
+  $('sheet').classList.remove('hide');
+}
+function closeSheet(){ $('sheet').classList.add('hide'); }
+$('sheetCancel').onclick = closeSheet;
+$('sheet').onclick = (e) => { if(e.target === $('sheet')) closeSheet(); };
+
+$('sheetLog').onclick = async () => {
+  const tok = getToken();
+  if(!tok){ closeSheet(); $('gateTitle').textContent = T.addLogLogin; requireLogin(); return; }
+  const c = SHEET_ITEM; if(!c) return;
+  const btn = $('sheetLog');
+  btn.disabled = true;
+  try{
+    const r = await fetch(LOG_API, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+tok},
+      body: JSON.stringify({
+        title: pick(c,'title'),
+        platform: pick(c,'platform'),
+        type: c.type,
+        url: c.external_link || null,
+        celebrity: celebName(DATA.celebrity),
+        source: 'fantrack',
+        watched_at: Date.now(),
+      })
+    });
+    if(r.status===401){ btn.disabled=false; closeSheet(); $('gateTitle').textContent = T.addLogLogin; requireLogin(); return; }
+    if(!r.ok) throw new Error('save_failed');
+    btn.textContent = T.addLogDone;
+    $('sheetHint').innerHTML = '<a href="https://log.cocy.io/" target="_blank" rel="noreferrer" style="color:var(--lime)">'+T.openLog+'</a>';
+  }catch(e){
+    btn.disabled = false;
+    $('sheetHint').textContent = T.addLogFail;
+  }
+};
 
 async function renderProfile(){
   const c = DATA.celebrity;
