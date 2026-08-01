@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>동해(SUPER JUNIOR) — FanTrack</title>
+<meta name="description" content="슈퍼주니어 동해 출연정보 모아보기 — 방송·유튜브·OTT. FanTrack.">
+<link rel="canonical" href="https://page.cocy.io/fantrack/c/donghae">
+<link rel="alternate" hreflang="tw" href="https://page.cocy.io/fantrack/c/donghae?lang=tw">
+<link rel="alternate" hreflang="ko" href="https://page.cocy.io/fantrack/c/donghae">
+<meta name="theme-color" content="#141221">
+<link rel="manifest" href="manifest.json">
+<script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
+<style>
+:root{
+  --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
+  --lime:#c6f24e; --amber:#f0b43c; --line:#3a3458;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--txt);}
+.wrap{max-width:480px;margin:0 auto;padding:16px}
+.profile{background:var(--panel);border-radius:16px;padding:20px;text-align:center;margin-bottom:16px}
+.avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;background:var(--panel2);margin-bottom:10px}
+.name{font-size:20px;font-weight:800}
+.sub{font-size:13px;color:var(--mut);margin-top:2px}
+.badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.badge{background:var(--panel2);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700}
+.sns{display:flex;gap:10px;justify-content:center;margin-top:12px}
+.sns a{color:var(--mut);text-decoration:none;font-size:12px;background:var(--panel2);padding:6px 10px;border-radius:8px}
+.myphoto-btn{margin-top:10px;font-size:11px;color:var(--mut);background:none;border:1px dashed var(--line);border-radius:8px;padding:5px 10px;cursor:pointer}
+
+.mode-unit{border-radius:10px;overflow:hidden;box-shadow:0 3px 0 #0f0d1c;margin-bottom:14px}
+.mode-unit:active{transform:translateY(2px);box-shadow:0 1px 0 #0f0d1c}
+.mode-badge{display:block;text-align:center;font-size:11px;font-weight:800;color:var(--bg);background:var(--lime);padding:7px 8px}
+.mode-toggle{display:block;width:100%;border:none;background:var(--panel2);color:var(--txt);font-size:13px;font-weight:800;padding:10px 8px;cursor:pointer}
+
+.card{background:var(--panel);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center}
+.card .type{font-size:10px;font-weight:800;color:var(--bg);background:var(--amber);border-radius:6px;padding:2px 7px;flex-shrink:0}
+.card .body{flex:1;min-width:0}
+.card .title{font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card .meta{font-size:11px;color:var(--mut);margin-top:2px}
+.card .vote{background:var(--panel2);border:none;border-radius:8px;padding:8px 10px;font-size:12px;color:var(--txt);cursor:pointer;flex-shrink:0}
+.card .vote.on{background:var(--lime);color:var(--bg);font-weight:800}
+.card .upcoming{color:var(--amber);font-weight:800}
+.card a{color:inherit;text-decoration:none;display:flex;gap:10px;align-items:center;flex:1;min-width:0}
+
+.gate{position:fixed;inset:0;background:rgba(10,9,20,.9);display:flex;align-items:center;justify-content:center;z-index:50}
+.gate.hide{display:none}
+.gate .box{background:var(--panel);border-radius:16px;padding:24px;text-align:center;max-width:300px}
+#gbtn{margin-top:14px;display:flex;justify-content:center}
+.loading{text-align:center;color:var(--mut);padding:30px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="profile" id="profile"><div class="loading">불러오는 중...</div></div>
+  <div class="mode-unit" id="sortUnit" style="display:none">
+    <span class="mode-badge" id="sortBadge"></span>
+    <button class="mode-toggle" id="sortBtn"></button>
+  </div>
+  <div id="contentList"></div>
+</div>
+
+<div class="gate hide" id="gate">
+  <div class="box">
+    <div style="font-weight:800;margin-bottom:6px">로그인하면 관심있어요를 누를 수 있어요</div>
+    <div id="gbtn"></div>
+    <button onclick="document.getElementById('gate').classList.add('hide')" style="margin-top:10px;background:none;border:none;color:var(--mut);font-size:12px;cursor:pointer">닫기</button>
+  </div>
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+const SLUG = 'donghae';
+const $ = id => document.getElementById(id);
+const GCID = '315180918727-3d9rfmpa36r365qna9smdsvrod441jhd.apps.googleusercontent.com';
+
+function isExpired(tok){ try{ const p=JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); return !p.exp || (p.exp*1000 < Date.now()); }catch{return true;} }
+function getToken(){ const t=localStorage.getItem('page_id_token'); return (t && !isExpired(t)) ? t : null; }
+function onCred(resp){ localStorage.setItem('page_id_token', resp.credential); $('gate').classList.add('hide'); render(); }
+function renderLogin(){
+  if(window.google && google.accounts && google.accounts.id){
+    google.accounts.id.initialize({client_id:GCID, callback:onCred});
+    const el = $('gbtn'); el.innerHTML='';
+    google.accounts.id.renderButton(el, {theme:'filled_black', size:'large', text:'continue_with', shape:'pill'});
+  } else setTimeout(renderLogin, 300);
+}
+function requireLogin(){ $('gate').classList.remove('hide'); renderLogin(); }
+
+// 8장: 내 최애 사진 — 서버 업로드 없이 IndexedDB 로컬 저장만
+const DB_NAME='fantrack_photos', STORE='photos';
+function idbOpen(){ return new Promise((res,rej)=>{ const r=indexedDB.open(DB_NAME,1); r.onupgradeneeded=()=>r.result.createObjectStore(STORE); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+async function idbGet(key){ const db=await idbOpen(); return new Promise(res=>{ const tx=db.transaction(STORE,'readonly'); const rq=tx.objectStore(STORE).get(key); rq.onsuccess=()=>res(rq.result||null); rq.onerror=()=>res(null); }); }
+async function idbSet(key, blob){ const db=await idbOpen(); return new Promise(res=>{ const tx=db.transaction(STORE,'readwrite'); tx.objectStore(STORE).put(blob,key); tx.oncomplete=()=>res(); }); }
+
+let SORT = 'interest'; // interest | year
+let DATA = null;
+
+function fmtMeta(c){
+  const parts = [];
+  if(c.upcoming) parts.push('<span class="upcoming">공개예정</span>');
+  else if(c.year) parts.push(c.year+'년');
+  if(c.platform) parts.push(c.platform);
+  if(c.link_region_note==='kr_only') parts.push('🇰🇷 한국만');
+  return parts.join(' · ');
+}
+
+function renderContent(){
+  const list = [...DATA.content];
+  if(SORT==='interest') list.sort((a,b)=> (b.votes-a.votes) || ((b.year||0)-(a.year||0)));
+  else list.sort((a,b)=> (b.year||0)-(a.year||0));
+
+  $('contentList').innerHTML = list.map(c => {
+    const t = c.title_localized_tw ? `${c.title_localized_tw}<span style="opacity:.6;font-size:11px"> ${c.title}</span>` : c.title;
+    return `<div class="card">
+      <a href="${c.external_link||'#'}" target="_blank" rel="noreferrer">
+        <span class="type">${c.type}</span>
+        <span class="body"><div class="title">${t}</div><div class="meta">${fmtMeta(c)}</div></span>
+      </a>
+      <button class="vote" data-id="${c.id}">👍 ${c.votes}</button>
+    </div>`;
+  }).join('') || '<div class="loading">등록된 출연정보가 없어요.</div>';
+
+  document.querySelectorAll('.vote').forEach(b => b.onclick = () => vote(b.dataset.id, b));
+}
+
+async function vote(contentId, btn){
+  const tok = getToken();
+  if(!tok){ requireLogin(); return; }
+  btn.disabled = true;
+  try{
+    const r = await fetch('/api/fantrack/vote', {
+      method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+tok},
+      body: JSON.stringify({content_id: contentId})
+    });
+    const j = await r.json();
+    if(r.status===401){ requireLogin(); return; }
+    const item = DATA.content.find(c=>c.id===contentId);
+    if(item) item.votes = j.votes;
+    renderContent();
+  }catch(e){ /* ignore */ }
+  btn.disabled = false;
+}
+
+function updateSortUI(){
+  $('sortBadge').textContent = SORT==='interest' ? '🔥 지금 인기순' : '🗓 최신순';
+  $('sortBtn').textContent = SORT==='interest' ? '⇄ 연도순으로' : '⇄ 인기순으로';
+}
+$('sortBtn').onclick = () => { SORT = SORT==='interest' ? 'year' : 'interest'; updateSortUI(); renderContent(); };
+
+async function renderProfile(){
+  const c = DATA.celebrity;
+  const localPhoto = await idbGet(SLUG);
+  const src = localPhoto ? URL.createObjectURL(localPhoto) : 'icon.svg';
+  const snsLinks = Object.entries(c.sns||{}).map(([k,v]) => `<a href="${v}" target="_blank" rel="noreferrer">${k}</a>`).join('');
+  const ytLink = c.youtube_channel_id ? `<a href="https://www.youtube.com/channel/${c.youtube_channel_id}" target="_blank" rel="noreferrer">유튜브</a>` : '';
+  $('profile').innerHTML = `
+    <img class="avatar" id="avatarImg" src="${src}" alt="${c.name_ko}">
+    <div class="name">${c.name_tw || c.name_ko}</div>
+    <div class="sub">${c.name_en||''}</div>
+    <div class="badges">
+      ${c.mbti ? `<span class="badge">${c.mbti}</span>`:''}
+      ${c.group_name ? `<span class="badge">${c.group_name}</span>`:''}
+      ${c.agency ? `<span class="badge">${c.agency}</span>`:''}
+    </div>
+    <div class="sns">${ytLink}${snsLinks}</div>
+    <input type="file" id="photoInput" accept="image/*" style="display:none">
+    <button class="myphoto-btn" id="photoBtn">내 최애 사진 설정 (이 기기에만 저장)</button>
+  `;
+  $('photoBtn').onclick = () => $('photoInput').click();
+  $('photoInput').onchange = async (e) => {
+    const f = e.target.files[0]; if(!f) return;
+    await idbSet(SLUG, f);
+    $('avatarImg').src = URL.createObjectURL(f);
+  };
+}
+
+async function render(){
+  const r = await fetch('/api/fantrack/celebrity/'+SLUG);
+  if(!r.ok){ $('profile').innerHTML = '<div class="loading">프로필을 찾을 수 없어요.</div>'; return; }
+  DATA = await r.json();
+  await renderProfile();
+  $('sortUnit').style.display = 'block';
+  updateSortUI();
+  renderContent();
+}
+render();
+</script>
+</body>
+</html>
