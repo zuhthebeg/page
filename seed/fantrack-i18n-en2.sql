@@ -35,3 +35,6 @@ UPDATE celebrities SET
   agency_en = 'ODD Entertainment / SM Entertainment',
   agency_tw = 'ODD Entertainment / SM娛樂'
 WHERE id = 'donghae';
+
+-- 후속: 슈퍼TV 번체값이 한글('슈퍼TV')이라 tw 화면에 한글이 남음 → 영문 원제로 통일
+UPDATE content_units SET title_localized_tw = 'Super TV' WHERE id = 'dh-supertv';
