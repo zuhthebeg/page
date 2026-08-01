@@ -48,7 +48,9 @@
       showWatched: '본 것 보기',
       watchedLocal: '이 표시는 이 기기에만 저장돼요',
       planTrip: '✈️ 이 공연으로 여행 계획 짜기',
-      planTripHint: '공연 앞뒤 2박 3일 · 지난 공연은 다녀온 기록으로',
+      planTripPast: '📖 이 공연 추억 기록하기',
+      planTripHint: '공연 앞뒤 2박 3일 일정으로 Travly에서 만들기',
+      planTripHintPast: '다녀온 2박 3일을 Travly에 기록으로 남기기',
       planTripNoDate: '날짜 정보가 없어서 여행 계획을 만들 수 없어요',
     },
     en: {
@@ -93,7 +95,9 @@
       showWatched: 'Show watched',
       watchedLocal: 'This mark is stored on this device only',
       planTrip: '✈️ Plan a trip around this show',
-      planTripHint: '2 nights / 3 days · past shows become a trip record',
+      planTripPast: '📖 Save this show as a trip memory',
+      planTripHint: 'Draft a 2-night / 3-day trip in Travly',
+      planTripHintPast: 'Record the 2 nights / 3 days you spent there',
       planTripNoDate: 'No date on file, so a trip cannot be drafted',
     },
     tw: {
@@ -138,7 +142,9 @@
       showWatched: '顯示看過的',
       watchedLocal: '這個標記只存在這台裝置',
       planTrip: '✈️ 為這場演出安排行程',
-      planTripHint: '演出前後 3天2夜 · 已結束的演出可作為旅行紀錄',
+      planTripPast: '📖 把這場演出寫成旅行回憶',
+      planTripHint: '在 Travly 建立演出前後 3天2夜的行程',
+      planTripHintPast: '把去過的 3天2夜記錄到 Travly',
       planTripNoDate: '沒有日期資料，無法安排行程',
     },
   };
@@ -246,58 +252,85 @@
     } catch (e) { return region; }
   }
 
-  function tripPrompt(c, artistName, date) {
+  function tripPrompt(c, artistName, date, past) {
     const place = [c.venue, c.city, c.country].filter(Boolean).join(', ');
     const from = originCountry();
     const show = [artistName, pick(c, 'title')].filter(Boolean).join(' ');
-    const past = date < new Date().toISOString().slice(0, 10);
 
     if (LANG === 'en') {
-      return [
-        `I'm planning a trip around a concert: ${show}, on ${date}.`,
+      return past ? [
+        `I went to a concert: ${show}, on ${date}.`,
         place ? `Venue: ${place}.` : `Please look up where this concert was held and use that city.`,
+        from ? `I travelled from ${from}.` : '',
+        `It was 2 nights / 3 days — I arrived the day before the show and left the day after.`,
+        `Write it up as a trip I already took: how I got to the venue, food spots near the venue,`,
+        `and places connected to the artist or its members that I could have visited.`,
+      ].filter(Boolean).join(' ') : [
+        `I'm going to a concert: ${show}, on ${date}.`,
+        place ? `Venue: ${place}.` : `Please look up where this concert is held and use that city.`,
         from ? `I'm travelling from ${from}.` : '',
-        past ? `This show already happened — I'm recording the trip I took.` : '',
         `Plan 2 nights / 3 days: arrive the day before the show, leave the day after.`,
-        `Include getting to the venue, food spots near the venue, and places connected to the artist or its members.`,
+        `Include getting to the venue, food spots near the venue,`,
+        `and places connected to the artist or its members.`,
       ].filter(Boolean).join(' ');
     }
     if (LANG === 'tw') {
-      return [
-        `我想安排一趟看演唱會的行程：${show}，${date}。`,
-        place ? `場館：${place}。` : `請先查這場演出在哪裡舉行，並以該城市為主。`,
+      return past ? [
+        `我去看了這場演唱會：${show}，${date}。`,
+        place ? `場館：${place}。` : `請查這場演出當時在哪裡舉行，並以該城市為主。`,
         from ? `我從${from}出發。` : '',
-        past ? `這場演出已經結束了，我是要把去過的行程記錄下來。` : '',
+        `是 3天2夜：演出前一天抵達，隔天離開。`,
+        `請整理成我已經走過的行程：怎麼去場館、場館附近吃了什麼，`,
+        `以及和這位藝人或成員有關、可能去過的地點。`,
+      ].filter(Boolean).join(' ') : [
+        `我要去看這場演唱會：${show}，${date}。`,
+        place ? `場館：${place}。` : `請查這場演出在哪裡舉行，並以該城市為主。`,
+        from ? `我從${from}出發。` : '',
         `請安排 3天2夜：演出前一天抵達，隔天離開。`,
-        `請包含前往場館的方式、場館附近的美食，以及和這位藝人或成員有關的地點。`,
+        `請包含前往場館的方式、場館附近的美食，`,
+        `以及和這位藝人或成員有關的地點。`,
       ].filter(Boolean).join(' ');
     }
-    return [
-      `콘서트 보러 가는 일정을 짜려고 해. ${show}, ${date}.`,
+    return past ? [
+      `${date}에 ${show} 공연을 보러 다녀왔어.`,
+      place ? `공연장: ${place}.` : `이 공연이 어디에서 열렸는지 찾아서 그 도시 기준으로 정리해줘.`,
+      from ? `${from}에서 출발했어.` : '',
+      `공연 전날 도착해서 다음날 떠나는 2박 3일이었어.`,
+      `다녀온 일정으로 정리해줘 — 공연장 가는 길, 공연장 근처에서 들렀을 만한 맛집,`,
+      `그리고 이 아티스트나 멤버들과 연관된 장소까지 넣어서.`,
+    ].filter(Boolean).join(' ') : [
+      `${date}에 ${show} 공연을 보러 가려고 해.`,
       place ? `공연장: ${place}.` : `이 공연이 어디에서 열리는지 찾아서 그 도시 기준으로 잡아줘.`,
-      from ? `출발지는 ${from}이야.` : '',
-      past ? `이미 지난 공연이야 — 다녀온 여행을 기록용으로 정리하는 거야.` : '',
+      from ? `${from}에서 출발해.` : '',
       `공연 전날 도착해서 다음날 떠나는 2박 3일로 짜줘.`,
-      `공연장 가는 법, 공연장 근처 맛집, 그리고 이 아티스트나 멤버들과 연관된 장소도 넣어줘.`,
+      `공연장 가는 법, 공연장 근처 맛집,`,
+      `그리고 이 아티스트나 멤버들과 연관된 장소도 넣어줘.`,
     ].filter(Boolean).join(' ');
+  }
+
+  function isPastShow(c) {
+    const date = (c && c.air_date && /^\d{4}-\d{2}-\d{2}$/.test(c.air_date)) ? c.air_date : null;
+    return !!date && date < new Date().toISOString().slice(0, 10);
   }
 
   function tripUrl(c, artistName) {
     const date = (c.air_date && /^\d{4}-\d{2}-\d{2}$/.test(c.air_date)) ? c.air_date : null;
     if (!date) return null;
+    const past = isPastShow(c);
     const p = new URLSearchParams();
-    p.set('tab', 'ai');
+    // 여행 비서(ai)가 아니라 '텍스트로 일정 만들기' 탭으로 보낸다.
+    p.set('tab', 'text');
     p.set('title', [artistName, pick(c, 'title')].filter(Boolean).join(' '));
     p.set('start', shiftDate(date, -1));
     p.set('end', shiftDate(date, 1));
     const place = [c.city, c.country].filter(Boolean).join(', ');
     if (place) p.set('region', place);
-    p.set('q', tripPrompt(c, artistName, date));
+    p.set('text', tripPrompt(c, artistName, date, past));
     p.set('utm_source', 'fantrack');
     return TRAVLY + '?' + p.toString();
   }
 
   global.FT_I18N = { LANG: LANG, T: T, pick: pick, celebName: celebName, htmlLang: htmlLang, bindSwitcher: bindSwitcher, SUPPORTED: SUPPORTED,
     isWatched: isWatched, setWatched: setWatched, watchedCount: watchedCount,
-    tripUrl: tripUrl };
+    tripUrl: tripUrl, isPastShow: isPastShow };
 })(window);
