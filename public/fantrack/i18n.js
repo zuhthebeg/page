@@ -48,7 +48,7 @@
       showWatched: '본 것 보기',
       watchedLocal: '이 표시는 이 기기에만 저장돼요',
       planTrip: '✈️ 이 공연으로 여행 계획 짜기',
-      planTripHint: '공연 앞뒤로 2박 3일, Travly에서 일정 만들기',
+      planTripHint: '공연 앞뒤 2박 3일 · 지난 공연은 다녀온 기록으로',
       planTripNoDate: '날짜 정보가 없어서 여행 계획을 만들 수 없어요',
     },
     en: {
@@ -93,7 +93,7 @@
       showWatched: 'Show watched',
       watchedLocal: 'This mark is stored on this device only',
       planTrip: '✈️ Plan a trip around this show',
-      planTripHint: '2 nights / 3 days around the show, in Travly',
+      planTripHint: '2 nights / 3 days · past shows become a trip record',
       planTripNoDate: 'No date on file, so a trip cannot be drafted',
     },
     tw: {
@@ -138,7 +138,7 @@
       showWatched: '顯示看過的',
       watchedLocal: '這個標記只存在這台裝置',
       planTrip: '✈️ 為這場演出安排行程',
-      planTripHint: '演出前後 3天2夜，在 Travly 建立行程',
+      planTripHint: '演出前後 3天2夜 · 已結束的演出可作為旅行紀錄',
       planTripNoDate: '沒有日期資料，無法安排行程',
     },
   };
@@ -212,32 +212,87 @@
   }
   function watchedCount() { return Object.keys(readWatched()).length; }
 
-  // 콘서트 → Travly 여행계획 딥링크. 공연일 앞뒤 하루씩 = 2박3일.
-  // 장소 데이터가 없으면 region은 비워두고 AI 탭에 질문만 실어 보낸다(억지로 지역을 지어내지 않는다).
+  // 콘서트 → Travly 여행계획 딥링크.
+  // 정확도(공연장 위치·주변 맛집·아티스트 연고지)는 Travly에 위임한다.
+  // 여기서는 날짜/공연/아티스트/출발지 같은 "맥락"만 넘기고, 우리가 장소를 지어내지 않는다.
   const TRAVLY = 'https://travly.cocy.io/plan/new';
+
   function shiftDate(ymd, days) {
     const d = new Date(ymd + 'T00:00:00Z');
     if (isNaN(d.getTime())) return null;
     d.setUTCDate(d.getUTCDate() + days);
     return d.toISOString().slice(0, 10);
   }
+
+  // 출발지 추정: 브라우저 언어의 지역 서브태그(zh-TW → 대만). 없으면 언어 기본값.
+  function originCountry() {
+    const tags = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || ''];
+    const FALLBACK = { ko: 'KR', ja: 'JP', zh: 'TW', en: 'US' };
+    let region = null;
+    for (const t of tags) {
+      const m = /^[A-Za-z]{2,3}(?:-[A-Za-z]{4})?-([A-Za-z]{2})\b/.exec(t || '');
+      if (m) { region = m[1].toUpperCase(); break; }
+    }
+    if (!region) {
+      for (const t of tags) {
+        const base = (t || '').slice(0, 2).toLowerCase();
+        if (FALLBACK[base]) { region = FALLBACK[base]; break; }
+      }
+    }
+    if (!region) return null;
+    try {
+      const dn = new Intl.DisplayNames([LANG === 'tw' ? 'zh-Hant' : LANG], { type: 'region' });
+      return dn.of(region) || region;
+    } catch (e) { return region; }
+  }
+
+  function tripPrompt(c, artistName, date) {
+    const place = [c.venue, c.city, c.country].filter(Boolean).join(', ');
+    const from = originCountry();
+    const show = [artistName, pick(c, 'title')].filter(Boolean).join(' ');
+    const past = date < new Date().toISOString().slice(0, 10);
+
+    if (LANG === 'en') {
+      return [
+        `I'm planning a trip around a concert: ${show}, on ${date}.`,
+        place ? `Venue: ${place}.` : `Please look up where this concert was held and use that city.`,
+        from ? `I'm travelling from ${from}.` : '',
+        past ? `This show already happened — I'm recording the trip I took.` : '',
+        `Plan 2 nights / 3 days: arrive the day before the show, leave the day after.`,
+        `Include getting to the venue, food spots near the venue, and places connected to the artist or its members.`,
+      ].filter(Boolean).join(' ');
+    }
+    if (LANG === 'tw') {
+      return [
+        `我想安排一趟看演唱會的行程：${show}，${date}。`,
+        place ? `場館：${place}。` : `請先查這場演出在哪裡舉行，並以該城市為主。`,
+        from ? `我從${from}出發。` : '',
+        past ? `這場演出已經結束了，我是要把去過的行程記錄下來。` : '',
+        `請安排 3天2夜：演出前一天抵達，隔天離開。`,
+        `請包含前往場館的方式、場館附近的美食，以及和這位藝人或成員有關的地點。`,
+      ].filter(Boolean).join(' ');
+    }
+    return [
+      `콘서트 보러 가는 일정을 짜려고 해. ${show}, ${date}.`,
+      place ? `공연장: ${place}.` : `이 공연이 어디에서 열리는지 찾아서 그 도시 기준으로 잡아줘.`,
+      from ? `출발지는 ${from}이야.` : '',
+      past ? `이미 지난 공연이야 — 다녀온 여행을 기록용으로 정리하는 거야.` : '',
+      `공연 전날 도착해서 다음날 떠나는 2박 3일로 짜줘.`,
+      `공연장 가는 법, 공연장 근처 맛집, 그리고 이 아티스트나 멤버들과 연관된 장소도 넣어줘.`,
+    ].filter(Boolean).join(' ');
+  }
+
   function tripUrl(c, artistName) {
     const date = (c.air_date && /^\d{4}-\d{2}-\d{2}$/.test(c.air_date)) ? c.air_date : null;
     if (!date) return null;
-    // 지난 공연으로 여행 계획을 권하는 건 무의미하다. 오늘 이후만.
-    if (date < new Date().toISOString().slice(0, 10)) return null;
-    const start = shiftDate(date, -1), end = shiftDate(date, 1);
-    const place = [c.city, c.country].filter(Boolean).join(', ');
-    const title = artistName ? (artistName + ' ' + (c.title || '')).trim() : (c.title || '');
     const p = new URLSearchParams();
-    p.set('tab', place ? 'manual' : 'ai');
-    p.set('title', title);
+    p.set('tab', 'ai');
+    p.set('title', [artistName, pick(c, 'title')].filter(Boolean).join(' '));
+    p.set('start', shiftDate(date, -1));
+    p.set('end', shiftDate(date, 1));
+    const place = [c.city, c.country].filter(Boolean).join(', ');
     if (place) p.set('region', place);
-    p.set('start', start);
-    p.set('end', end);
-    if (!place) {
-      p.set('q', title + ' (' + date + ') 공연을 보러 가려고 해. 공연 전날 도착해서 다음날 떠나는 2박 3일 일정을 짜줘.');
-    }
+    p.set('q', tripPrompt(c, artistName, date));
     p.set('utm_source', 'fantrack');
     return TRAVLY + '?' + p.toString();
   }
