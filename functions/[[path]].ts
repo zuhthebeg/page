@@ -11,7 +11,7 @@ interface Env {
 
 // 사용자가 점유할 수 없는 슬러그
 const RESERVED = new Set([
-  "", "new", "edit", "admin", "api", "auth", "portal", "assets", "static", "guide",
+  "", "new", "edit", "admin", "api", "auth", "portal", "assets", "static", "guide", "fantrack",
   "favicon.ico", "robots.txt", "sitemap.xml", "index.html", "404.html",
 ]);
 
