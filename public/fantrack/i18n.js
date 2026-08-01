@@ -52,6 +52,8 @@
       planTripHint: '공연 앞뒤 2박 3일 일정으로 Travly에서 만들기',
       planTripHintPast: '다녀온 2박 3일을 Travly에 기록으로 남기기',
       planTripNoDate: '날짜 정보가 없어서 여행 계획을 만들 수 없어요',
+      debut: '데뷔',
+      fandomLabel: '팬덤',
     },
     en: {
       loading: 'Loading...',
@@ -99,6 +101,8 @@
       planTripHint: 'Draft a 2-night / 3-day trip in Travly',
       planTripHintPast: 'Record the 2 nights / 3 days you spent there',
       planTripNoDate: 'No date on file, so a trip cannot be drafted',
+      debut: 'Debut',
+      fandomLabel: 'Fandom',
     },
     tw: {
       loading: '載入中...',
@@ -146,6 +150,8 @@
       planTripHint: '在 Travly 建立演出前後 3天2夜的行程',
       planTripHintPast: '把去過的 3天2夜記錄到 Travly',
       planTripNoDate: '沒有日期資料，無法安排行程',
+      debut: '出道',
+      fandomLabel: '粉絲名',
     },
   };
 

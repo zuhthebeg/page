@@ -74,6 +74,8 @@ CREATE TABLE IF NOT EXISTS celebrities (
   agency_en         TEXT,
   agency_tw         TEXT,
   birthdate         TEXT,
+  debut_date        TEXT,                 -- 데뷔일(그룹은 그룹 데뷔일)
+  fandom            TEXT,                 -- 공식 팬덤명
   mbti              TEXT,
   blood_type        TEXT,
   sns               TEXT,                 -- JSON {platform: url}

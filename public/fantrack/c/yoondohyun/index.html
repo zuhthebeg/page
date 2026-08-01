@@ -19,7 +19,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="../../i18n.js?v=20260801i"></script>
+<script src="../../i18n.js?v=20260802a"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -348,6 +348,8 @@ async function renderProfile(){
       ${c.mbti ? `<span class="badge">${c.mbti}</span>`:''}
       ${c.group_name ? `<span class="badge">${c.group_name}</span>`:''}
       ${pick(c,'agency') ? `<span class="badge">${pick(c,'agency')}</span>`:''}
+      ${c.debut_date ? `<span class="badge">${T.debut} ${c.debut_date}</span>`:''}
+      ${c.fandom ? `<span class="badge">${T.fandomLabel} ${c.fandom}</span>`:''}
     </div>
     <div class="sns">${ytLink}${snsLinks}</div>
     <input type="file" id="photoInput" accept="image/*" style="display:none">
