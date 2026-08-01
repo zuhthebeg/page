@@ -47,6 +47,9 @@
       hideWatched: '본 것 숨기기',
       showWatched: '본 것 보기',
       watchedLocal: '이 표시는 이 기기에만 저장돼요',
+      planTrip: '✈️ 이 공연으로 여행 계획 짜기',
+      planTripHint: '공연 앞뒤로 2박 3일, Travly에서 일정 만들기',
+      planTripNoDate: '날짜 정보가 없어서 여행 계획을 만들 수 없어요',
     },
     en: {
       loading: 'Loading...',
@@ -89,6 +92,9 @@
       hideWatched: 'Hide watched',
       showWatched: 'Show watched',
       watchedLocal: 'This mark is stored on this device only',
+      planTrip: '✈️ Plan a trip around this show',
+      planTripHint: '2 nights / 3 days around the show, in Travly',
+      planTripNoDate: 'No date on file, so a trip cannot be drafted',
     },
     tw: {
       loading: '載入中...',
@@ -131,6 +137,9 @@
       hideWatched: '隱藏看過的',
       showWatched: '顯示看過的',
       watchedLocal: '這個標記只存在這台裝置',
+      planTrip: '✈️ 為這場演出安排行程',
+      planTripHint: '演出前後 3天2夜，在 Travly 建立行程',
+      planTripNoDate: '沒有日期資料，無法安排行程',
     },
   };
 
@@ -203,6 +212,35 @@
   }
   function watchedCount() { return Object.keys(readWatched()).length; }
 
+  // 콘서트 → Travly 여행계획 딥링크. 공연일 앞뒤 하루씩 = 2박3일.
+  // 장소 데이터가 없으면 region은 비워두고 AI 탭에 질문만 실어 보낸다(억지로 지역을 지어내지 않는다).
+  const TRAVLY = 'https://travly.cocy.io/plan/new';
+  function shiftDate(ymd, days) {
+    const d = new Date(ymd + 'T00:00:00Z');
+    if (isNaN(d.getTime())) return null;
+    d.setUTCDate(d.getUTCDate() + days);
+    return d.toISOString().slice(0, 10);
+  }
+  function tripUrl(c, artistName) {
+    const date = (c.air_date && /^\d{4}-\d{2}-\d{2}$/.test(c.air_date)) ? c.air_date : null;
+    if (!date) return null;
+    const start = shiftDate(date, -1), end = shiftDate(date, 1);
+    const place = [c.city, c.country].filter(Boolean).join(', ');
+    const title = artistName ? (artistName + ' ' + (c.title || '')).trim() : (c.title || '');
+    const p = new URLSearchParams();
+    p.set('tab', place ? 'manual' : 'ai');
+    p.set('title', title);
+    if (place) p.set('region', place);
+    p.set('start', start);
+    p.set('end', end);
+    if (!place) {
+      p.set('q', title + ' (' + date + ') 공연을 보러 가려고 해. 공연 전날 도착해서 다음날 떠나는 2박 3일 일정을 짜줘.');
+    }
+    p.set('utm_source', 'fantrack');
+    return TRAVLY + '?' + p.toString();
+  }
+
   global.FT_I18N = { LANG: LANG, T: T, pick: pick, celebName: celebName, htmlLang: htmlLang, bindSwitcher: bindSwitcher, SUPPORTED: SUPPORTED,
-    isWatched: isWatched, setWatched: setWatched, watchedCount: watchedCount };
+    isWatched: isWatched, setWatched: setWatched, watchedCount: watchedCount,
+    tripUrl: tripUrl };
 })(window);

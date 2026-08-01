@@ -94,6 +94,10 @@ CREATE TABLE IF NOT EXISTS content_units (
   platform           TEXT,                 -- SBS, YouTube, Disney+ 등
   year               INTEGER,
   air_date           TEXT,
+  city               TEXT,                 -- 콘서트 등 장소 정보(있을 때만)
+  country            TEXT,
+  country_code       TEXT,                 -- ISO-3166 alpha-2
+  venue              TEXT,
   external_link      TEXT,
   link_region_note   TEXT,                 -- 예: 'kr_only'
   category           TEXT,
