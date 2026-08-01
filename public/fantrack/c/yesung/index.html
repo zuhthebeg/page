@@ -19,7 +19,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="../../i18n.js?v=20260801b"></script>
+<script src="../../i18n.js?v=20260801c"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -65,7 +65,15 @@ body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(-
 .gate .box{background:var(--panel);border-radius:16px;padding:24px;text-align:center;max-width:300px}
 #gbtn{margin-top:14px;display:flex;justify-content:center}
 .loading{text-align:center;color:var(--mut);padding:30px;font-size:13px}
-.langbar{display:flex;gap:6px;justify-content:center;margin-bottom:12px}
+.topbar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.home{flex-shrink:0;color:var(--mut);text-decoration:none;font-size:11.5px;font-weight:700;background:var(--panel2);border-radius:20px;padding:6px 11px}
+.langbar{display:flex;gap:6px;justify-content:flex-end;flex:1;margin-bottom:0}
+.card.watched{opacity:.62}
+.card.watched .title{text-decoration:line-through;text-decoration-color:var(--mut)}
+.card .seen{display:inline-block;font-size:9.5px;font-weight:800;color:var(--bg);background:var(--mut);border-radius:4px;padding:1px 5px;margin-right:5px;vertical-align:1px}
+.wtoggle{display:flex;justify-content:flex-end;margin-bottom:8px}
+.wtoggle button{background:var(--panel2);border:1px solid transparent;color:var(--mut);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;cursor:pointer}
+.wtoggle button.on{background:var(--amber);color:var(--bg);border-color:var(--amber)}
 .lang-btn{background:var(--panel2);border:1px solid transparent;color:var(--mut);border-radius:20px;padding:5px 12px;font-size:11.5px;font-weight:700;cursor:pointer}
 .lang-btn.on{background:var(--lime);color:var(--bg);border-color:var(--lime)}
 .sheet{position:fixed;inset:0;background:rgba(10,9,20,.75);display:flex;align-items:flex-end;justify-content:center;z-index:60}
@@ -84,13 +92,14 @@ body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(-
 </head>
 <body>
 <div class="wrap">
-  <div class="langbar" id="langbar"></div>
+  <div class="topbar"><a class="home" id="homeLink" href="../../"></a><div class="langbar" id="langbar"></div></div>
   <div class="profile" id="profile"><div class="loading"></div></div>
   <div class="mode-unit" id="sortUnit" style="display:none">
     <span class="mode-badge" id="sortBadge"></span>
     <button class="mode-toggle" id="sortBtn"></button>
   </div>
   <div class="filters" id="filters" style="display:none"></div>
+  <div class="wtoggle" id="wtoggle" style="display:none"><button id="wtoggleBtn"></button></div>
   <div id="contentList"></div>
 </div>
 
@@ -101,6 +110,7 @@ body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(-
     <div class="sm" id="sheetMeta"></div>
     <a class="act primary" id="sheetGo" target="_blank" rel="noreferrer"></a>
     <button class="act second" id="sheetLog"></button>
+    <button class="act second" id="sheetSeen"></button>
     <div class="hint" id="sheetHint"></div>
     <button class="cancel" id="sheetCancel"></button>
   </div>
@@ -118,9 +128,11 @@ body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(-
 <script>
 const SLUG = 'yesung';
 const $ = id => document.getElementById(id);
-const { LANG, T, pick, celebName, htmlLang, bindSwitcher } = window.FT_I18N;
+const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched } = window.FT_I18N;
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
+$('homeLink').textContent = T.home;
+$('homeLink').href = '../../?lang=' + LANG;
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;
@@ -147,6 +159,7 @@ async function idbSet(key, blob){ const db=await idbOpen(); return new Promise(r
 let SORT = 'interest'; // interest | year
 let DATA = null;
 let TYPE_FILTER = 'all';
+let HIDE_WATCHED = false;
 
 const TYPE_ICON = { broadcast:'📺', radio:'📻', youtube:'▶️', ott:'🎬', film:'🎞️', cf:'📣', album:'💿', concert:'🎤' };
 const TYPE_LABEL = T.types;
@@ -177,11 +190,13 @@ function renderFilters(){
 function renderContent(){
   let list = [...DATA.content];
   if(TYPE_FILTER!=='all') list = list.filter(c=>c.type===TYPE_FILTER);
+  if(HIDE_WATCHED) list = list.filter(c=>!isWatched(c.id));
   if(SORT==='interest') list.sort((a,b)=> (b.votes-a.votes) || ((b.year||0)-(a.year||0)));
   else list.sort((a,b)=> (b.year||0)-(a.year||0));
 
   $('contentList').innerHTML = list.map(c => {
-    const t = pick(c,'title');
+    const seen = isWatched(c.id);
+    const t = (seen ? `<span class="seen">${T.watched}</span>` : '') + pick(c,'title');
     const isSearch = c.external_link && c.external_link.includes('results?search_query');
     const linkHtml = c.external_link
       ? `<a href="${c.external_link}" data-open="${c.id}" target="_blank" rel="noreferrer">
@@ -192,10 +207,11 @@ function renderContent(){
           <span class="type">${TYPE_ICON[c.type]||'❓'}</span>
           <span class="body"><div class="title">${t}</div><div class="meta">${fmtMeta(c)}</div>${pick(c,'note_public')?`<div class="note">${pick(c,'note_public')}</div>`:''}</span>
         </span>`;
-    return `<div class="card">${linkHtml}<button class="vote" data-id="${c.id}">👍 ${c.votes}</button></div>`;
+    return `<div class="card${seen?' watched':''}">${linkHtml}<button class="vote" data-id="${c.id}">👍 ${c.votes}</button></div>`;
   }).join('') || ('<div class="loading">'+T.emptyCategory+'</div>');
 
   document.querySelectorAll('.vote').forEach(b => b.onclick = () => vote(b.dataset.id, b));
+  updateWatchToggle();
   document.querySelectorAll('[data-open]').forEach(a => a.onclick = (e) => {
     e.preventDefault();
     openSheet(DATA.content.find(c => c.id === a.dataset.open));
@@ -226,6 +242,14 @@ function updateSortUI(){
 }
 $('sortBtn').onclick = () => { SORT = SORT==='interest' ? 'year' : 'interest'; updateSortUI(); renderContent(); };
 
+function updateWatchToggle(){
+  const any = DATA && DATA.content.some(c => isWatched(c.id));
+  $('wtoggle').style.display = any ? 'flex' : 'none';
+  $('wtoggleBtn').textContent = HIDE_WATCHED ? T.showWatched : T.hideWatched;
+  $('wtoggleBtn').classList.toggle('on', HIDE_WATCHED);
+}
+$('wtoggleBtn').onclick = () => { HIDE_WATCHED = !HIDE_WATCHED; renderContent(); };
+
 // 시청 액션 시트 — 링크로 나가기 전에 '로그에 시청기록 남기기'를 제안한다.
 const LOG_API = 'https://log.cocy.io/api/external/watch';
 let SHEET_ITEM = null;
@@ -243,9 +267,20 @@ function openSheet(c){
   const lg = $('sheetLog');
   lg.textContent = T.addLog; lg.disabled = false;
   $('sheetHint').textContent = T.addLogHint;
+  updateSeenBtn();
   $('sheetCancel').textContent = T.close;
   $('sheet').classList.remove('hide');
 }
+function updateSeenBtn(){
+  if(!SHEET_ITEM) return;
+  $('sheetSeen').textContent = isWatched(SHEET_ITEM.id) ? T.unmarkWatched : T.markWatched;
+}
+$('sheetSeen').onclick = () => {
+  if(!SHEET_ITEM) return;
+  setWatched(SHEET_ITEM.id, !isWatched(SHEET_ITEM.id));
+  updateSeenBtn();
+  renderContent();
+};
 function closeSheet(){ $('sheet').classList.add('hide'); }
 $('sheetCancel').onclick = closeSheet;
 $('sheet').onclick = (e) => { if(e.target === $('sheet')) closeSheet(); };
@@ -272,6 +307,9 @@ $('sheetLog').onclick = async () => {
     });
     if(r.status===401){ btn.disabled=false; closeSheet(); $('gateTitle').textContent = T.addLogLogin; requireLogin(); return; }
     if(!r.ok) throw new Error('save_failed');
+    setWatched(c.id, true);
+    updateSeenBtn();
+    renderContent();
     btn.textContent = T.addLogDone;
     $('sheetHint').innerHTML = '<a href="https://log.cocy.io/" target="_blank" rel="noreferrer" style="color:var(--lime)">'+T.openLog+'</a>';
   }catch(e){

@@ -73,7 +73,7 @@ for (const [slug, nameKo, groupName] of ROSTER) {
 
   fs.writeFileSync(
     path.join(dir, 'sw.js'),
-    tplSw.replace(/fantrack-donghae-v1/, `fantrack-${slug}-v1`).replace(/\/fantrack\/c\/donghae\//g, `/fantrack/c/${slug}/`)
+    tplSw.replace(/fantrack-donghae-v2/, `fantrack-${slug}-v2`).replace(/\/fantrack\/c\/donghae\//g, `/fantrack/c/${slug}/`)
   );
 
   if (!fs.existsSync(path.join(dir, 'icon.svg'))) fs.writeFileSync(path.join(dir, 'icon.svg'), tplIcon);

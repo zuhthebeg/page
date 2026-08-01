@@ -40,6 +40,13 @@
       addLogLogin: '로그인하면 시청 기록을 남길 수 있어요',
       openLog: '로그에서 보기',
       noLink: '등록된 링크가 없어요',
+      home: '← 전체 아티스트',
+      watched: '봤어요',
+      markWatched: '봤음으로 표시',
+      unmarkWatched: '안 봤음으로 되돌리기',
+      hideWatched: '본 것 숨기기',
+      showWatched: '본 것 보기',
+      watchedLocal: '이 표시는 이 기기에만 저장돼요',
     },
     en: {
       loading: 'Loading...',
@@ -75,6 +82,13 @@
       addLogLogin: 'Sign in to keep a watch log',
       openLog: 'View in log',
       noLink: 'No link available',
+      home: '← All artists',
+      watched: 'Watched',
+      markWatched: 'Mark as watched',
+      unmarkWatched: 'Unmark as watched',
+      hideWatched: 'Hide watched',
+      showWatched: 'Show watched',
+      watchedLocal: 'This mark is stored on this device only',
     },
     tw: {
       loading: '載入中...',
@@ -110,6 +124,13 @@
       addLogLogin: '登入後就能留下觀看紀錄',
       openLog: '在 log 查看',
       noLink: '沒有可用的連結',
+      home: '← 全部藝人',
+      watched: '看過了',
+      markWatched: '標記為看過',
+      unmarkWatched: '取消看過標記',
+      hideWatched: '隱藏看過的',
+      showWatched: '顯示看過的',
+      watchedLocal: '這個標記只存在這台裝置',
     },
   };
 
@@ -166,5 +187,21 @@
     });
   }
 
-  global.FT_I18N = { LANG: LANG, T: T, pick: pick, celebName: celebName, htmlLang: htmlLang, bindSwitcher: bindSwitcher, SUPPORTED: SUPPORTED };
+  // 시청 표시 — 서버에 안 보내고 이 기기 localStorage에만 남긴다.
+  const WKEY = 'fantrack_watched';
+  function readWatched() {
+    try { const v = JSON.parse(localStorage.getItem(WKEY) || '{}'); return (v && typeof v === 'object') ? v : {}; }
+    catch (e) { return {}; }
+  }
+  function isWatched(id) { return !!readWatched()[id]; }
+  function setWatched(id, on) {
+    const w = readWatched();
+    if (on) w[id] = Date.now(); else delete w[id];
+    try { localStorage.setItem(WKEY, JSON.stringify(w)); } catch (e) {}
+    return !!w[id];
+  }
+  function watchedCount() { return Object.keys(readWatched()).length; }
+
+  global.FT_I18N = { LANG: LANG, T: T, pick: pick, celebName: celebName, htmlLang: htmlLang, bindSwitcher: bindSwitcher, SUPPORTED: SUPPORTED,
+    isWatched: isWatched, setWatched: setWatched, watchedCount: watchedCount };
 })(window);
