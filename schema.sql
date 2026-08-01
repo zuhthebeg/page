@@ -92,6 +92,7 @@ CREATE TABLE IF NOT EXISTS content_units (
   external_link      TEXT,
   link_region_note   TEXT,                 -- 예: 'kr_only'
   category           TEXT,
+  note_public        TEXT,                 -- 대외 노출용 비고 (예: 공동출연자, 회차수) — 사실관계만, 서술문 금지
   scope              TEXT NOT NULL DEFAULT 'solo',  -- group|solo
   upcoming           INTEGER NOT NULL DEFAULT 0,
   source_note        TEXT,                 -- 내부 관리용, 대외 미노출
