@@ -1,0 +1,24 @@
+{
+  "name": "뱅크(BANK) — FanTrack",
+  "short_name": "뱅크(BANK) FanTrack",
+  "description": "뱅크(BANK) 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/bank_kpop/",
+  "start_url": "/fantrack/c/bank_kpop/",
+  "scope": "/fantrack/c/bank_kpop/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

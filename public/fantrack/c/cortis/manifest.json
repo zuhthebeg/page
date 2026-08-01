@@ -1,0 +1,24 @@
+{
+  "name": "CORTIS — FanTrack",
+  "short_name": "CORTIS FanTrack",
+  "description": "CORTIS 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/cortis/",
+  "start_url": "/fantrack/c/cortis/",
+  "scope": "/fantrack/c/cortis/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

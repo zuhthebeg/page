@@ -1,0 +1,24 @@
+{
+  "name": "이문세 — FanTrack",
+  "short_name": "이문세 FanTrack",
+  "description": "이문세 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/leemoonsae/",
+  "start_url": "/fantrack/c/leemoonsae/",
+  "scope": "/fantrack/c/leemoonsae/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

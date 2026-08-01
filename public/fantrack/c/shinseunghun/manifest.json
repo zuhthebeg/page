@@ -1,0 +1,24 @@
+{
+  "name": "신승훈 — FanTrack",
+  "short_name": "신승훈 FanTrack",
+  "description": "신승훈 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/shinseunghun/",
+  "start_url": "/fantrack/c/shinseunghun/",
+  "scope": "/fantrack/c/shinseunghun/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

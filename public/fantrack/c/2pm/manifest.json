@@ -1,0 +1,24 @@
+{
+  "name": "투피엠 — FanTrack",
+  "short_name": "투피엠 FanTrack",
+  "description": "투피엠 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/2pm/",
+  "start_url": "/fantrack/c/2pm/",
+  "scope": "/fantrack/c/2pm/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "여자친구 — FanTrack",
+  "short_name": "여자친구 FanTrack",
+  "description": "여자친구 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/gfriend/",
+  "start_url": "/fantrack/c/gfriend/",
+  "scope": "/fantrack/c/gfriend/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

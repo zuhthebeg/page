@@ -1,0 +1,24 @@
+{
+  "name": "하모 — FanTrack",
+  "short_name": "하모 FanTrack",
+  "description": "하모 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/hamo/",
+  "start_url": "/fantrack/c/hamo/",
+  "scope": "/fantrack/c/hamo/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

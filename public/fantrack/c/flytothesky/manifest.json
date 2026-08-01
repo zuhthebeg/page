@@ -1,0 +1,24 @@
+{
+  "name": "플라이투더스카이 — FanTrack",
+  "short_name": "플라이투더스카이 FanTrack",
+  "description": "플라이투더스카이 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/flytothesky/",
+  "start_url": "/fantrack/c/flytothesky/",
+  "scope": "/fantrack/c/flytothesky/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

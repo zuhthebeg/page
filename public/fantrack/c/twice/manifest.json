@@ -1,0 +1,24 @@
+{
+  "name": "트와이스 — FanTrack",
+  "short_name": "트와이스 FanTrack",
+  "description": "트와이스 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/twice/",
+  "start_url": "/fantrack/c/twice/",
+  "scope": "/fantrack/c/twice/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "송대관 — FanTrack",
+  "short_name": "송대관 FanTrack",
+  "description": "송대관 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/songdaegwan/",
+  "start_url": "/fantrack/c/songdaegwan/",
+  "scope": "/fantrack/c/songdaegwan/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

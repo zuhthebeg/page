@@ -1,0 +1,24 @@
+{
+  "name": "에스파 — FanTrack",
+  "short_name": "에스파 FanTrack",
+  "description": "에스파 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/aespa/",
+  "start_url": "/fantrack/c/aespa/",
+  "scope": "/fantrack/c/aespa/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

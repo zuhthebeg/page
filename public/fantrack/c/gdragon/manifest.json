@@ -1,0 +1,24 @@
+{
+  "name": "지드래곤 — FanTrack",
+  "short_name": "지드래곤 FanTrack",
+  "description": "지드래곤 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/gdragon/",
+  "start_url": "/fantrack/c/gdragon/",
+  "scope": "/fantrack/c/gdragon/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

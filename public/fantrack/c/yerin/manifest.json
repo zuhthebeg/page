@@ -1,0 +1,24 @@
+{
+  "name": "백예린 — FanTrack",
+  "short_name": "백예린 FanTrack",
+  "description": "백예린 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/yerin/",
+  "start_url": "/fantrack/c/yerin/",
+  "scope": "/fantrack/c/yerin/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

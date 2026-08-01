@@ -1,0 +1,24 @@
+{
+  "name": "박재정 — FanTrack",
+  "short_name": "박재정 FanTrack",
+  "description": "박재정 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/parkjaejung/",
+  "start_url": "/fantrack/c/parkjaejung/",
+  "scope": "/fantrack/c/parkjaejung/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

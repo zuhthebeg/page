@@ -1,0 +1,24 @@
+{
+  "name": "AKMU — FanTrack",
+  "short_name": "AKMU FanTrack",
+  "description": "AKMU 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/akmu/",
+  "start_url": "/fantrack/c/akmu/",
+  "scope": "/fantrack/c/akmu/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

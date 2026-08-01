@@ -1,0 +1,24 @@
+{
+  "name": "나윤권 — FanTrack",
+  "short_name": "나윤권 FanTrack",
+  "description": "나윤권 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/nayoonkwon/",
+  "start_url": "/fantrack/c/nayoonkwon/",
+  "scope": "/fantrack/c/nayoonkwon/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

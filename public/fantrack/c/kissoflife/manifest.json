@@ -1,0 +1,24 @@
+{
+  "name": "키스오브라이프 — FanTrack",
+  "short_name": "키스오브라이프 FanTrack",
+  "description": "키스오브라이프 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/kissoflife/",
+  "start_url": "/fantrack/c/kissoflife/",
+  "scope": "/fantrack/c/kissoflife/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

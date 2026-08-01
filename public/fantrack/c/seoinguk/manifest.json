@@ -1,0 +1,24 @@
+{
+  "name": "서인국 — FanTrack",
+  "short_name": "서인국 FanTrack",
+  "description": "서인국 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/seoinguk/",
+  "start_url": "/fantrack/c/seoinguk/",
+  "scope": "/fantrack/c/seoinguk/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "빅뱅 — FanTrack",
+  "short_name": "빅뱅 FanTrack",
+  "description": "빅뱅 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/bigbang/",
+  "start_url": "/fantrack/c/bigbang/",
+  "scope": "/fantrack/c/bigbang/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

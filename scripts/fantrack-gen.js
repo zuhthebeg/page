@@ -13,21 +13,22 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..', 'public', 'fantrack', 'c');
 const TPL = path.join(ROOT, 'donghae');
 
-// slug, 한국어 표시명, 그룹 표기(없으면 null)
-const ROSTER = [
-  ['superjunior', '슈퍼주니어', null],
-  ['superjunior-de', '슈퍼주니어-D&E', 'SUPER JUNIOR'],
-  ['superjunior-kry', '슈퍼주니어-K.R.Y.', 'SUPER JUNIOR'],
-  ['superjunior-83z', '슈퍼주니어-83z', 'SUPER JUNIOR'],
-  ['leeteuk', '이특', 'SUPER JUNIOR'],
-  ['heechul', '희철', 'SUPER JUNIOR'],
-  ['yesung', '예성', 'SUPER JUNIOR'],
-  ['shindong', '신동', 'SUPER JUNIOR'],
-  ['eunhyuk', '은혁', 'SUPER JUNIOR'],
-  ['siwon', '시원', 'SUPER JUNIOR'],
-  ['ryeowook', '려욱', 'SUPER JUNIOR'],
-  ['kyuhyun', '규현', 'SUPER JUNIOR'],
-];
+// 명단은 DB(API)에서 가져온다. 하드코딩 금지 — 아티스트가 계속 늘어난다.
+//   node scripts/fantrack-gen.js                 → 라이브 API에서 전체 명단
+//   node scripts/fantrack-gen.js roster.json     → 로컬 JSON({celebrities:[...]}) 사용
+const API = 'https://page.cocy.io/api/fantrack/celebrities';
+
+async function loadRoster() {
+  const arg = process.argv[2];
+  if (arg) {
+    const j = JSON.parse(fs.readFileSync(arg, 'utf8'));
+    return j.celebrities || j;
+  }
+  const res = await fetch(API);
+  if (!res.ok) throw new Error('roster fetch failed: ' + res.status);
+  const j = await res.json();
+  return j.celebrities || [];
+}
 
 const tplHtml = fs.readFileSync(path.join(TPL, 'index.html'), 'utf8');
 const tplSw = fs.readFileSync(path.join(TPL, 'sw.js'), 'utf8');
@@ -37,7 +38,13 @@ function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-for (const [slug, nameKo, groupName] of ROSTER) {
+async function main() {
+  const roster = await loadRoster();
+  let n = 0;
+for (const row of roster) {
+  const slug = row.id;
+  const nameKo = row.name_ko || row.id;
+  const groupName = row.group_name || null;
   const dir = path.join(ROOT, slug);
   fs.mkdirSync(dir, { recursive: true });
 
@@ -78,5 +85,9 @@ for (const [slug, nameKo, groupName] of ROSTER) {
 
   if (!fs.existsSync(path.join(dir, 'icon.svg'))) fs.writeFileSync(path.join(dir, 'icon.svg'), tplIcon);
 
-  console.log('generated', slug);
+  n++;
+  }
+  console.log('generated', n, 'profiles');
 }
+
+main().catch((e) => { console.error(e); process.exit(1); });

@@ -1,7 +1,7 @@
 {
   "name": "동해(SUPER JUNIOR) — FanTrack",
   "short_name": "동해 FanTrack",
-  "description": "슈퍼주니어 동해 출연정보 모아보기",
+  "description": "SUPER JUNIOR 동해 출연정보 모아보기 — 방송·유튜브·OTT.",
   "id": "/fantrack/c/donghae/",
   "start_url": "/fantrack/c/donghae/",
   "scope": "/fantrack/c/donghae/",
@@ -10,8 +10,15 @@
   "background_color": "#141221",
   "theme_color": "#141221",
   "lang": "ko",
-  "categories": ["entertainment"],
+  "categories": [
+    "entertainment"
+  ],
   "icons": [
-    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
   ]
 }

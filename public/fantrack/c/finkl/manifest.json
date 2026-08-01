@@ -1,0 +1,24 @@
+{
+  "name": "핑클 — FanTrack",
+  "short_name": "핑클 FanTrack",
+  "description": "핑클 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/finkl/",
+  "start_url": "/fantrack/c/finkl/",
+  "scope": "/fantrack/c/finkl/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

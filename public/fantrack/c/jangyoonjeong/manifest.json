@@ -1,0 +1,24 @@
+{
+  "name": "장윤정 — FanTrack",
+  "short_name": "장윤정 FanTrack",
+  "description": "장윤정 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/jangyoonjeong/",
+  "start_url": "/fantrack/c/jangyoonjeong/",
+  "scope": "/fantrack/c/jangyoonjeong/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "세븐틴 — FanTrack",
+  "short_name": "세븐틴 FanTrack",
+  "description": "세븐틴 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/seventeen/",
+  "start_url": "/fantrack/c/seventeen/",
+  "scope": "/fantrack/c/seventeen/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

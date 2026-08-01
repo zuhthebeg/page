@@ -1,0 +1,24 @@
+{
+  "name": "송소희 — FanTrack",
+  "short_name": "송소희 FanTrack",
+  "description": "송소희 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/songsohee/",
+  "start_url": "/fantrack/c/songsohee/",
+  "scope": "/fantrack/c/songsohee/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

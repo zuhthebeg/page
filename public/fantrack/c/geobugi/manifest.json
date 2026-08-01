@@ -1,0 +1,24 @@
+{
+  "name": "거북이 — FanTrack",
+  "short_name": "거북이 FanTrack",
+  "description": "거북이 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/geobugi/",
+  "start_url": "/fantrack/c/geobugi/",
+  "scope": "/fantrack/c/geobugi/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

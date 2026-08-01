@@ -1,0 +1,24 @@
+{
+  "name": "이은미 — FanTrack",
+  "short_name": "이은미 FanTrack",
+  "description": "이은미 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/leeeunmi/",
+  "start_url": "/fantrack/c/leeeunmi/",
+  "scope": "/fantrack/c/leeeunmi/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

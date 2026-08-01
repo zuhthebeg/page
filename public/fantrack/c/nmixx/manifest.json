@@ -1,0 +1,24 @@
+{
+  "name": "엔믹스 — FanTrack",
+  "short_name": "엔믹스 FanTrack",
+  "description": "엔믹스 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/nmixx/",
+  "start_url": "/fantrack/c/nmixx/",
+  "scope": "/fantrack/c/nmixx/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

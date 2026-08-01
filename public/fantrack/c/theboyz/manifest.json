@@ -1,0 +1,24 @@
+{
+  "name": "더보이즈 — FanTrack",
+  "short_name": "더보이즈 FanTrack",
+  "description": "더보이즈 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/theboyz/",
+  "start_url": "/fantrack/c/theboyz/",
+  "scope": "/fantrack/c/theboyz/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

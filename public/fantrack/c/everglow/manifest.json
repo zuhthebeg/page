@@ -1,0 +1,24 @@
+{
+  "name": "에버글로우 — FanTrack",
+  "short_name": "에버글로우 FanTrack",
+  "description": "에버글로우 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/everglow/",
+  "start_url": "/fantrack/c/everglow/",
+  "scope": "/fantrack/c/everglow/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

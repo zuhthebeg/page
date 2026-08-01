@@ -1,0 +1,24 @@
+{
+  "name": "QWER — FanTrack",
+  "short_name": "QWER FanTrack",
+  "description": "QWER 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/qwer/",
+  "start_url": "/fantrack/c/qwer/",
+  "scope": "/fantrack/c/qwer/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

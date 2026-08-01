@@ -1,0 +1,24 @@
+{
+  "name": "닐로 — FanTrack",
+  "short_name": "닐로 FanTrack",
+  "description": "닐로 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/nilo/",
+  "start_url": "/fantrack/c/nilo/",
+  "scope": "/fantrack/c/nilo/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

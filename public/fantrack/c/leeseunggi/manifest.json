@@ -1,0 +1,24 @@
+{
+  "name": "이승기 — FanTrack",
+  "short_name": "이승기 FanTrack",
+  "description": "이승기 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/leeseunggi/",
+  "start_url": "/fantrack/c/leeseunggi/",
+  "scope": "/fantrack/c/leeseunggi/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

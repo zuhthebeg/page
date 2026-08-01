@@ -1,0 +1,24 @@
+{
+  "name": "황가람 — FanTrack",
+  "short_name": "황가람 FanTrack",
+  "description": "황가람 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/hwanggaram/",
+  "start_url": "/fantrack/c/hwanggaram/",
+  "scope": "/fantrack/c/hwanggaram/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

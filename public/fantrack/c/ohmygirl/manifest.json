@@ -1,0 +1,24 @@
+{
+  "name": "오마이걸 — FanTrack",
+  "short_name": "오마이걸 FanTrack",
+  "description": "오마이걸 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/ohmygirl/",
+  "start_url": "/fantrack/c/ohmygirl/",
+  "scope": "/fantrack/c/ohmygirl/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

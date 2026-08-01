@@ -1,0 +1,24 @@
+{
+  "name": "방탄소년단 — FanTrack",
+  "short_name": "방탄소년단 FanTrack",
+  "description": "방탄소년단 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/bts/",
+  "start_url": "/fantrack/c/bts/",
+  "scope": "/fantrack/c/bts/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

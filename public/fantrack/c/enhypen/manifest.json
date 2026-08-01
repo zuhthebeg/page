@@ -1,0 +1,24 @@
+{
+  "name": "엔하이픈 — FanTrack",
+  "short_name": "엔하이픈 FanTrack",
+  "description": "엔하이픈 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/enhypen/",
+  "start_url": "/fantrack/c/enhypen/",
+  "scope": "/fantrack/c/enhypen/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

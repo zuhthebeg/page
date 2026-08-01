@@ -1,0 +1,24 @@
+{
+  "name": "거미 — FanTrack",
+  "short_name": "거미 FanTrack",
+  "description": "거미 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/gummy/",
+  "start_url": "/fantrack/c/gummy/",
+  "scope": "/fantrack/c/gummy/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

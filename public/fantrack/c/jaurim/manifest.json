@@ -1,0 +1,24 @@
+{
+  "name": "자우림 — FanTrack",
+  "short_name": "자우림 FanTrack",
+  "description": "자우림 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/jaurim/",
+  "start_url": "/fantrack/c/jaurim/",
+  "scope": "/fantrack/c/jaurim/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

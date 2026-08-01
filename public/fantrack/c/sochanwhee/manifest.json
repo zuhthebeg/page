@@ -1,0 +1,24 @@
+{
+  "name": "소찬휘 — FanTrack",
+  "short_name": "소찬휘 FanTrack",
+  "description": "소찬휘 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/sochanwhee/",
+  "start_url": "/fantrack/c/sochanwhee/",
+  "scope": "/fantrack/c/sochanwhee/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

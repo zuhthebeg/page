@@ -1,0 +1,24 @@
+{
+  "name": "최백호 — FanTrack",
+  "short_name": "최백호 FanTrack",
+  "description": "최백호 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/choibaekho/",
+  "start_url": "/fantrack/c/choibaekho/",
+  "scope": "/fantrack/c/choibaekho/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

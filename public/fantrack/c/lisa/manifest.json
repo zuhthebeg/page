@@ -1,0 +1,24 @@
+{
+  "name": "리사 — FanTrack",
+  "short_name": "리사 FanTrack",
+  "description": "리사 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/lisa/",
+  "start_url": "/fantrack/c/lisa/",
+  "scope": "/fantrack/c/lisa/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

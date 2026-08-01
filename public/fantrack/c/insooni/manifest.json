@@ -1,0 +1,24 @@
+{
+  "name": "인순이 — FanTrack",
+  "short_name": "인순이 FanTrack",
+  "description": "인순이 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/insooni/",
+  "start_url": "/fantrack/c/insooni/",
+  "scope": "/fantrack/c/insooni/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

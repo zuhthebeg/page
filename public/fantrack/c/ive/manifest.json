@@ -1,0 +1,24 @@
+{
+  "name": "아이브 — FanTrack",
+  "short_name": "아이브 FanTrack",
+  "description": "아이브 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/ive/",
+  "start_url": "/fantrack/c/ive/",
+  "scope": "/fantrack/c/ive/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
