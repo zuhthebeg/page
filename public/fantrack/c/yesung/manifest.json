@@ -1,0 +1,24 @@
+{
+  "name": "예성(SUPER JUNIOR) — FanTrack",
+  "short_name": "예성 FanTrack",
+  "description": "SUPER JUNIOR 예성 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "id": "/fantrack/c/yesung/",
+  "start_url": "/fantrack/c/yesung/",
+  "scope": "/fantrack/c/yesung/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
