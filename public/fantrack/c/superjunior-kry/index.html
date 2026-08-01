@@ -19,7 +19,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="../../i18n.js?v=20260801c"></script>
+<script src="../../i18n.js?v=20260801e"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -109,6 +109,7 @@ body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(-
     <div class="sh" id="sheetTitle"></div>
     <div class="sm" id="sheetMeta"></div>
     <a class="act primary" id="sheetGo" target="_blank" rel="noreferrer"></a>
+    <div class="hint" id="sheetNoLink" style="display:none"></div>
     <button class="act second" id="sheetLog"></button>
     <button class="act second" id="sheetSeen"></button>
     <div class="hint" id="sheetHint"></div>
@@ -203,7 +204,7 @@ function renderContent(){
           <span class="type">${TYPE_ICON[c.type]||'❓'}</span>
           <span class="body"><div class="title">${t}${isSearch?' <span class="searchlink">'+T.searchSuffix+'</span>':''}</div><div class="meta">${fmtMeta(c)}</div>${pick(c,'note_public')?`<div class="note">${pick(c,'note_public')}</div>`:''}</span>
         </a>`
-      : `<span style="display:flex;gap:10px;align-items:center;flex:1;min-width:0">
+      : `<span data-open="${c.id}" style="display:flex;gap:10px;align-items:center;flex:1;min-width:0;cursor:pointer">
           <span class="type">${TYPE_ICON[c.type]||'❓'}</span>
           <span class="body"><div class="title">${t}</div><div class="meta">${fmtMeta(c)}</div>${pick(c,'note_public')?`<div class="note">${pick(c,'note_public')}</div>`:''}</span>
         </span>`;
@@ -262,8 +263,8 @@ function openSheet(c){
   $('sheetMeta').innerHTML = fmtMeta(c);
   const go = $('sheetGo');
   go.textContent = T.goLink;
-  if(c.external_link){ go.href = c.external_link; go.style.display='block'; }
-  else { go.style.display='none'; }
+  if(c.external_link){ go.href = c.external_link; go.style.display='block'; $('sheetNoLink').style.display='none'; }
+  else { go.style.display='none'; $('sheetNoLink').textContent = T.noLink; $('sheetNoLink').style.display='block'; }
   const lg = $('sheetLog');
   lg.textContent = T.addLog; lg.disabled = false;
   $('sheetHint').textContent = T.addLogHint;

@@ -154,7 +154,8 @@
   function pick(row, base) {
     if (!row) return '';
     if (LANG === 'en') return row[base + '_localized_en'] || row[base + '_en'] || row[base] || '';
-    if (LANG === 'tw') return row[base + '_localized_tw'] || row[base + '_tw'] || row[base] || '';
+    // tw에 번체값이 없으면 한국어보다 영문 폴백이 낫다(중국어권 독자 기준)
+    if (LANG === 'tw') return row[base + '_localized_tw'] || row[base + '_tw'] || row[base + '_localized_en'] || row[base + '_en'] || row[base] || '';
     return row[base] || '';
   }
 
