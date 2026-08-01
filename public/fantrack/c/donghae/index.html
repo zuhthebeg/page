@@ -13,11 +13,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <title>동해(SUPER JUNIOR) — FanTrack</title>
 <meta name="description" content="슈퍼주니어 동해 출연정보 모아보기 — 방송·유튜브·OTT. FanTrack.">
 <link rel="canonical" href="https://page.cocy.io/fantrack/c/donghae">
-<link rel="alternate" hreflang="tw" href="https://page.cocy.io/fantrack/c/donghae?lang=tw">
+<link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/donghae?lang=tw">
+<link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/donghae?lang=en">
 <link rel="alternate" hreflang="ko" href="https://page.cocy.io/fantrack/c/donghae">
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
+<script src="../../i18n.js?v=20260801a"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -63,11 +65,15 @@ body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(-
 .gate .box{background:var(--panel);border-radius:16px;padding:24px;text-align:center;max-width:300px}
 #gbtn{margin-top:14px;display:flex;justify-content:center}
 .loading{text-align:center;color:var(--mut);padding:30px;font-size:13px}
+.langbar{display:flex;gap:6px;justify-content:center;margin-bottom:12px}
+.lang-btn{background:var(--panel2);border:1px solid transparent;color:var(--mut);border-radius:20px;padding:5px 12px;font-size:11.5px;font-weight:700;cursor:pointer}
+.lang-btn.on{background:var(--lime);color:var(--bg);border-color:var(--lime)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="profile" id="profile"><div class="loading">불러오는 중...</div></div>
+  <div class="langbar" id="langbar"></div>
+  <div class="profile" id="profile"><div class="loading"></div></div>
   <div class="mode-unit" id="sortUnit" style="display:none">
     <span class="mode-badge" id="sortBadge"></span>
     <button class="mode-toggle" id="sortBtn"></button>
@@ -78,9 +84,9 @@ body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(-
 
 <div class="gate hide" id="gate">
   <div class="box">
-    <div style="font-weight:800;margin-bottom:6px">로그인하면 관심있어요를 누를 수 있어요</div>
+    <div style="font-weight:800;margin-bottom:6px" id="gateTitle"></div>
     <div id="gbtn"></div>
-    <button onclick="document.getElementById('gate').classList.add('hide')" style="margin-top:10px;background:none;border:none;color:var(--mut);font-size:12px;cursor:pointer">닫기</button>
+    <button id="gateClose" onclick="document.getElementById('gate').classList.add('hide')" style="margin-top:10px;background:none;border:none;color:var(--mut);font-size:12px;cursor:pointer"></button>
   </div>
 </div>
 
@@ -88,6 +94,12 @@ body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(-
 <script>
 const SLUG = 'donghae';
 const $ = id => document.getElementById(id);
+const { LANG, T, pick, celebName, htmlLang, bindSwitcher } = window.FT_I18N;
+document.documentElement.lang = htmlLang();
+bindSwitcher($('langbar'));
+$('gateTitle').textContent = T.gateTitle;
+$('gateClose').textContent = T.close;
+$('profile').querySelector('.loading').textContent = T.loading;
 const GCID = '315180918727-3d9rfmpa36r365qna9smdsvrod441jhd.apps.googleusercontent.com';
 
 function isExpired(tok){ try{ const p=JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); return !p.exp || (p.exp*1000 < Date.now()); }catch{return true;} }
@@ -113,19 +125,19 @@ let DATA = null;
 let TYPE_FILTER = 'all';
 
 const TYPE_ICON = { broadcast:'📺', radio:'📻', youtube:'▶️', ott:'🎬', film:'🎞️', cf:'📣', album:'💿', concert:'🎤' };
-const TYPE_LABEL = { all:'전체', broadcast:'방송', radio:'라디오', youtube:'유튜브', ott:'OTT', film:'영화', cf:'광고', album:'음반', concert:'콘서트' };
+const TYPE_LABEL = T.types;
 
 function fmtDate(c){
   if(c.air_date) return c.air_date;
-  if(c.year) return c.year+'년';
+  if(c.year) return c.year + T.yearSuffix;
   return null;
 }
 function fmtMeta(c){
   const parts = [];
-  if(c.upcoming) parts.push('<span class="upcoming">공개예정</span>');
+  if(c.upcoming) parts.push('<span class="upcoming">'+T.upcoming+'</span>');
   else { const d = fmtDate(c); if(d) parts.push(d); }
-  if(c.platform) parts.push(c.platform);
-  if(c.link_region_note==='kr_only') parts.push('🇰🇷 한국만');
+  const plat = pick(c,'platform'); if(plat) parts.push(plat);
+  if(c.link_region_note==='kr_only') parts.push(T.krOnly);
   return parts.join(' · ');
 }
 
@@ -145,19 +157,19 @@ function renderContent(){
   else list.sort((a,b)=> (b.year||0)-(a.year||0));
 
   $('contentList').innerHTML = list.map(c => {
-    const t = c.title_localized_tw ? `${c.title_localized_tw}<span style="opacity:.6;font-size:11px"> ${c.title}</span>` : c.title;
+    const t = pick(c,'title');
     const isSearch = c.external_link && c.external_link.includes('results?search_query');
     const linkHtml = c.external_link
       ? `<a href="${c.external_link}" target="_blank" rel="noreferrer">
           <span class="type">${TYPE_ICON[c.type]||'❓'}</span>
-          <span class="body"><div class="title">${t}${isSearch?' <span class="searchlink">(검색)</span>':''}</div><div class="meta">${fmtMeta(c)}</div>${c.note_public?`<div class="note">${c.note_public}</div>`:''}</span>
+          <span class="body"><div class="title">${t}${isSearch?' <span class="searchlink">'+T.searchSuffix+'</span>':''}</div><div class="meta">${fmtMeta(c)}</div>${pick(c,'note_public')?`<div class="note">${pick(c,'note_public')}</div>`:''}</span>
         </a>`
       : `<span style="display:flex;gap:10px;align-items:center;flex:1;min-width:0">
           <span class="type">${TYPE_ICON[c.type]||'❓'}</span>
-          <span class="body"><div class="title">${t}</div><div class="meta">${fmtMeta(c)}</div>${c.note_public?`<div class="note">${c.note_public}</div>`:''}</span>
+          <span class="body"><div class="title">${t}</div><div class="meta">${fmtMeta(c)}</div>${pick(c,'note_public')?`<div class="note">${pick(c,'note_public')}</div>`:''}</span>
         </span>`;
     return `<div class="card">${linkHtml}<button class="vote" data-id="${c.id}">👍 ${c.votes}</button></div>`;
-  }).join('') || '<div class="loading">이 분류엔 출연정보가 없어요.</div>';
+  }).join('') || ('<div class="loading">'+T.emptyCategory+'</div>');
 
   document.querySelectorAll('.vote').forEach(b => b.onclick = () => vote(b.dataset.id, b));
 }
@@ -181,8 +193,8 @@ async function vote(contentId, btn){
 }
 
 function updateSortUI(){
-  $('sortBadge').textContent = SORT==='interest' ? '🔥 지금 인기순' : '🗓 최신순';
-  $('sortBtn').textContent = SORT==='interest' ? '⇄ 연도순으로' : '⇄ 인기순으로';
+  $('sortBadge').textContent = SORT==='interest' ? T.sortPopular : T.sortRecent;
+  $('sortBtn').textContent = SORT==='interest' ? T.toYear : T.toPopular;
 }
 $('sortBtn').onclick = () => { SORT = SORT==='interest' ? 'year' : 'interest'; updateSortUI(); renderContent(); };
 
@@ -191,19 +203,19 @@ async function renderProfile(){
   const localPhoto = await idbGet(SLUG);
   const src = localPhoto ? URL.createObjectURL(localPhoto) : 'icon.svg';
   const snsLinks = Object.entries(c.sns||{}).map(([k,v]) => `<a href="${v}" target="_blank" rel="noreferrer">${k}</a>`).join('');
-  const ytLink = c.youtube_channel_id ? `<a href="https://www.youtube.com/@${c.youtube_channel_id}" target="_blank" rel="noreferrer">유튜브</a>` : '';
+  const ytLink = c.youtube_channel_id ? `<a href="https://www.youtube.com/@${c.youtube_channel_id}" target="_blank" rel="noreferrer">${T.youtube}</a>` : '';
   $('profile').innerHTML = `
-    <img class="avatar" id="avatarImg" src="${src}" alt="${c.name_ko}">
-    <div class="name">${c.name_tw || c.name_ko}</div>
-    <div class="sub">${c.name_en||''}</div>
+    <img class="avatar" id="avatarImg" src="${src}" alt="${celebName(c)}">
+    <div class="name">${celebName(c)}</div>
+    <div class="sub">${LANG==='en' ? (c.group_name||'') : (c.name_en||'')}</div>
     <div class="badges">
       ${c.mbti ? `<span class="badge">${c.mbti}</span>`:''}
       ${c.group_name ? `<span class="badge">${c.group_name}</span>`:''}
-      ${c.agency ? `<span class="badge">${c.agency}</span>`:''}
+      ${pick(c,'agency') ? `<span class="badge">${pick(c,'agency')}</span>`:''}
     </div>
     <div class="sns">${ytLink}${snsLinks}</div>
     <input type="file" id="photoInput" accept="image/*" style="display:none">
-    <button class="myphoto-btn" id="photoBtn">내 최애 사진 설정 (이 기기에만 저장)</button>
+    <button class="myphoto-btn" id="photoBtn">${T.myPhoto}</button>
   `;
   $('photoBtn').onclick = () => $('photoInput').click();
   $('photoInput').onchange = async (e) => {
@@ -215,7 +227,7 @@ async function renderProfile(){
 
 async function render(){
   const r = await fetch('/api/fantrack/celebrity/'+SLUG);
-  if(!r.ok){ $('profile').innerHTML = '<div class="loading">프로필을 찾을 수 없어요.</div>'; return; }
+  if(!r.ok){ $('profile').innerHTML = '<div class="loading">'+T.notFound+'</div>'; return; }
   DATA = await r.json();
   await renderProfile();
   $('sortUnit').style.display = 'block';

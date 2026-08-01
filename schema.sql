@@ -71,6 +71,8 @@ CREATE TABLE IF NOT EXISTS celebrities (
   name_tw           TEXT,                 -- 대만 정체, 수동 검증
   group_name        TEXT,                 -- 소속 그룹명(표시용, 없으면 NULL)
   agency            TEXT,
+  agency_en         TEXT,
+  agency_tw         TEXT,
   birthdate         TEXT,
   mbti              TEXT,
   blood_type        TEXT,
@@ -85,6 +87,9 @@ CREATE TABLE IF NOT EXISTS content_units (
   id                 TEXT PRIMARY KEY,
   title              TEXT NOT NULL,        -- 원제
   title_localized_tw TEXT,                 -- 대만 통용 번체 제목 (검색/SEO용)
+  title_localized_en TEXT,                 -- 영문 공식 제목 (없으면 로마자)
+  platform_en        TEXT,                 -- 플랫폼 영문 표기
+  platform_tw        TEXT,                 -- 플랫폼 번체 표기
   type               TEXT NOT NULL,        -- broadcast|radio|youtube|ott|film|cf|album|concert
   platform           TEXT,                 -- SBS, YouTube, Disney+ 등
   year               INTEGER,
@@ -93,6 +98,8 @@ CREATE TABLE IF NOT EXISTS content_units (
   link_region_note   TEXT,                 -- 예: 'kr_only'
   category           TEXT,
   note_public        TEXT,                 -- 대외 노출용 비고 (예: 공동출연자, 회차수) — 사실관계만, 서술문 금지
+  note_public_en     TEXT,                 -- 비고 영문
+  note_public_tw     TEXT,                 -- 비고 번체
   scope              TEXT NOT NULL DEFAULT 'solo',  -- group|solo
   upcoming           INTEGER NOT NULL DEFAULT 0,
   source_note        TEXT,                 -- 내부 관리용, 대외 미노출

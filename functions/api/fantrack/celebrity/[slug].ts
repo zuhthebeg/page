@@ -11,7 +11,7 @@ export const onRequestGet: PagesFunction<Env> = async (ctx) => {
 
   const celeb = await db
     .prepare(
-      `SELECT id, name_ko, name_en, name_tw, group_name, agency, birthdate, mbti,
+      `SELECT id, name_ko, name_en, name_tw, group_name, agency, agency_en, agency_tw, birthdate, mbti,
               blood_type, sns, youtube_channel_id, official_sns_url
          FROM celebrities WHERE id = ?`
     )
@@ -24,8 +24,8 @@ export const onRequestGet: PagesFunction<Env> = async (ctx) => {
 
   const { results: content } = await db
     .prepare(
-      `SELECT c.id, c.title, c.title_localized_tw, c.type, c.platform, c.year, c.air_date,
-              c.external_link, c.link_region_note, c.category, c.scope, c.upcoming, c.note_public,
+      `SELECT c.id, c.title, c.title_localized_tw, c.title_localized_en, c.type, c.platform, c.platform_en, c.platform_tw, c.year, c.air_date,
+              c.external_link, c.link_region_note, c.category, c.scope, c.upcoming, c.note_public, c.note_public_en, c.note_public_tw,
               COALESCE(v.cnt, 0) AS votes
          FROM content_units c
          JOIN content_celebrity cc ON cc.content_id = c.id
