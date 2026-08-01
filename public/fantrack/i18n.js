@@ -224,6 +224,8 @@
   function tripUrl(c, artistName) {
     const date = (c.air_date && /^\d{4}-\d{2}-\d{2}$/.test(c.air_date)) ? c.air_date : null;
     if (!date) return null;
+    // 지난 공연으로 여행 계획을 권하는 건 무의미하다. 오늘 이후만.
+    if (date < new Date().toISOString().slice(0, 10)) return null;
     const start = shiftDate(date, -1), end = shiftDate(date, 1);
     const place = [c.city, c.country].filter(Boolean).join(', ');
     const title = artistName ? (artistName + ' ' + (c.title || '')).trim() : (c.title || '');
