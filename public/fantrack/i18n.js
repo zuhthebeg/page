@@ -221,6 +221,9 @@
     // 크롤러가 ?lang= 쿼리를 별도 페이지로 취급하지 않기 때문에 경로형이 정본이다.
     const p = location.pathname.match(/\/fantrack\/c\/[^/]+\/([a-z]{2})\/?$/);
     if (p && SUPPORTED.includes(p[1])) return p[1];
+    // 인덱스도 언어 경로를 쓴다: /fantrack/{lang}/
+    const ip = location.pathname.match(/\/fantrack\/([a-z]{2})\/?$/);
+    if (ip && SUPPORTED.includes(ip[1])) return ip[1];
     const q = new URLSearchParams(location.search).get('lang');
     if (q && SUPPORTED.includes(q)) { try { localStorage.setItem('fantrack_lang', q); } catch (e) {} return q; }
     let saved = null;

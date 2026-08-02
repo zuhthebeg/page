@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>FanTrack — 최애 출연정보, 한곳에서</title>
+<meta name="description" content="아티스트별 방송·라디오·유튜브·OTT·음반·콘서트 출연정보를 모아봅니다. FanTrack.">
+<link rel="canonical" href="https://page.cocy.io/fantrack/es/">
+<link rel="alternate" hreflang="ko" href="https://page.cocy.io/fantrack/">
+<link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/?lang=en">
+<link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/?lang=tw">
+<meta property="og:title" content="FanTrack">
+<meta property="og:description" content="최애 출연정보, 한곳에서">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://page.cocy.io/fantrack/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#141221">
+<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<style>
+:root{
+  --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
+  --lime:#c6f24e; --amber:#f0b43c; --line:#3a3458;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--txt)}
+.wrap{max-width:480px;margin:0 auto;padding:16px}
+.langbar{display:flex;gap:6px;justify-content:center;margin-bottom:14px}
+.lang-btn{background:var(--panel2);border:1px solid transparent;color:var(--mut);border-radius:20px;padding:5px 12px;font-size:11.5px;font-weight:700;cursor:pointer}
+.lang-btn.on{background:var(--lime);color:var(--bg);border-color:var(--lime)}
+.hero{text-align:center;margin-bottom:18px}
+.hero h1{font-size:26px;margin:0;letter-spacing:-.5px}
+.hero .tag{color:var(--lime);font-size:13.5px;font-weight:800;margin-top:6px}
+.hero .desc{color:var(--mut);font-size:12px;margin-top:6px;line-height:1.6}
+.search{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--txt);font-size:13.5px;margin-bottom:12px}
+.search::placeholder{color:var(--mut)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;background:var(--panel2);border:1px solid transparent;border-radius:20px;padding:7px 13px;font-size:12px;font-weight:700;color:var(--mut);cursor:pointer;white-space:nowrap}
+.chip.on{background:var(--lime);color:var(--bg);border-color:var(--lime)}
+.sec{font-size:11.5px;color:var(--mut);font-weight:800;margin:16px 0 8px;letter-spacing:.4px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.item{background:var(--panel);border-radius:12px;padding:14px 12px;text-decoration:none;color:inherit;display:block;min-width:0}
+.item .nm{font-size:14px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .gp{font-size:10.5px;color:var(--mut);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .cnt{font-size:10.5px;color:var(--lime);font-weight:700;margin-top:6px}
+.item.wide{grid-column:1 / -1}
+.loading{text-align:center;color:var(--mut);padding:30px;font-size:13px}
+.foot{text-align:center;color:var(--mut);font-size:11px;margin:24px 0 8px}
+.foot a{color:var(--mut)}
+</style>
+<link rel="alternate" hreflang="ko" href="https://page.cocy.io/fantrack/">
+<link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/en/">
+<link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/tw/">
+<link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/es/">
+</head>
+<body>
+<div class="wrap">
+  <div class="langbar" id="langbar"></div>
+  <div class="hero">
+    <h1 id="hTitle">FanTrack</h1>
+    <div class="tag" id="hTag"></div>
+    <div class="desc" id="hDesc"></div>
+  </div>
+  <input class="search" id="q" type="search" autocomplete="off">
+  <div class="chips" id="chips"></div>
+  <div id="list"><div class="loading"></div></div>
+  <div class="foot">© cocy.io · <a href="https://page.cocy.io/">page.cocy.io</a></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const { LANG, T, celebName, htmlLang, bindSwitcher } = window.FT_I18N;
+document.documentElement.lang = htmlLang();
+bindSwitcher($('langbar'));
+$('hTag').textContent = T.indexTagline;
+$('hDesc').textContent = T.indexDesc;
+$('q').placeholder = T.searchPh;
+$('list').querySelector('.loading').textContent = T.loading;
+
+const SEC = {
+  group: { ko:'그룹', en:'Groups', tw:'團體' },
+  unit:  { ko:'유닛', en:'Units',  tw:'子團' },
+  person:{ ko:'멤버', en:'Members',tw:'成員' },
+};
+let ALL = [], FILTER = 'all', Q = '';
+
+function matches(c){
+  if(FILTER !== 'all' && c.kind !== FILTER) return false;
+  if(!Q) return true;
+  const hay = [c.name_ko, c.name_en, c.name_tw, c.group_name].filter(Boolean).join(' ').toLowerCase();
+  return hay.includes(Q);
+}
+
+function renderChips(){
+  const kinds = ['all', 'group', 'unit', 'person'].filter(k => k==='all' || ALL.some(c=>c.kind===k));
+  $('chips').innerHTML = kinds.map(k =>
+    `<button class="chip${FILTER===k?' on':''}" data-k="${k}">${k==='all'?T.groupAll:(SEC[k]?SEC[k][LANG]:k)}</button>`
+  ).join('');
+  document.querySelectorAll('.chip').forEach(b => b.onclick = () => { FILTER=b.dataset.k; renderChips(); renderList(); });
+}
+
+function card(c, wide){
+  const cnt = c.content_count ? `<div class="cnt">${c.content_count}</div>` : '';
+  const gp = (c.kind !== 'group' && c.group_name) ? `<div class="gp">${c.group_name}</div>` : '';
+  // 언어 경로를 유지해서 이동한다(경로형이 정본이라 쿼리로 넘기면 크롤러·공유에서 갈린다)
+  const _p = LANG === 'ko' ? '/fantrack/c/'+c.id+'/' : '/fantrack/c/'+c.id+'/'+LANG+'/';
+  return `<a class="item${wide?' wide':''}" href="${_p}">
+    <div class="nm">${celebName(c)}</div>${gp}${cnt}</a>`;
+}
+
+function renderList(){
+  const rows = ALL.filter(matches);
+  if(!rows.length){ $('list').innerHTML = `<div class="loading">${T.noResult}</div>`; return; }
+  let html = '';
+  ['group','unit','person'].forEach(k => {
+    const part = rows.filter(c => c.kind === k);
+    if(!part.length) return;
+    html += `<div class="sec">${SEC[k][LANG]} · ${part.length}${T.countSuffix}</div>`;
+    html += `<div class="grid">${part.map(c => card(c, k==='group')).join('')}</div>`;
+  });
+  const rest = rows.filter(c => !['group','unit','person'].includes(c.kind));
+  if(rest.length) html += `<div class="grid">${rest.map(c=>card(c)).join('')}</div>`;
+  $('list').innerHTML = html;
+}
+
+$('q').oninput = () => { Q = $('q').value.trim().toLowerCase(); renderList(); };
+
+(async function(){
+  try{
+    const r = await fetch('/api/fantrack/celebrities');
+    const j = await r.json();
+    ALL = j.celebrities || [];
+    renderChips();
+    renderList();
+  }catch(e){
+    $('list').innerHTML = `<div class="loading">${T.notFound}</div>`;
+  }
+})();
+</script>
+</body>
+</html>

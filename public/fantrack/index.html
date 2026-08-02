@@ -22,7 +22,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:url" content="https://page.cocy.io/fantrack/">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#141221">
-<script src="i18n.js?v=20260802sheet1"></script>
+<script src="i18n.js?v=20260803idx"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -105,7 +105,9 @@ function renderChips(){
 function card(c, wide){
   const cnt = c.content_count ? `<div class="cnt">${c.content_count}</div>` : '';
   const gp = (c.kind !== 'group' && c.group_name) ? `<div class="gp">${c.group_name}</div>` : '';
-  return `<a class="item${wide?' wide':''}" href="c/${c.id}/?lang=${LANG}">
+  // 언어 경로를 유지해서 이동한다(경로형이 정본이라 쿼리로 넘기면 크롤러·공유에서 갈린다)
+  const _p = LANG === 'ko' ? '/fantrack/c/'+c.id+'/' : '/fantrack/c/'+c.id+'/'+LANG+'/';
+  return `<a class="item${wide?' wide':''}" href="${_p}">
     <div class="nm">${celebName(c)}</div>${gp}${cnt}</a>`;
 }
 

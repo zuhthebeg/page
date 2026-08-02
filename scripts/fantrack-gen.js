@@ -147,7 +147,34 @@ function head(detail, lang) {
   return { name, desc, alts, url, title: `${name} — FanTrack` };
 }
 
+
+/** FanTrack 인덱스도 언어 경로를 만든다: /fantrack/{lang}/
+ *  없으면 홍보 링크(/fantrack/tw/)가 404가 된다 — 2026-08-03 실제로 냈던 사고. */
+function buildIndexPages() {
+  const FT = path.join(__dirname, '..', 'public', 'fantrack');
+  let src = fs.readFileSync(path.join(FT, 'index.html'), 'utf8');
+  for (const lang of LANGS) {
+    if (lang === 'ko') continue;
+    const dir = path.join(FT, lang);
+    fs.mkdirSync(dir, { recursive: true });
+    let html = src
+      // 하위 디렉터리라 상대경로가 깨진다 → 절대경로
+      .replace(/(src|href)="(i18n\.js|manifest\.json|icon\.svg|sw\.js)/g, '$1="/fantrack/$2')
+      .replace(/href="c\//g, 'href="/fantrack/c/')
+      .replace(/<html lang="[^"]*"/, `<html lang="${HREFLANG[lang]}"`);
+    // 언어별 canonical/hreflang
+    const alts = LANGS.map((l) =>
+      `<link rel="alternate" hreflang="${HREFLANG[l]}" href="${SITE}/fantrack/${l === 'ko' ? '' : l + '/'}">`).join('\n');
+    html = html.replace(/<link rel="canonical"[^>]*>/,
+      `<link rel="canonical" href="${SITE}/fantrack/${lang}/">`);
+    html = html.replace('</head>', alts + '\n</head>');
+    fs.writeFileSync(path.join(dir, 'index.html'), html);
+  }
+  console.log('index pages:', LANGS.length - 1);
+}
+
 async function main() {
+  buildIndexPages();
   const roster = await loadRoster();
   let n = 0, skipped = 0;
   for (const row of roster) {
