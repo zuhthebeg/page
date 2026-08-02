@@ -3,7 +3,7 @@
  * 번체는 대만 통용 표기만 사용(중국 대륙 표기·리메이크 제목 금지).
  */
 (function (global) {
-  const SUPPORTED = ['ko', 'en', 'tw'];
+  const SUPPORTED = ['ko', 'en', 'tw', 'es'];
 
   const STR = {
     ko: {
@@ -153,6 +153,55 @@
       debut: '出道',
       fandomLabel: '粉絲名',
     },
+    es: {
+      loading: 'Cargando...',
+      notFound: 'No se encontró este perfil.',
+      emptyCategory: 'Todavía no hay contenido en esta categoría.',
+      gateTitle: 'Inicia sesión para marcar "me interesa"',
+      close: 'Cerrar',
+      myPhoto: 'Poner mi foto (solo se guarda en este dispositivo)',
+      sortPopular: '🔥 Por popularidad',
+      sortRecent: '🗓 Más reciente',
+      toYear: '⇄ Ordenar por año',
+      toPopular: '⇄ Ordenar por popularidad',
+      upcoming: 'Próximamente',
+      krOnly: '🇰🇷 Solo en Corea',
+      searchSuffix: '(buscar)',
+      youtube: 'YouTube',
+      yearSuffix: '',
+      langLabel: 'Idioma',
+      types: { all: 'Todo', broadcast: 'TV', radio: 'Radio', youtube: 'YouTube', ott: 'OTT', film: 'Cine', cf: 'Anuncio', album: 'Álbum', concert: 'Concierto' },
+      indexTitle: 'FanTrack',
+      indexTagline: 'Todo lo que hace tu artista, en un solo lugar',
+      indexDesc: 'TV, radio, YouTube, OTT, álbumes y conciertos, ordenados por artista.',
+      searchPh: 'Buscar por nombre',
+      groupAll: 'Todos',
+      noResult: 'Sin resultados.',
+      countSuffix: '',
+      actionTitle: 'Este contenido',
+      goLink: 'Abrir enlace',
+      addLog: 'Añadir a mi historial',
+      addLogHint: 'Se guarda en log.cocy.io (visto hoy)',
+      addLogDone: 'Guardado ✓',
+      addLogFail: 'No se pudo guardar. Inténtalo de nuevo.',
+      addLogLogin: 'Inicia sesión para guardar tu historial',
+      openLog: 'Ver en log',
+      noLink: 'No hay enlace disponible',
+      home: '← Todos los artistas',
+      watched: 'Visto',
+      markWatched: 'Marcar como visto',
+      unmarkWatched: 'Quitar marca de visto',
+      hideWatched: 'Ocultar los vistos',
+      showWatched: 'Mostrar los vistos',
+      watchedLocal: 'Esta marca solo se guarda en este dispositivo',
+      planTrip: '✈️ Planear un viaje para este concierto',
+      planTripPast: '📖 Guardar este concierto como recuerdo de viaje',
+      planTripHint: 'Crea un viaje de 3 días / 2 noches en Travly',
+      planTripHintPast: 'Guarda esos 3 días / 2 noches en Travly',
+      planTripNoDate: 'Sin fecha registrada, no se puede planear el viaje',
+      debut: 'Debut',
+      fandomLabel: 'Fandom',
+    },
   };
 
   function detect() {
@@ -165,6 +214,7 @@
     if (n.startsWith('ko')) return 'ko';
     if (n === 'zh-tw' || n === 'zh-hk' || n === 'zh-mo' || n.startsWith('zh-hant')) return 'tw';
     if (n.startsWith('zh')) return 'tw';
+    if (n.startsWith('es')) return 'es';
     return 'en';
   }
 
@@ -177,13 +227,17 @@
     if (LANG === 'en') return row[base + '_localized_en'] || row[base + '_en'] || row[base] || '';
     // tw에 번체값이 없으면 한국어보다 영문 폴백이 낫다(중국어권 독자 기준)
     if (LANG === 'tw') return row[base + '_localized_tw'] || row[base + '_tw'] || row[base + '_localized_en'] || row[base + '_en'] || row[base] || '';
+    // 스페인어는 전용 표기가 없다 — 영문(로마자)이 한국어 원문보다 훨씬 낫다
+    if (LANG === 'es') return row[base + '_localized_en'] || row[base + '_en'] || row[base] || '';
     return row[base] || '';
   }
 
   function celebName(c) {
     if (!c) return '';
     if (LANG === 'en') return c.name_en || c.name_ko || '';
-    if (LANG === 'tw') return c.name_tw || c.name_ko || '';
+    // 번체 표기가 없으면 한글이 아니라 로마자로 간다(중화권 독자는 로마자 예명을 쓴다)
+    if (LANG === 'tw') return c.name_tw || c.name_en || c.name_ko || '';
+    if (LANG === 'es') return c.name_en || c.name_ko || '';
     return c.name_ko || '';
   }
 
@@ -191,7 +245,7 @@
 
   function switcherHtml() {
     return SUPPORTED.map(function (l) {
-      const label = l === 'ko' ? '한국어' : l === 'en' ? 'English' : '繁體';
+      const label = l === 'ko' ? '한국어' : l === 'en' ? 'English' : l === 'tw' ? '繁體' : 'Español';
       return '<button class="lang-btn' + (l === LANG ? ' on' : '') + '" data-lang="' + l + '">' + label + '</button>';
     }).join('');
   }

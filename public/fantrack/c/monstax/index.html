@@ -19,7 +19,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="../../i18n.js?v=20260802a"></script>
+<script src="../../i18n.js?v=20260802es3"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -198,12 +198,26 @@ function renderContent(){
   if(SORT==='interest') list.sort((a,b)=> (b.votes-a.votes) || ((b.year||0)-(a.year||0)));
   else list.sort((a,b)=> (b.year||0)-(a.year||0));
 
+
+// 링크가 없는 항목(앨범·콘서트 등)은 유튜브 검색으로라도 넘어갈 수 있게 한다.
+// 저장하지 않고 렌더 시점에 만든다 — 가수명/제목이 바뀌면 링크도 따라간다.
+function ytSearch(c){
+  const cel = (typeof DATA !== 'undefined' && DATA.celebrity) || {};
+  const who = cel.name_en || cel.name_ko || '';
+  const what = (c.title_localized_en || c.title || '');
+  const q = [who, what].filter(Boolean).join(' ');
+  if(!q.trim()) return null;
+  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
+}
+function linkOf(c){ return c.external_link || ytSearch(c); }
+
   $('contentList').innerHTML = list.map(c => {
     const seen = isWatched(c.id);
     const t = (seen ? `<span class="seen">${T.watched}</span>` : '') + pick(c,'title');
-    const isSearch = c.external_link && c.external_link.includes('results?search_query');
-    const linkHtml = c.external_link
-      ? `<a href="${c.external_link}" data-open="${c.id}" target="_blank" rel="noreferrer">
+    const href = linkOf(c);
+    const isSearch = href && href.includes('results?search_query');
+    const linkHtml = href
+      ? `<a href="${href}" data-open="${c.id}" target="_blank" rel="noreferrer">
           <span class="type">${TYPE_ICON[c.type]||'❓'}</span>
           <span class="body"><div class="title">${t}${isSearch?' <span class="searchlink">'+T.searchSuffix+'</span>':''}</div><div class="meta">${fmtMeta(c)}</div>${pick(c,'note_public')?`<div class="note">${pick(c,'note_public')}</div>`:''}</span>
         </a>`
@@ -266,7 +280,8 @@ function openSheet(c){
   $('sheetMeta').innerHTML = fmtMeta(c);
   const go = $('sheetGo');
   go.textContent = T.goLink;
-  if(c.external_link){ go.href = c.external_link; go.style.display='block'; $('sheetNoLink').style.display='none'; }
+  const _lk = linkOf(c);
+  if(_lk){ go.href = _lk; go.style.display='block'; $('sheetNoLink').style.display='none'; }
   else { go.style.display='none'; $('sheetNoLink').textContent = T.noLink; $('sheetNoLink').style.display='block'; }
   const trip = tripUrl(c, celebName(DATA.celebrity));
   const tripEl = $('sheetTrip');
@@ -315,7 +330,7 @@ $('sheetLog').onclick = async () => {
         title: pick(c,'title'),
         platform: pick(c,'platform'),
         type: c.type,
-        url: c.external_link || null,
+        url: linkOf(c) || null,
         celebrity: celebName(DATA.celebrity),
         source: 'fantrack',
         watched_at: Date.now(),
