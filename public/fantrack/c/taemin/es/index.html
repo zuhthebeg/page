@@ -422,11 +422,12 @@ function vmUrl(){
 async function renderProfile(){
   const c = DATA.celebrity;
   const localPhoto = await idbGet(SLUG);
-  const src = localPhoto ? URL.createObjectURL(localPhoto) : 'icon.svg';
+  // 언어 하위 경로(/tw/, /es/)에서는 상대경로 icon.svg가 404였다 → 절대경로로 고정
+  const src = localPhoto ? URL.createObjectURL(localPhoto) : '/fantrack/c/'+SLUG+'/icon.svg';
   const snsLinks = Object.entries(c.sns||{}).map(([k,v]) => `<a href="${v}" target="_blank" rel="noreferrer">${k}</a>`).join('');
   const ytLink = c.youtube_channel_id ? `<a href="https://www.youtube.com/@${c.youtube_channel_id}" target="_blank" rel="noreferrer">${T.youtube}</a>` : '';
   $('profile').innerHTML = `
-    <img class="avatar" id="avatarImg" src="${src}" alt="${celebName(c)}">
+    <img class="avatar" id="avatarImg" src="${src}" alt="" aria-hidden="true" onerror="this.style.visibility='hidden'">
     <div class="name">${celebName(c)}</div>
     <div class="sub">${LANG==='en' ? (c.group_name||'') : (c.name_en||'')}</div>
     <div class="badges">
