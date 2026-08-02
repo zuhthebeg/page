@@ -12,7 +12,7 @@ export const onRequestGet: PagesFunction<Env> = async (ctx) => {
   const celeb = await db
     .prepare(
       `SELECT id, name_ko, name_en, name_tw, group_name, agency, agency_en, agency_tw, birthdate, mbti,
-              blood_type, sns, youtube_channel_id, official_sns_url, debut_date, fandom
+              blood_type, sns, youtube_channel_id, official_sns_url, debut_date, fandom, kind
          FROM celebrities WHERE id = ?`
     )
     .bind(slug)
