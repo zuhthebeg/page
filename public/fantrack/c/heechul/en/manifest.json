@@ -1,0 +1,24 @@
+{
+  "name": "Heechul — FanTrack",
+  "short_name": "Heechul",
+  "description": "5 works by Heechul — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/heechul/en/",
+  "start_url": "/fantrack/c/heechul/en/",
+  "scope": "/fantrack/c/heechul/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/heechul/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

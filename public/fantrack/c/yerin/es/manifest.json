@@ -1,0 +1,24 @@
+{
+  "name": "Yerin Baek — FanTrack",
+  "short_name": "Yerin Baek",
+  "description": "11 trabajos de Yerin Baek — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/yerin/es/",
+  "start_url": "/fantrack/c/yerin/es/",
+  "scope": "/fantrack/c/yerin/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/yerin/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

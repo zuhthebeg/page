@@ -1,0 +1,24 @@
+{
+  "name": "Park Won — FanTrack",
+  "short_name": "Park Won",
+  "description": "13 trabajos de Park Won — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/parkwon/es/",
+  "start_url": "/fantrack/c/parkwon/es/",
+  "scope": "/fantrack/c/parkwon/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/parkwon/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

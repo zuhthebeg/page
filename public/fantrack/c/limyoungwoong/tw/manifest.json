@@ -1,0 +1,24 @@
+{
+  "name": "林英雄 — FanTrack",
+  "short_name": "林英雄",
+  "description": "林英雄 的出演與作品 6 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/limyoungwoong/tw/",
+  "start_url": "/fantrack/c/limyoungwoong/tw/",
+  "scope": "/fantrack/c/limyoungwoong/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/limyoungwoong/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

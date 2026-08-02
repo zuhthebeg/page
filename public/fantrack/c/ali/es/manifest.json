@@ -1,0 +1,24 @@
+{
+  "name": "ALi — FanTrack",
+  "short_name": "ALi",
+  "description": "11 trabajos de ALi — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/ali/es/",
+  "start_url": "/fantrack/c/ali/es/",
+  "scope": "/fantrack/c/ali/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ali/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

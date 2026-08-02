@@ -1,7 +1,7 @@
 {
   "name": "김광석 — FanTrack",
-  "short_name": "김광석 FanTrack",
-  "description": "김광석 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "김광석",
+  "description": "김광석 출연·활동 정보 10건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/kimkwangseok/",
   "start_url": "/fantrack/c/kimkwangseok/",
   "scope": "/fantrack/c/kimkwangseok/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/kimkwangseok/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

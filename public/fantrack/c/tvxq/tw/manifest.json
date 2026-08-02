@@ -1,0 +1,24 @@
+{
+  "name": "東方神起 — FanTrack",
+  "short_name": "東方神起",
+  "description": "東方神起 的出演與作品 60 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/tvxq/tw/",
+  "start_url": "/fantrack/c/tvxq/tw/",
+  "scope": "/fantrack/c/tvxq/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/tvxq/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

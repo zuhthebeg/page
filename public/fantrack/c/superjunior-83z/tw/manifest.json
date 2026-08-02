@@ -1,0 +1,24 @@
+{
+  "name": "Super Junior-83z — FanTrack",
+  "short_name": "Super Junior-83z",
+  "description": "Super Junior-83z 的出演與作品 3 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/superjunior-83z/tw/",
+  "start_url": "/fantrack/c/superjunior-83z/tw/",
+  "scope": "/fantrack/c/superjunior-83z/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/superjunior-83z/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

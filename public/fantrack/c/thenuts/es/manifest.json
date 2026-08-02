@@ -1,0 +1,24 @@
+{
+  "name": "The Nuts — FanTrack",
+  "short_name": "The Nuts",
+  "description": "8 trabajos de The Nuts — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/thenuts/es/",
+  "start_url": "/fantrack/c/thenuts/es/",
+  "scope": "/fantrack/c/thenuts/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/thenuts/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

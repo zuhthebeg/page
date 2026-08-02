@@ -1,0 +1,24 @@
+{
+  "name": "BOYNEXTDOOR — FanTrack",
+  "short_name": "BOYNEXTDOOR",
+  "description": "11 trabajos de BOYNEXTDOOR — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/boynextdoor/es/",
+  "start_url": "/fantrack/c/boynextdoor/es/",
+  "scope": "/fantrack/c/boynextdoor/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/boynextdoor/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

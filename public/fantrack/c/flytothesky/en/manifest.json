@@ -1,0 +1,24 @@
+{
+  "name": "Fly to the Sky — FanTrack",
+  "short_name": "Fly to the Sky",
+  "description": "103 works by Fly to the Sky — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/flytothesky/en/",
+  "start_url": "/fantrack/c/flytothesky/en/",
+  "scope": "/fantrack/c/flytothesky/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/flytothesky/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "高潤荷 — FanTrack",
+  "short_name": "高潤荷",
+  "description": "高潤荷 的出演與作品 54 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/younha/tw/",
+  "start_url": "/fantrack/c/younha/tw/",
+  "scope": "/fantrack/c/younha/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/younha/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

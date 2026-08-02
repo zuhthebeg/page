@@ -1,0 +1,24 @@
+{
+  "name": "Jeon Sang Keun — FanTrack",
+  "short_name": "Jeon Sang Keun",
+  "description": "9 trabajos de Jeon Sang Keun — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/jeonsangkeun/es/",
+  "start_url": "/fantrack/c/jeonsangkeun/es/",
+  "scope": "/fantrack/c/jeonsangkeun/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jeonsangkeun/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

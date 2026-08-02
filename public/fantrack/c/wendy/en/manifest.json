@@ -1,0 +1,24 @@
+{
+  "name": "WENDY — FanTrack",
+  "short_name": "WENDY",
+  "description": "8 works by WENDY — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/wendy/en/",
+  "start_url": "/fantrack/c/wendy/en/",
+  "scope": "/fantrack/c/wendy/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/wendy/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

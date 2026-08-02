@@ -1,0 +1,24 @@
+{
+  "name": "Beenzino — FanTrack",
+  "short_name": "Beenzino",
+  "description": "16 trabajos de Beenzino — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/beenzino/es/",
+  "start_url": "/fantrack/c/beenzino/es/",
+  "scope": "/fantrack/c/beenzino/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/beenzino/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

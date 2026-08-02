@@ -1,0 +1,24 @@
+{
+  "name": "Lee Sun Hee — FanTrack",
+  "short_name": "Lee Sun Hee",
+  "description": "21 trabajos de Lee Sun Hee — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/leesunhee/es/",
+  "start_url": "/fantrack/c/leesunhee/es/",
+  "scope": "/fantrack/c/leesunhee/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/leesunhee/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Apink — FanTrack",
+  "short_name": "Apink",
+  "description": "108 trabajos de Apink — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/apink/es/",
+  "start_url": "/fantrack/c/apink/es/",
+  "scope": "/fantrack/c/apink/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/apink/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

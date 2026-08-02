@@ -1,0 +1,24 @@
+{
+  "name": "Soonsoonhee — FanTrack",
+  "short_name": "Soonsoonhee",
+  "description": "5 works by Soonsoonhee — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/soonsoonhee/en/",
+  "start_url": "/fantrack/c/soonsoonhee/en/",
+  "scope": "/fantrack/c/soonsoonhee/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/soonsoonhee/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

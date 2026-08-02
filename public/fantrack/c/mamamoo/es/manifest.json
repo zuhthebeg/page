@@ -1,0 +1,24 @@
+{
+  "name": "MAMAMOO — FanTrack",
+  "short_name": "MAMAMOO",
+  "description": "61 trabajos de MAMAMOO — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/mamamoo/es/",
+  "start_url": "/fantrack/c/mamamoo/es/",
+  "scope": "/fantrack/c/mamamoo/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/mamamoo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "LE SSERAFIM — FanTrack",
+  "short_name": "LE SSERAFIM",
+  "description": "12 trabajos de LE SSERAFIM — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/lesserafim/es/",
+  "start_url": "/fantrack/c/lesserafim/es/",
+  "scope": "/fantrack/c/lesserafim/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/lesserafim/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

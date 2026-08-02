@@ -1,0 +1,24 @@
+{
+  "name": "Big Mama — FanTrack",
+  "short_name": "Big Mama",
+  "description": "11 trabajos de Big Mama — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/bigmama/es/",
+  "start_url": "/fantrack/c/bigmama/es/",
+  "scope": "/fantrack/c/bigmama/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/bigmama/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

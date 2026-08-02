@@ -1,0 +1,24 @@
+{
+  "name": "Tei — FanTrack",
+  "short_name": "Tei",
+  "description": "47 trabajos de Tei — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/tei/es/",
+  "start_url": "/fantrack/c/tei/es/",
+  "scope": "/fantrack/c/tei/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/tei/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

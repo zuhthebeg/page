@@ -1,7 +1,7 @@
 {
   "name": "자자 — FanTrack",
-  "short_name": "자자 FanTrack",
-  "description": "자자 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "자자",
+  "description": "자자 출연·활동 정보 6건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/jaja/",
   "start_url": "/fantrack/c/jaja/",
   "scope": "/fantrack/c/jaja/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/jaja/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

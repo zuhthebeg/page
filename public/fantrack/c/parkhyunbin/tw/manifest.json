@@ -1,0 +1,24 @@
+{
+  "name": "朴玄彬 — FanTrack",
+  "short_name": "朴玄彬",
+  "description": "朴玄彬 的出演與作品 18 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/parkhyunbin/tw/",
+  "start_url": "/fantrack/c/parkhyunbin/tw/",
+  "scope": "/fantrack/c/parkhyunbin/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/parkhyunbin/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

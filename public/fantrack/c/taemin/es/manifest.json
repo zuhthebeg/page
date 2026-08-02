@@ -1,0 +1,24 @@
+{
+  "name": "TAEMIN — FanTrack",
+  "short_name": "TAEMIN",
+  "description": "47 trabajos de TAEMIN — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/taemin/es/",
+  "start_url": "/fantrack/c/taemin/es/",
+  "scope": "/fantrack/c/taemin/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/taemin/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

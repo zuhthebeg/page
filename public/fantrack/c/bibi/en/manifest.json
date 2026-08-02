@@ -1,0 +1,24 @@
+{
+  "name": "BIBI — FanTrack",
+  "short_name": "BIBI",
+  "description": "10 works by BIBI — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/bibi/en/",
+  "start_url": "/fantrack/c/bibi/en/",
+  "scope": "/fantrack/c/bibi/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/bibi/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

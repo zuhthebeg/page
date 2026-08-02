@@ -1,0 +1,24 @@
+{
+  "name": "Gummy — FanTrack",
+  "short_name": "Gummy",
+  "description": "36 works by Gummy — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/gummy/en/",
+  "start_url": "/fantrack/c/gummy/en/",
+  "scope": "/fantrack/c/gummy/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/gummy/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

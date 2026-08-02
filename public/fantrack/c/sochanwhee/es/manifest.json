@@ -1,0 +1,24 @@
+{
+  "name": "So Chan Whee — FanTrack",
+  "short_name": "So Chan Whee",
+  "description": "8 trabajos de So Chan Whee — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/sochanwhee/es/",
+  "start_url": "/fantrack/c/sochanwhee/es/",
+  "scope": "/fantrack/c/sochanwhee/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/sochanwhee/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Silica Gel — FanTrack",
+  "short_name": "Silica Gel",
+  "description": "Silica Gel 的出演與作品 9 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/silicagel/tw/",
+  "start_url": "/fantrack/c/silicagel/tw/",
+  "scope": "/fantrack/c/silicagel/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/silicagel/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

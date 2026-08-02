@@ -1,0 +1,24 @@
+{
+  "name": "Tae Jin-ah — FanTrack",
+  "short_name": "Tae Jin-ah",
+  "description": "42 works by Tae Jin-ah — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/taejina/en/",
+  "start_url": "/fantrack/c/taejina/en/",
+  "scope": "/fantrack/c/taejina/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/taejina/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

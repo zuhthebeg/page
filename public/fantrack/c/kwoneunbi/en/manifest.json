@@ -1,0 +1,24 @@
+{
+  "name": "KWON EUNBI — FanTrack",
+  "short_name": "KWON EUNBI",
+  "description": "8 works by KWON EUNBI — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/kwoneunbi/en/",
+  "start_url": "/fantrack/c/kwoneunbi/en/",
+  "scope": "/fantrack/c/kwoneunbi/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kwoneunbi/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

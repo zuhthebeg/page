@@ -1,0 +1,24 @@
+{
+  "name": "Sohyang — FanTrack",
+  "short_name": "Sohyang",
+  "description": "18 works by Sohyang — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/sohyang/en/",
+  "start_url": "/fantrack/c/sohyang/en/",
+  "scope": "/fantrack/c/sohyang/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/sohyang/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

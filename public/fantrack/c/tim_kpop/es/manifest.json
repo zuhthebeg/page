@@ -1,0 +1,24 @@
+{
+  "name": "Tim — FanTrack",
+  "short_name": "Tim",
+  "description": "17 trabajos de Tim — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/tim_kpop/es/",
+  "start_url": "/fantrack/c/tim_kpop/es/",
+  "scope": "/fantrack/c/tim_kpop/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/tim_kpop/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

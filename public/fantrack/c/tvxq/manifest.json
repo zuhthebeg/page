@@ -1,7 +1,7 @@
 {
   "name": "동방신기 — FanTrack",
-  "short_name": "동방신기 FanTrack",
-  "description": "동방신기 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "동방신기",
+  "description": "동방신기 출연·활동 정보 60건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/tvxq/",
   "start_url": "/fantrack/c/tvxq/",
   "scope": "/fantrack/c/tvxq/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/tvxq/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

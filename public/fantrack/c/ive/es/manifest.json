@@ -1,0 +1,24 @@
+{
+  "name": "IVE — FanTrack",
+  "short_name": "IVE",
+  "description": "43 trabajos de IVE — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/ive/es/",
+  "start_url": "/fantrack/c/ive/es/",
+  "scope": "/fantrack/c/ive/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ive/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

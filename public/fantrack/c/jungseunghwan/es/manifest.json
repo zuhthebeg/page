@@ -1,0 +1,24 @@
+{
+  "name": "Jung Seung Hwan — FanTrack",
+  "short_name": "Jung Seung Hwan",
+  "description": "12 trabajos de Jung Seung Hwan — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/jungseunghwan/es/",
+  "start_url": "/fantrack/c/jungseunghwan/es/",
+  "scope": "/fantrack/c/jungseunghwan/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jungseunghwan/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

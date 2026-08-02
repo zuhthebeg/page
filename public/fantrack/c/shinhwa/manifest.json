@@ -1,7 +1,7 @@
 {
   "name": "신화 — FanTrack",
-  "short_name": "신화 FanTrack",
-  "description": "신화 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "신화",
+  "description": "신화 출연·활동 정보 41건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/shinhwa/",
   "start_url": "/fantrack/c/shinhwa/",
   "scope": "/fantrack/c/shinhwa/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/shinhwa/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

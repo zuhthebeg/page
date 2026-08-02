@@ -1,7 +1,7 @@
 {
   "name": "뱅크(BANK) — FanTrack",
-  "short_name": "뱅크(BANK) FanTrack",
-  "description": "뱅크(BANK) 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "뱅크(BANK)",
+  "description": "뱅크(BANK) 출연·활동 정보 6건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/bank_kpop/",
   "start_url": "/fantrack/c/bank_kpop/",
   "scope": "/fantrack/c/bank_kpop/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/bank_kpop/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

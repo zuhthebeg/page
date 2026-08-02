@@ -1,0 +1,24 @@
+{
+  "name": "HyunA — FanTrack",
+  "short_name": "HyunA",
+  "description": "34 trabajos de HyunA — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/hyuna/es/",
+  "start_url": "/fantrack/c/hyuna/es/",
+  "scope": "/fantrack/c/hyuna/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/hyuna/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

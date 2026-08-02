@@ -1,0 +1,24 @@
+{
+  "name": "CL — FanTrack",
+  "short_name": "CL",
+  "description": "7 trabajos de CL — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/cl/es/",
+  "start_url": "/fantrack/c/cl/es/",
+  "scope": "/fantrack/c/cl/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/cl/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

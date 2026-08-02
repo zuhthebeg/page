@@ -1,0 +1,24 @@
+{
+  "name": "Yoon Mi-rae — FanTrack",
+  "short_name": "Yoon Mi-rae",
+  "description": "13 trabajos de Yoon Mi-rae — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/yoonmirae/es/",
+  "start_url": "/fantrack/c/yoonmirae/es/",
+  "scope": "/fantrack/c/yoonmirae/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/yoonmirae/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

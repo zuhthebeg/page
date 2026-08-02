@@ -1,0 +1,24 @@
+{
+  "name": "Na Hoon-a — FanTrack",
+  "short_name": "Na Hoon-a",
+  "description": "13 works by Na Hoon-a — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/nahoonah/en/",
+  "start_url": "/fantrack/c/nahoonah/en/",
+  "scope": "/fantrack/c/nahoonah/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/nahoonah/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

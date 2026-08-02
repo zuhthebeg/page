@@ -1,0 +1,24 @@
+{
+  "name": "GOT7 — FanTrack",
+  "short_name": "GOT7",
+  "description": "140 works by GOT7 — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/got7/en/",
+  "start_url": "/fantrack/c/got7/en/",
+  "scope": "/fantrack/c/got7/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/got7/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

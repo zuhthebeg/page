@@ -1,0 +1,24 @@
+{
+  "name": "Nam Jin — FanTrack",
+  "short_name": "Nam Jin",
+  "description": "11 works by Nam Jin — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/namjin/en/",
+  "start_url": "/fantrack/c/namjin/en/",
+  "scope": "/fantrack/c/namjin/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/namjin/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "aespa — FanTrack",
+  "short_name": "aespa",
+  "description": "20 works by aespa — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/aespa/en/",
+  "start_url": "/fantrack/c/aespa/en/",
+  "scope": "/fantrack/c/aespa/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/aespa/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

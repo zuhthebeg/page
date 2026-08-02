@@ -1,0 +1,24 @@
+{
+  "name": "10CM — FanTrack",
+  "short_name": "10CM",
+  "description": "13 works by 10CM — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/tencm/en/",
+  "start_url": "/fantrack/c/tencm/en/",
+  "scope": "/fantrack/c/tencm/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/tencm/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

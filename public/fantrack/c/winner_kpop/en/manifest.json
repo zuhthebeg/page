@@ -1,0 +1,24 @@
+{
+  "name": "WINNER — FanTrack",
+  "short_name": "WINNER",
+  "description": "31 works by WINNER — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/winner_kpop/en/",
+  "start_url": "/fantrack/c/winner_kpop/en/",
+  "scope": "/fantrack/c/winner_kpop/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/winner_kpop/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

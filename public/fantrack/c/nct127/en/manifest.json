@@ -1,0 +1,24 @@
+{
+  "name": "NCT 127 — FanTrack",
+  "short_name": "NCT 127",
+  "description": "30 works by NCT 127 — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/nct127/en/",
+  "start_url": "/fantrack/c/nct127/en/",
+  "scope": "/fantrack/c/nct127/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/nct127/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

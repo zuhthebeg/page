@@ -1,0 +1,24 @@
+{
+  "name": "Cherry Filter — FanTrack",
+  "short_name": "Cherry Filter",
+  "description": "10 trabajos de Cherry Filter — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/cherryfilter/es/",
+  "start_url": "/fantrack/c/cherryfilter/es/",
+  "scope": "/fantrack/c/cherryfilter/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/cherryfilter/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

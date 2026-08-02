@@ -1,7 +1,7 @@
 {
   "name": "먼데이키즈 — FanTrack",
-  "short_name": "먼데이키즈 FanTrack",
-  "description": "먼데이키즈 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "먼데이키즈",
+  "description": "먼데이키즈 출연·활동 정보 11건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/mondaykiz/",
   "start_url": "/fantrack/c/mondaykiz/",
   "scope": "/fantrack/c/mondaykiz/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/mondaykiz/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

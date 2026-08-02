@@ -1,0 +1,24 @@
+{
+  "name": "Hyolyn — FanTrack",
+  "short_name": "Hyolyn",
+  "description": "16 trabajos de Hyolyn — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/hyolyn/es/",
+  "start_url": "/fantrack/c/hyolyn/es/",
+  "scope": "/fantrack/c/hyolyn/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/hyolyn/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

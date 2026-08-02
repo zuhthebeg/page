@@ -1,0 +1,24 @@
+{
+  "name": "Sim Soo-bong — FanTrack",
+  "short_name": "Sim Soo-bong",
+  "description": "13 trabajos de Sim Soo-bong — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/simsoobong/es/",
+  "start_url": "/fantrack/c/simsoobong/es/",
+  "scope": "/fantrack/c/simsoobong/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/simsoobong/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

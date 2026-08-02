@@ -1,7 +1,7 @@
 {
   "name": "키스오브라이프 — FanTrack",
-  "short_name": "키스오브라이프 FanTrack",
-  "description": "키스오브라이프 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "키스오브라이프",
+  "description": "키스오브라이프 출연·활동 정보 10건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/kissoflife/",
   "start_url": "/fantrack/c/kissoflife/",
   "scope": "/fantrack/c/kissoflife/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/kissoflife/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

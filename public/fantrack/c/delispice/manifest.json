@@ -1,7 +1,7 @@
 {
   "name": "델리스파이스 — FanTrack",
-  "short_name": "델리스파이스 FanTrack",
-  "description": "델리스파이스 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "델리스파이스",
+  "description": "델리스파이스 출연·활동 정보 13건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/delispice/",
   "start_url": "/fantrack/c/delispice/",
   "scope": "/fantrack/c/delispice/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/delispice/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

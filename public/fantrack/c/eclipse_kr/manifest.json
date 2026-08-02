@@ -1,7 +1,7 @@
 {
   "name": "이클립스 — FanTrack",
-  "short_name": "이클립스 FanTrack",
-  "description": "이클립스 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "이클립스",
+  "description": "이클립스 출연·활동 정보 6건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/eclipse_kr/",
   "start_url": "/fantrack/c/eclipse_kr/",
   "scope": "/fantrack/c/eclipse_kr/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/eclipse_kr/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

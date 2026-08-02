@@ -1,0 +1,24 @@
+{
+  "name": "Davichi — FanTrack",
+  "short_name": "Davichi",
+  "description": "Davichi 的出演與作品 16 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/davichi/tw/",
+  "start_url": "/fantrack/c/davichi/tw/",
+  "scope": "/fantrack/c/davichi/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/davichi/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

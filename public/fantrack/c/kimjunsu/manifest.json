@@ -1,7 +1,7 @@
 {
   "name": "김준수 — FanTrack",
-  "short_name": "김준수 FanTrack",
-  "description": "김준수 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "김준수",
+  "description": "김준수 출연·활동 정보 5건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/kimjunsu/",
   "start_url": "/fantrack/c/kimjunsu/",
   "scope": "/fantrack/c/kimjunsu/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/kimjunsu/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

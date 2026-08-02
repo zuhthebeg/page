@@ -1,0 +1,24 @@
+{
+  "name": "Guckkasten — FanTrack",
+  "short_name": "Guckkasten",
+  "description": "10 works by Guckkasten — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/guckkasten/en/",
+  "start_url": "/fantrack/c/guckkasten/en/",
+  "scope": "/fantrack/c/guckkasten/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/guckkasten/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

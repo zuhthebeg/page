@@ -1,7 +1,7 @@
 {
   "name": "엔하이픈 — FanTrack",
-  "short_name": "엔하이픈 FanTrack",
-  "description": "엔하이픈 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "엔하이픈",
+  "description": "엔하이픈 출연·활동 정보 16건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/enhypen/",
   "start_url": "/fantrack/c/enhypen/",
   "scope": "/fantrack/c/enhypen/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/enhypen/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

@@ -1,0 +1,24 @@
+{
+  "name": "Davichi — FanTrack",
+  "short_name": "Davichi",
+  "description": "16 trabajos de Davichi — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/davichi/es/",
+  "start_url": "/fantrack/c/davichi/es/",
+  "scope": "/fantrack/c/davichi/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/davichi/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

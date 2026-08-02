@@ -1,0 +1,24 @@
+{
+  "name": "Eru — FanTrack",
+  "short_name": "Eru",
+  "description": "7 works by Eru — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/iru/en/",
+  "start_url": "/fantrack/c/iru/en/",
+  "scope": "/fantrack/c/iru/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/iru/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

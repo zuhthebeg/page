@@ -1,0 +1,24 @@
+{
+  "name": "Im Chang Jung — FanTrack",
+  "short_name": "Im Chang Jung",
+  "description": "74 trabajos de Im Chang Jung — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/imchangjung/es/",
+  "start_url": "/fantrack/c/imchangjung/es/",
+  "scope": "/fantrack/c/imchangjung/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/imchangjung/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

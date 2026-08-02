@@ -1,0 +1,24 @@
+{
+  "name": "Han Dong Geun — FanTrack",
+  "short_name": "Han Dong Geun",
+  "description": "7 works by Han Dong Geun — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/handonggeun/en/",
+  "start_url": "/fantrack/c/handonggeun/en/",
+  "scope": "/fantrack/c/handonggeun/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/handonggeun/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

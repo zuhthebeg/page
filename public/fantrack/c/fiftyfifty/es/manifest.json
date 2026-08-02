@@ -1,0 +1,24 @@
+{
+  "name": "FIFTY FIFTY — FanTrack",
+  "short_name": "FIFTY FIFTY",
+  "description": "11 trabajos de FIFTY FIFTY — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/fiftyfifty/es/",
+  "start_url": "/fantrack/c/fiftyfifty/es/",
+  "scope": "/fantrack/c/fiftyfifty/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/fiftyfifty/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

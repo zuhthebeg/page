@@ -1,0 +1,24 @@
+{
+  "name": "Hwang Chi Yeul — FanTrack",
+  "short_name": "Hwang Chi Yeul",
+  "description": "33 works by Hwang Chi Yeul — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/hwangchiyeul/en/",
+  "start_url": "/fantrack/c/hwangchiyeul/en/",
+  "scope": "/fantrack/c/hwangchiyeul/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/hwangchiyeul/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

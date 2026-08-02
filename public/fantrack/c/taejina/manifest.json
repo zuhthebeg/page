@@ -1,7 +1,7 @@
 {
   "name": "태진아 — FanTrack",
-  "short_name": "태진아 FanTrack",
-  "description": "태진아 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "태진아",
+  "description": "태진아 출연·활동 정보 42건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/taejina/",
   "start_url": "/fantrack/c/taejina/",
   "scope": "/fantrack/c/taejina/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/taejina/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

@@ -1,0 +1,24 @@
+{
+  "name": "Yoon Jong Shin — FanTrack",
+  "short_name": "Yoon Jong Shin",
+  "description": "50 trabajos de Yoon Jong Shin — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/yoonjongshin/es/",
+  "start_url": "/fantrack/c/yoonjongshin/es/",
+  "scope": "/fantrack/c/yoonjongshin/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/yoonjongshin/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

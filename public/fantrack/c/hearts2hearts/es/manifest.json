@@ -1,0 +1,24 @@
+{
+  "name": "Hearts2Hearts — FanTrack",
+  "short_name": "Hearts2Hearts",
+  "description": "7 trabajos de Hearts2Hearts — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/hearts2hearts/es/",
+  "start_url": "/fantrack/c/hearts2hearts/es/",
+  "scope": "/fantrack/c/hearts2hearts/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/hearts2hearts/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

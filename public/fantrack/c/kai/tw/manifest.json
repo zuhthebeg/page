@@ -1,0 +1,24 @@
+{
+  "name": "Kai — FanTrack",
+  "short_name": "Kai",
+  "description": "Kai 的出演與作品 9 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/kai/tw/",
+  "start_url": "/fantrack/c/kai/tw/",
+  "scope": "/fantrack/c/kai/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kai/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

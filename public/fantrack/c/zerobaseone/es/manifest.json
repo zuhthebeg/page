@@ -1,0 +1,24 @@
+{
+  "name": "ZEROBASEONE — FanTrack",
+  "short_name": "ZEROBASEONE",
+  "description": "15 trabajos de ZEROBASEONE — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/zerobaseone/es/",
+  "start_url": "/fantrack/c/zerobaseone/es/",
+  "scope": "/fantrack/c/zerobaseone/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/zerobaseone/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

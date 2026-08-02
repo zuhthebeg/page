@@ -1,7 +1,7 @@
 {
   "name": "정승환 — FanTrack",
-  "short_name": "정승환 FanTrack",
-  "description": "정승환 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "정승환",
+  "description": "정승환 출연·활동 정보 12건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/jungseunghwan/",
   "start_url": "/fantrack/c/jungseunghwan/",
   "scope": "/fantrack/c/jungseunghwan/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/jungseunghwan/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

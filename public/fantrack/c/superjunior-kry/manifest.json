@@ -1,7 +1,7 @@
 {
-  "name": "슈퍼주니어-K.R.Y.(SUPER JUNIOR) — FanTrack",
-  "short_name": "슈퍼주니어-K.R.Y. FanTrack",
-  "description": "SUPER JUNIOR 슈퍼주니어-K.R.Y. 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "name": "슈퍼주니어-K.R.Y. — FanTrack",
+  "short_name": "슈퍼주니어-K.R.Y.",
+  "description": "슈퍼주니어-K.R.Y. 출연·활동 정보 10건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/superjunior-kry/",
   "start_url": "/fantrack/c/superjunior-kry/",
   "scope": "/fantrack/c/superjunior-kry/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/superjunior-kry/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

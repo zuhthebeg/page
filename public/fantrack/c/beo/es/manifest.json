@@ -1,0 +1,24 @@
+{
+  "name": "BE — FanTrack",
+  "short_name": "BE",
+  "description": "6 trabajos de BE — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/beo/es/",
+  "start_url": "/fantrack/c/beo/es/",
+  "scope": "/fantrack/c/beo/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/beo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

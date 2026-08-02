@@ -1,0 +1,24 @@
+{
+  "name": "CNBLUE — FanTrack",
+  "short_name": "CNBLUE",
+  "description": "29 trabajos de CNBLUE — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/cnblue/es/",
+  "start_url": "/fantrack/c/cnblue/es/",
+  "scope": "/fantrack/c/cnblue/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/cnblue/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

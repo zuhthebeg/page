@@ -1,7 +1,7 @@
 {
   "name": "이승환 — FanTrack",
-  "short_name": "이승환 FanTrack",
-  "description": "이승환 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "이승환",
+  "description": "이승환 출연·활동 정보 19건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/leeseunghwan/",
   "start_url": "/fantrack/c/leeseunghwan/",
   "scope": "/fantrack/c/leeseunghwan/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/leeseunghwan/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

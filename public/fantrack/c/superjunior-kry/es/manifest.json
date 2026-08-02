@@ -1,0 +1,24 @@
+{
+  "name": "SUPER JUNIOR-K.R.Y. — FanTrack",
+  "short_name": "SUPER JUNIOR-K.R.Y.",
+  "description": "10 trabajos de SUPER JUNIOR-K.R.Y. — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/superjunior-kry/es/",
+  "start_url": "/fantrack/c/superjunior-kry/es/",
+  "scope": "/fantrack/c/superjunior-kry/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/superjunior-kry/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "TXT — FanTrack",
+  "short_name": "TXT",
+  "description": "13 trabajos de TXT — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/txt/es/",
+  "start_url": "/fantrack/c/txt/es/",
+  "scope": "/fantrack/c/txt/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/txt/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

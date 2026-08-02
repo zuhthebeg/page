@@ -1,0 +1,24 @@
+{
+  "name": "JANNABI — FanTrack",
+  "short_name": "JANNABI",
+  "description": "13 trabajos de JANNABI — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/jannabi/es/",
+  "start_url": "/fantrack/c/jannabi/es/",
+  "scope": "/fantrack/c/jannabi/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jannabi/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

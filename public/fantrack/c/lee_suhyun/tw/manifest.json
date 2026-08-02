@@ -1,0 +1,24 @@
+{
+  "name": "李秀賢 — FanTrack",
+  "short_name": "李秀賢",
+  "description": "李秀賢 的出演與作品 5 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/lee_suhyun/tw/",
+  "start_url": "/fantrack/c/lee_suhyun/tw/",
+  "scope": "/fantrack/c/lee_suhyun/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/lee_suhyun/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

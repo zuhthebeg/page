@@ -1,0 +1,24 @@
+{
+  "name": "Doyoung — FanTrack",
+  "short_name": "Doyoung",
+  "description": "11 works by Doyoung — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/doyoung/en/",
+  "start_url": "/fantrack/c/doyoung/en/",
+  "scope": "/fantrack/c/doyoung/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/doyoung/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

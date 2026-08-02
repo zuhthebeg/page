@@ -1,0 +1,24 @@
+{
+  "name": "Jaurim — FanTrack",
+  "short_name": "Jaurim",
+  "description": "24 trabajos de Jaurim — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/jaurim/es/",
+  "start_url": "/fantrack/c/jaurim/es/",
+  "scope": "/fantrack/c/jaurim/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jaurim/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

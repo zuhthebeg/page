@@ -1,0 +1,24 @@
+{
+  "name": "QWER — FanTrack",
+  "short_name": "QWER",
+  "description": "12 trabajos de QWER — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/qwer/es/",
+  "start_url": "/fantrack/c/qwer/es/",
+  "scope": "/fantrack/c/qwer/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/qwer/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

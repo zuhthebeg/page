@@ -1,0 +1,24 @@
+{
+  "name": "Kim Kyung Ho — FanTrack",
+  "short_name": "Kim Kyung Ho",
+  "description": "20 trabajos de Kim Kyung Ho — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/kimkyungho/es/",
+  "start_url": "/fantrack/c/kimkyungho/es/",
+  "scope": "/fantrack/c/kimkyungho/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kimkyungho/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

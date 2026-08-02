@@ -1,0 +1,24 @@
+{
+  "name": "STAYC — FanTrack",
+  "short_name": "STAYC",
+  "description": "10 works by STAYC — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/stayc/en/",
+  "start_url": "/fantrack/c/stayc/en/",
+  "scope": "/fantrack/c/stayc/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/stayc/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
-  "name": "시원(SUPER JUNIOR) — FanTrack",
-  "short_name": "시원 FanTrack",
-  "description": "SUPER JUNIOR 시원 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "name": "시원 — FanTrack",
+  "short_name": "시원",
+  "description": "시원 출연·활동 정보 32건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/siwon/",
   "start_url": "/fantrack/c/siwon/",
   "scope": "/fantrack/c/siwon/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/siwon/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

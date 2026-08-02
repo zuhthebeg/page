@@ -1,0 +1,24 @@
+{
+  "name": "ILLIT — FanTrack",
+  "short_name": "ILLIT",
+  "description": "9 works by ILLIT — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/illit/en/",
+  "start_url": "/fantrack/c/illit/en/",
+  "scope": "/fantrack/c/illit/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/illit/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

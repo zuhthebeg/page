@@ -1,0 +1,24 @@
+{
+  "name": "Brown Eyes — FanTrack",
+  "short_name": "Brown Eyes",
+  "description": "8 trabajos de Brown Eyes — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/browneyes/es/",
+  "start_url": "/fantrack/c/browneyes/es/",
+  "scope": "/fantrack/c/browneyes/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/browneyes/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

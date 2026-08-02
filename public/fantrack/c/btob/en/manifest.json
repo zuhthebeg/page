@@ -1,0 +1,24 @@
+{
+  "name": "BTOB — FanTrack",
+  "short_name": "BTOB",
+  "description": "27 works by BTOB — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/btob/en/",
+  "start_url": "/fantrack/c/btob/en/",
+  "scope": "/fantrack/c/btob/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/btob/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

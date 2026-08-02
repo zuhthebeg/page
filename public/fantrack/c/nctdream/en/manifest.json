@@ -1,0 +1,24 @@
+{
+  "name": "NCT DREAM — FanTrack",
+  "short_name": "NCT DREAM",
+  "description": "28 works by NCT DREAM — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/nctdream/en/",
+  "start_url": "/fantrack/c/nctdream/en/",
+  "scope": "/fantrack/c/nctdream/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/nctdream/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

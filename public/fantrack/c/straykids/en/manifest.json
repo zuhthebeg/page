@@ -1,0 +1,24 @@
+{
+  "name": "Stray Kids — FanTrack",
+  "short_name": "Stray Kids",
+  "description": "29 works by Stray Kids — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/straykids/en/",
+  "start_url": "/fantrack/c/straykids/en/",
+  "scope": "/fantrack/c/straykids/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/straykids/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

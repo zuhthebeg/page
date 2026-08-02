@@ -1,0 +1,24 @@
+{
+  "name": "Hong Kwang-ho — FanTrack",
+  "short_name": "Hong Kwang-ho",
+  "description": "Hong Kwang-ho 的出演與作品 5 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/hongkwangho/tw/",
+  "start_url": "/fantrack/c/hongkwangho/tw/",
+  "scope": "/fantrack/c/hongkwangho/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/hongkwangho/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

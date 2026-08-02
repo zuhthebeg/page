@@ -1,7 +1,7 @@
 {
   "name": "김호중 — FanTrack",
-  "short_name": "김호중 FanTrack",
-  "description": "김호중 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "김호중",
+  "description": "김호중 출연·활동 정보 66건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/kimhojoong/",
   "start_url": "/fantrack/c/kimhojoong/",
   "scope": "/fantrack/c/kimhojoong/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/kimhojoong/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

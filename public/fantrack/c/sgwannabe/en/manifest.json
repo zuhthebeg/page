@@ -1,0 +1,24 @@
+{
+  "name": "SG Wannabe — FanTrack",
+  "short_name": "SG Wannabe",
+  "description": "15 works by SG Wannabe — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/sgwannabe/en/",
+  "start_url": "/fantrack/c/sgwannabe/en/",
+  "scope": "/fantrack/c/sgwannabe/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/sgwannabe/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

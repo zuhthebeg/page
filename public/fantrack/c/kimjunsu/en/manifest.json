@@ -1,0 +1,24 @@
+{
+  "name": "Kim Junsu — FanTrack",
+  "short_name": "Kim Junsu",
+  "description": "5 works by Kim Junsu — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/kimjunsu/en/",
+  "start_url": "/fantrack/c/kimjunsu/en/",
+  "scope": "/fantrack/c/kimjunsu/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kimjunsu/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

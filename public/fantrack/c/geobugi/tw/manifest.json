@@ -1,0 +1,24 @@
+{
+  "name": "Turtles — FanTrack",
+  "short_name": "Turtles",
+  "description": "Turtles 的出演與作品 26 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/geobugi/tw/",
+  "start_url": "/fantrack/c/geobugi/tw/",
+  "scope": "/fantrack/c/geobugi/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/geobugi/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

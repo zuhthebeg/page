@@ -1,0 +1,24 @@
+{
+  "name": "Song Dae-kwan — FanTrack",
+  "short_name": "Song Dae-kwan",
+  "description": "Song Dae-kwan 的出演與作品 30 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/songdaegwan/tw/",
+  "start_url": "/fantrack/c/songdaegwan/tw/",
+  "scope": "/fantrack/c/songdaegwan/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/songdaegwan/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

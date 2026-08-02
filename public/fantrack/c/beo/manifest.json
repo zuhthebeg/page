@@ -1,7 +1,7 @@
 {
   "name": "비오 — FanTrack",
-  "short_name": "비오 FanTrack",
-  "description": "비오 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "비오",
+  "description": "비오 출연·활동 정보 6건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/beo/",
   "start_url": "/fantrack/c/beo/",
   "scope": "/fantrack/c/beo/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/beo/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

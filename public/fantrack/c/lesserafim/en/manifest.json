@@ -1,0 +1,24 @@
+{
+  "name": "LE SSERAFIM — FanTrack",
+  "short_name": "LE SSERAFIM",
+  "description": "12 works by LE SSERAFIM — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/lesserafim/en/",
+  "start_url": "/fantrack/c/lesserafim/en/",
+  "scope": "/fantrack/c/lesserafim/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/lesserafim/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

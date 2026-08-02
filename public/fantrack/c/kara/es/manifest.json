@@ -1,0 +1,24 @@
+{
+  "name": "KARA — FanTrack",
+  "short_name": "KARA",
+  "description": "38 trabajos de KARA — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/kara/es/",
+  "start_url": "/fantrack/c/kara/es/",
+  "scope": "/fantrack/c/kara/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kara/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

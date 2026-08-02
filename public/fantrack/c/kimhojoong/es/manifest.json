@@ -1,0 +1,24 @@
+{
+  "name": "Kim Ho Joong — FanTrack",
+  "short_name": "Kim Ho Joong",
+  "description": "66 trabajos de Kim Ho Joong — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/kimhojoong/es/",
+  "start_url": "/fantrack/c/kimhojoong/es/",
+  "scope": "/fantrack/c/kimhojoong/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kimhojoong/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

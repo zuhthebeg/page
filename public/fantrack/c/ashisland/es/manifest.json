@@ -1,0 +1,24 @@
+{
+  "name": "ASH ISLAND — FanTrack",
+  "short_name": "ASH ISLAND",
+  "description": "14 trabajos de ASH ISLAND — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/ashisland/es/",
+  "start_url": "/fantrack/c/ashisland/es/",
+  "scope": "/fantrack/c/ashisland/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ashisland/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Girls — FanTrack",
+  "short_name": "Girls",
+  "description": "32 works by Girls — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/snsd/en/",
+  "start_url": "/fantrack/c/snsd/en/",
+  "scope": "/fantrack/c/snsd/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/snsd/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "GFRIEND — FanTrack",
+  "short_name": "GFRIEND",
+  "description": "82 works by GFRIEND — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/gfriend/en/",
+  "start_url": "/fantrack/c/gfriend/en/",
+  "scope": "/fantrack/c/gfriend/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/gfriend/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

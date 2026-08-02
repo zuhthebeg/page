@@ -1,0 +1,24 @@
+{
+  "name": "BIGBANG — FanTrack",
+  "short_name": "BIGBANG",
+  "description": "106 works by BIGBANG — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/bigbang/en/",
+  "start_url": "/fantrack/c/bigbang/en/",
+  "scope": "/fantrack/c/bigbang/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/bigbang/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

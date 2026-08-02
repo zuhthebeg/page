@@ -1,7 +1,7 @@
 {
   "name": "박재범 — FanTrack",
-  "short_name": "박재범 FanTrack",
-  "description": "박재범 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "박재범",
+  "description": "박재범 출연·활동 정보 71건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/jaypark/",
   "start_url": "/fantrack/c/jaypark/",
   "scope": "/fantrack/c/jaypark/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/jaypark/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

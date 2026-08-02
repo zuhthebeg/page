@@ -1,0 +1,24 @@
+{
+  "name": "Kep1er — FanTrack",
+  "short_name": "Kep1er",
+  "description": "16 works by Kep1er — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/kepler/en/",
+  "start_url": "/fantrack/c/kepler/en/",
+  "scope": "/fantrack/c/kepler/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kepler/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

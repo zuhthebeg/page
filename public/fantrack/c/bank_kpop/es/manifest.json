@@ -1,0 +1,24 @@
+{
+  "name": "BANK — FanTrack",
+  "short_name": "BANK",
+  "description": "6 trabajos de BANK — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/bank_kpop/es/",
+  "start_url": "/fantrack/c/bank_kpop/es/",
+  "scope": "/fantrack/c/bank_kpop/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/bank_kpop/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

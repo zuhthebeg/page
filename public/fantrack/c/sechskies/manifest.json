@@ -1,7 +1,7 @@
 {
   "name": "젝스키스 — FanTrack",
-  "short_name": "젝스키스 FanTrack",
-  "description": "젝스키스 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "젝스키스",
+  "description": "젝스키스 출연·활동 정보 12건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/sechskies/",
   "start_url": "/fantrack/c/sechskies/",
   "scope": "/fantrack/c/sechskies/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/sechskies/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

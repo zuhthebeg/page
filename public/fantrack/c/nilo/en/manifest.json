@@ -1,0 +1,24 @@
+{
+  "name": "Nilo — FanTrack",
+  "short_name": "Nilo",
+  "description": "5 works by Nilo — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/nilo/en/",
+  "start_url": "/fantrack/c/nilo/en/",
+  "scope": "/fantrack/c/nilo/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/nilo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

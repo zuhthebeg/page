@@ -1,0 +1,24 @@
+{
+  "name": "Jeong Eun Ji — FanTrack",
+  "short_name": "Jeong Eun Ji",
+  "description": "53 works by Jeong Eun Ji — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/jeongeunji/en/",
+  "start_url": "/fantrack/c/jeongeunji/en/",
+  "scope": "/fantrack/c/jeongeunji/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jeongeunji/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

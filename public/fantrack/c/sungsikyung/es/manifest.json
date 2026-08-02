@@ -1,0 +1,24 @@
+{
+  "name": "Sung Si Kyung — FanTrack",
+  "short_name": "Sung Si Kyung",
+  "description": "14 trabajos de Sung Si Kyung — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/sungsikyung/es/",
+  "start_url": "/fantrack/c/sungsikyung/es/",
+  "scope": "/fantrack/c/sungsikyung/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/sungsikyung/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

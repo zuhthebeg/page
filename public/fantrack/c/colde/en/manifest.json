@@ -1,0 +1,24 @@
+{
+  "name": "Colde — FanTrack",
+  "short_name": "Colde",
+  "description": "9 works by Colde — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/colde/en/",
+  "start_url": "/fantrack/c/colde/en/",
+  "scope": "/fantrack/c/colde/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/colde/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

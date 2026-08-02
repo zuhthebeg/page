@@ -1,0 +1,24 @@
+{
+  "name": "LYn — FanTrack",
+  "short_name": "LYn",
+  "description": "20 trabajos de LYn — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/lyn/es/",
+  "start_url": "/fantrack/c/lyn/es/",
+  "scope": "/fantrack/c/lyn/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/lyn/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

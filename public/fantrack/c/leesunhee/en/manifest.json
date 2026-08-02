@@ -1,0 +1,24 @@
+{
+  "name": "Lee Sun Hee — FanTrack",
+  "short_name": "Lee Sun Hee",
+  "description": "21 works by Lee Sun Hee — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/leesunhee/en/",
+  "start_url": "/fantrack/c/leesunhee/en/",
+  "scope": "/fantrack/c/leesunhee/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/leesunhee/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

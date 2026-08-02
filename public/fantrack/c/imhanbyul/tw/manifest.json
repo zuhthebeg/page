@@ -1,0 +1,24 @@
+{
+  "name": "Im Han Byul — FanTrack",
+  "short_name": "Im Han Byul",
+  "description": "Im Han Byul 的出演與作品 5 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/imhanbyul/tw/",
+  "start_url": "/fantrack/c/imhanbyul/tw/",
+  "scope": "/fantrack/c/imhanbyul/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/imhanbyul/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

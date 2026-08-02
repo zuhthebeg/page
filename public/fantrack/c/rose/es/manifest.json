@@ -1,0 +1,24 @@
+{
+  "name": "ROSÉ — FanTrack",
+  "short_name": "ROSÉ",
+  "description": "16 trabajos de ROSÉ — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/rose/es/",
+  "start_url": "/fantrack/c/rose/es/",
+  "scope": "/fantrack/c/rose/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/rose/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

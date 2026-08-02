@@ -1,7 +1,7 @@
 {
-  "name": "려욱(SUPER JUNIOR) — FanTrack",
-  "short_name": "려욱 FanTrack",
-  "description": "SUPER JUNIOR 려욱 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "name": "려욱 — FanTrack",
+  "short_name": "려욱",
+  "description": "려욱 출연·활동 정보 16건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/ryeowook/",
   "start_url": "/fantrack/c/ryeowook/",
   "scope": "/fantrack/c/ryeowook/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/ryeowook/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

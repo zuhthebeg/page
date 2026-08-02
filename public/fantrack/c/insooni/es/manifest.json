@@ -1,0 +1,24 @@
+{
+  "name": "Insooni — FanTrack",
+  "short_name": "Insooni",
+  "description": "15 trabajos de Insooni — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/insooni/es/",
+  "start_url": "/fantrack/c/insooni/es/",
+  "scope": "/fantrack/c/insooni/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/insooni/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

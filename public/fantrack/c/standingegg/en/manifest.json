@@ -1,0 +1,24 @@
+{
+  "name": "Standing Egg — FanTrack",
+  "short_name": "Standing Egg",
+  "description": "16 works by Standing Egg — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/standingegg/en/",
+  "start_url": "/fantrack/c/standingegg/en/",
+  "scope": "/fantrack/c/standingegg/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/standingegg/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

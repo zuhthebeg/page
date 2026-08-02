@@ -1,0 +1,24 @@
+{
+  "name": "ZEROBASEONE — FanTrack",
+  "short_name": "ZEROBASEONE",
+  "description": "15 works by ZEROBASEONE — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/zerobaseone/en/",
+  "start_url": "/fantrack/c/zerobaseone/en/",
+  "scope": "/fantrack/c/zerobaseone/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/zerobaseone/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "EVERGLOW — FanTrack",
+  "short_name": "EVERGLOW",
+  "description": "9 trabajos de EVERGLOW — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/everglow/es/",
+  "start_url": "/fantrack/c/everglow/es/",
+  "scope": "/fantrack/c/everglow/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/everglow/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

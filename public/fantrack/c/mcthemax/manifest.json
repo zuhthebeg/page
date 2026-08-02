@@ -1,7 +1,7 @@
 {
   "name": "엠씨더맥스 — FanTrack",
-  "short_name": "엠씨더맥스 FanTrack",
-  "description": "엠씨더맥스 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "엠씨더맥스",
+  "description": "엠씨더맥스 출연·활동 정보 17건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/mcthemax/",
   "start_url": "/fantrack/c/mcthemax/",
   "scope": "/fantrack/c/mcthemax/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/mcthemax/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

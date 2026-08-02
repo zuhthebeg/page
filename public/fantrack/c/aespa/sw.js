@@ -1,5 +1,5 @@
 // FanTrack (동해) 서비스워커 — 코드/API 응답은 네트워크 우선, 아이콘만 캐시 우선
-const CACHE = 'fantrack-aespa-v2';
+const CACHE = 'fantrack-aespa-ko-v3';
 const HEAVY_RE = /\.(svg|png)(\?|$)/;
 
 self.addEventListener('install', (e) => { self.skipWaiting(); });

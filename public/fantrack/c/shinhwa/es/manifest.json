@@ -1,0 +1,24 @@
+{
+  "name": "SHINHWA — FanTrack",
+  "short_name": "SHINHWA",
+  "description": "41 trabajos de SHINHWA — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/shinhwa/es/",
+  "start_url": "/fantrack/c/shinhwa/es/",
+  "scope": "/fantrack/c/shinhwa/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/shinhwa/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

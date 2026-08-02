@@ -1,0 +1,24 @@
+{
+  "name": "Peppertones — FanTrack",
+  "short_name": "Peppertones",
+  "description": "23 trabajos de Peppertones — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/peppertones/es/",
+  "start_url": "/fantrack/c/peppertones/es/",
+  "scope": "/fantrack/c/peppertones/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/peppertones/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

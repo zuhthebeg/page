@@ -1,0 +1,24 @@
+{
+  "name": "Oh Seung-geun — FanTrack",
+  "short_name": "Oh Seung-geun",
+  "description": "5 works by Oh Seung-geun — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/ohseunggun/en/",
+  "start_url": "/fantrack/c/ohseunggun/en/",
+  "scope": "/fantrack/c/ohseunggun/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ohseunggun/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

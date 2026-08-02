@@ -1,0 +1,24 @@
+{
+  "name": "Highlight — FanTrack",
+  "short_name": "Highlight",
+  "description": "12 trabajos de Highlight — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/highlight_kpop/es/",
+  "start_url": "/fantrack/c/highlight_kpop/es/",
+  "scope": "/fantrack/c/highlight_kpop/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/highlight_kpop/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

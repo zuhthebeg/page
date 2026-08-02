@@ -1,0 +1,24 @@
+{
+  "name": "Lee Seung Chul — FanTrack",
+  "short_name": "Lee Seung Chul",
+  "description": "31 works by Lee Seung Chul — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/leeseungchul/en/",
+  "start_url": "/fantrack/c/leeseungchul/en/",
+  "scope": "/fantrack/c/leeseungchul/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/leeseungchul/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

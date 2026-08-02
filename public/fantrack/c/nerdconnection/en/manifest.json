@@ -1,0 +1,24 @@
+{
+  "name": "Nerd Connection — FanTrack",
+  "short_name": "Nerd Connection",
+  "description": "45 works by Nerd Connection — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/nerdconnection/en/",
+  "start_url": "/fantrack/c/nerdconnection/en/",
+  "scope": "/fantrack/c/nerdconnection/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/nerdconnection/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

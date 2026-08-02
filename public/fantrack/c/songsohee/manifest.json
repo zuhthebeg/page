@@ -1,7 +1,7 @@
 {
   "name": "송소희 — FanTrack",
-  "short_name": "송소희 FanTrack",
-  "description": "송소희 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "송소희",
+  "description": "송소희 출연·활동 정보 12건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/songsohee/",
   "start_url": "/fantrack/c/songsohee/",
   "scope": "/fantrack/c/songsohee/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/songsohee/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

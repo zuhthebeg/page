@@ -1,7 +1,7 @@
 {
   "name": "QWER — FanTrack",
-  "short_name": "QWER FanTrack",
-  "description": "QWER 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "QWER",
+  "description": "QWER 출연·활동 정보 12건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/qwer/",
   "start_url": "/fantrack/c/qwer/",
   "scope": "/fantrack/c/qwer/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/qwer/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

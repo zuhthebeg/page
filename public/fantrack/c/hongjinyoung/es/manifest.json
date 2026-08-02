@@ -1,0 +1,24 @@
+{
+  "name": "Hong Jin-young — FanTrack",
+  "short_name": "Hong Jin-young",
+  "description": "47 trabajos de Hong Jin-young — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/hongjinyoung/es/",
+  "start_url": "/fantrack/c/hongjinyoung/es/",
+  "scope": "/fantrack/c/hongjinyoung/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/hongjinyoung/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

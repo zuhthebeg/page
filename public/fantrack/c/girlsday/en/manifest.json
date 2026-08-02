@@ -1,0 +1,24 @@
+{
+  "name": "Girl — FanTrack",
+  "short_name": "Girl",
+  "description": "14 works by Girl — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/girlsday/en/",
+  "start_url": "/fantrack/c/girlsday/en/",
+  "scope": "/fantrack/c/girlsday/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/girlsday/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

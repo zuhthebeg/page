@@ -1,0 +1,24 @@
+{
+  "name": "Na Hoon-a — FanTrack",
+  "short_name": "Na Hoon-a",
+  "description": "Na Hoon-a 的出演與作品 13 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/nahoonah/tw/",
+  "start_url": "/fantrack/c/nahoonah/tw/",
+  "scope": "/fantrack/c/nahoonah/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/nahoonah/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

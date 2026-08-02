@@ -1,0 +1,24 @@
+{
+  "name": "SEVENTEEN — FanTrack",
+  "short_name": "SEVENTEEN",
+  "description": "103 trabajos de SEVENTEEN — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/seventeen/es/",
+  "start_url": "/fantrack/c/seventeen/es/",
+  "scope": "/fantrack/c/seventeen/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/seventeen/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

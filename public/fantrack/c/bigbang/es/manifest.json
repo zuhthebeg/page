@@ -1,0 +1,24 @@
+{
+  "name": "BIGBANG — FanTrack",
+  "short_name": "BIGBANG",
+  "description": "106 trabajos de BIGBANG — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/bigbang/es/",
+  "start_url": "/fantrack/c/bigbang/es/",
+  "scope": "/fantrack/c/bigbang/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/bigbang/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

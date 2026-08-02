@@ -1,0 +1,24 @@
+{
+  "name": "Ben — FanTrack",
+  "short_name": "Ben",
+  "description": "Ben 的出演與作品 11 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/ben/tw/",
+  "start_url": "/fantrack/c/ben/tw/",
+  "scope": "/fantrack/c/ben/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ben/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

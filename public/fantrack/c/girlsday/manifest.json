@@ -1,7 +1,7 @@
 {
   "name": "걸스데이 — FanTrack",
-  "short_name": "걸스데이 FanTrack",
-  "description": "걸스데이 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "걸스데이",
+  "description": "걸스데이 출연·활동 정보 14건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/girlsday/",
   "start_url": "/fantrack/c/girlsday/",
   "scope": "/fantrack/c/girlsday/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/girlsday/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

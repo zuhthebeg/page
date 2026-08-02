@@ -1,7 +1,7 @@
 {
   "name": "제니 — FanTrack",
-  "short_name": "제니 FanTrack",
-  "description": "제니 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "제니",
+  "description": "제니 출연·활동 정보 6건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/jennie/",
   "start_url": "/fantrack/c/jennie/",
   "scope": "/fantrack/c/jennie/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/jennie/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

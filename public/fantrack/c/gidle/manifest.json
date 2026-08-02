@@ -1,7 +1,7 @@
 {
   "name": "(여자)아이들 — FanTrack",
-  "short_name": "(여자)아이들 FanTrack",
-  "description": "(여자)아이들 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "(여자)아이들",
+  "description": "(여자)아이들 출연·활동 정보 20건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/gidle/",
   "start_url": "/fantrack/c/gidle/",
   "scope": "/fantrack/c/gidle/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/gidle/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

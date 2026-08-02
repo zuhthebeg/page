@@ -1,7 +1,7 @@
 {
   "name": "부활 — FanTrack",
-  "short_name": "부활 FanTrack",
-  "description": "부활 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "부활",
+  "description": "부활 출연·활동 정보 19건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/buhwal/",
   "start_url": "/fantrack/c/buhwal/",
   "scope": "/fantrack/c/buhwal/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/buhwal/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

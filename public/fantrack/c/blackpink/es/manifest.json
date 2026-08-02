@@ -1,0 +1,24 @@
+{
+  "name": "BLACKPINK — FanTrack",
+  "short_name": "BLACKPINK",
+  "description": "33 trabajos de BLACKPINK — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/blackpink/es/",
+  "start_url": "/fantrack/c/blackpink/es/",
+  "scope": "/fantrack/c/blackpink/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/blackpink/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

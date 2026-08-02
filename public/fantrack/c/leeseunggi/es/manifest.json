@@ -1,0 +1,24 @@
+{
+  "name": "Lee Seung Gi — FanTrack",
+  "short_name": "Lee Seung Gi",
+  "description": "63 trabajos de Lee Seung Gi — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/leeseunggi/es/",
+  "start_url": "/fantrack/c/leeseunggi/es/",
+  "scope": "/fantrack/c/leeseunggi/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/leeseunggi/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "December — FanTrack",
+  "short_name": "December",
+  "description": "13 trabajos de December — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/december/es/",
+  "start_url": "/fantrack/c/december/es/",
+  "scope": "/fantrack/c/december/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/december/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

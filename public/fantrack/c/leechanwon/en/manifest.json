@@ -1,0 +1,24 @@
+{
+  "name": "Lee Chan Won — FanTrack",
+  "short_name": "Lee Chan Won",
+  "description": "12 works by Lee Chan Won — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/leechanwon/en/",
+  "start_url": "/fantrack/c/leechanwon/en/",
+  "scope": "/fantrack/c/leechanwon/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/leechanwon/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

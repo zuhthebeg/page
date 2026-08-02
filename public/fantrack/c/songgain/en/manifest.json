@@ -1,0 +1,24 @@
+{
+  "name": "Song Ga In — FanTrack",
+  "short_name": "Song Ga In",
+  "description": "8 works by Song Ga In — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/songgain/en/",
+  "start_url": "/fantrack/c/songgain/en/",
+  "scope": "/fantrack/c/songgain/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/songgain/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

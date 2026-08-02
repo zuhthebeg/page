@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SS501 — FanTrack</title>
+<meta name="description" content="63 works by SS501 — TV shows, albums and concerts in one place. FanTrack">
+<link rel="canonical" href="https://page.cocy.io/fantrack/c/ss501/en/">
+<meta name="theme-color" content="#141221">
+<link rel="manifest" href="/fantrack/c/ss501/en/manifest.json">
+<script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
+<script src="/fantrack/i18n.js?v=20260802es3"></script>
+<style>
+:root{
+  --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
+  --lime:#c6f24e; --amber:#f0b43c; --line:#3a3458;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--txt);}
+.wrap{max-width:480px;margin:0 auto;padding:16px}
+.profile{background:var(--panel);border-radius:16px;padding:20px;text-align:center;margin-bottom:16px}
+.avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;background:var(--panel2);margin-bottom:10px}
+.name{font-size:20px;font-weight:800}
+.sub{font-size:13px;color:var(--mut);margin-top:2px}
+.badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.badge{background:var(--panel2);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700}
+.sns{display:flex;gap:10px;justify-content:center;margin-top:12px}
+.sns a{color:var(--mut);text-decoration:none;font-size:12px;background:var(--panel2);padding:6px 10px;border-radius:8px}
+.myphoto-btn{margin-top:10px;font-size:11px;color:var(--mut);background:none;border:1px dashed var(--line);border-radius:8px;padding:5px 10px;cursor:pointer}
+
+.mode-unit{border-radius:10px;overflow:hidden;box-shadow:0 3px 0 #0f0d1c;margin-bottom:14px}
+.mode-unit:active{transform:translateY(2px);box-shadow:0 1px 0 #0f0d1c}
+.mode-badge{display:block;text-align:center;font-size:11px;font-weight:800;color:var(--bg);background:var(--lime);padding:7px 8px}
+.mode-toggle{display:block;width:100%;border:none;background:var(--panel2);color:var(--txt);font-size:13px;font-weight:800;padding:10px 8px;cursor:pointer}
+
+.filters{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;-webkit-overflow-scrolling:touch}
+.filters::-webkit-scrollbar{display:none}
+.filter-chip{flex-shrink:0;background:var(--panel2);border:1px solid transparent;border-radius:20px;padding:7px 13px;font-size:12px;font-weight:700;color:var(--mut);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.filter-chip.on{background:var(--lime);color:var(--bg);border-color:var(--lime)}
+
+.card{background:var(--panel);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center}
+.card .type{font-size:16px;flex-shrink:0;width:22px;text-align:center}
+.card .body{flex:1;min-width:0}
+.card .title{font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card .meta{font-size:11px;color:var(--mut);margin-top:2px}
+.card .note{font-size:10.5px;color:var(--amber);margin-top:2px}
+.card .vote{background:var(--panel2);border:none;border-radius:8px;padding:8px 10px;font-size:12px;color:var(--txt);cursor:pointer;flex-shrink:0}
+.card .vote.on{background:var(--lime);color:var(--bg);font-weight:800}
+.card .upcoming{color:var(--amber);font-weight:800}
+.card .searchlink{opacity:.7;font-style:italic}
+.card a{color:inherit;text-decoration:none;display:flex;gap:10px;align-items:center;flex:1;min-width:0}
+
+.gate{position:fixed;inset:0;background:rgba(10,9,20,.9);display:flex;align-items:center;justify-content:center;z-index:50}
+.gate.hide{display:none}
+.gate .box{background:var(--panel);border-radius:16px;padding:24px;text-align:center;max-width:300px}
+#gbtn{margin-top:14px;display:flex;justify-content:center}
+.loading{text-align:center;color:var(--mut);padding:30px;font-size:13px}
+.topbar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.home{flex-shrink:0;color:var(--mut);text-decoration:none;font-size:11.5px;font-weight:700;background:var(--panel2);border-radius:20px;padding:6px 11px}
+.langbar{display:flex;gap:6px;justify-content:flex-end;flex:1;margin-bottom:0}
+.card.watched{opacity:.62}
+.card.watched .title{text-decoration:line-through;text-decoration-color:var(--mut)}
+.card .seen{display:inline-block;font-size:9.5px;font-weight:800;color:var(--bg);background:var(--mut);border-radius:4px;padding:1px 5px;margin-right:5px;vertical-align:1px}
+.wtoggle{display:flex;justify-content:flex-end;margin-bottom:8px}
+.wtoggle button{background:var(--panel2);border:1px solid transparent;color:var(--mut);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;cursor:pointer}
+.wtoggle button.on{background:var(--amber);color:var(--bg);border-color:var(--amber)}
+.lang-btn{background:var(--panel2);border:1px solid transparent;color:var(--mut);border-radius:20px;padding:5px 12px;font-size:11.5px;font-weight:700;cursor:pointer}
+.lang-btn.on{background:var(--lime);color:var(--bg);border-color:var(--lime)}
+.sheet{position:fixed;inset:0;background:rgba(10,9,20,.75);display:flex;align-items:flex-end;justify-content:center;z-index:60}
+.sheet.hide{display:none}
+.sheet .box{background:var(--panel);border-radius:16px 16px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));width:100%;max-width:480px}
+.sheet .st{font-size:11px;color:var(--mut);font-weight:700}
+.sheet .sh{font-size:15px;font-weight:800;margin:4px 0 2px;line-height:1.35}
+.sheet .sm{font-size:11.5px;color:var(--mut);margin-bottom:14px}
+.sheet .act{display:block;width:100%;border:none;border-radius:10px;padding:13px;font-size:13.5px;font-weight:800;cursor:pointer;margin-bottom:8px;text-align:center;text-decoration:none;box-sizing:border-box}
+.sheet .act.primary{background:var(--lime);color:var(--bg)}
+.sheet .act.second{background:var(--panel2);color:var(--txt)}
+.sheet .act.trip{background:var(--panel2);color:var(--lime);border:1px solid var(--lime)}
+.sheet .act[disabled]{opacity:.55;cursor:default}
+.sheet .hint{font-size:10.5px;color:var(--mut);text-align:center;margin:-2px 0 10px}
+.sheet .cancel{background:none;border:none;color:var(--mut);font-size:12px;cursor:pointer;display:block;width:100%;padding:8px}
+</style>
+<link rel="alternate" hreflang="ko" href="https://page.cocy.io/fantrack/c/ss501/">
+<link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/ss501/en/">
+<link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/ss501/tw/">
+<link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/ss501/es/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"SS501","alternateName":["SS501"],"url":"https://page.cocy.io/fantrack/c/ss501/en/","inLanguage":"en","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"DSP 미디어"},"foundingDate":"2005-06-08","subjectOf":[{"@type":"MusicAlbum","name":"Destination","datePublished":"2010"},{"@type":"TVSeries","name":"인생극장 2010","datePublished":"2010"},{"@type":"TVSeries","name":"SS501 형준, 프로게이머 되다 1~10회","datePublished":"2010"},{"@type":"TVSeries","name":"스타일매거진 - What Women Want 1~11회","datePublished":"2010"},{"@type":"TVSeries","name":"오밤중의 아이들","datePublished":"2010"},{"@type":"TVSeries","name":"구루맨 테이블","datePublished":"2010"},{"@type":"TVSeries","name":"열중 STADIUM","datePublished":"2010"},{"@type":"TVSeries","name":"봄의 크리스마스 파티","datePublished":"2010"},{"@type":"MusicAlbum","name":"All My Love","datePublished":"2009"},{"@type":"MusicAlbum","name":"SS501 Collection","datePublished":"2009"},{"@type":"MusicAlbum","name":"Rebirth","datePublished":"2009"},{"@type":"TVSeries","name":"식신원정대","datePublished":"2009"},{"@type":"TVSeries","name":"The M","datePublished":"2009"},{"@type":"TVSeries","name":"애니콜 햅틱미션","datePublished":"2009"},{"@type":"TVSeries","name":"SS501 로맨틱 스카이","datePublished":"2009"},{"@type":"TVSeries","name":"SS501 미국원정기 - SS501 in USA","datePublished":"2009"},{"@type":"TVSeries","name":"찾아라!녹색황금","datePublished":"2009"},{"@type":"TVSeries","name":"김정은의 초콜릿","datePublished":"2009"},{"@type":"TVSeries","name":"김형준의 뮤직하이","datePublished":"2009"},{"@type":"TVSeries","name":"초난강2","datePublished":"2009"},{"@type":"TVSeries","name":"오늘의 꽃남","datePublished":"2009"},{"@type":"TVSeries","name":"SS501 Mini Concert in Japan","datePublished":"2009"},{"@type":"TVSeries","name":"SS501 Special Stage 2009","datePublished":"2009"},{"@type":"TVSeries","name":"SS501 PERSONA in japan BackStage","datePublished":"2009"},{"@type":"MusicAlbum","name":"Deja Vu","datePublished":"2008"},{"@type":"MusicAlbum","name":"Find","datePublished":"2008"},{"@type":"MusicAlbum","name":"SS501 스페셜 앨범","datePublished":"2008"},{"@type":"MusicAlbum","name":"U R Man","datePublished":"2008"},{"@type":"TVSeries","name":"만원의 행복 - 김규종편","datePublished":"2008"},{"@type":"TVSeries","name":"Ch27. 알부라리","datePublished":"2008"},{"@type":"TVSeries","name":"일요일일요일밤에-우리결혼했어요","datePublished":"2008"},{"@type":"TVSeries","name":"냄비 뜨거!","datePublished":"2008"},{"@type":"TVSeries","name":"메자마시","datePublished":"2008"},{"@type":"MusicAlbum","name":"SS501","datePublished":"2007"},{"@type":"TVSeries","name":"아이돌월드","datePublished":"2007"},{"@type":"TVSeries","name":"느낌표 - 74434","datePublished":"2007"},{"@type":"TVSeries","name":"호텔리어 7회","datePublished":"2007"},{"@type":"TVSeries","name":"SS501 the mission 1~13회","datePublished":"2007"},{"@type":"TVSeries","name":"hey! hey! hey!","datePublished":"2007"},{"@type":"TVSeries","name":"한글 강좌","datePublished":"2007"},{"@type":"TVSeries","name":"스릴있는밤 이케맨 합중국","datePublished":"2007"},{"@type":"MusicAlbum","name":"S.T 01 NOW","datePublished":"2006"},{"@type":"TVSeries","name":"강력추천토요일-소년탐구생활","datePublished":"2006"},{"@type":"TVSeries","name":"SS501의 스토커","datePublished":"2006"},{"@type":"TVSeries","name":"강력추천토요일-키워줘서 고마워","datePublished":"2006"},{"@type":"TVSeries","name":"쇼! 음악중심","datePublished":"2006"},{"@type":"TVSeries","name":"일본 점령기 1~11회","datePublished":"2006"},{"@type":"TVSeries","name":"SS501의 일본 팬미팅 1~5회","datePublished":"2006"},{"@type":"TVSeries","name":"미국 점령기 1~30회","datePublished":"2006"},{"@type":"TVSeries","name":"SS501의 오사카 점령기 1~28회","datePublished":"2006"},{"@type":"TVSeries","name":"다섯남자의 작은 여행 1~6회","datePublished":"2006"},{"@type":"TVSeries","name":"SS501의 SOS","datePublished":"2006"},{"@type":"TVSeries","name":"Hello 쳇","datePublished":"2006"},{"@type":"TVSeries","name":"SS501의 영스트리트","datePublished":"2006"},{"@type":"MusicAlbum","name":"Snow Prince","datePublished":"2005"},{"@type":"TVSeries","name":"SS501의 M!PICK 1~66화","datePublished":"2005"},{"@type":"TVSeries","name":"강력추천토요일-깨워줘서 고마워","datePublished":"2005"},{"@type":"TVSeries","name":"M Countdown","datePublished":"2005"},{"@type":"MusicAlbum","name":"Warning"},{"@type":"MusicRecording","name":"Love Ya","url":"https://www.youtube.com/watch?v=hcfsjEABenY"}]}</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><a class="home" id="homeLink" href="../../"></a><div class="langbar" id="langbar"></div></div>
+  <div class="profile" id="profile"><div class="loading"></div></div>
+  <div class="mode-unit" id="sortUnit" style="display:none">
+    <span class="mode-badge" id="sortBadge"></span>
+    <button class="mode-toggle" id="sortBtn"></button>
+  </div>
+  <div class="filters" id="filters" style="display:none"></div>
+  <div class="wtoggle" id="wtoggle" style="display:none"><button id="wtoggleBtn"></button></div>
+  <div id="contentList">
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20Destination" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">Destination</div><div class="meta">Album · 2010</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EC%9D%B8%EC%83%9D%EA%B7%B9%EC%9E%A5%202010" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">인생극장 2010</div><div class="meta">TV · 2010 · MBC every1</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%20%ED%98%95%EC%A4%80%2C%20%ED%94%84%EB%A1%9C%EA%B2%8C%EC%9D%B4%EB%A8%B8%20%EB%90%98%EB%8B%A4%201~10%ED%9A%8C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">SS501 형준, 프로게이머 되다 1~10회</div><div class="meta">TV · 2010 · MBC GAME</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EC%8A%A4%ED%83%80%EC%9D%BC%EB%A7%A4%EA%B1%B0%EC%A7%84%20-%20What%20Women%20Want%201~11%ED%9A%8C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">스타일매거진 - What Women Want 1~11회</div><div class="meta">TV · 2010</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EC%98%A4%EB%B0%A4%EC%A4%91%EC%9D%98%20%EC%95%84%EC%9D%B4%EB%93%A4" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">오밤중의 아이들</div><div class="meta">TV · 2010 · MBC every1</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EA%B5%AC%EB%A3%A8%EB%A7%A8%20%ED%85%8C%EC%9D%B4%EB%B8%94" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">구루맨 테이블</div><div class="meta">TV · 2010 · TV</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EC%97%B4%EC%A4%91%20STADIUM" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">열중 STADIUM</div><div class="meta">TV · 2010 · NHK BS2</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EB%B4%84%EC%9D%98%20%ED%81%AC%EB%A6%AC%EC%8A%A4%EB%A7%88%EC%8A%A4%20%ED%8C%8C%ED%8B%B0" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">봄의 크리스마스 파티</div><div class="meta">TV · 2010 · KNTV</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20All%20My%20Love" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">All My Love</div><div class="meta">Album · 2009</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%20Collection" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">SS501 Collection</div><div class="meta">Album · 2009</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20Rebirth" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">Rebirth</div><div class="meta">Album · 2009</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EC%8B%9D%EC%8B%A0%EC%9B%90%EC%A0%95%EB%8C%80" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">식신원정대</div><div class="meta">TV · 2009 · MBC every1</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20The%20M" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">The M</div><div class="meta">TV · 2009 · MTV</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EC%95%A0%EB%8B%88%EC%BD%9C%20%ED%96%85%ED%8B%B1%EB%AF%B8%EC%85%98" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">애니콜 햅틱미션</div><div class="meta">TV · 2009 · Mnet</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%20%EB%A1%9C%EB%A7%A8%ED%8B%B1%20%EC%8A%A4%EC%B9%B4%EC%9D%B4" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">SS501 로맨틱 스카이</div><div class="meta">TV · 2009 · Mnet</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%20%EB%AF%B8%EA%B5%AD%EC%9B%90%EC%A0%95%EA%B8%B0%20-%20SS501%20in%20USA" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">SS501 미국원정기 - SS501 in USA</div><div class="meta">TV · 2009 · TBS</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EC%B0%BE%EC%95%84%EB%9D%BC!%EB%85%B9%EC%83%89%ED%99%A9%EA%B8%88" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">찾아라!녹색황금</div><div class="meta">TV · 2009 · SBS</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EA%B9%80%EC%A0%95%EC%9D%80%EC%9D%98%20%EC%B4%88%EC%BD%9C%EB%A6%BF" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">김정은의 초콜릿</div><div class="meta">TV · 2009 · SBS</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EA%B9%80%ED%98%95%EC%A4%80%EC%9D%98%20%EB%AE%A4%EC%A7%81%ED%95%98%EC%9D%B4" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">김형준의 뮤직하이</div><div class="meta">TV · 2009</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EC%B4%88%EB%82%9C%EA%B0%952" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">초난강2</div><div class="meta">TV · 2009 · TV</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EC%98%A4%EB%8A%98%EC%9D%98%20%EA%BD%83%EB%82%A8" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">오늘의 꽃남</div><div class="meta">TV · 2009 · Mnet Japan</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%20Mini%20Concert%20in%20Japan" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">SS501 Mini Concert in Japan</div><div class="meta">TV · 2009 · Mnet Japan</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%20Special%20Stage%202009" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">SS501 Special Stage 2009</div><div class="meta">TV · 2009 · Mnet Japan</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%20PERSONA%20in%20japan%20BackStage" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">SS501 PERSONA in japan BackStage</div><div class="meta">TV · 2009 · Mnet japan</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20Deja%20Vu" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">Deja Vu</div><div class="meta">Album · 2008</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20Find" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">Find</div><div class="meta">Album · 2008</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%20%EC%8A%A4%ED%8E%98%EC%85%9C%20%EC%95%A8%EB%B2%94" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">SS501 스페셜 앨범</div><div class="meta">Album · 2008</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20U%20R%20Man" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">U R Man</div><div class="meta">Album · 2008</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EB%A7%8C%EC%9B%90%EC%9D%98%20%ED%96%89%EB%B3%B5%20-%20%EA%B9%80%EA%B7%9C%EC%A2%85%ED%8E%B8" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">만원의 행복 - 김규종편</div><div class="meta">TV · 2008 · MBC</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20Ch27.%20%EC%95%8C%EB%B6%80%EB%9D%BC%EB%A6%AC" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">Ch27. 알부라리</div><div class="meta">TV · 2008 · Mnet</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EC%9D%BC%EC%9A%94%EC%9D%BC%EC%9D%BC%EC%9A%94%EC%9D%BC%EB%B0%A4%EC%97%90-%EC%9A%B0%EB%A6%AC%EA%B2%B0%ED%98%BC%ED%96%88%EC%96%B4%EC%9A%94" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">일요일일요일밤에-우리결혼했어요</div><div class="meta">TV · 2008 · MBC</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EB%83%84%EB%B9%84%20%EB%9C%A8%EA%B1%B0!" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">냄비 뜨거!</div><div class="meta">TV · 2008 · TV</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EB%A9%94%EC%9E%90%EB%A7%88%EC%8B%9C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">메자마시</div><div class="meta">TV · 2008 · TV</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">SS501</div><div class="meta">Album · 2007</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EC%95%84%EC%9D%B4%EB%8F%8C%EC%9B%94%EB%93%9C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">아이돌월드</div><div class="meta">TV · 2007 · KM</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EB%8A%90%EB%82%8C%ED%91%9C%20-%2074434" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">느낌표 - 74434</div><div class="meta">TV · 2007 · MBC</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%ED%98%B8%ED%85%94%EB%A6%AC%EC%96%B4%207%ED%9A%8C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">호텔리어 7회</div><div class="meta">TV · 2007</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%20the%20mission%201~13%ED%9A%8C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">SS501 the mission 1~13회</div><div class="meta">TV · 2007 · Mnet Japan</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20hey!%20hey!%20hey!" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">hey! hey! hey!</div><div class="meta">TV · 2007 · TV</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%ED%95%9C%EA%B8%80%20%EA%B0%95%EC%A2%8C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">한글 강좌</div><div class="meta">TV · 2007 · NHK</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EC%8A%A4%EB%A6%B4%EC%9E%88%EB%8A%94%EB%B0%A4%20%EC%9D%B4%EC%BC%80%EB%A7%A8%20%ED%95%A9%EC%A4%91%EA%B5%AD" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">스릴있는밤 이케맨 합중국</div><div class="meta">TV · 2007 · TV</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20S.T%2001%20NOW" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">S.T 01 NOW</div><div class="meta">Album · 2006</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EA%B0%95%EB%A0%A5%EC%B6%94%EC%B2%9C%ED%86%A0%EC%9A%94%EC%9D%BC-%EC%86%8C%EB%85%84%ED%83%90%EA%B5%AC%EC%83%9D%ED%99%9C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">강력추천토요일-소년탐구생활</div><div class="meta">TV · 2006 · MBC</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%EC%9D%98%20%EC%8A%A4%ED%86%A0%EC%BB%A4" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">SS501의 스토커</div><div class="meta">TV · 2006 · Mnet</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EA%B0%95%EB%A0%A5%EC%B6%94%EC%B2%9C%ED%86%A0%EC%9A%94%EC%9D%BC-%ED%82%A4%EC%9B%8C%EC%A4%98%EC%84%9C%20%EA%B3%A0%EB%A7%88%EC%9B%8C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">강력추천토요일-키워줘서 고마워</div><div class="meta">TV · 2006 · MBC</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EC%87%BC!%20%EC%9D%8C%EC%95%85%EC%A4%91%EC%8B%AC" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">쇼! 음악중심</div><div class="meta">TV · 2006 · MBC</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EC%9D%BC%EB%B3%B8%20%EC%A0%90%EB%A0%B9%EA%B8%B0%201~11%ED%9A%8C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">일본 점령기 1~11회</div><div class="meta">TV · 2006 · KM</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%EC%9D%98%20%EC%9D%BC%EB%B3%B8%20%ED%8C%AC%EB%AF%B8%ED%8C%85%201~5%ED%9A%8C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">SS501의 일본 팬미팅 1~5회</div><div class="meta">TV · 2006 · Mnet</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EB%AF%B8%EA%B5%AD%20%EC%A0%90%EB%A0%B9%EA%B8%B0%201~30%ED%9A%8C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">미국 점령기 1~30회</div><div class="meta">TV · 2006 · Mnet</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%EC%9D%98%20%EC%98%A4%EC%82%AC%EC%B9%B4%20%EC%A0%90%EB%A0%B9%EA%B8%B0%201~28%ED%9A%8C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">SS501의 오사카 점령기 1~28회</div><div class="meta">TV · 2006 · Mnet</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EB%8B%A4%EC%84%AF%EB%82%A8%EC%9E%90%EC%9D%98%20%EC%9E%91%EC%9D%80%20%EC%97%AC%ED%96%89%201~6%ED%9A%8C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">다섯남자의 작은 여행 1~6회</div><div class="meta">TV · 2006 · Mnet</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%EC%9D%98%20SOS" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">SS501의 SOS</div><div class="meta">TV · 2006 · Mnet</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20Hello%20%EC%B3%87" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">Hello 쳇</div><div class="meta">TV · 2006 · Mnet</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%EC%9D%98%20%EC%98%81%EC%8A%A4%ED%8A%B8%EB%A6%AC%ED%8A%B8" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">SS501의 영스트리트</div><div class="meta">TV · 2006</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20Snow%20Prince" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">Snow Prince</div><div class="meta">Album · 2005</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20SS501%EC%9D%98%20M!PICK%201~66%ED%99%94" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">SS501의 M!PICK 1~66화</div><div class="meta">TV · 2005 · KM</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20%EA%B0%95%EB%A0%A5%EC%B6%94%EC%B2%9C%ED%86%A0%EC%9A%94%EC%9D%BC-%EA%B9%A8%EC%9B%8C%EC%A4%98%EC%84%9C%20%EA%B3%A0%EB%A7%88%EC%9B%8C" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">강력추천토요일-깨워줘서 고마워</div><div class="meta">TV · 2005 · MBC</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20M%20Countdown" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">M Countdown</div><div class="meta">TV · 2005 · Mnet</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=SS501%20Warning" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">Warning</div><div class="meta">Album</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/watch?v=hcfsjEABenY" target="_blank" rel="noreferrer"><span class="type">▶️</span><span class="body"><div class="title">Love Ya</div><div class="meta">YouTube · YouTube</div></span></a></div>
+</div>
+</div>
+
+<div class="sheet hide" id="sheet">
+  <div class="box">
+    <div class="st" id="sheetKicker"></div>
+    <div class="sh" id="sheetTitle"></div>
+    <div class="sm" id="sheetMeta"></div>
+    <a class="act primary" id="sheetGo" target="_blank" rel="noreferrer"></a>
+    <div class="hint" id="sheetNoLink" style="display:none"></div>
+    <button class="act second" id="sheetLog"></button>
+    <a class="act trip" id="sheetTrip" target="_blank" rel="noreferrer"></a>
+    <div class="hint" id="sheetTripHint"></div>
+    <button class="act second" id="sheetSeen"></button>
+    <div class="hint" id="sheetHint"></div>
+    <button class="cancel" id="sheetCancel"></button>
+  </div>
+</div>
+
+<div class="gate hide" id="gate">
+  <div class="box">
+    <div style="font-weight:800;margin-bottom:6px" id="gateTitle"></div>
+    <div id="gbtn"></div>
+    <button id="gateClose" onclick="document.getElementById('gate').classList.add('hide')" style="margin-top:10px;background:none;border:none;color:var(--mut);font-size:12px;cursor:pointer"></button>
+  </div>
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+const SLUG = 'ss501';
+const $ = id => document.getElementById(id);
+const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched, tripUrl, isPastShow } = window.FT_I18N;
+document.documentElement.lang = htmlLang();
+bindSwitcher($('langbar'));
+$('homeLink').textContent = T.home;
+$('homeLink').href = '../../?lang=' + LANG;
+$('gateTitle').textContent = T.gateTitle;
+$('gateClose').textContent = T.close;
+$('profile').querySelector('.loading').textContent = T.loading;
+const GCID = '315180918727-3d9rfmpa36r365qna9smdsvrod441jhd.apps.googleusercontent.com';
+
+function isExpired(tok){ try{ const p=JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); return !p.exp || (p.exp*1000 < Date.now()); }catch{return true;} }
+function getToken(){ const t=localStorage.getItem('page_id_token'); return (t && !isExpired(t)) ? t : null; }
+function onCred(resp){ localStorage.setItem('page_id_token', resp.credential); $('gate').classList.add('hide'); render(); }
+function renderLogin(){
+  if(window.google && google.accounts && google.accounts.id){
+    google.accounts.id.initialize({client_id:GCID, callback:onCred});
+    const el = $('gbtn'); el.innerHTML='';
+    google.accounts.id.renderButton(el, {theme:'filled_black', size:'large', text:'continue_with', shape:'pill'});
+  } else setTimeout(renderLogin, 300);
+}
+function requireLogin(){ $('gate').classList.remove('hide'); renderLogin(); }
+
+// 8장: 내 최애 사진 — 서버 업로드 없이 IndexedDB 로컬 저장만
+const DB_NAME='fantrack_photos', STORE='photos';
+function idbOpen(){ return new Promise((res,rej)=>{ const r=indexedDB.open(DB_NAME,1); r.onupgradeneeded=()=>r.result.createObjectStore(STORE); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+async function idbGet(key){ const db=await idbOpen(); return new Promise(res=>{ const tx=db.transaction(STORE,'readonly'); const rq=tx.objectStore(STORE).get(key); rq.onsuccess=()=>res(rq.result||null); rq.onerror=()=>res(null); }); }
+async function idbSet(key, blob){ const db=await idbOpen(); return new Promise(res=>{ const tx=db.transaction(STORE,'readwrite'); tx.objectStore(STORE).put(blob,key); tx.oncomplete=()=>res(); }); }
+
+let SORT = 'interest'; // interest | year
+let DATA = null;
+let TYPE_FILTER = 'all';
+let HIDE_WATCHED = false;
+
+const TYPE_ICON = { broadcast:'📺', radio:'📻', youtube:'▶️', ott:'🎬', film:'🎞️', cf:'📣', album:'💿', concert:'🎤' };
+const TYPE_LABEL = T.types;
+
+function fmtDate(c){
+  if(c.air_date) return c.air_date;
+  if(c.year) return c.year + T.yearSuffix;
+  return null;
+}
+function fmtMeta(c){
+  const parts = [];
+  if(c.upcoming) parts.push('<span class="upcoming">'+T.upcoming+'</span>');
+  else { const d = fmtDate(c); if(d) parts.push(d); }
+  const plat = pick(c,'platform'); if(plat) parts.push(plat);
+  if(c.link_region_note==='kr_only') parts.push(T.krOnly);
+  return parts.join(' · ');
+}
+
+function renderFilters(){
+  const types = ['all', ...new Set(DATA.content.map(c=>c.type))];
+  $('filters').innerHTML = types.map(t =>
+    `<button class="filter-chip${TYPE_FILTER===t?' on':''}" data-t="${t}">${t==='all'?'':((TYPE_ICON[t]||'')+' ')}${TYPE_LABEL[t]||t}</button>`
+  ).join('');
+  $('filters').style.display = 'flex';
+  document.querySelectorAll('.filter-chip').forEach(b => b.onclick = () => { TYPE_FILTER = b.dataset.t; renderFilters(); renderContent(); });
+}
+
+// 링크가 없는 항목(앨범·콘서트 등)은 유튜브 검색으로라도 넘어갈 수 있게 한다.
+// 저장하지 않고 렌더 시점에 만든다 — 가수명/제목이 바뀌면 링크도 따라간다.
+// 목록·액션시트·공유가 모두 쓰므로 반드시 최상위 스코프에 둔다.
+function ytSearch(c){
+  const cel = (typeof DATA !== 'undefined' && DATA.celebrity) || {};
+  const who = cel.name_en || cel.name_ko || '';
+  const what = (c.title_localized_en || c.title || '');
+  const q = [who, what].filter(Boolean).join(' ');
+  if(!q.trim()) return null;
+  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
+}
+function linkOf(c){ return c && (c.external_link || ytSearch(c)); }
+
+function renderContent(){
+  let list = [...DATA.content];
+  if(TYPE_FILTER!=='all') list = list.filter(c=>c.type===TYPE_FILTER);
+  if(HIDE_WATCHED) list = list.filter(c=>!isWatched(c.id));
+  if(SORT==='interest') list.sort((a,b)=> (b.votes-a.votes) || ((b.year||0)-(a.year||0)));
+  else list.sort((a,b)=> (b.year||0)-(a.year||0));
+
+  $('contentList').innerHTML = list.map(c => {
+    const seen = isWatched(c.id);
+    const t = (seen ? `<span class="seen">${T.watched}</span>` : '') + pick(c,'title');
+    const href = linkOf(c);
+    const isSearch = href && href.includes('results?search_query');
+    const linkHtml = href
+      ? `<a href="${href}" data-open="${c.id}" target="_blank" rel="noreferrer">
+          <span class="type">${TYPE_ICON[c.type]||'❓'}</span>
+          <span class="body"><div class="title">${t}${isSearch?' <span class="searchlink">'+T.searchSuffix+'</span>':''}</div><div class="meta">${fmtMeta(c)}</div>${pick(c,'note_public')?`<div class="note">${pick(c,'note_public')}</div>`:''}</span>
+        </a>`
+      : `<span data-open="${c.id}" style="display:flex;gap:10px;align-items:center;flex:1;min-width:0;cursor:pointer">
+          <span class="type">${TYPE_ICON[c.type]||'❓'}</span>
+          <span class="body"><div class="title">${t}</div><div class="meta">${fmtMeta(c)}</div>${pick(c,'note_public')?`<div class="note">${pick(c,'note_public')}</div>`:''}</span>
+        </span>`;
+    return `<div class="card${seen?' watched':''}">${linkHtml}<button class="vote" data-id="${c.id}">👍 ${c.votes}</button></div>`;
+  }).join('') || ('<div class="loading">'+T.emptyCategory+'</div>');
+
+  document.querySelectorAll('.vote').forEach(b => b.onclick = () => vote(b.dataset.id, b));
+  updateWatchToggle();
+  document.querySelectorAll('[data-open]').forEach(a => a.onclick = (e) => {
+    e.preventDefault();
+    openSheet(DATA.content.find(c => c.id === a.dataset.open));
+  });
+}
+
+async function vote(contentId, btn){
+  const tok = getToken();
+  if(!tok){ requireLogin(); return; }
+  btn.disabled = true;
+  try{
+    const r = await fetch('/api/fantrack/vote', {
+      method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+tok},
+      body: JSON.stringify({content_id: contentId})
+    });
+    const j = await r.json();
+    if(r.status===401){ requireLogin(); return; }
+    const item = DATA.content.find(c=>c.id===contentId);
+    if(item) item.votes = j.votes;
+    renderContent();
+  }catch(e){ /* ignore */ }
+  btn.disabled = false;
+}
+
+function updateSortUI(){
+  $('sortBadge').textContent = SORT==='interest' ? T.sortPopular : T.sortRecent;
+  $('sortBtn').textContent = SORT==='interest' ? T.toYear : T.toPopular;
+}
+$('sortBtn').onclick = () => { SORT = SORT==='interest' ? 'year' : 'interest'; updateSortUI(); renderContent(); };
+
+function updateWatchToggle(){
+  const any = DATA && DATA.content.some(c => isWatched(c.id));
+  $('wtoggle').style.display = any ? 'flex' : 'none';
+  $('wtoggleBtn').textContent = HIDE_WATCHED ? T.showWatched : T.hideWatched;
+  $('wtoggleBtn').classList.toggle('on', HIDE_WATCHED);
+}
+$('wtoggleBtn').onclick = () => { HIDE_WATCHED = !HIDE_WATCHED; renderContent(); };
+
+// 시청 액션 시트 — 링크로 나가기 전에 '로그에 시청기록 남기기'를 제안한다.
+const LOG_API = 'https://log.cocy.io/api/external/watch';
+let SHEET_ITEM = null;
+
+function openSheet(c){
+  if(!c) return;
+  SHEET_ITEM = c;
+  $('sheetKicker').textContent = T.actionTitle;
+  $('sheetTitle').textContent = pick(c,'title');
+  $('sheetMeta').innerHTML = fmtMeta(c);
+  const go = $('sheetGo');
+  go.textContent = T.goLink;
+  const _lk = linkOf(c);
+  if(_lk){ go.href = _lk; go.style.display='block'; $('sheetNoLink').style.display='none'; }
+  else { go.style.display='none'; $('sheetNoLink').textContent = T.noLink; $('sheetNoLink').style.display='block'; }
+  const trip = tripUrl(c, celebName(DATA.celebrity));
+  const tripEl = $('sheetTrip');
+  if(c.type === 'concert' && trip){
+    const past = isPastShow(c);
+    tripEl.href = trip;
+    tripEl.textContent = past ? T.planTripPast : T.planTrip;
+    tripEl.style.display = 'block';
+    $('sheetTripHint').textContent = past ? T.planTripHintPast : T.planTripHint;
+    $('sheetTripHint').style.display = 'block';
+  } else {
+    tripEl.style.display = 'none'; $('sheetTripHint').style.display = 'none';
+  }
+  const lg = $('sheetLog');
+  lg.textContent = T.addLog; lg.disabled = false;
+  $('sheetHint').textContent = T.addLogHint;
+  updateSeenBtn();
+  $('sheetCancel').textContent = T.close;
+  $('sheet').classList.remove('hide');
+}
+function updateSeenBtn(){
+  if(!SHEET_ITEM) return;
+  $('sheetSeen').textContent = isWatched(SHEET_ITEM.id) ? T.unmarkWatched : T.markWatched;
+}
+$('sheetSeen').onclick = () => {
+  if(!SHEET_ITEM) return;
+  setWatched(SHEET_ITEM.id, !isWatched(SHEET_ITEM.id));
+  updateSeenBtn();
+  renderContent();
+};
+function closeSheet(){ $('sheet').classList.add('hide'); }
+$('sheetCancel').onclick = closeSheet;
+$('sheet').onclick = (e) => { if(e.target === $('sheet')) closeSheet(); };
+
+$('sheetLog').onclick = async () => {
+  const tok = getToken();
+  if(!tok){ closeSheet(); $('gateTitle').textContent = T.addLogLogin; requireLogin(); return; }
+  const c = SHEET_ITEM; if(!c) return;
+  const btn = $('sheetLog');
+  btn.disabled = true;
+  try{
+    const r = await fetch(LOG_API, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+tok},
+      body: JSON.stringify({
+        title: pick(c,'title'),
+        platform: pick(c,'platform'),
+        type: c.type,
+        url: linkOf(c) || null,
+        celebrity: celebName(DATA.celebrity),
+        source: 'fantrack',
+        watched_at: Date.now(),
+      })
+    });
+    if(r.status===401){ btn.disabled=false; closeSheet(); $('gateTitle').textContent = T.addLogLogin; requireLogin(); return; }
+    if(!r.ok) throw new Error('save_failed');
+    setWatched(c.id, true);
+    updateSeenBtn();
+    renderContent();
+    btn.textContent = T.addLogDone;
+    $('sheetHint').innerHTML = '<a href="https://log.cocy.io/" target="_blank" rel="noreferrer" style="color:var(--lime)">'+T.openLog+'</a>';
+  }catch(e){
+    btn.disabled = false;
+    $('sheetHint').textContent = T.addLogFail;
+  }
+};
+
+async function renderProfile(){
+  const c = DATA.celebrity;
+  const localPhoto = await idbGet(SLUG);
+  const src = localPhoto ? URL.createObjectURL(localPhoto) : 'icon.svg';
+  const snsLinks = Object.entries(c.sns||{}).map(([k,v]) => `<a href="${v}" target="_blank" rel="noreferrer">${k}</a>`).join('');
+  const ytLink = c.youtube_channel_id ? `<a href="https://www.youtube.com/@${c.youtube_channel_id}" target="_blank" rel="noreferrer">${T.youtube}</a>` : '';
+  $('profile').innerHTML = `
+    <img class="avatar" id="avatarImg" src="${src}" alt="${celebName(c)}">
+    <div class="name">${celebName(c)}</div>
+    <div class="sub">${LANG==='en' ? (c.group_name||'') : (c.name_en||'')}</div>
+    <div class="badges">
+      ${c.mbti ? `<span class="badge">${c.mbti}</span>`:''}
+      ${c.group_name ? `<span class="badge">${c.group_name}</span>`:''}
+      ${pick(c,'agency') ? `<span class="badge">${pick(c,'agency')}</span>`:''}
+      ${c.debut_date ? `<span class="badge">${T.debut} ${c.debut_date}</span>`:''}
+      ${c.fandom ? `<span class="badge">${T.fandomLabel} ${c.fandom}</span>`:''}
+    </div>
+    <div class="sns">${ytLink}${snsLinks}</div>
+    <input type="file" id="photoInput" accept="image/*" style="display:none">
+    <button class="myphoto-btn" id="photoBtn">${T.myPhoto}</button>
+  `;
+  $('photoBtn').onclick = () => $('photoInput').click();
+  $('photoInput').onchange = async (e) => {
+    const f = e.target.files[0]; if(!f) return;
+    await idbSet(SLUG, f);
+    $('avatarImg').src = URL.createObjectURL(f);
+  };
+}
+
+async function render(){
+  const r = await fetch('/api/fantrack/celebrity/'+SLUG);
+  if(!r.ok){ $('profile').innerHTML = '<div class="loading">'+T.notFound+'</div>'; return; }
+  DATA = await r.json();
+  await renderProfile();
+  $('sortUnit').style.display = 'block';
+  updateSortUI();
+  renderFilters();
+  renderContent();
+}
+render();
+</script>
+</body>
+</html>

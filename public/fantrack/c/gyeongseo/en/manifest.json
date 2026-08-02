@@ -1,0 +1,24 @@
+{
+  "name": "Gyeongseo — FanTrack",
+  "short_name": "Gyeongseo",
+  "description": "7 works by Gyeongseo — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/gyeongseo/en/",
+  "start_url": "/fantrack/c/gyeongseo/en/",
+  "scope": "/fantrack/c/gyeongseo/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/gyeongseo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

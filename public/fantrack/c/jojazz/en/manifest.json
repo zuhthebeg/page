@@ -1,0 +1,24 @@
+{
+  "name": "Jo Jazz — FanTrack",
+  "short_name": "Jo Jazz",
+  "description": "5 works by Jo Jazz — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/jojazz/en/",
+  "start_url": "/fantrack/c/jojazz/en/",
+  "scope": "/fantrack/c/jojazz/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jojazz/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

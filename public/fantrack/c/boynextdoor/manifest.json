@@ -1,7 +1,7 @@
 {
   "name": "보이넥스트도어 — FanTrack",
-  "short_name": "보이넥스트도어 FanTrack",
-  "description": "보이넥스트도어 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "보이넥스트도어",
+  "description": "보이넥스트도어 출연·활동 정보 11건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/boynextdoor/",
   "start_url": "/fantrack/c/boynextdoor/",
   "scope": "/fantrack/c/boynextdoor/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/boynextdoor/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

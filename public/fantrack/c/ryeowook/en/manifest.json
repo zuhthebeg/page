@@ -1,0 +1,24 @@
+{
+  "name": "Ryeowook — FanTrack",
+  "short_name": "Ryeowook",
+  "description": "16 works by Ryeowook — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/ryeowook/en/",
+  "start_url": "/fantrack/c/ryeowook/en/",
+  "scope": "/fantrack/c/ryeowook/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ryeowook/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "YADA — FanTrack",
+  "short_name": "YADA",
+  "description": "7 trabajos de YADA — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/yada/es/",
+  "start_url": "/fantrack/c/yada/es/",
+  "scope": "/fantrack/c/yada/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/yada/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Ailee — FanTrack",
+  "short_name": "Ailee",
+  "description": "40 trabajos de Ailee — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/aileen/es/",
+  "start_url": "/fantrack/c/aileen/es/",
+  "scope": "/fantrack/c/aileen/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/aileen/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Yim Jae Beum — FanTrack",
+  "short_name": "Yim Jae Beum",
+  "description": "14 trabajos de Yim Jae Beum — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/imjaebum/es/",
+  "start_url": "/fantrack/c/imjaebum/es/",
+  "scope": "/fantrack/c/imjaebum/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/imjaebum/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

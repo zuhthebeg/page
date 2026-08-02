@@ -1,0 +1,24 @@
+{
+  "name": "TVXQ — FanTrack",
+  "short_name": "TVXQ",
+  "description": "60 trabajos de TVXQ — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/tvxq/es/",
+  "start_url": "/fantrack/c/tvxq/es/",
+  "scope": "/fantrack/c/tvxq/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/tvxq/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

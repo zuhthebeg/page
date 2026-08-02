@@ -1,0 +1,24 @@
+{
+  "name": "Lee Chanhyuk — FanTrack",
+  "short_name": "Lee Chanhyuk",
+  "description": "7 trabajos de Lee Chanhyuk — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/lee_chanhyuk/es/",
+  "start_url": "/fantrack/c/lee_chanhyuk/es/",
+  "scope": "/fantrack/c/lee_chanhyuk/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/lee_chanhyuk/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

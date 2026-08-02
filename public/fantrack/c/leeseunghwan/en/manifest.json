@@ -1,0 +1,24 @@
+{
+  "name": "Lee Seung Hwan — FanTrack",
+  "short_name": "Lee Seung Hwan",
+  "description": "19 works by Lee Seung Hwan — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/leeseunghwan/en/",
+  "start_url": "/fantrack/c/leeseunghwan/en/",
+  "scope": "/fantrack/c/leeseunghwan/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/leeseunghwan/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

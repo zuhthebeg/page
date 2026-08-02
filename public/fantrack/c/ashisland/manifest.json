@@ -1,7 +1,7 @@
 {
   "name": "애쉬아일랜드 — FanTrack",
-  "short_name": "애쉬아일랜드 FanTrack",
-  "description": "애쉬아일랜드 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "애쉬아일랜드",
+  "description": "애쉬아일랜드 출연·활동 정보 14건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/ashisland/",
   "start_url": "/fantrack/c/ashisland/",
   "scope": "/fantrack/c/ashisland/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/ashisland/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

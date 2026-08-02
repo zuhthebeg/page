@@ -1,0 +1,24 @@
+{
+  "name": "SPAPA — FanTrack",
+  "short_name": "SPAPA",
+  "description": "6 works by SPAPA — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/spapa/en/",
+  "start_url": "/fantrack/c/spapa/en/",
+  "scope": "/fantrack/c/spapa/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/spapa/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

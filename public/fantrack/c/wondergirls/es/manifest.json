@@ -1,0 +1,24 @@
+{
+  "name": "Wonder Girls — FanTrack",
+  "short_name": "Wonder Girls",
+  "description": "17 trabajos de Wonder Girls — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/wondergirls/es/",
+  "start_url": "/fantrack/c/wondergirls/es/",
+  "scope": "/fantrack/c/wondergirls/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/wondergirls/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

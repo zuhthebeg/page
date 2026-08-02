@@ -1,0 +1,24 @@
+{
+  "name": "iKON — FanTrack",
+  "short_name": "iKON",
+  "description": "16 trabajos de iKON — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/ikon/es/",
+  "start_url": "/fantrack/c/ikon/es/",
+  "scope": "/fantrack/c/ikon/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ikon/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

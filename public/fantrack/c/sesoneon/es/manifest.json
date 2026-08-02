@@ -1,0 +1,24 @@
+{
+  "name": "SE SO NEON — FanTrack",
+  "short_name": "SE SO NEON",
+  "description": "22 trabajos de SE SO NEON — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/sesoneon/es/",
+  "start_url": "/fantrack/c/sesoneon/es/",
+  "scope": "/fantrack/c/sesoneon/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/sesoneon/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

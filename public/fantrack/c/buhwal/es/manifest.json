@@ -1,0 +1,24 @@
+{
+  "name": "Boohwal — FanTrack",
+  "short_name": "Boohwal",
+  "description": "19 trabajos de Boohwal — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/buhwal/es/",
+  "start_url": "/fantrack/c/buhwal/es/",
+  "scope": "/fantrack/c/buhwal/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/buhwal/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

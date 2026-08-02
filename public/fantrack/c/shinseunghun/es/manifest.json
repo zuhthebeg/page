@@ -1,0 +1,24 @@
+{
+  "name": "Shin Seung Hun — FanTrack",
+  "short_name": "Shin Seung Hun",
+  "description": "17 trabajos de Shin Seung Hun — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/shinseunghun/es/",
+  "start_url": "/fantrack/c/shinseunghun/es/",
+  "scope": "/fantrack/c/shinseunghun/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/shinseunghun/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

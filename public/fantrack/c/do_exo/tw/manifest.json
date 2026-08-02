@@ -1,0 +1,24 @@
+{
+  "name": "D.O. — FanTrack",
+  "short_name": "D.O.",
+  "description": "D.O. 的出演與作品 5 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/do_exo/tw/",
+  "start_url": "/fantrack/c/do_exo/tw/",
+  "scope": "/fantrack/c/do_exo/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/do_exo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Baek Ji Young — FanTrack",
+  "short_name": "Baek Ji Young",
+  "description": "59 trabajos de Baek Ji Young — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/baekjiyoung/es/",
+  "start_url": "/fantrack/c/baekjiyoung/es/",
+  "scope": "/fantrack/c/baekjiyoung/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/baekjiyoung/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

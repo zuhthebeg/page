@@ -1,0 +1,24 @@
+{
+  "name": "Postmen — FanTrack",
+  "short_name": "Postmen",
+  "description": "5 works by Postmen — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/postmen/en/",
+  "start_url": "/fantrack/c/postmen/en/",
+  "scope": "/fantrack/c/postmen/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/postmen/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

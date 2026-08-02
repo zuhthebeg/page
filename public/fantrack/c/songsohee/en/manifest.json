@@ -1,0 +1,24 @@
+{
+  "name": "Song Sohee — FanTrack",
+  "short_name": "Song Sohee",
+  "description": "12 works by Song Sohee — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/songsohee/en/",
+  "start_url": "/fantrack/c/songsohee/en/",
+  "scope": "/fantrack/c/songsohee/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/songsohee/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

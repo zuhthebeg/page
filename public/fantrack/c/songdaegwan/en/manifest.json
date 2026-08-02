@@ -1,0 +1,24 @@
+{
+  "name": "Song Dae-kwan — FanTrack",
+  "short_name": "Song Dae-kwan",
+  "description": "30 works by Song Dae-kwan — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/songdaegwan/en/",
+  "start_url": "/fantrack/c/songdaegwan/en/",
+  "scope": "/fantrack/c/songdaegwan/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/songdaegwan/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Kang Jin — FanTrack",
+  "short_name": "Kang Jin",
+  "description": "8 works by Kang Jin — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/kangjin/en/",
+  "start_url": "/fantrack/c/kangjin/en/",
+  "scope": "/fantrack/c/kangjin/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kangjin/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
-  "name": "이특(SUPER JUNIOR) — FanTrack",
-  "short_name": "이특 FanTrack",
-  "description": "SUPER JUNIOR 이특 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "name": "이특 — FanTrack",
+  "short_name": "이특",
+  "description": "이특 출연·활동 정보 8건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/leeteuk/",
   "start_url": "/fantrack/c/leeteuk/",
   "scope": "/fantrack/c/leeteuk/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/leeteuk/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

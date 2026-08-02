@@ -1,0 +1,24 @@
+{
+  "name": "N.Flying — FanTrack",
+  "short_name": "N.Flying",
+  "description": "17 works by N.Flying — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/nflying/en/",
+  "start_url": "/fantrack/c/nflying/en/",
+  "scope": "/fantrack/c/nflying/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/nflying/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

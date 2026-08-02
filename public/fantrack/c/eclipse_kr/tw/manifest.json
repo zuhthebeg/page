@@ -1,0 +1,24 @@
+{
+  "name": "ECLIPSE — FanTrack",
+  "short_name": "ECLIPSE",
+  "description": "ECLIPSE 的出演與作品 6 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/eclipse_kr/tw/",
+  "start_url": "/fantrack/c/eclipse_kr/tw/",
+  "scope": "/fantrack/c/eclipse_kr/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/eclipse_kr/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

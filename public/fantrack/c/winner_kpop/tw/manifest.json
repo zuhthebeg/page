@@ -1,0 +1,24 @@
+{
+  "name": "WINNER — FanTrack",
+  "short_name": "WINNER",
+  "description": "WINNER 的出演與作品 31 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/winner_kpop/tw/",
+  "start_url": "/fantrack/c/winner_kpop/tw/",
+  "scope": "/fantrack/c/winner_kpop/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/winner_kpop/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

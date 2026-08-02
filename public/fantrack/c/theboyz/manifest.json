@@ -1,7 +1,7 @@
 {
   "name": "더보이즈 — FanTrack",
-  "short_name": "더보이즈 FanTrack",
-  "description": "더보이즈 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "더보이즈",
+  "description": "더보이즈 출연·활동 정보 28건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/theboyz/",
   "start_url": "/fantrack/c/theboyz/",
   "scope": "/fantrack/c/theboyz/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/theboyz/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

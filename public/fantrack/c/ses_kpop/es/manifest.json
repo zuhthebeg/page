@@ -1,0 +1,24 @@
+{
+  "name": "S.E.S. — FanTrack",
+  "short_name": "S.E.S.",
+  "description": "14 trabajos de S.E.S. — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/ses_kpop/es/",
+  "start_url": "/fantrack/c/ses_kpop/es/",
+  "scope": "/fantrack/c/ses_kpop/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ses_kpop/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

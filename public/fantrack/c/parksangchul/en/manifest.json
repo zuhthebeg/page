@@ -1,0 +1,24 @@
+{
+  "name": "Park Sang-chul — FanTrack",
+  "short_name": "Park Sang-chul",
+  "description": "6 works by Park Sang-chul — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/parksangchul/en/",
+  "start_url": "/fantrack/c/parksangchul/en/",
+  "scope": "/fantrack/c/parksangchul/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/parksangchul/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

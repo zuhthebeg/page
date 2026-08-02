@@ -1,0 +1,24 @@
+{
+  "name": "Apink — FanTrack",
+  "short_name": "Apink",
+  "description": "108 works by Apink — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/apink/en/",
+  "start_url": "/fantrack/c/apink/en/",
+  "scope": "/fantrack/c/apink/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/apink/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

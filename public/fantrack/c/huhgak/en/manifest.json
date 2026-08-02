@@ -1,0 +1,24 @@
+{
+  "name": "Huh Gak — FanTrack",
+  "short_name": "Huh Gak",
+  "description": "21 works by Huh Gak — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/huhgak/en/",
+  "start_url": "/fantrack/c/huhgak/en/",
+  "scope": "/fantrack/c/huhgak/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/huhgak/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

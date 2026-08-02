@@ -1,0 +1,24 @@
+{
+  "name": "Song Sohee — FanTrack",
+  "short_name": "Song Sohee",
+  "description": "12 trabajos de Song Sohee — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/songsohee/es/",
+  "start_url": "/fantrack/c/songsohee/es/",
+  "scope": "/fantrack/c/songsohee/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/songsohee/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

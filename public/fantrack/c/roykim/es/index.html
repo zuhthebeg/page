@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Roy Kim — FanTrack</title>
+<meta name="description" content="104 trabajos de Roy Kim — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<link rel="canonical" href="https://page.cocy.io/fantrack/c/roykim/es/">
+<meta name="theme-color" content="#141221">
+<link rel="manifest" href="/fantrack/c/roykim/es/manifest.json">
+<script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
+<script src="/fantrack/i18n.js?v=20260802es3"></script>
+<style>
+:root{
+  --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
+  --lime:#c6f24e; --amber:#f0b43c; --line:#3a3458;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--txt);}
+.wrap{max-width:480px;margin:0 auto;padding:16px}
+.profile{background:var(--panel);border-radius:16px;padding:20px;text-align:center;margin-bottom:16px}
+.avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;background:var(--panel2);margin-bottom:10px}
+.name{font-size:20px;font-weight:800}
+.sub{font-size:13px;color:var(--mut);margin-top:2px}
+.badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.badge{background:var(--panel2);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700}
+.sns{display:flex;gap:10px;justify-content:center;margin-top:12px}
+.sns a{color:var(--mut);text-decoration:none;font-size:12px;background:var(--panel2);padding:6px 10px;border-radius:8px}
+.myphoto-btn{margin-top:10px;font-size:11px;color:var(--mut);background:none;border:1px dashed var(--line);border-radius:8px;padding:5px 10px;cursor:pointer}
+
+.mode-unit{border-radius:10px;overflow:hidden;box-shadow:0 3px 0 #0f0d1c;margin-bottom:14px}
+.mode-unit:active{transform:translateY(2px);box-shadow:0 1px 0 #0f0d1c}
+.mode-badge{display:block;text-align:center;font-size:11px;font-weight:800;color:var(--bg);background:var(--lime);padding:7px 8px}
+.mode-toggle{display:block;width:100%;border:none;background:var(--panel2);color:var(--txt);font-size:13px;font-weight:800;padding:10px 8px;cursor:pointer}
+
+.filters{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;-webkit-overflow-scrolling:touch}
+.filters::-webkit-scrollbar{display:none}
+.filter-chip{flex-shrink:0;background:var(--panel2);border:1px solid transparent;border-radius:20px;padding:7px 13px;font-size:12px;font-weight:700;color:var(--mut);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.filter-chip.on{background:var(--lime);color:var(--bg);border-color:var(--lime)}
+
+.card{background:var(--panel);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center}
+.card .type{font-size:16px;flex-shrink:0;width:22px;text-align:center}
+.card .body{flex:1;min-width:0}
+.card .title{font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card .meta{font-size:11px;color:var(--mut);margin-top:2px}
+.card .note{font-size:10.5px;color:var(--amber);margin-top:2px}
+.card .vote{background:var(--panel2);border:none;border-radius:8px;padding:8px 10px;font-size:12px;color:var(--txt);cursor:pointer;flex-shrink:0}
+.card .vote.on{background:var(--lime);color:var(--bg);font-weight:800}
+.card .upcoming{color:var(--amber);font-weight:800}
+.card .searchlink{opacity:.7;font-style:italic}
+.card a{color:inherit;text-decoration:none;display:flex;gap:10px;align-items:center;flex:1;min-width:0}
+
+.gate{position:fixed;inset:0;background:rgba(10,9,20,.9);display:flex;align-items:center;justify-content:center;z-index:50}
+.gate.hide{display:none}
+.gate .box{background:var(--panel);border-radius:16px;padding:24px;text-align:center;max-width:300px}
+#gbtn{margin-top:14px;display:flex;justify-content:center}
+.loading{text-align:center;color:var(--mut);padding:30px;font-size:13px}
+.topbar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.home{flex-shrink:0;color:var(--mut);text-decoration:none;font-size:11.5px;font-weight:700;background:var(--panel2);border-radius:20px;padding:6px 11px}
+.langbar{display:flex;gap:6px;justify-content:flex-end;flex:1;margin-bottom:0}
+.card.watched{opacity:.62}
+.card.watched .title{text-decoration:line-through;text-decoration-color:var(--mut)}
+.card .seen{display:inline-block;font-size:9.5px;font-weight:800;color:var(--bg);background:var(--mut);border-radius:4px;padding:1px 5px;margin-right:5px;vertical-align:1px}
+.wtoggle{display:flex;justify-content:flex-end;margin-bottom:8px}
+.wtoggle button{background:var(--panel2);border:1px solid transparent;color:var(--mut);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;cursor:pointer}
+.wtoggle button.on{background:var(--amber);color:var(--bg);border-color:var(--amber)}
+.lang-btn{background:var(--panel2);border:1px solid transparent;color:var(--mut);border-radius:20px;padding:5px 12px;font-size:11.5px;font-weight:700;cursor:pointer}
+.lang-btn.on{background:var(--lime);color:var(--bg);border-color:var(--lime)}
+.sheet{position:fixed;inset:0;background:rgba(10,9,20,.75);display:flex;align-items:flex-end;justify-content:center;z-index:60}
+.sheet.hide{display:none}
+.sheet .box{background:var(--panel);border-radius:16px 16px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));width:100%;max-width:480px}
+.sheet .st{font-size:11px;color:var(--mut);font-weight:700}
+.sheet .sh{font-size:15px;font-weight:800;margin:4px 0 2px;line-height:1.35}
+.sheet .sm{font-size:11.5px;color:var(--mut);margin-bottom:14px}
+.sheet .act{display:block;width:100%;border:none;border-radius:10px;padding:13px;font-size:13.5px;font-weight:800;cursor:pointer;margin-bottom:8px;text-align:center;text-decoration:none;box-sizing:border-box}
+.sheet .act.primary{background:var(--lime);color:var(--bg)}
+.sheet .act.second{background:var(--panel2);color:var(--txt)}
+.sheet .act.trip{background:var(--panel2);color:var(--lime);border:1px solid var(--lime)}
+.sheet .act[disabled]{opacity:.55;cursor:default}
+.sheet .hint{font-size:10.5px;color:var(--mut);text-align:center;margin:-2px 0 10px}
+.sheet .cancel{background:none;border:none;color:var(--mut);font-size:12px;cursor:pointer;display:block;width:100%;padding:8px}
+</style>
+<link rel="alternate" hreflang="ko" href="https://page.cocy.io/fantrack/c/roykim/">
+<link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/roykim/en/">
+<link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/roykim/tw/">
+<link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/roykim/es/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Roy Kim","alternateName":["로이킴","Roy Kim"],"url":"https://page.cocy.io/fantrack/c/roykim/es/","inLanguage":"es","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"DEUL"},"foundingDate":"2013","subjectOf":[{"@type":"MusicAlbum","name":"다시 불러 봄 – Bloom Again","datePublished":"2026"},{"@type":"MusicEvent","name":"설레는 그날] #2 로이킴, 박창근, 범진》 경희대학교 서울캠퍼스 평화의전당","datePublished":"2024"},{"@type":"MusicEvent","name":"2024 어썸스테이지 [로이킴 x 멜로망스] - 부산》 BEXCO 오디토리움","datePublished":"2024"},{"@type":"MusicEvent","name":"2024 Soundberry Theater》 KBS 아레나","datePublished":"2024"},{"@type":"MusicEvent","name":"제17회 봄 고아웃캠프 - 고성》 강원특별자치도 세계잼버리수련장","datePublished":"2024"},{"@type":"MusicEvent","name":"2024 LOVESOME》 올림픽공원 88잔디마당","datePublished":"2024"},{"@type":"MusicEvent","name":"Beautiful Mint Life 2024》 올림픽공원 88잔디마당","datePublished":"2024"},{"@type":"MusicEvent","name":"LIVE ON 로이킴X김필 - 대구》 영남대학교 경산캠퍼스 천마아트센터","datePublished":"2024"},{"@type":"MusicEvent","name":"2024 팔레트 뮤직 페스티벌》 서울어린이대공원 능동숲속의무대","datePublished":"2024"},{"@type":"MusicEvent","name":"로이킴&소란 - 부산》 부산시민회관 대극장","datePublished":"2024"},{"@type":"MusicEvent","name":"2023 일상으로의 초대 - 광주》 김대중컨벤션센터","datePublished":"2023"},{"@type":"MusicEvent","name":"어썸스테이지 in 서울 #2-3》 블루스퀘어 마스터카드홀","datePublished":"2023"},{"@type":"MusicEvent","name":"2023 Soundberry Theater》 블루스퀘어 마스터카드홀","datePublished":"2023"},{"@type":"MusicEvent","name":"2023 LOVESOME》 잠실 종합운동장 올림픽주경기장","datePublished":"2023"},{"@type":"MusicEvent","name":"Beautiful Mint Life 2023》 올림픽공원 88호수수변무대","datePublished":"2023"},{"@type":"MusicEvent","name":"메가필드뮤직페스티벌 2023》 난지한강공원","datePublished":"2023"},{"@type":"MusicEvent","name":"Soundberry Festa‘ 23》 KBS 아레나 일대","datePublished":"2023"},{"@type":"MusicEvent","name":"Someday Festival 2023》 난지한강공원","datePublished":"2023"},{"@type":"MusicEvent","name":"평화누리 피크닉 페스티벌 - 파주》 임진각국민관광지평화누리야외공연장","datePublished":"2023"},{"@type":"MusicEvent","name":"2023 로이킴 콘서트 〈Roy Note〉》 올림픽공원 올림픽홀","datePublished":"2023"},{"@type":"MusicAlbum","name":"그리고","datePublished":"2022"},{"@type":"MusicEvent","name":"2022 로이킴 콘서트(,그리고)》 서울 블루스퀘어 마스터카드홀","datePublished":"2022"},{"@type":"MusicEvent","name":"2022 박재정 콘서트 - 편지 2》 게스트 서울 코엑스 신한카드 아티움","datePublished":"2022"},{"@type":"MusicEvent","name":"썸데이 씨어터 칸타빌레》 서울 세종문화회관 대극장","datePublished":"2022"},{"@type":"MusicEvent","name":"서울재즈페스티벌 2018》 서울 올림픽공원","datePublished":"2018"},{"@type":"MusicEvent","name":"필스너 파크 뮤직 페스티벌》 서울 올림픽공원 88잔디마당","datePublished":"2018"},{"@type":"MusicEvent","name":"자우림, 단독 콘서트 〈청춘예찬〉》 게스트 서울 서울 올림픽공원 올림픽홀","datePublished":"2018"},{"@type":"MusicEvent","name":"어반 뮤직 페스티벌》 세종대학교","datePublished":"2018"},{"@type":"MusicEvent","name":"2018 대구 포크페스티벌》 대구 코오롱야외음악당","datePublished":"2018"},{"@type":"MusicEvent","name":"2018 로이킴 라이브 피크닉〈로이로祭(제)》 상명대학교 상명아트센터 계당홀","datePublished":"2018"},{"@type":"MusicEvent","name":"KCON 2018 LA》 미국 로스앤젤레스 스테이플스 센터","datePublished":"2018"},{"@type":"MusicEvent","name":"제12회 2018 칠포재즈페스티벌》 - 포항칠포해수욕장 상설무대","datePublished":"2018"},{"@type":"MusicEvent","name":"2018 Voyage to Jarasum》 KT 자라섬 페스티벌 - 자라섬","datePublished":"2018"},{"@type":"MusicEvent","name":"2018 그랜드 민트 페스티벌》 - 서울 올림픽공원","datePublished":"2018"},{"@type":"MusicEvent","name":"2018 로이킴 라이브 투어 로케스트라(LIVE TOUR ROchestra)in Seoul》 단독 콘서트 서울 블루스퀘어 아이마켓홀","datePublished":"2018"},{"@type":"MusicEvent","name":"2018 로이킴 라이브 투어 로케스트라(LIVE TOUR ROchestra)in Busan》 단독 콘서트 부산 KBS홀","datePublished":"2018"},{"@type":"MusicEvent","name":"2018 로이킴 라이브 투어 로케스트라(LIVE TOUR ROchestra)in Gwangju》 단독 콘서트 광주 김대중컨벤션센터 다목적홀","datePublished":"2018"},{"@type":"MusicEvent","name":"2018 로이킴 라이브 투어 로케스트라(LIVE TOUR ROchestra)in Incheon》 단독 콘서트 인천 인천광역시문화예술회관 대공연장","datePublished":"2018"},{"@type":"MusicEvent","name":"2018 로이킴 라이브 투어 로케스트라(LIVE TOUR ROchestra)in Daegu》 단독 콘서트 대구 영남대학교 천마아트센터 그랜드홀","datePublished":"2018"},{"@type":"MusicEvent","name":"2018 로이킴 라이브 투어 로케스트라(LIVE TOUR ROchestra)in Seongnam》 단독 콘서트 성남 성남아트센터 오페라하우스","datePublished":"2018"},{"@type":"MusicAlbum","name":"開花期","datePublished":"2017"},{"@type":"MusicEvent","name":"어반 뮤직 콘서트 디에이드&로이킴》 서울 코엑스 오디토리움","datePublished":"2017"},{"@type":"MusicEvent","name":"벚꽃피크닉페스티벌 2017》 서울 여의도한강공원 민속놀이 마당","datePublished":"2017"},{"@type":"MusicEvent","name":"서울재즈페스티벌 2017》 서울 올림픽공원","datePublished":"2017"},{"@type":"MusicEvent","name":"로이킴 LIVE TOUR in SEOUL》 단독 콘서트 서울 블루스퀘어 삼성카드홀","datePublished":"2017"},{"@type":"MusicEvent","name":"로이킴 LIVE TOUR in DAEJEON》 단독 콘서트 대전 충남대학교 정심화홀","datePublished":"2017"},{"@type":"MusicEvent","name":"로이킴 LIVE TOUR in DAEGU》 단독 콘서트 대구 경북대학교 대강당","datePublished":"2017"},{"@type":"MusicEvent","name":"로이킴 LIVE TOUR in BUSAN》 단독 콘서트 부산 KBS홀","datePublished":"2017"},{"@type":"MusicEvent","name":"2017 로이킴 크리스마스 콘서트 \"Isn't He ROvelY\"》 서울 연세대학교 백양콘서트홀","datePublished":"2017"},{"@type":"MusicEvent","name":"뷰티풀 민트 라이프 2016》 서울 올림픽공원 민트 브리즈 스테이지","datePublished":"2016"},{"@type":"MusicEvent","name":"2016 로이킴 작은 콘서트'쉼'》 9회공연 서울 YES24 무브홀","datePublished":"2016"},{"@type":"MusicEvent","name":"2016 로이킴 첫번째 타이베이 콘서트 》 - 타이완 타이베이시 국제컨벤션센터","datePublished":"2016"},{"@type":"MusicEvent","name":"래드캐럿 뮤직 페스티벌2016》 여수 EXPO","datePublished":"2016"},{"@type":"MusicEvent","name":"2016 대구 포크페스티벌》 대구 두류공원","datePublished":"2016"},{"@type":"MusicEvent","name":"FEVER FESTIVAL CONCERT - 부산》 부산 해운대","datePublished":"2016"},{"@type":"MusicEvent","name":"로이킴 연말 콘서트 '로큐멘터리(ROcumentarY)'》 서울 연세대학교 백양콘서트홀","datePublished":"2016"},{"@type":"TVSeries","name":"장예원의 오늘 같은 밤","datePublished":"2016"},{"@type":"MusicAlbum","name":"북두칠성","datePublished":"2015"},{"@type":"MusicEvent","name":"서울재즈페스티벌 2015》 서울 올림픽공원 체조경기장","datePublished":"2015"},{"@type":"MusicEvent","name":"원모어찬스 & 로이킴 콘서트캠퍼스 블루스》 서울 연세대학교 대강당","datePublished":"2015"}]}</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><a class="home" id="homeLink" href="../../"></a><div class="langbar" id="langbar"></div></div>
+  <div class="profile" id="profile"><div class="loading"></div></div>
+  <div class="mode-unit" id="sortUnit" style="display:none">
+    <span class="mode-badge" id="sortBadge"></span>
+    <button class="mode-toggle" id="sortBtn"></button>
+  </div>
+  <div class="filters" id="filters" style="display:none"></div>
+  <div class="wtoggle" id="wtoggle" style="display:none"><button id="wtoggleBtn"></button></div>
+  <div id="contentList">
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EB%8B%A4%EC%8B%9C%20%EB%B6%88%EB%9F%AC%20%EB%B4%84%20%E2%80%93%20Bloom%20Again" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">다시 불러 봄 – Bloom Again</div><div class="meta">Álbum · 2026</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EC%84%A4%EB%A0%88%EB%8A%94%20%EA%B7%B8%EB%82%A0%5D%20%232%20%EB%A1%9C%EC%9D%B4%ED%82%B4%2C%20%EB%B0%95%EC%B0%BD%EA%B7%BC%2C%20%EB%B2%94%EC%A7%84%E3%80%8B%20%EA%B2%BD%ED%9D%AC%EB%8C%80%ED%95%99%EA%B5%90%20%EC%84%9C%EC%9A%B8%EC%BA%A0%ED%8D%BC%EC%8A%A4%20%ED%8F%89%ED%99%94%EC%9D%98%EC%A0%84%EB%8B%B9" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">설레는 그날] #2 로이킴, 박창근, 범진》 경희대학교 서울캠퍼스 평화의전당</div><div class="meta">Concierto · 2024</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202024%20%EC%96%B4%EC%8D%B8%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%20%5B%EB%A1%9C%EC%9D%B4%ED%82%B4%20x%20%EB%A9%9C%EB%A1%9C%EB%A7%9D%EC%8A%A4%5D%20-%20%EB%B6%80%EC%82%B0%E3%80%8B%20BEXCO%20%EC%98%A4%EB%94%94%ED%86%A0%EB%A6%AC%EC%9B%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2024 어썸스테이지 [로이킴 x 멜로망스] - 부산》 BEXCO 오디토리움</div><div class="meta">Concierto · 2024</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202024%20Soundberry%20Theater%E3%80%8B%20KBS%20%EC%95%84%EB%A0%88%EB%82%98" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2024 Soundberry Theater》 KBS 아레나</div><div class="meta">Concierto · 2024</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EC%A0%9C17%ED%9A%8C%20%EB%B4%84%20%EA%B3%A0%EC%95%84%EC%9B%83%EC%BA%A0%ED%94%84%20-%20%EA%B3%A0%EC%84%B1%E3%80%8B%20%EA%B0%95%EC%9B%90%ED%8A%B9%EB%B3%84%EC%9E%90%EC%B9%98%EB%8F%84%20%EC%84%B8%EA%B3%84%EC%9E%BC%EB%B2%84%EB%A6%AC%EC%88%98%EB%A0%A8%EC%9E%A5" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">제17회 봄 고아웃캠프 - 고성》 강원특별자치도 세계잼버리수련장</div><div class="meta">Concierto · 2024</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202024%20LOVESOME%E3%80%8B%20%EC%98%AC%EB%A6%BC%ED%94%BD%EA%B3%B5%EC%9B%90%2088%EC%9E%94%EB%94%94%EB%A7%88%EB%8B%B9" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2024 LOVESOME》 올림픽공원 88잔디마당</div><div class="meta">Concierto · 2024</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20Beautiful%20Mint%20Life%202024%E3%80%8B%20%EC%98%AC%EB%A6%BC%ED%94%BD%EA%B3%B5%EC%9B%90%2088%EC%9E%94%EB%94%94%EB%A7%88%EB%8B%B9" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Beautiful Mint Life 2024》 올림픽공원 88잔디마당</div><div class="meta">Concierto · 2024</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20LIVE%20ON%20%EB%A1%9C%EC%9D%B4%ED%82%B4X%EA%B9%80%ED%95%84%20-%20%EB%8C%80%EA%B5%AC%E3%80%8B%20%EC%98%81%EB%82%A8%EB%8C%80%ED%95%99%EA%B5%90%20%EA%B2%BD%EC%82%B0%EC%BA%A0%ED%8D%BC%EC%8A%A4%20%EC%B2%9C%EB%A7%88%EC%95%84%ED%8A%B8%EC%84%BC%ED%84%B0" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">LIVE ON 로이킴X김필 - 대구》 영남대학교 경산캠퍼스 천마아트센터</div><div class="meta">Concierto · 2024</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202024%20%ED%8C%94%EB%A0%88%ED%8A%B8%20%EB%AE%A4%EC%A7%81%20%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C%E3%80%8B%20%EC%84%9C%EC%9A%B8%EC%96%B4%EB%A6%B0%EC%9D%B4%EB%8C%80%EA%B3%B5%EC%9B%90%20%EB%8A%A5%EB%8F%99%EC%88%B2%EC%86%8D%EC%9D%98%EB%AC%B4%EB%8C%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2024 팔레트 뮤직 페스티벌》 서울어린이대공원 능동숲속의무대</div><div class="meta">Concierto · 2024</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EB%A1%9C%EC%9D%B4%ED%82%B4%26%EC%86%8C%EB%9E%80%20-%20%EB%B6%80%EC%82%B0%E3%80%8B%20%EB%B6%80%EC%82%B0%EC%8B%9C%EB%AF%BC%ED%9A%8C%EA%B4%80%20%EB%8C%80%EA%B7%B9%EC%9E%A5" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">로이킴&amp;소란 - 부산》 부산시민회관 대극장</div><div class="meta">Concierto · 2024</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202023%20%EC%9D%BC%EC%83%81%EC%9C%BC%EB%A1%9C%EC%9D%98%20%EC%B4%88%EB%8C%80%20-%20%EA%B4%91%EC%A3%BC%E3%80%8B%20%EA%B9%80%EB%8C%80%EC%A4%91%EC%BB%A8%EB%B2%A4%EC%85%98%EC%84%BC%ED%84%B0" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2023 일상으로의 초대 - 광주》 김대중컨벤션센터</div><div class="meta">Concierto · 2023</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EC%96%B4%EC%8D%B8%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%20in%20%EC%84%9C%EC%9A%B8%20%232-3%E3%80%8B%20%EB%B8%94%EB%A3%A8%EC%8A%A4%ED%80%98%EC%96%B4%20%EB%A7%88%EC%8A%A4%ED%84%B0%EC%B9%B4%EB%93%9C%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">어썸스테이지 in 서울 #2-3》 블루스퀘어 마스터카드홀</div><div class="meta">Concierto · 2023</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202023%20Soundberry%20Theater%E3%80%8B%20%EB%B8%94%EB%A3%A8%EC%8A%A4%ED%80%98%EC%96%B4%20%EB%A7%88%EC%8A%A4%ED%84%B0%EC%B9%B4%EB%93%9C%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2023 Soundberry Theater》 블루스퀘어 마스터카드홀</div><div class="meta">Concierto · 2023</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202023%20LOVESOME%E3%80%8B%20%EC%9E%A0%EC%8B%A4%20%EC%A2%85%ED%95%A9%EC%9A%B4%EB%8F%99%EC%9E%A5%20%EC%98%AC%EB%A6%BC%ED%94%BD%EC%A3%BC%EA%B2%BD%EA%B8%B0%EC%9E%A5" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2023 LOVESOME》 잠실 종합운동장 올림픽주경기장</div><div class="meta">Concierto · 2023</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20Beautiful%20Mint%20Life%202023%E3%80%8B%20%EC%98%AC%EB%A6%BC%ED%94%BD%EA%B3%B5%EC%9B%90%2088%ED%98%B8%EC%88%98%EC%88%98%EB%B3%80%EB%AC%B4%EB%8C%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Beautiful Mint Life 2023》 올림픽공원 88호수수변무대</div><div class="meta">Concierto · 2023</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EB%A9%94%EA%B0%80%ED%95%84%EB%93%9C%EB%AE%A4%EC%A7%81%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C%202023%E3%80%8B%20%EB%82%9C%EC%A7%80%ED%95%9C%EA%B0%95%EA%B3%B5%EC%9B%90" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">메가필드뮤직페스티벌 2023》 난지한강공원</div><div class="meta">Concierto · 2023</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20Soundberry%20Festa%E2%80%98%2023%E3%80%8B%20KBS%20%EC%95%84%EB%A0%88%EB%82%98%20%EC%9D%BC%EB%8C%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Soundberry Festa‘ 23》 KBS 아레나 일대</div><div class="meta">Concierto · 2023</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20Someday%20Festival%202023%E3%80%8B%20%EB%82%9C%EC%A7%80%ED%95%9C%EA%B0%95%EA%B3%B5%EC%9B%90" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Someday Festival 2023》 난지한강공원</div><div class="meta">Concierto · 2023</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%ED%8F%89%ED%99%94%EB%88%84%EB%A6%AC%20%ED%94%BC%ED%81%AC%EB%8B%89%20%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C%20-%20%ED%8C%8C%EC%A3%BC%E3%80%8B%20%EC%9E%84%EC%A7%84%EA%B0%81%EA%B5%AD%EB%AF%BC%EA%B4%80%EA%B4%91%EC%A7%80%ED%8F%89%ED%99%94%EB%88%84%EB%A6%AC%EC%95%BC%EC%99%B8%EA%B3%B5%EC%97%B0%EC%9E%A5" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">평화누리 피크닉 페스티벌 - 파주》 임진각국민관광지평화누리야외공연장</div><div class="meta">Concierto · 2023</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202023%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%E3%80%88Roy%20Note%E3%80%89%E3%80%8B%20%EC%98%AC%EB%A6%BC%ED%94%BD%EA%B3%B5%EC%9B%90%20%EC%98%AC%EB%A6%BC%ED%94%BD%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2023 로이킴 콘서트 〈Roy Note〉》 올림픽공원 올림픽홀</div><div class="meta">Concierto · 2023</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EA%B7%B8%EB%A6%AC%EA%B3%A0" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">그리고</div><div class="meta">Álbum · 2022</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202022%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20%EC%BD%98%EC%84%9C%ED%8A%B8(%2C%EA%B7%B8%EB%A6%AC%EA%B3%A0)%E3%80%8B%20%EC%84%9C%EC%9A%B8%20%EB%B8%94%EB%A3%A8%EC%8A%A4%ED%80%98%EC%96%B4%20%EB%A7%88%EC%8A%A4%ED%84%B0%EC%B9%B4%EB%93%9C%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2022 로이킴 콘서트(,그리고)》 서울 블루스퀘어 마스터카드홀</div><div class="meta">Concierto · 2022</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202022%20%EB%B0%95%EC%9E%AC%EC%A0%95%20%EC%BD%98%EC%84%9C%ED%8A%B8%20-%20%ED%8E%B8%EC%A7%80%202%E3%80%8B%20%EA%B2%8C%EC%8A%A4%ED%8A%B8%20%EC%84%9C%EC%9A%B8%20%EC%BD%94%EC%97%91%EC%8A%A4%20%EC%8B%A0%ED%95%9C%EC%B9%B4%EB%93%9C%20%EC%95%84%ED%8B%B0%EC%9B%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2022 박재정 콘서트 - 편지 2》 게스트 서울 코엑스 신한카드 아티움</div><div class="meta">Concierto · 2022</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EC%8D%B8%EB%8D%B0%EC%9D%B4%20%EC%94%A8%EC%96%B4%ED%84%B0%20%EC%B9%B8%ED%83%80%EB%B9%8C%EB%A0%88%E3%80%8B%20%EC%84%9C%EC%9A%B8%20%EC%84%B8%EC%A2%85%EB%AC%B8%ED%99%94%ED%9A%8C%EA%B4%80%20%EB%8C%80%EA%B7%B9%EC%9E%A5" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">썸데이 씨어터 칸타빌레》 서울 세종문화회관 대극장</div><div class="meta">Concierto · 2022</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EC%84%9C%EC%9A%B8%EC%9E%AC%EC%A6%88%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C%202018%E3%80%8B%20%EC%84%9C%EC%9A%B8%20%EC%98%AC%EB%A6%BC%ED%94%BD%EA%B3%B5%EC%9B%90" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">서울재즈페스티벌 2018》 서울 올림픽공원</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%ED%95%84%EC%8A%A4%EB%84%88%20%ED%8C%8C%ED%81%AC%20%EB%AE%A4%EC%A7%81%20%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C%E3%80%8B%20%EC%84%9C%EC%9A%B8%20%EC%98%AC%EB%A6%BC%ED%94%BD%EA%B3%B5%EC%9B%90%2088%EC%9E%94%EB%94%94%EB%A7%88%EB%8B%B9" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">필스너 파크 뮤직 페스티벌》 서울 올림픽공원 88잔디마당</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EC%9E%90%EC%9A%B0%EB%A6%BC%2C%20%EB%8B%A8%EB%8F%85%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%E3%80%88%EC%B2%AD%EC%B6%98%EC%98%88%EC%B0%AC%E3%80%89%E3%80%8B%20%EA%B2%8C%EC%8A%A4%ED%8A%B8%20%EC%84%9C%EC%9A%B8%20%EC%84%9C%EC%9A%B8%20%EC%98%AC%EB%A6%BC%ED%94%BD%EA%B3%B5%EC%9B%90%20%EC%98%AC%EB%A6%BC%ED%94%BD%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">자우림, 단독 콘서트 〈청춘예찬〉》 게스트 서울 서울 올림픽공원 올림픽홀</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EC%96%B4%EB%B0%98%20%EB%AE%A4%EC%A7%81%20%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C%E3%80%8B%20%EC%84%B8%EC%A2%85%EB%8C%80%ED%95%99%EA%B5%90" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">어반 뮤직 페스티벌》 세종대학교</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202018%20%EB%8C%80%EA%B5%AC%20%ED%8F%AC%ED%81%AC%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C%E3%80%8B%20%EB%8C%80%EA%B5%AC%20%EC%BD%94%EC%98%A4%EB%A1%B1%EC%95%BC%EC%99%B8%EC%9D%8C%EC%95%85%EB%8B%B9" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2018 대구 포크페스티벌》 대구 코오롱야외음악당</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202018%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20%EB%9D%BC%EC%9D%B4%EB%B8%8C%20%ED%94%BC%ED%81%AC%EB%8B%89%E3%80%88%EB%A1%9C%EC%9D%B4%EB%A1%9C%E7%A5%AD(%EC%A0%9C)%E3%80%8B%20%EC%83%81%EB%AA%85%EB%8C%80%ED%95%99%EA%B5%90%20%EC%83%81%EB%AA%85%EC%95%84%ED%8A%B8%EC%84%BC%ED%84%B0%20%EA%B3%84%EB%8B%B9%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2018 로이킴 라이브 피크닉〈로이로祭(제)》 상명대학교 상명아트센터 계당홀</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20KCON%202018%20LA%E3%80%8B%20%EB%AF%B8%EA%B5%AD%20%EB%A1%9C%EC%8A%A4%EC%95%A4%EC%A0%A4%EB%A0%88%EC%8A%A4%20%EC%8A%A4%ED%85%8C%EC%9D%B4%ED%94%8C%EC%8A%A4%20%EC%84%BC%ED%84%B0" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">KCON 2018 LA》 미국 로스앤젤레스 스테이플스 센터</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EC%A0%9C12%ED%9A%8C%202018%20%EC%B9%A0%ED%8F%AC%EC%9E%AC%EC%A6%88%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C%E3%80%8B%20-%20%ED%8F%AC%ED%95%AD%EC%B9%A0%ED%8F%AC%ED%95%B4%EC%88%98%EC%9A%95%EC%9E%A5%20%EC%83%81%EC%84%A4%EB%AC%B4%EB%8C%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">제12회 2018 칠포재즈페스티벌》 - 포항칠포해수욕장 상설무대</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202018%20Voyage%20to%20Jarasum%E3%80%8B%20KT%20%EC%9E%90%EB%9D%BC%EC%84%AC%20%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C%20-%20%EC%9E%90%EB%9D%BC%EC%84%AC" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2018 Voyage to Jarasum》 KT 자라섬 페스티벌 - 자라섬</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202018%20%EA%B7%B8%EB%9E%9C%EB%93%9C%20%EB%AF%BC%ED%8A%B8%20%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C%E3%80%8B%20-%20%EC%84%9C%EC%9A%B8%20%EC%98%AC%EB%A6%BC%ED%94%BD%EA%B3%B5%EC%9B%90" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2018 그랜드 민트 페스티벌》 - 서울 올림픽공원</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202018%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20%EB%9D%BC%EC%9D%B4%EB%B8%8C%20%ED%88%AC%EC%96%B4%20%EB%A1%9C%EC%BC%80%EC%8A%A4%ED%8A%B8%EB%9D%BC(LIVE%20TOUR%20ROchestra)in%20Seoul%E3%80%8B%20%EB%8B%A8%EB%8F%85%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%EC%84%9C%EC%9A%B8%20%EB%B8%94%EB%A3%A8%EC%8A%A4%ED%80%98%EC%96%B4%20%EC%95%84%EC%9D%B4%EB%A7%88%EC%BC%93%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2018 로이킴 라이브 투어 로케스트라(LIVE TOUR ROchestra)in Seoul》 단독 콘서트 서울 블루스퀘어 아이마켓홀</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202018%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20%EB%9D%BC%EC%9D%B4%EB%B8%8C%20%ED%88%AC%EC%96%B4%20%EB%A1%9C%EC%BC%80%EC%8A%A4%ED%8A%B8%EB%9D%BC(LIVE%20TOUR%20ROchestra)in%20Busan%E3%80%8B%20%EB%8B%A8%EB%8F%85%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%EB%B6%80%EC%82%B0%20KBS%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2018 로이킴 라이브 투어 로케스트라(LIVE TOUR ROchestra)in Busan》 단독 콘서트 부산 KBS홀</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202018%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20%EB%9D%BC%EC%9D%B4%EB%B8%8C%20%ED%88%AC%EC%96%B4%20%EB%A1%9C%EC%BC%80%EC%8A%A4%ED%8A%B8%EB%9D%BC(LIVE%20TOUR%20ROchestra)in%20Gwangju%E3%80%8B%20%EB%8B%A8%EB%8F%85%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%EA%B4%91%EC%A3%BC%20%EA%B9%80%EB%8C%80%EC%A4%91%EC%BB%A8%EB%B2%A4%EC%85%98%EC%84%BC%ED%84%B0%20%EB%8B%A4%EB%AA%A9%EC%A0%81%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2018 로이킴 라이브 투어 로케스트라(LIVE TOUR ROchestra)in Gwangju》 단독 콘서트 광주 김대중컨벤션센터 다목적홀</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202018%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20%EB%9D%BC%EC%9D%B4%EB%B8%8C%20%ED%88%AC%EC%96%B4%20%EB%A1%9C%EC%BC%80%EC%8A%A4%ED%8A%B8%EB%9D%BC(LIVE%20TOUR%20ROchestra)in%20Incheon%E3%80%8B%20%EB%8B%A8%EB%8F%85%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%EC%9D%B8%EC%B2%9C%20%EC%9D%B8%EC%B2%9C%EA%B4%91%EC%97%AD%EC%8B%9C%EB%AC%B8%ED%99%94%EC%98%88%EC%88%A0%ED%9A%8C%EA%B4%80%20%EB%8C%80%EA%B3%B5%EC%97%B0%EC%9E%A5" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2018 로이킴 라이브 투어 로케스트라(LIVE TOUR ROchestra)in Incheon》 단독 콘서트 인천 인천광역시문화예술회관 대공연장</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202018%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20%EB%9D%BC%EC%9D%B4%EB%B8%8C%20%ED%88%AC%EC%96%B4%20%EB%A1%9C%EC%BC%80%EC%8A%A4%ED%8A%B8%EB%9D%BC(LIVE%20TOUR%20ROchestra)in%20Daegu%E3%80%8B%20%EB%8B%A8%EB%8F%85%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%EB%8C%80%EA%B5%AC%20%EC%98%81%EB%82%A8%EB%8C%80%ED%95%99%EA%B5%90%20%EC%B2%9C%EB%A7%88%EC%95%84%ED%8A%B8%EC%84%BC%ED%84%B0%20%EA%B7%B8%EB%9E%9C%EB%93%9C%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2018 로이킴 라이브 투어 로케스트라(LIVE TOUR ROchestra)in Daegu》 단독 콘서트 대구 영남대학교 천마아트센터 그랜드홀</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202018%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20%EB%9D%BC%EC%9D%B4%EB%B8%8C%20%ED%88%AC%EC%96%B4%20%EB%A1%9C%EC%BC%80%EC%8A%A4%ED%8A%B8%EB%9D%BC(LIVE%20TOUR%20ROchestra)in%20Seongnam%E3%80%8B%20%EB%8B%A8%EB%8F%85%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%EC%84%B1%EB%82%A8%20%EC%84%B1%EB%82%A8%EC%95%84%ED%8A%B8%EC%84%BC%ED%84%B0%20%EC%98%A4%ED%8E%98%EB%9D%BC%ED%95%98%EC%9A%B0%EC%8A%A4" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2018 로이킴 라이브 투어 로케스트라(LIVE TOUR ROchestra)in Seongnam》 단독 콘서트 성남 성남아트센터 오페라하우스</div><div class="meta">Concierto · 2018</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%E9%96%8B%E8%8A%B1%E6%9C%9F" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">開花期</div><div class="meta">Álbum · 2017</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EC%96%B4%EB%B0%98%20%EB%AE%A4%EC%A7%81%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%EB%94%94%EC%97%90%EC%9D%B4%EB%93%9C%26%EB%A1%9C%EC%9D%B4%ED%82%B4%E3%80%8B%20%EC%84%9C%EC%9A%B8%20%EC%BD%94%EC%97%91%EC%8A%A4%20%EC%98%A4%EB%94%94%ED%86%A0%EB%A6%AC%EC%9B%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">어반 뮤직 콘서트 디에이드&amp;로이킴》 서울 코엑스 오디토리움</div><div class="meta">Concierto · 2017</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EB%B2%9A%EA%BD%83%ED%94%BC%ED%81%AC%EB%8B%89%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C%202017%E3%80%8B%20%EC%84%9C%EC%9A%B8%20%EC%97%AC%EC%9D%98%EB%8F%84%ED%95%9C%EA%B0%95%EA%B3%B5%EC%9B%90%20%EB%AF%BC%EC%86%8D%EB%86%80%EC%9D%B4%20%EB%A7%88%EB%8B%B9" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">벚꽃피크닉페스티벌 2017》 서울 여의도한강공원 민속놀이 마당</div><div class="meta">Concierto · 2017</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EC%84%9C%EC%9A%B8%EC%9E%AC%EC%A6%88%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C%202017%E3%80%8B%20%EC%84%9C%EC%9A%B8%20%EC%98%AC%EB%A6%BC%ED%94%BD%EA%B3%B5%EC%9B%90" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">서울재즈페스티벌 2017》 서울 올림픽공원</div><div class="meta">Concierto · 2017</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20LIVE%20TOUR%20in%20SEOUL%E3%80%8B%20%EB%8B%A8%EB%8F%85%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%EC%84%9C%EC%9A%B8%20%EB%B8%94%EB%A3%A8%EC%8A%A4%ED%80%98%EC%96%B4%20%EC%82%BC%EC%84%B1%EC%B9%B4%EB%93%9C%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">로이킴 LIVE TOUR in SEOUL》 단독 콘서트 서울 블루스퀘어 삼성카드홀</div><div class="meta">Concierto · 2017</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20LIVE%20TOUR%20in%20DAEJEON%E3%80%8B%20%EB%8B%A8%EB%8F%85%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%EB%8C%80%EC%A0%84%20%EC%B6%A9%EB%82%A8%EB%8C%80%ED%95%99%EA%B5%90%20%EC%A0%95%EC%8B%AC%ED%99%94%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">로이킴 LIVE TOUR in DAEJEON》 단독 콘서트 대전 충남대학교 정심화홀</div><div class="meta">Concierto · 2017</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20LIVE%20TOUR%20in%20DAEGU%E3%80%8B%20%EB%8B%A8%EB%8F%85%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%EB%8C%80%EA%B5%AC%20%EA%B2%BD%EB%B6%81%EB%8C%80%ED%95%99%EA%B5%90%20%EB%8C%80%EA%B0%95%EB%8B%B9" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">로이킴 LIVE TOUR in DAEGU》 단독 콘서트 대구 경북대학교 대강당</div><div class="meta">Concierto · 2017</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20LIVE%20TOUR%20in%20BUSAN%E3%80%8B%20%EB%8B%A8%EB%8F%85%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%EB%B6%80%EC%82%B0%20KBS%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">로이킴 LIVE TOUR in BUSAN》 단독 콘서트 부산 KBS홀</div><div class="meta">Concierto · 2017</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202017%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20%ED%81%AC%EB%A6%AC%EC%8A%A4%EB%A7%88%EC%8A%A4%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%22Isn&#39;t%20He%20ROvelY%22%E3%80%8B%20%EC%84%9C%EC%9A%B8%20%EC%97%B0%EC%84%B8%EB%8C%80%ED%95%99%EA%B5%90%20%EB%B0%B1%EC%96%91%EC%BD%98%EC%84%9C%ED%8A%B8%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2017 로이킴 크리스마스 콘서트 &quot;Isn&#39;t He ROvelY&quot;》 서울 연세대학교 백양콘서트홀</div><div class="meta">Concierto · 2017</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EB%B7%B0%ED%8B%B0%ED%92%80%20%EB%AF%BC%ED%8A%B8%20%EB%9D%BC%EC%9D%B4%ED%94%84%202016%E3%80%8B%20%EC%84%9C%EC%9A%B8%20%EC%98%AC%EB%A6%BC%ED%94%BD%EA%B3%B5%EC%9B%90%20%EB%AF%BC%ED%8A%B8%20%EB%B8%8C%EB%A6%AC%EC%A6%88%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">뷰티풀 민트 라이프 2016》 서울 올림픽공원 민트 브리즈 스테이지</div><div class="meta">Concierto · 2016</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202016%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20%EC%9E%91%EC%9D%80%20%EC%BD%98%EC%84%9C%ED%8A%B8&#39;%EC%89%BC&#39;%E3%80%8B%209%ED%9A%8C%EA%B3%B5%EC%97%B0%20%EC%84%9C%EC%9A%B8%20YES24%20%EB%AC%B4%EB%B8%8C%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2016 로이킴 작은 콘서트&#39;쉼&#39;》 9회공연 서울 YES24 무브홀</div><div class="meta">Concierto · 2016</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202016%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20%EC%B2%AB%EB%B2%88%EC%A7%B8%20%ED%83%80%EC%9D%B4%EB%B2%A0%EC%9D%B4%20%EC%BD%98%EC%84%9C%ED%8A%B8%20%E3%80%8B%20-%20%ED%83%80%EC%9D%B4%EC%99%84%20%ED%83%80%EC%9D%B4%EB%B2%A0%EC%9D%B4%EC%8B%9C%20%EA%B5%AD%EC%A0%9C%EC%BB%A8%EB%B2%A4%EC%85%98%EC%84%BC%ED%84%B0" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2016 로이킴 첫번째 타이베이 콘서트 》 - 타이완 타이베이시 국제컨벤션센터</div><div class="meta">Concierto · 2016</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EB%9E%98%EB%93%9C%EC%BA%90%EB%9F%BF%20%EB%AE%A4%EC%A7%81%20%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C2016%E3%80%8B%20%EC%97%AC%EC%88%98%20EXPO" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">래드캐럿 뮤직 페스티벌2016》 여수 EXPO</div><div class="meta">Concierto · 2016</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%202016%20%EB%8C%80%EA%B5%AC%20%ED%8F%AC%ED%81%AC%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C%E3%80%8B%20%EB%8C%80%EA%B5%AC%20%EB%91%90%EB%A5%98%EA%B3%B5%EC%9B%90" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2016 대구 포크페스티벌》 대구 두류공원</div><div class="meta">Concierto · 2016</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20FEVER%20FESTIVAL%20CONCERT%20-%20%EB%B6%80%EC%82%B0%E3%80%8B%20%EB%B6%80%EC%82%B0%20%ED%95%B4%EC%9A%B4%EB%8C%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">FEVER FESTIVAL CONCERT - 부산》 부산 해운대</div><div class="meta">Concierto · 2016</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20%EC%97%B0%EB%A7%90%20%EC%BD%98%EC%84%9C%ED%8A%B8%20&#39;%EB%A1%9C%ED%81%90%EB%A9%98%ED%84%B0%EB%A6%AC(ROcumentarY)&#39;%E3%80%8B%20%EC%84%9C%EC%9A%B8%20%EC%97%B0%EC%84%B8%EB%8C%80%ED%95%99%EA%B5%90%20%EB%B0%B1%EC%96%91%EC%BD%98%EC%84%9C%ED%8A%B8%ED%99%80" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">로이킴 연말 콘서트 &#39;로큐멘터리(ROcumentarY)&#39;》 서울 연세대학교 백양콘서트홀</div><div class="meta">Concierto · 2016</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EC%9E%A5%EC%98%88%EC%9B%90%EC%9D%98%20%EC%98%A4%EB%8A%98%20%EA%B0%99%EC%9D%80%20%EB%B0%A4" target="_blank" rel="noreferrer"><span class="type">📺</span><span class="body"><div class="title">장예원의 오늘 같은 밤</div><div class="meta">TV · 2016 · FM</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EB%B6%81%EB%91%90%EC%B9%A0%EC%84%B1" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">북두칠성</div><div class="meta">Álbum · 2015</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EC%84%9C%EC%9A%B8%EC%9E%AC%EC%A6%88%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C%202015%E3%80%8B%20%EC%84%9C%EC%9A%B8%20%EC%98%AC%EB%A6%BC%ED%94%BD%EA%B3%B5%EC%9B%90%20%EC%B2%B4%EC%A1%B0%EA%B2%BD%EA%B8%B0%EC%9E%A5" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">서울재즈페스티벌 2015》 서울 올림픽공원 체조경기장</div><div class="meta">Concierto · 2015</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=Roy%20Kim%20%EC%9B%90%EB%AA%A8%EC%96%B4%EC%B0%AC%EC%8A%A4%20%26%20%EB%A1%9C%EC%9D%B4%ED%82%B4%20%EC%BD%98%EC%84%9C%ED%8A%B8%EC%BA%A0%ED%8D%BC%EC%8A%A4%20%EB%B8%94%EB%A3%A8%EC%8A%A4%E3%80%8B%20%EC%84%9C%EC%9A%B8%20%EC%97%B0%EC%84%B8%EB%8C%80%ED%95%99%EA%B5%90%20%EB%8C%80%EA%B0%95%EB%8B%B9" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">원모어찬스 &amp; 로이킴 콘서트캠퍼스 블루스》 서울 연세대학교 대강당</div><div class="meta">Concierto · 2015</div></span></a></div>
+</div>
+</div>
+
+<div class="sheet hide" id="sheet">
+  <div class="box">
+    <div class="st" id="sheetKicker"></div>
+    <div class="sh" id="sheetTitle"></div>
+    <div class="sm" id="sheetMeta"></div>
+    <a class="act primary" id="sheetGo" target="_blank" rel="noreferrer"></a>
+    <div class="hint" id="sheetNoLink" style="display:none"></div>
+    <button class="act second" id="sheetLog"></button>
+    <a class="act trip" id="sheetTrip" target="_blank" rel="noreferrer"></a>
+    <div class="hint" id="sheetTripHint"></div>
+    <button class="act second" id="sheetSeen"></button>
+    <div class="hint" id="sheetHint"></div>
+    <button class="cancel" id="sheetCancel"></button>
+  </div>
+</div>
+
+<div class="gate hide" id="gate">
+  <div class="box">
+    <div style="font-weight:800;margin-bottom:6px" id="gateTitle"></div>
+    <div id="gbtn"></div>
+    <button id="gateClose" onclick="document.getElementById('gate').classList.add('hide')" style="margin-top:10px;background:none;border:none;color:var(--mut);font-size:12px;cursor:pointer"></button>
+  </div>
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+const SLUG = 'roykim';
+const $ = id => document.getElementById(id);
+const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched, tripUrl, isPastShow } = window.FT_I18N;
+document.documentElement.lang = htmlLang();
+bindSwitcher($('langbar'));
+$('homeLink').textContent = T.home;
+$('homeLink').href = '../../?lang=' + LANG;
+$('gateTitle').textContent = T.gateTitle;
+$('gateClose').textContent = T.close;
+$('profile').querySelector('.loading').textContent = T.loading;
+const GCID = '315180918727-3d9rfmpa36r365qna9smdsvrod441jhd.apps.googleusercontent.com';
+
+function isExpired(tok){ try{ const p=JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); return !p.exp || (p.exp*1000 < Date.now()); }catch{return true;} }
+function getToken(){ const t=localStorage.getItem('page_id_token'); return (t && !isExpired(t)) ? t : null; }
+function onCred(resp){ localStorage.setItem('page_id_token', resp.credential); $('gate').classList.add('hide'); render(); }
+function renderLogin(){
+  if(window.google && google.accounts && google.accounts.id){
+    google.accounts.id.initialize({client_id:GCID, callback:onCred});
+    const el = $('gbtn'); el.innerHTML='';
+    google.accounts.id.renderButton(el, {theme:'filled_black', size:'large', text:'continue_with', shape:'pill'});
+  } else setTimeout(renderLogin, 300);
+}
+function requireLogin(){ $('gate').classList.remove('hide'); renderLogin(); }
+
+// 8장: 내 최애 사진 — 서버 업로드 없이 IndexedDB 로컬 저장만
+const DB_NAME='fantrack_photos', STORE='photos';
+function idbOpen(){ return new Promise((res,rej)=>{ const r=indexedDB.open(DB_NAME,1); r.onupgradeneeded=()=>r.result.createObjectStore(STORE); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+async function idbGet(key){ const db=await idbOpen(); return new Promise(res=>{ const tx=db.transaction(STORE,'readonly'); const rq=tx.objectStore(STORE).get(key); rq.onsuccess=()=>res(rq.result||null); rq.onerror=()=>res(null); }); }
+async function idbSet(key, blob){ const db=await idbOpen(); return new Promise(res=>{ const tx=db.transaction(STORE,'readwrite'); tx.objectStore(STORE).put(blob,key); tx.oncomplete=()=>res(); }); }
+
+let SORT = 'interest'; // interest | year
+let DATA = null;
+let TYPE_FILTER = 'all';
+let HIDE_WATCHED = false;
+
+const TYPE_ICON = { broadcast:'📺', radio:'📻', youtube:'▶️', ott:'🎬', film:'🎞️', cf:'📣', album:'💿', concert:'🎤' };
+const TYPE_LABEL = T.types;
+
+function fmtDate(c){
+  if(c.air_date) return c.air_date;
+  if(c.year) return c.year + T.yearSuffix;
+  return null;
+}
+function fmtMeta(c){
+  const parts = [];
+  if(c.upcoming) parts.push('<span class="upcoming">'+T.upcoming+'</span>');
+  else { const d = fmtDate(c); if(d) parts.push(d); }
+  const plat = pick(c,'platform'); if(plat) parts.push(plat);
+  if(c.link_region_note==='kr_only') parts.push(T.krOnly);
+  return parts.join(' · ');
+}
+
+function renderFilters(){
+  const types = ['all', ...new Set(DATA.content.map(c=>c.type))];
+  $('filters').innerHTML = types.map(t =>
+    `<button class="filter-chip${TYPE_FILTER===t?' on':''}" data-t="${t}">${t==='all'?'':((TYPE_ICON[t]||'')+' ')}${TYPE_LABEL[t]||t}</button>`
+  ).join('');
+  $('filters').style.display = 'flex';
+  document.querySelectorAll('.filter-chip').forEach(b => b.onclick = () => { TYPE_FILTER = b.dataset.t; renderFilters(); renderContent(); });
+}
+
+// 링크가 없는 항목(앨범·콘서트 등)은 유튜브 검색으로라도 넘어갈 수 있게 한다.
+// 저장하지 않고 렌더 시점에 만든다 — 가수명/제목이 바뀌면 링크도 따라간다.
+// 목록·액션시트·공유가 모두 쓰므로 반드시 최상위 스코프에 둔다.
+function ytSearch(c){
+  const cel = (typeof DATA !== 'undefined' && DATA.celebrity) || {};
+  const who = cel.name_en || cel.name_ko || '';
+  const what = (c.title_localized_en || c.title || '');
+  const q = [who, what].filter(Boolean).join(' ');
+  if(!q.trim()) return null;
+  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
+}
+function linkOf(c){ return c && (c.external_link || ytSearch(c)); }
+
+function renderContent(){
+  let list = [...DATA.content];
+  if(TYPE_FILTER!=='all') list = list.filter(c=>c.type===TYPE_FILTER);
+  if(HIDE_WATCHED) list = list.filter(c=>!isWatched(c.id));
+  if(SORT==='interest') list.sort((a,b)=> (b.votes-a.votes) || ((b.year||0)-(a.year||0)));
+  else list.sort((a,b)=> (b.year||0)-(a.year||0));
+
+  $('contentList').innerHTML = list.map(c => {
+    const seen = isWatched(c.id);
+    const t = (seen ? `<span class="seen">${T.watched}</span>` : '') + pick(c,'title');
+    const href = linkOf(c);
+    const isSearch = href && href.includes('results?search_query');
+    const linkHtml = href
+      ? `<a href="${href}" data-open="${c.id}" target="_blank" rel="noreferrer">
+          <span class="type">${TYPE_ICON[c.type]||'❓'}</span>
+          <span class="body"><div class="title">${t}${isSearch?' <span class="searchlink">'+T.searchSuffix+'</span>':''}</div><div class="meta">${fmtMeta(c)}</div>${pick(c,'note_public')?`<div class="note">${pick(c,'note_public')}</div>`:''}</span>
+        </a>`
+      : `<span data-open="${c.id}" style="display:flex;gap:10px;align-items:center;flex:1;min-width:0;cursor:pointer">
+          <span class="type">${TYPE_ICON[c.type]||'❓'}</span>
+          <span class="body"><div class="title">${t}</div><div class="meta">${fmtMeta(c)}</div>${pick(c,'note_public')?`<div class="note">${pick(c,'note_public')}</div>`:''}</span>
+        </span>`;
+    return `<div class="card${seen?' watched':''}">${linkHtml}<button class="vote" data-id="${c.id}">👍 ${c.votes}</button></div>`;
+  }).join('') || ('<div class="loading">'+T.emptyCategory+'</div>');
+
+  document.querySelectorAll('.vote').forEach(b => b.onclick = () => vote(b.dataset.id, b));
+  updateWatchToggle();
+  document.querySelectorAll('[data-open]').forEach(a => a.onclick = (e) => {
+    e.preventDefault();
+    openSheet(DATA.content.find(c => c.id === a.dataset.open));
+  });
+}
+
+async function vote(contentId, btn){
+  const tok = getToken();
+  if(!tok){ requireLogin(); return; }
+  btn.disabled = true;
+  try{
+    const r = await fetch('/api/fantrack/vote', {
+      method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+tok},
+      body: JSON.stringify({content_id: contentId})
+    });
+    const j = await r.json();
+    if(r.status===401){ requireLogin(); return; }
+    const item = DATA.content.find(c=>c.id===contentId);
+    if(item) item.votes = j.votes;
+    renderContent();
+  }catch(e){ /* ignore */ }
+  btn.disabled = false;
+}
+
+function updateSortUI(){
+  $('sortBadge').textContent = SORT==='interest' ? T.sortPopular : T.sortRecent;
+  $('sortBtn').textContent = SORT==='interest' ? T.toYear : T.toPopular;
+}
+$('sortBtn').onclick = () => { SORT = SORT==='interest' ? 'year' : 'interest'; updateSortUI(); renderContent(); };
+
+function updateWatchToggle(){
+  const any = DATA && DATA.content.some(c => isWatched(c.id));
+  $('wtoggle').style.display = any ? 'flex' : 'none';
+  $('wtoggleBtn').textContent = HIDE_WATCHED ? T.showWatched : T.hideWatched;
+  $('wtoggleBtn').classList.toggle('on', HIDE_WATCHED);
+}
+$('wtoggleBtn').onclick = () => { HIDE_WATCHED = !HIDE_WATCHED; renderContent(); };
+
+// 시청 액션 시트 — 링크로 나가기 전에 '로그에 시청기록 남기기'를 제안한다.
+const LOG_API = 'https://log.cocy.io/api/external/watch';
+let SHEET_ITEM = null;
+
+function openSheet(c){
+  if(!c) return;
+  SHEET_ITEM = c;
+  $('sheetKicker').textContent = T.actionTitle;
+  $('sheetTitle').textContent = pick(c,'title');
+  $('sheetMeta').innerHTML = fmtMeta(c);
+  const go = $('sheetGo');
+  go.textContent = T.goLink;
+  const _lk = linkOf(c);
+  if(_lk){ go.href = _lk; go.style.display='block'; $('sheetNoLink').style.display='none'; }
+  else { go.style.display='none'; $('sheetNoLink').textContent = T.noLink; $('sheetNoLink').style.display='block'; }
+  const trip = tripUrl(c, celebName(DATA.celebrity));
+  const tripEl = $('sheetTrip');
+  if(c.type === 'concert' && trip){
+    const past = isPastShow(c);
+    tripEl.href = trip;
+    tripEl.textContent = past ? T.planTripPast : T.planTrip;
+    tripEl.style.display = 'block';
+    $('sheetTripHint').textContent = past ? T.planTripHintPast : T.planTripHint;
+    $('sheetTripHint').style.display = 'block';
+  } else {
+    tripEl.style.display = 'none'; $('sheetTripHint').style.display = 'none';
+  }
+  const lg = $('sheetLog');
+  lg.textContent = T.addLog; lg.disabled = false;
+  $('sheetHint').textContent = T.addLogHint;
+  updateSeenBtn();
+  $('sheetCancel').textContent = T.close;
+  $('sheet').classList.remove('hide');
+}
+function updateSeenBtn(){
+  if(!SHEET_ITEM) return;
+  $('sheetSeen').textContent = isWatched(SHEET_ITEM.id) ? T.unmarkWatched : T.markWatched;
+}
+$('sheetSeen').onclick = () => {
+  if(!SHEET_ITEM) return;
+  setWatched(SHEET_ITEM.id, !isWatched(SHEET_ITEM.id));
+  updateSeenBtn();
+  renderContent();
+};
+function closeSheet(){ $('sheet').classList.add('hide'); }
+$('sheetCancel').onclick = closeSheet;
+$('sheet').onclick = (e) => { if(e.target === $('sheet')) closeSheet(); };
+
+$('sheetLog').onclick = async () => {
+  const tok = getToken();
+  if(!tok){ closeSheet(); $('gateTitle').textContent = T.addLogLogin; requireLogin(); return; }
+  const c = SHEET_ITEM; if(!c) return;
+  const btn = $('sheetLog');
+  btn.disabled = true;
+  try{
+    const r = await fetch(LOG_API, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+tok},
+      body: JSON.stringify({
+        title: pick(c,'title'),
+        platform: pick(c,'platform'),
+        type: c.type,
+        url: linkOf(c) || null,
+        celebrity: celebName(DATA.celebrity),
+        source: 'fantrack',
+        watched_at: Date.now(),
+      })
+    });
+    if(r.status===401){ btn.disabled=false; closeSheet(); $('gateTitle').textContent = T.addLogLogin; requireLogin(); return; }
+    if(!r.ok) throw new Error('save_failed');
+    setWatched(c.id, true);
+    updateSeenBtn();
+    renderContent();
+    btn.textContent = T.addLogDone;
+    $('sheetHint').innerHTML = '<a href="https://log.cocy.io/" target="_blank" rel="noreferrer" style="color:var(--lime)">'+T.openLog+'</a>';
+  }catch(e){
+    btn.disabled = false;
+    $('sheetHint').textContent = T.addLogFail;
+  }
+};
+
+async function renderProfile(){
+  const c = DATA.celebrity;
+  const localPhoto = await idbGet(SLUG);
+  const src = localPhoto ? URL.createObjectURL(localPhoto) : 'icon.svg';
+  const snsLinks = Object.entries(c.sns||{}).map(([k,v]) => `<a href="${v}" target="_blank" rel="noreferrer">${k}</a>`).join('');
+  const ytLink = c.youtube_channel_id ? `<a href="https://www.youtube.com/@${c.youtube_channel_id}" target="_blank" rel="noreferrer">${T.youtube}</a>` : '';
+  $('profile').innerHTML = `
+    <img class="avatar" id="avatarImg" src="${src}" alt="${celebName(c)}">
+    <div class="name">${celebName(c)}</div>
+    <div class="sub">${LANG==='en' ? (c.group_name||'') : (c.name_en||'')}</div>
+    <div class="badges">
+      ${c.mbti ? `<span class="badge">${c.mbti}</span>`:''}
+      ${c.group_name ? `<span class="badge">${c.group_name}</span>`:''}
+      ${pick(c,'agency') ? `<span class="badge">${pick(c,'agency')}</span>`:''}
+      ${c.debut_date ? `<span class="badge">${T.debut} ${c.debut_date}</span>`:''}
+      ${c.fandom ? `<span class="badge">${T.fandomLabel} ${c.fandom}</span>`:''}
+    </div>
+    <div class="sns">${ytLink}${snsLinks}</div>
+    <input type="file" id="photoInput" accept="image/*" style="display:none">
+    <button class="myphoto-btn" id="photoBtn">${T.myPhoto}</button>
+  `;
+  $('photoBtn').onclick = () => $('photoInput').click();
+  $('photoInput').onchange = async (e) => {
+    const f = e.target.files[0]; if(!f) return;
+    await idbSet(SLUG, f);
+    $('avatarImg').src = URL.createObjectURL(f);
+  };
+}
+
+async function render(){
+  const r = await fetch('/api/fantrack/celebrity/'+SLUG);
+  if(!r.ok){ $('profile').innerHTML = '<div class="loading">'+T.notFound+'</div>'; return; }
+  DATA = await r.json();
+  await renderProfile();
+  $('sortUnit').style.display = 'block';
+  updateSortUI();
+  renderFilters();
+  renderContent();
+}
+render();
+</script>
+</body>
+</html>

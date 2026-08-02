@@ -1,0 +1,24 @@
+{
+  "name": "Naul — FanTrack",
+  "short_name": "Naul",
+  "description": "9 works by Naul — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/naul/en/",
+  "start_url": "/fantrack/c/naul/en/",
+  "scope": "/fantrack/c/naul/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/naul/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

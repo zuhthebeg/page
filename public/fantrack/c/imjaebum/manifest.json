@@ -1,7 +1,7 @@
 {
   "name": "임재범 — FanTrack",
-  "short_name": "임재범 FanTrack",
-  "description": "임재범 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "임재범",
+  "description": "임재범 출연·활동 정보 14건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/imjaebum/",
   "start_url": "/fantrack/c/imjaebum/",
   "scope": "/fantrack/c/imjaebum/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/imjaebum/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

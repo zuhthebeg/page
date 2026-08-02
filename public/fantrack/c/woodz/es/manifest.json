@@ -1,0 +1,24 @@
+{
+  "name": "WOODZ — FanTrack",
+  "short_name": "WOODZ",
+  "description": "11 trabajos de WOODZ — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/woodz/es/",
+  "start_url": "/fantrack/c/woodz/es/",
+  "scope": "/fantrack/c/woodz/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/woodz/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

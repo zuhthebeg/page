@@ -1,0 +1,24 @@
+{
+  "name": "Jo Hang-jo — FanTrack",
+  "short_name": "Jo Hang-jo",
+  "description": "23 trabajos de Jo Hang-jo — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/johangjo/es/",
+  "start_url": "/fantrack/c/johangjo/es/",
+  "scope": "/fantrack/c/johangjo/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/johangjo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

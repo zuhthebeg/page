@@ -1,0 +1,24 @@
+{
+  "name": "T-ARA — FanTrack",
+  "short_name": "T-ARA",
+  "description": "40 trabajos de T-ARA — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/tara/es/",
+  "start_url": "/fantrack/c/tara/es/",
+  "scope": "/fantrack/c/tara/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/tara/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

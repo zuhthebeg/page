@@ -1,0 +1,24 @@
+{
+  "name": "Kim Feel — FanTrack",
+  "short_name": "Kim Feel",
+  "description": "48 works by Kim Feel — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/kimfeel/en/",
+  "start_url": "/fantrack/c/kimfeel/en/",
+  "scope": "/fantrack/c/kimfeel/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kimfeel/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

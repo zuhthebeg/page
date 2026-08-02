@@ -1,0 +1,24 @@
+{
+  "name": "MeloMance — FanTrack",
+  "short_name": "MeloMance",
+  "description": "14 trabajos de MeloMance — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/melomance/es/",
+  "start_url": "/fantrack/c/melomance/es/",
+  "scope": "/fantrack/c/melomance/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/melomance/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

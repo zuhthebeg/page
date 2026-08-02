@@ -1,0 +1,24 @@
+{
+  "name": "SUNMI — FanTrack",
+  "short_name": "SUNMI",
+  "description": "11 works by SUNMI — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/sunmi/en/",
+  "start_url": "/fantrack/c/sunmi/en/",
+  "scope": "/fantrack/c/sunmi/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/sunmi/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

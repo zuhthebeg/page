@@ -1,0 +1,24 @@
+{
+  "name": "Fly to the Sky — FanTrack",
+  "short_name": "Fly to the Sky",
+  "description": "103 trabajos de Fly to the Sky — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/flytothesky/es/",
+  "start_url": "/fantrack/c/flytothesky/es/",
+  "scope": "/fantrack/c/flytothesky/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/flytothesky/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Wheesung — FanTrack",
+  "short_name": "Wheesung",
+  "description": "16 trabajos de Wheesung — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/wheesung/es/",
+  "start_url": "/fantrack/c/wheesung/es/",
+  "scope": "/fantrack/c/wheesung/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/wheesung/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

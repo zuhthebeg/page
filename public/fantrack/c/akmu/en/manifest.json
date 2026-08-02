@@ -1,0 +1,24 @@
+{
+  "name": "AKMU — FanTrack",
+  "short_name": "AKMU",
+  "description": "14 works by AKMU — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/akmu/en/",
+  "start_url": "/fantrack/c/akmu/en/",
+  "scope": "/fantrack/c/akmu/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/akmu/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

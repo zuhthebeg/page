@@ -1,7 +1,7 @@
 {
   "name": "장범준 — FanTrack",
-  "short_name": "장범준 FanTrack",
-  "description": "장범준 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "장범준",
+  "description": "장범준 출연·활동 정보 10건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/jangbeomjune/",
   "start_url": "/fantrack/c/jangbeomjune/",
   "scope": "/fantrack/c/jangbeomjune/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/jangbeomjune/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

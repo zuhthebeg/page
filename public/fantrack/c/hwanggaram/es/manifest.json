@@ -1,0 +1,24 @@
+{
+  "name": "Hwang Ga Ram — FanTrack",
+  "short_name": "Hwang Ga Ram",
+  "description": "8 trabajos de Hwang Ga Ram — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/hwanggaram/es/",
+  "start_url": "/fantrack/c/hwanggaram/es/",
+  "scope": "/fantrack/c/hwanggaram/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/hwanggaram/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

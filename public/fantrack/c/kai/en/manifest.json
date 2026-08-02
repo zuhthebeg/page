@@ -1,0 +1,24 @@
+{
+  "name": "KAI — FanTrack",
+  "short_name": "KAI",
+  "description": "9 works by KAI — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/kai/en/",
+  "start_url": "/fantrack/c/kai/en/",
+  "scope": "/fantrack/c/kai/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kai/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

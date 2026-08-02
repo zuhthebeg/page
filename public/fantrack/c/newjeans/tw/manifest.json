@@ -1,0 +1,24 @@
+{
+  "name": "NewJeans — FanTrack",
+  "short_name": "NewJeans",
+  "description": "NewJeans 的出演與作品 7 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/newjeans/tw/",
+  "start_url": "/fantrack/c/newjeans/tw/",
+  "scope": "/fantrack/c/newjeans/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/newjeans/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

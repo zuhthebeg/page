@@ -1,0 +1,24 @@
+{
+  "name": "Epik High — FanTrack",
+  "short_name": "Epik High",
+  "description": "Epik High 的出演與作品 21 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/epikhigh/tw/",
+  "start_url": "/fantrack/c/epikhigh/tw/",
+  "scope": "/fantrack/c/epikhigh/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/epikhigh/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

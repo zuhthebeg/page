@@ -1,0 +1,24 @@
+{
+  "name": "ILLIT — FanTrack",
+  "short_name": "ILLIT",
+  "description": "9 trabajos de ILLIT — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/illit/es/",
+  "start_url": "/fantrack/c/illit/es/",
+  "scope": "/fantrack/c/illit/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/illit/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

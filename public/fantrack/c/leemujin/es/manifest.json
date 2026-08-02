@@ -1,0 +1,24 @@
+{
+  "name": "Lee Mujin — FanTrack",
+  "short_name": "Lee Mujin",
+  "description": "17 trabajos de Lee Mujin — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/leemujin/es/",
+  "start_url": "/fantrack/c/leemujin/es/",
+  "scope": "/fantrack/c/leemujin/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/leemujin/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "ONEW — FanTrack",
+  "short_name": "ONEW",
+  "description": "29 works by ONEW — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/onew/en/",
+  "start_url": "/fantrack/c/onew/en/",
+  "scope": "/fantrack/c/onew/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/onew/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

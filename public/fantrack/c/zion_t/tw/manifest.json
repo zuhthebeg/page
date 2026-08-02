@@ -1,0 +1,24 @@
+{
+  "name": "Zion.T — FanTrack",
+  "short_name": "Zion.T",
+  "description": "Zion.T 的出演與作品 11 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/zion_t/tw/",
+  "start_url": "/fantrack/c/zion_t/tw/",
+  "scope": "/fantrack/c/zion_t/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/zion_t/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

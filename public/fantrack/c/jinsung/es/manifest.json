@@ -1,0 +1,24 @@
+{
+  "name": "Jin Sung — FanTrack",
+  "short_name": "Jin Sung",
+  "description": "34 trabajos de Jin Sung — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/jinsung/es/",
+  "start_url": "/fantrack/c/jinsung/es/",
+  "scope": "/fantrack/c/jinsung/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jinsung/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

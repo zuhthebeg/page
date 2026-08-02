@@ -1,0 +1,24 @@
+{
+  "name": "尹未來 — FanTrack",
+  "short_name": "尹未來",
+  "description": "尹未來 的出演與作品 13 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/yoonmirae/tw/",
+  "start_url": "/fantrack/c/yoonmirae/tw/",
+  "scope": "/fantrack/c/yoonmirae/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/yoonmirae/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

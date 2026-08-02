@@ -1,7 +1,7 @@
 {
   "name": "트레저 — FanTrack",
-  "short_name": "트레저 FanTrack",
-  "description": "트레저 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "트레저",
+  "description": "트레저 출연·활동 정보 13건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/treasure/",
   "start_url": "/fantrack/c/treasure/",
   "scope": "/fantrack/c/treasure/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/treasure/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

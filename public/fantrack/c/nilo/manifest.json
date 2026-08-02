@@ -1,7 +1,7 @@
 {
   "name": "닐로 — FanTrack",
-  "short_name": "닐로 FanTrack",
-  "description": "닐로 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "닐로",
+  "description": "닐로 출연·활동 정보 5건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/nilo/",
   "start_url": "/fantrack/c/nilo/",
   "scope": "/fantrack/c/nilo/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/nilo/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

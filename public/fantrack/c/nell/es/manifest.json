@@ -1,0 +1,24 @@
+{
+  "name": "NELL — FanTrack",
+  "short_name": "NELL",
+  "description": "23 trabajos de NELL — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/nell/es/",
+  "start_url": "/fantrack/c/nell/es/",
+  "scope": "/fantrack/c/nell/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/nell/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

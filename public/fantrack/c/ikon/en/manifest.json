@@ -1,0 +1,24 @@
+{
+  "name": "iKON — FanTrack",
+  "short_name": "iKON",
+  "description": "16 works by iKON — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/ikon/en/",
+  "start_url": "/fantrack/c/ikon/en/",
+  "scope": "/fantrack/c/ikon/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ikon/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

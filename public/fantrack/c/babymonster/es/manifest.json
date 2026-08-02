@@ -1,0 +1,24 @@
+{
+  "name": "BABYMONSTER — FanTrack",
+  "short_name": "BABYMONSTER",
+  "description": "11 trabajos de BABYMONSTER — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/babymonster/es/",
+  "start_url": "/fantrack/c/babymonster/es/",
+  "scope": "/fantrack/c/babymonster/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/babymonster/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

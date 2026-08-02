@@ -1,0 +1,24 @@
+{
+  "name": "許閣 — FanTrack",
+  "short_name": "許閣",
+  "description": "許閣 的出演與作品 21 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/huhgak/tw/",
+  "start_url": "/fantrack/c/huhgak/tw/",
+  "scope": "/fantrack/c/huhgak/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/huhgak/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

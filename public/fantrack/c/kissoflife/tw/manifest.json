@@ -1,0 +1,24 @@
+{
+  "name": "KISS OF LIFE — FanTrack",
+  "short_name": "KISS OF LIFE",
+  "description": "KISS OF LIFE 的出演與作品 10 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/kissoflife/tw/",
+  "start_url": "/fantrack/c/kissoflife/tw/",
+  "scope": "/fantrack/c/kissoflife/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kissoflife/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

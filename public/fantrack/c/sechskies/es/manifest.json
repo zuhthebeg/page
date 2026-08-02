@@ -1,0 +1,24 @@
+{
+  "name": "SECHSKIES — FanTrack",
+  "short_name": "SECHSKIES",
+  "description": "12 trabajos de SECHSKIES — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/sechskies/es/",
+  "start_url": "/fantrack/c/sechskies/es/",
+  "scope": "/fantrack/c/sechskies/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/sechskies/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

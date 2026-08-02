@@ -1,0 +1,24 @@
+{
+  "name": "Kim Dong Ryul — FanTrack",
+  "short_name": "Kim Dong Ryul",
+  "description": "16 works by Kim Dong Ryul — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/kimdongryul/en/",
+  "start_url": "/fantrack/c/kimdongryul/en/",
+  "scope": "/fantrack/c/kimdongryul/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kimdongryul/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

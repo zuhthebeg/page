@@ -1,0 +1,24 @@
+{
+  "name": "Yoon Do Hyun — FanTrack",
+  "short_name": "Yoon Do Hyun",
+  "description": "45 trabajos de Yoon Do Hyun — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/yoondohyun/es/",
+  "start_url": "/fantrack/c/yoondohyun/es/",
+  "scope": "/fantrack/c/yoondohyun/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/yoondohyun/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

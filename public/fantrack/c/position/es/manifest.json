@@ -1,0 +1,24 @@
+{
+  "name": "Position — FanTrack",
+  "short_name": "Position",
+  "description": "12 trabajos de Position — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/position/es/",
+  "start_url": "/fantrack/c/position/es/",
+  "scope": "/fantrack/c/position/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/position/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

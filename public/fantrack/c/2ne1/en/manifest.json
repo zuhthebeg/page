@@ -1,0 +1,24 @@
+{
+  "name": "2NE1 — FanTrack",
+  "short_name": "2NE1",
+  "description": "9 works by 2NE1 — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/2ne1/en/",
+  "start_url": "/fantrack/c/2ne1/en/",
+  "scope": "/fantrack/c/2ne1/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/2ne1/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

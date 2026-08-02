@@ -1,0 +1,24 @@
+{
+  "name": "Kim Jong-seo — FanTrack",
+  "short_name": "Kim Jong-seo",
+  "description": "10 trabajos de Kim Jong-seo — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/kimjongseo/es/",
+  "start_url": "/fantrack/c/kimjongseo/es/",
+  "scope": "/fantrack/c/kimjongseo/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kimjongseo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

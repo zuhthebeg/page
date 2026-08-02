@@ -1,0 +1,24 @@
+{
+  "name": "EXO — FanTrack",
+  "short_name": "EXO",
+  "description": "106 works by EXO — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/exo/en/",
+  "start_url": "/fantrack/c/exo/en/",
+  "scope": "/fantrack/c/exo/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/exo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

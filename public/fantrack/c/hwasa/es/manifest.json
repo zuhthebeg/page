@@ -1,0 +1,24 @@
+{
+  "name": "Hwasa — FanTrack",
+  "short_name": "Hwasa",
+  "description": "27 trabajos de Hwasa — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/hwasa/es/",
+  "start_url": "/fantrack/c/hwasa/es/",
+  "scope": "/fantrack/c/hwasa/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/hwasa/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

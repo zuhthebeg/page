@@ -1,0 +1,24 @@
+{
+  "name": "Jaja — FanTrack",
+  "short_name": "Jaja",
+  "description": "6 works by Jaja — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/jaja/en/",
+  "start_url": "/fantrack/c/jaja/en/",
+  "scope": "/fantrack/c/jaja/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jaja/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

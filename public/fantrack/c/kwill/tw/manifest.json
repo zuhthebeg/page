@@ -1,0 +1,24 @@
+{
+  "name": "K.Will — FanTrack",
+  "short_name": "K.Will",
+  "description": "K.Will 的出演與作品 38 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/kwill/tw/",
+  "start_url": "/fantrack/c/kwill/tw/",
+  "scope": "/fantrack/c/kwill/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kwill/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

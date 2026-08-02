@@ -1,0 +1,24 @@
+{
+  "name": "George — FanTrack",
+  "short_name": "George",
+  "description": "10 works by George — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/george/en/",
+  "start_url": "/fantrack/c/george/en/",
+  "scope": "/fantrack/c/george/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/george/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Nerd Connection — FanTrack",
+  "short_name": "Nerd Connection",
+  "description": "45 trabajos de Nerd Connection — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/nerdconnection/es/",
+  "start_url": "/fantrack/c/nerdconnection/es/",
+  "scope": "/fantrack/c/nerdconnection/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/nerdconnection/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

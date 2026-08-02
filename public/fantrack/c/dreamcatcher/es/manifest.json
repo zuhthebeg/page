@@ -1,0 +1,24 @@
+{
+  "name": "DREAMCATCHER — FanTrack",
+  "short_name": "DREAMCATCHER",
+  "description": "20 trabajos de DREAMCATCHER — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/dreamcatcher/es/",
+  "start_url": "/fantrack/c/dreamcatcher/es/",
+  "scope": "/fantrack/c/dreamcatcher/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/dreamcatcher/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

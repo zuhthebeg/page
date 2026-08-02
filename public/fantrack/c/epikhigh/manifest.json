@@ -1,7 +1,7 @@
 {
   "name": "에픽하이 — FanTrack",
-  "short_name": "에픽하이 FanTrack",
-  "description": "에픽하이 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "에픽하이",
+  "description": "에픽하이 출연·활동 정보 21건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/epikhigh/",
   "start_url": "/fantrack/c/epikhigh/",
   "scope": "/fantrack/c/epikhigh/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/epikhigh/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

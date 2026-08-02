@@ -1,0 +1,24 @@
+{
+  "name": "Parc Jae Jung — FanTrack",
+  "short_name": "Parc Jae Jung",
+  "description": "39 works by Parc Jae Jung — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/parkjaejung/en/",
+  "start_url": "/fantrack/c/parkjaejung/en/",
+  "scope": "/fantrack/c/parkjaejung/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/parkjaejung/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "SISTAR — FanTrack",
+  "short_name": "SISTAR",
+  "description": "27 works by SISTAR — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/sistar/en/",
+  "start_url": "/fantrack/c/sistar/en/",
+  "scope": "/fantrack/c/sistar/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/sistar/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

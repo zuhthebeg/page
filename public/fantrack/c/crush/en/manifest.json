@@ -1,0 +1,24 @@
+{
+  "name": "Crush — FanTrack",
+  "short_name": "Crush",
+  "description": "27 works by Crush — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/crush/en/",
+  "start_url": "/fantrack/c/crush/en/",
+  "scope": "/fantrack/c/crush/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/crush/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Seo In Guk — FanTrack",
+  "short_name": "Seo In Guk",
+  "description": "50 works by Seo In Guk — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/seoinguk/en/",
+  "start_url": "/fantrack/c/seoinguk/en/",
+  "scope": "/fantrack/c/seoinguk/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/seoinguk/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "ATEEZ — FanTrack",
+  "short_name": "ATEEZ",
+  "description": "33 trabajos de ATEEZ — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/ateez/es/",
+  "start_url": "/fantrack/c/ateez/es/",
+  "scope": "/fantrack/c/ateez/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ateez/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

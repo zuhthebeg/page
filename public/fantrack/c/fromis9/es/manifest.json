@@ -1,0 +1,24 @@
+{
+  "name": "fromis_9 — FanTrack",
+  "short_name": "fromis_9",
+  "description": "14 trabajos de fromis_9 — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/fromis9/es/",
+  "start_url": "/fantrack/c/fromis9/es/",
+  "scope": "/fantrack/c/fromis9/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/fromis9/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "ASH ISLAND — FanTrack",
+  "short_name": "ASH ISLAND",
+  "description": "14 works by ASH ISLAND — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/ashisland/en/",
+  "start_url": "/fantrack/c/ashisland/en/",
+  "scope": "/fantrack/c/ashisland/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ashisland/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

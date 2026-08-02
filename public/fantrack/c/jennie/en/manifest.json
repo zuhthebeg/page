@@ -1,0 +1,24 @@
+{
+  "name": "JENNIE — FanTrack",
+  "short_name": "JENNIE",
+  "description": "6 works by JENNIE — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/jennie/en/",
+  "start_url": "/fantrack/c/jennie/en/",
+  "scope": "/fantrack/c/jennie/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jennie/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

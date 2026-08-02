@@ -1,0 +1,24 @@
+{
+  "name": "BoA — FanTrack",
+  "short_name": "BoA",
+  "description": "83 trabajos de BoA — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/boa/es/",
+  "start_url": "/fantrack/c/boa/es/",
+  "scope": "/fantrack/c/boa/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/boa/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

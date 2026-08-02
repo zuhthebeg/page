@@ -1,0 +1,24 @@
+{
+  "name": "YENA — FanTrack",
+  "short_name": "YENA",
+  "description": "10 works by YENA — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/yena/en/",
+  "start_url": "/fantrack/c/yena/en/",
+  "scope": "/fantrack/c/yena/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/yena/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

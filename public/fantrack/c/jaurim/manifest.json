@@ -1,7 +1,7 @@
 {
   "name": "자우림 — FanTrack",
-  "short_name": "자우림 FanTrack",
-  "description": "자우림 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "자우림",
+  "description": "자우림 출연·활동 정보 24건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/jaurim/",
   "start_url": "/fantrack/c/jaurim/",
   "scope": "/fantrack/c/jaurim/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/jaurim/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>東方神起 — FanTrack</title>
+<meta name="description" content="東方神起 的出演與作品 60 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<link rel="canonical" href="https://page.cocy.io/fantrack/c/tvxq/tw/">
+<meta name="theme-color" content="#141221">
+<link rel="manifest" href="/fantrack/c/tvxq/tw/manifest.json">
+<script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
+<script src="/fantrack/i18n.js?v=20260802es3"></script>
+<style>
+:root{
+  --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
+  --lime:#c6f24e; --amber:#f0b43c; --line:#3a3458;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--txt);}
+.wrap{max-width:480px;margin:0 auto;padding:16px}
+.profile{background:var(--panel);border-radius:16px;padding:20px;text-align:center;margin-bottom:16px}
+.avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;background:var(--panel2);margin-bottom:10px}
+.name{font-size:20px;font-weight:800}
+.sub{font-size:13px;color:var(--mut);margin-top:2px}
+.badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.badge{background:var(--panel2);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700}
+.sns{display:flex;gap:10px;justify-content:center;margin-top:12px}
+.sns a{color:var(--mut);text-decoration:none;font-size:12px;background:var(--panel2);padding:6px 10px;border-radius:8px}
+.myphoto-btn{margin-top:10px;font-size:11px;color:var(--mut);background:none;border:1px dashed var(--line);border-radius:8px;padding:5px 10px;cursor:pointer}
+
+.mode-unit{border-radius:10px;overflow:hidden;box-shadow:0 3px 0 #0f0d1c;margin-bottom:14px}
+.mode-unit:active{transform:translateY(2px);box-shadow:0 1px 0 #0f0d1c}
+.mode-badge{display:block;text-align:center;font-size:11px;font-weight:800;color:var(--bg);background:var(--lime);padding:7px 8px}
+.mode-toggle{display:block;width:100%;border:none;background:var(--panel2);color:var(--txt);font-size:13px;font-weight:800;padding:10px 8px;cursor:pointer}
+
+.filters{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;-webkit-overflow-scrolling:touch}
+.filters::-webkit-scrollbar{display:none}
+.filter-chip{flex-shrink:0;background:var(--panel2);border:1px solid transparent;border-radius:20px;padding:7px 13px;font-size:12px;font-weight:700;color:var(--mut);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.filter-chip.on{background:var(--lime);color:var(--bg);border-color:var(--lime)}
+
+.card{background:var(--panel);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center}
+.card .type{font-size:16px;flex-shrink:0;width:22px;text-align:center}
+.card .body{flex:1;min-width:0}
+.card .title{font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card .meta{font-size:11px;color:var(--mut);margin-top:2px}
+.card .note{font-size:10.5px;color:var(--amber);margin-top:2px}
+.card .vote{background:var(--panel2);border:none;border-radius:8px;padding:8px 10px;font-size:12px;color:var(--txt);cursor:pointer;flex-shrink:0}
+.card .vote.on{background:var(--lime);color:var(--bg);font-weight:800}
+.card .upcoming{color:var(--amber);font-weight:800}
+.card .searchlink{opacity:.7;font-style:italic}
+.card a{color:inherit;text-decoration:none;display:flex;gap:10px;align-items:center;flex:1;min-width:0}
+
+.gate{position:fixed;inset:0;background:rgba(10,9,20,.9);display:flex;align-items:center;justify-content:center;z-index:50}
+.gate.hide{display:none}
+.gate .box{background:var(--panel);border-radius:16px;padding:24px;text-align:center;max-width:300px}
+#gbtn{margin-top:14px;display:flex;justify-content:center}
+.loading{text-align:center;color:var(--mut);padding:30px;font-size:13px}
+.topbar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.home{flex-shrink:0;color:var(--mut);text-decoration:none;font-size:11.5px;font-weight:700;background:var(--panel2);border-radius:20px;padding:6px 11px}
+.langbar{display:flex;gap:6px;justify-content:flex-end;flex:1;margin-bottom:0}
+.card.watched{opacity:.62}
+.card.watched .title{text-decoration:line-through;text-decoration-color:var(--mut)}
+.card .seen{display:inline-block;font-size:9.5px;font-weight:800;color:var(--bg);background:var(--mut);border-radius:4px;padding:1px 5px;margin-right:5px;vertical-align:1px}
+.wtoggle{display:flex;justify-content:flex-end;margin-bottom:8px}
+.wtoggle button{background:var(--panel2);border:1px solid transparent;color:var(--mut);border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;cursor:pointer}
+.wtoggle button.on{background:var(--amber);color:var(--bg);border-color:var(--amber)}
+.lang-btn{background:var(--panel2);border:1px solid transparent;color:var(--mut);border-radius:20px;padding:5px 12px;font-size:11.5px;font-weight:700;cursor:pointer}
+.lang-btn.on{background:var(--lime);color:var(--bg);border-color:var(--lime)}
+.sheet{position:fixed;inset:0;background:rgba(10,9,20,.75);display:flex;align-items:flex-end;justify-content:center;z-index:60}
+.sheet.hide{display:none}
+.sheet .box{background:var(--panel);border-radius:16px 16px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));width:100%;max-width:480px}
+.sheet .st{font-size:11px;color:var(--mut);font-weight:700}
+.sheet .sh{font-size:15px;font-weight:800;margin:4px 0 2px;line-height:1.35}
+.sheet .sm{font-size:11.5px;color:var(--mut);margin-bottom:14px}
+.sheet .act{display:block;width:100%;border:none;border-radius:10px;padding:13px;font-size:13.5px;font-weight:800;cursor:pointer;margin-bottom:8px;text-align:center;text-decoration:none;box-sizing:border-box}
+.sheet .act.primary{background:var(--lime);color:var(--bg)}
+.sheet .act.second{background:var(--panel2);color:var(--txt)}
+.sheet .act.trip{background:var(--panel2);color:var(--lime);border:1px solid var(--lime)}
+.sheet .act[disabled]{opacity:.55;cursor:default}
+.sheet .hint{font-size:10.5px;color:var(--mut);text-align:center;margin:-2px 0 10px}
+.sheet .cancel{background:none;border:none;color:var(--mut);font-size:12px;cursor:pointer;display:block;width:100%;padding:8px}
+</style>
+<link rel="alternate" hreflang="ko" href="https://page.cocy.io/fantrack/c/tvxq/">
+<link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/tvxq/en/">
+<link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/tvxq/tw/">
+<link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/tvxq/es/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"東方神起","alternateName":["동방신기","TVXQ","東方神起"],"url":"https://page.cocy.io/fantrack/c/tvxq/tw/","inLanguage":"zh-Hant","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"SM 엔터테인먼트"},"foundingDate":"2003-12-26","subjectOf":[{"@type":"MusicEvent","name":"TVXQ! 22Day With Cassiopeia","datePublished":"2025"},{"@type":"MusicAlbum","name":"ZONE","datePublished":"2024"},{"@type":"MusicAlbum","name":"20&2","datePublished":"2023"},{"@type":"MusicEvent","name":"Bigeast FANCLUB EVENT 2023 ~WHITE GARDEN~","datePublished":"2023"},{"@type":"MusicEvent","name":"TOHOSHINKI FANCLUB EVENT ~Bigeastrain 2025~","datePublished":"2023"},{"@type":"MusicAlbum","name":"Epitaph","datePublished":"2022"},{"@type":"MusicEvent","name":"Winter Rose for Cassiopeia : TVXQ! 19th Debut Anniversary","datePublished":"2022"},{"@type":"MusicEvent","name":"Bigeast FANCLUB EVENT 2022 \"TOHOSHINKI THE GARDEN ~TOURS~\"","datePublished":"2022"},{"@type":"MusicEvent","name":"TVXQ! 18th Anniversary Party \"Dinner with Cassiopeia\"","datePublished":"2021"},{"@type":"MusicEvent","name":"Bigeast FANCLUB EVENT 2021 \"TOHOSHINKI THE GARDEN ~Online~\"","datePublished":"2021"},{"@type":"MusicEvent","name":"2020 TVXQ! ONLINE FANMEETING \"동(冬),방(房),신기 with Cassiopeia\"","datePublished":"2020"},{"@type":"MusicAlbum","name":"XV","datePublished":"2019"},{"@type":"MusicEvent","name":"2019 TVXQ! FANMEETING 'The Starry Night with Cassiopeia'","datePublished":"2019"},{"@type":"MusicEvent","name":"Bigeast FANCLUB EVENT 2019 \"TOHOSHINKI THE GARDEN\"","datePublished":"2019"},{"@type":"MusicAlbum","name":"New Chapter #1 : The Chance of Love","datePublished":"2018"},{"@type":"MusicAlbum","name":"TOMORROW","datePublished":"2018"},{"@type":"MusicAlbum","name":"New Chapter #2 : The Truth of Love","datePublished":"2018"},{"@type":"MusicEvent","name":"TVXQ! Welcome Back Party \"The Chance Of Love\"","datePublished":"2018"},{"@type":"MusicEvent","name":"TVXQ! Special Day 'The Truth of Love'","datePublished":"2018"},{"@type":"MusicEvent","name":"Bigeast FANCLUB EVENT 2018 THE MISSION IV","datePublished":"2018"},{"@type":"MusicEvent","name":"TVXQ! Special Comeback Live \"YouR PresenT\"","datePublished":"2017"},{"@type":"MusicAlbum","name":"RISE AS GOD","datePublished":"2015"},{"@type":"MusicEvent","name":"TOHOSHINKI 10TH ANNIVERSARY EVENT","datePublished":"2015"},{"@type":"MusicAlbum","name":"TENSE","datePublished":"2014"},{"@type":"MusicAlbum","name":"TREE","datePublished":"2014"},{"@type":"MusicAlbum","name":"WITH","datePublished":"2014"},{"@type":"MusicEvent","name":"Bigeast FANCLUB EVENT 2014 THE MISSION III ~잃어버린 동전을 되찾아라!!~","datePublished":"2014"},{"@type":"MusicAlbum","name":"TIME","datePublished":"2013"},{"@type":"MusicEvent","name":"20131005 Cassiopeia Special Day with 東方神起♥","datePublished":"2013"},{"@type":"MusicEvent","name":"Bigeast FANCLUB EVENT 2013 THE MISSION II","datePublished":"2013"},{"@type":"MusicAlbum","name":"Catch Me","datePublished":"2012"},{"@type":"MusicEvent","name":"Bigeast FANCLUB EVENT 2012 THE MISSION","datePublished":"2012"},{"@type":"MusicEvent","name":"'Catch Me Special Edition' 발매 기념 미니 팬미팅","datePublished":"2012"},{"@type":"MusicAlbum","name":"Keep Your Head Down","datePublished":"2011"},{"@type":"MusicAlbum","name":"Temptastic","datePublished":"2011"},{"@type":"MusicAlbum","name":"TONE","datePublished":"2011"},{"@type":"MusicEvent","name":"TVXQ! Asia Fan Party 2011","datePublished":"2011"},{"@type":"MusicAlbum","name":"The Secret Code","datePublished":"2009"},{"@type":"MusicEvent","name":"Bigeast 3RD FANCLUB EVENT","datePublished":"2009"},{"@type":"MusicAlbum","name":"T","datePublished":"2008"},{"@type":"MusicAlbum","name":"MIROTIC","datePublished":"2008"},{"@type":"MusicEvent","name":"청소년에게 꿈과 희망을 - 東方神起 가을 미니 콘서트","datePublished":"2008"},{"@type":"MusicEvent","name":"20080120 Cassiopeia Special Day with 東方神起♥","datePublished":"2008"},{"@type":"MusicEvent","name":"東方神起 Debut 5th Anniversary♡Special Party!!","datePublished":"2008"},{"@type":"MusicAlbum","name":"Five in the Black","datePublished":"2007"},{"@type":"MusicEvent","name":"Bigeast 2ND FANCLUB EVENT","datePublished":"2007"},{"@type":"MusicAlbum","name":"Heart, Mind and Soul","datePublished":"2006"},{"@type":"MusicAlbum","name":"\"O\" -正・反・合","datePublished":"2006"},{"@type":"MusicEvent","name":"The 3rd Album \"O\"-正.反.合. Showcase","datePublished":"2006"},{"@type":"MusicEvent","name":"東方神起 1226 party party","datePublished":"2006"},{"@type":"MusicEvent","name":"Bigeast 1ST FANCLUB EVENT","datePublished":"2006"},{"@type":"MusicAlbum","name":"Rising Sun","datePublished":"2005"},{"@type":"MusicEvent","name":"Rising Sun Showcase","datePublished":"2005"},{"@type":"MusicAlbum","name":"TRI-ANGLE","datePublished":"2004"},{"@type":"MusicAlbum","name":"The Christmas gift from 東方神起","datePublished":"2004"},{"@type":"MusicRecording","name":"MIROTIC","url":"https://www.youtube.com/watch?v=9r1lvcI-D6k"},{"@type":"MusicRecording","name":"Humanoids","url":"https://www.youtube.com/watch?v=42z1_1QteCg"},{"@type":"MusicRecording","name":"Rebel","url":"https://www.youtube.com/watch?v=ECSZ3zy9Ifw"},{"@type":"MusicRecording","name":"TVXQ! Rebel","url":"https://www.youtube.com/watch?v=p_GJsHLE4wU"},{"@type":"MusicRecording","name":"Psycho","url":"https://www.youtube.com/watch?v=aoa7f3oLyLc"}]}</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><a class="home" id="homeLink" href="../../"></a><div class="langbar" id="langbar"></div></div>
+  <div class="profile" id="profile"><div class="loading"></div></div>
+  <div class="mode-unit" id="sortUnit" style="display:none">
+    <span class="mode-badge" id="sortBadge"></span>
+    <button class="mode-toggle" id="sortBtn"></button>
+  </div>
+  <div class="filters" id="filters" style="display:none"></div>
+  <div class="wtoggle" id="wtoggle" style="display:none"><button id="wtoggleBtn"></button></div>
+  <div id="contentList">
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20TVXQ!%2022Day%20With%20Cassiopeia" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">TVXQ! 22Day With Cassiopeia</div><div class="meta">演唱會 · 2025年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20ZONE" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">ZONE</div><div class="meta">專輯 · 2024年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%2020%262" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">20&amp;2</div><div class="meta">專輯 · 2023年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Bigeast%20FANCLUB%20EVENT%202023%20~WHITE%20GARDEN~" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Bigeast FANCLUB EVENT 2023 ~WHITE GARDEN~</div><div class="meta">演唱會 · 2023年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20TOHOSHINKI%20FANCLUB%20EVENT%20~Bigeastrain%202025~" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">TOHOSHINKI FANCLUB EVENT ~Bigeastrain 2025~</div><div class="meta">演唱會 · 2023年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Epitaph" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">Epitaph</div><div class="meta">專輯 · 2022年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Winter%20Rose%20for%20Cassiopeia%20%3A%20TVXQ!%2019th%20Debut%20Anniversary" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Winter Rose for Cassiopeia : TVXQ! 19th Debut Anniversary</div><div class="meta">演唱會 · 2022年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Bigeast%20FANCLUB%20EVENT%202022%20%22TOHOSHINKI%20THE%20GARDEN%20~TOURS~%22" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Bigeast FANCLUB EVENT 2022 &quot;TOHOSHINKI THE GARDEN ~TOURS~&quot;</div><div class="meta">演唱會 · 2022年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20TVXQ!%2018th%20Anniversary%20Party%20%22Dinner%20with%20Cassiopeia%22" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">TVXQ! 18th Anniversary Party &quot;Dinner with Cassiopeia&quot;</div><div class="meta">演唱會 · 2021年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Bigeast%20FANCLUB%20EVENT%202021%20%22TOHOSHINKI%20THE%20GARDEN%20~Online~%22" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Bigeast FANCLUB EVENT 2021 &quot;TOHOSHINKI THE GARDEN ~Online~&quot;</div><div class="meta">演唱會 · 2021年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%202020%20TVXQ!%20ONLINE%20FANMEETING%20%22%EB%8F%99(%E5%86%AC)%2C%EB%B0%A9(%E6%88%BF)%2C%EC%8B%A0%EA%B8%B0%20with%20Cassiopeia%22" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2020 TVXQ! ONLINE FANMEETING &quot;동(冬),방(房),신기 with Cassiopeia&quot;</div><div class="meta">演唱會 · 2020年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20XV" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">XV</div><div class="meta">專輯 · 2019年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%202019%20TVXQ!%20FANMEETING%20&#39;The%20Starry%20Night%20with%20Cassiopeia&#39;" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">2019 TVXQ! FANMEETING &#39;The Starry Night with Cassiopeia&#39;</div><div class="meta">演唱會 · 2019年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Bigeast%20FANCLUB%20EVENT%202019%20%22TOHOSHINKI%20THE%20GARDEN%22" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Bigeast FANCLUB EVENT 2019 &quot;TOHOSHINKI THE GARDEN&quot;</div><div class="meta">演唱會 · 2019年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20New%20Chapter%20%231%20%3A%20The%20Chance%20of%20Love" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">New Chapter #1 : The Chance of Love</div><div class="meta">專輯 · 2018年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20TOMORROW" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">TOMORROW</div><div class="meta">專輯 · 2018年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20New%20Chapter%20%232%20%3A%20The%20Truth%20of%20Love" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">New Chapter #2 : The Truth of Love</div><div class="meta">專輯 · 2018年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20TVXQ!%20Welcome%20Back%20Party%20%22The%20Chance%20Of%20Love%22" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">TVXQ! Welcome Back Party &quot;The Chance Of Love&quot;</div><div class="meta">演唱會 · 2018年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20TVXQ!%20Special%20Day%20&#39;The%20Truth%20of%20Love&#39;" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">TVXQ! Special Day &#39;The Truth of Love&#39;</div><div class="meta">演唱會 · 2018年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Bigeast%20FANCLUB%20EVENT%202018%20THE%20MISSION%20IV" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Bigeast FANCLUB EVENT 2018 THE MISSION IV</div><div class="meta">演唱會 · 2018年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20TVXQ!%20Special%20Comeback%20Live%20%22YouR%20PresenT%22" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">TVXQ! Special Comeback Live &quot;YouR PresenT&quot;</div><div class="meta">演唱會 · 2017年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20RISE%20AS%20GOD" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">RISE AS GOD</div><div class="meta">專輯 · 2015年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20TOHOSHINKI%2010TH%20ANNIVERSARY%20EVENT" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">TOHOSHINKI 10TH ANNIVERSARY EVENT</div><div class="meta">演唱會 · 2015年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20TENSE" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">TENSE</div><div class="meta">專輯 · 2014年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20TREE" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">TREE</div><div class="meta">專輯 · 2014年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20WITH" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">WITH</div><div class="meta">專輯 · 2014年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Bigeast%20FANCLUB%20EVENT%202014%20THE%20MISSION%20III%20~%EC%9E%83%EC%96%B4%EB%B2%84%EB%A6%B0%20%EB%8F%99%EC%A0%84%EC%9D%84%20%EB%90%98%EC%B0%BE%EC%95%84%EB%9D%BC!!~" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Bigeast FANCLUB EVENT 2014 THE MISSION III ~잃어버린 동전을 되찾아라!!~</div><div class="meta">演唱會 · 2014年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20TIME" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">TIME</div><div class="meta">專輯 · 2013年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%2020131005%20Cassiopeia%20Special%20Day%20with%20%E6%9D%B1%E6%96%B9%E7%A5%9E%E8%B5%B7%E2%99%A5" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">20131005 Cassiopeia Special Day with 東方神起♥</div><div class="meta">演唱會 · 2013年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Bigeast%20FANCLUB%20EVENT%202013%20THE%20MISSION%20II" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Bigeast FANCLUB EVENT 2013 THE MISSION II</div><div class="meta">演唱會 · 2013年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Catch%20Me" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">Catch Me</div><div class="meta">專輯 · 2012年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Bigeast%20FANCLUB%20EVENT%202012%20THE%20MISSION" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Bigeast FANCLUB EVENT 2012 THE MISSION</div><div class="meta">演唱會 · 2012年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20&#39;Catch%20Me%20Special%20Edition&#39;%20%EB%B0%9C%EB%A7%A4%20%EA%B8%B0%EB%85%90%20%EB%AF%B8%EB%8B%88%20%ED%8C%AC%EB%AF%B8%ED%8C%85" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">&#39;Catch Me Special Edition&#39; 발매 기념 미니 팬미팅</div><div class="meta">演唱會 · 2012年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Keep%20Your%20Head%20Down" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">Keep Your Head Down</div><div class="meta">專輯 · 2011年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Temptastic" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">Temptastic</div><div class="meta">專輯 · 2011年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20TONE" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">TONE</div><div class="meta">專輯 · 2011年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20TVXQ!%20Asia%20Fan%20Party%202011" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">TVXQ! Asia Fan Party 2011</div><div class="meta">演唱會 · 2011年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20The%20Secret%20Code" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">The Secret Code</div><div class="meta">專輯 · 2009年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Bigeast%203RD%20FANCLUB%20EVENT" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Bigeast 3RD FANCLUB EVENT</div><div class="meta">演唱會 · 2009年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20T" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">T</div><div class="meta">專輯 · 2008年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20MIROTIC" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">MIROTIC</div><div class="meta">專輯 · 2008年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20%EC%B2%AD%EC%86%8C%EB%85%84%EC%97%90%EA%B2%8C%20%EA%BF%88%EA%B3%BC%20%ED%9D%AC%EB%A7%9D%EC%9D%84%20-%20%E6%9D%B1%E6%96%B9%E7%A5%9E%E8%B5%B7%20%EA%B0%80%EC%9D%84%20%EB%AF%B8%EB%8B%88%20%EC%BD%98%EC%84%9C%ED%8A%B8" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">청소년에게 꿈과 희망을 - 東方神起 가을 미니 콘서트</div><div class="meta">演唱會 · 2008年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%2020080120%20Cassiopeia%20Special%20Day%20with%20%E6%9D%B1%E6%96%B9%E7%A5%9E%E8%B5%B7%E2%99%A5" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">20080120 Cassiopeia Special Day with 東方神起♥</div><div class="meta">演唱會 · 2008年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20%E6%9D%B1%E6%96%B9%E7%A5%9E%E8%B5%B7%20Debut%205th%20Anniversary%E2%99%A1Special%20Party!!" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">東方神起 Debut 5th Anniversary♡Special Party!!</div><div class="meta">演唱會 · 2008年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Five%20in%20the%20Black" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">Five in the Black</div><div class="meta">專輯 · 2007年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Bigeast%202ND%20FANCLUB%20EVENT" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Bigeast 2ND FANCLUB EVENT</div><div class="meta">演唱會 · 2007年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Heart%2C%20Mind%20and%20Soul" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">Heart, Mind and Soul</div><div class="meta">專輯 · 2006年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20%22O%22%20-%E6%AD%A3%E3%83%BB%E5%8F%8D%E3%83%BB%E5%90%88" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">&quot;O&quot; -正・反・合</div><div class="meta">專輯 · 2006年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20The%203rd%20Album%20%22O%22-%E6%AD%A3.%E5%8F%8D.%E5%90%88.%20Showcase" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">The 3rd Album &quot;O&quot;-正.反.合. Showcase</div><div class="meta">演唱會 · 2006年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20%E6%9D%B1%E6%96%B9%E7%A5%9E%E8%B5%B7%201226%20party%20party" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">東方神起 1226 party party</div><div class="meta">演唱會 · 2006年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Bigeast%201ST%20FANCLUB%20EVENT" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Bigeast 1ST FANCLUB EVENT</div><div class="meta">演唱會 · 2006年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Rising%20Sun" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">Rising Sun</div><div class="meta">專輯 · 2005年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20Rising%20Sun%20Showcase" target="_blank" rel="noreferrer"><span class="type">🎤</span><span class="body"><div class="title">Rising Sun Showcase</div><div class="meta">演唱會 · 2005年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20TRI-ANGLE" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">TRI-ANGLE</div><div class="meta">專輯 · 2004年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/results?search_query=TVXQ%20The%20Christmas%20gift%20from%20%E6%9D%B1%E6%96%B9%E7%A5%9E%E8%B5%B7" target="_blank" rel="noreferrer"><span class="type">💿</span><span class="body"><div class="title">The Christmas gift from 東方神起</div><div class="meta">專輯 · 2004年</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/watch?v=9r1lvcI-D6k" target="_blank" rel="noreferrer"><span class="type">▶️</span><span class="body"><div class="title">MIROTIC</div><div class="meta">YouTube · YouTube</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/watch?v=42z1_1QteCg" target="_blank" rel="noreferrer"><span class="type">▶️</span><span class="body"><div class="title">Humanoids</div><div class="meta">YouTube · YouTube</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/watch?v=ECSZ3zy9Ifw" target="_blank" rel="noreferrer"><span class="type">▶️</span><span class="body"><div class="title">Rebel</div><div class="meta">YouTube · YouTube</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/watch?v=p_GJsHLE4wU" target="_blank" rel="noreferrer"><span class="type">▶️</span><span class="body"><div class="title">TVXQ! Rebel</div><div class="meta">YouTube · YouTube</div></span></a></div>
+<div class="card"><a href="https://www.youtube.com/watch?v=aoa7f3oLyLc" target="_blank" rel="noreferrer"><span class="type">▶️</span><span class="body"><div class="title">Psycho</div><div class="meta">YouTube · YouTube</div></span></a></div>
+</div>
+</div>
+
+<div class="sheet hide" id="sheet">
+  <div class="box">
+    <div class="st" id="sheetKicker"></div>
+    <div class="sh" id="sheetTitle"></div>
+    <div class="sm" id="sheetMeta"></div>
+    <a class="act primary" id="sheetGo" target="_blank" rel="noreferrer"></a>
+    <div class="hint" id="sheetNoLink" style="display:none"></div>
+    <button class="act second" id="sheetLog"></button>
+    <a class="act trip" id="sheetTrip" target="_blank" rel="noreferrer"></a>
+    <div class="hint" id="sheetTripHint"></div>
+    <button class="act second" id="sheetSeen"></button>
+    <div class="hint" id="sheetHint"></div>
+    <button class="cancel" id="sheetCancel"></button>
+  </div>
+</div>
+
+<div class="gate hide" id="gate">
+  <div class="box">
+    <div style="font-weight:800;margin-bottom:6px" id="gateTitle"></div>
+    <div id="gbtn"></div>
+    <button id="gateClose" onclick="document.getElementById('gate').classList.add('hide')" style="margin-top:10px;background:none;border:none;color:var(--mut);font-size:12px;cursor:pointer"></button>
+  </div>
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+const SLUG = 'tvxq';
+const $ = id => document.getElementById(id);
+const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched, tripUrl, isPastShow } = window.FT_I18N;
+document.documentElement.lang = htmlLang();
+bindSwitcher($('langbar'));
+$('homeLink').textContent = T.home;
+$('homeLink').href = '../../?lang=' + LANG;
+$('gateTitle').textContent = T.gateTitle;
+$('gateClose').textContent = T.close;
+$('profile').querySelector('.loading').textContent = T.loading;
+const GCID = '315180918727-3d9rfmpa36r365qna9smdsvrod441jhd.apps.googleusercontent.com';
+
+function isExpired(tok){ try{ const p=JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); return !p.exp || (p.exp*1000 < Date.now()); }catch{return true;} }
+function getToken(){ const t=localStorage.getItem('page_id_token'); return (t && !isExpired(t)) ? t : null; }
+function onCred(resp){ localStorage.setItem('page_id_token', resp.credential); $('gate').classList.add('hide'); render(); }
+function renderLogin(){
+  if(window.google && google.accounts && google.accounts.id){
+    google.accounts.id.initialize({client_id:GCID, callback:onCred});
+    const el = $('gbtn'); el.innerHTML='';
+    google.accounts.id.renderButton(el, {theme:'filled_black', size:'large', text:'continue_with', shape:'pill'});
+  } else setTimeout(renderLogin, 300);
+}
+function requireLogin(){ $('gate').classList.remove('hide'); renderLogin(); }
+
+// 8장: 내 최애 사진 — 서버 업로드 없이 IndexedDB 로컬 저장만
+const DB_NAME='fantrack_photos', STORE='photos';
+function idbOpen(){ return new Promise((res,rej)=>{ const r=indexedDB.open(DB_NAME,1); r.onupgradeneeded=()=>r.result.createObjectStore(STORE); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+async function idbGet(key){ const db=await idbOpen(); return new Promise(res=>{ const tx=db.transaction(STORE,'readonly'); const rq=tx.objectStore(STORE).get(key); rq.onsuccess=()=>res(rq.result||null); rq.onerror=()=>res(null); }); }
+async function idbSet(key, blob){ const db=await idbOpen(); return new Promise(res=>{ const tx=db.transaction(STORE,'readwrite'); tx.objectStore(STORE).put(blob,key); tx.oncomplete=()=>res(); }); }
+
+let SORT = 'interest'; // interest | year
+let DATA = null;
+let TYPE_FILTER = 'all';
+let HIDE_WATCHED = false;
+
+const TYPE_ICON = { broadcast:'📺', radio:'📻', youtube:'▶️', ott:'🎬', film:'🎞️', cf:'📣', album:'💿', concert:'🎤' };
+const TYPE_LABEL = T.types;
+
+function fmtDate(c){
+  if(c.air_date) return c.air_date;
+  if(c.year) return c.year + T.yearSuffix;
+  return null;
+}
+function fmtMeta(c){
+  const parts = [];
+  if(c.upcoming) parts.push('<span class="upcoming">'+T.upcoming+'</span>');
+  else { const d = fmtDate(c); if(d) parts.push(d); }
+  const plat = pick(c,'platform'); if(plat) parts.push(plat);
+  if(c.link_region_note==='kr_only') parts.push(T.krOnly);
+  return parts.join(' · ');
+}
+
+function renderFilters(){
+  const types = ['all', ...new Set(DATA.content.map(c=>c.type))];
+  $('filters').innerHTML = types.map(t =>
+    `<button class="filter-chip${TYPE_FILTER===t?' on':''}" data-t="${t}">${t==='all'?'':((TYPE_ICON[t]||'')+' ')}${TYPE_LABEL[t]||t}</button>`
+  ).join('');
+  $('filters').style.display = 'flex';
+  document.querySelectorAll('.filter-chip').forEach(b => b.onclick = () => { TYPE_FILTER = b.dataset.t; renderFilters(); renderContent(); });
+}
+
+// 링크가 없는 항목(앨범·콘서트 등)은 유튜브 검색으로라도 넘어갈 수 있게 한다.
+// 저장하지 않고 렌더 시점에 만든다 — 가수명/제목이 바뀌면 링크도 따라간다.
+// 목록·액션시트·공유가 모두 쓰므로 반드시 최상위 스코프에 둔다.
+function ytSearch(c){
+  const cel = (typeof DATA !== 'undefined' && DATA.celebrity) || {};
+  const who = cel.name_en || cel.name_ko || '';
+  const what = (c.title_localized_en || c.title || '');
+  const q = [who, what].filter(Boolean).join(' ');
+  if(!q.trim()) return null;
+  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
+}
+function linkOf(c){ return c && (c.external_link || ytSearch(c)); }
+
+function renderContent(){
+  let list = [...DATA.content];
+  if(TYPE_FILTER!=='all') list = list.filter(c=>c.type===TYPE_FILTER);
+  if(HIDE_WATCHED) list = list.filter(c=>!isWatched(c.id));
+  if(SORT==='interest') list.sort((a,b)=> (b.votes-a.votes) || ((b.year||0)-(a.year||0)));
+  else list.sort((a,b)=> (b.year||0)-(a.year||0));
+
+  $('contentList').innerHTML = list.map(c => {
+    const seen = isWatched(c.id);
+    const t = (seen ? `<span class="seen">${T.watched}</span>` : '') + pick(c,'title');
+    const href = linkOf(c);
+    const isSearch = href && href.includes('results?search_query');
+    const linkHtml = href
+      ? `<a href="${href}" data-open="${c.id}" target="_blank" rel="noreferrer">
+          <span class="type">${TYPE_ICON[c.type]||'❓'}</span>
+          <span class="body"><div class="title">${t}${isSearch?' <span class="searchlink">'+T.searchSuffix+'</span>':''}</div><div class="meta">${fmtMeta(c)}</div>${pick(c,'note_public')?`<div class="note">${pick(c,'note_public')}</div>`:''}</span>
+        </a>`
+      : `<span data-open="${c.id}" style="display:flex;gap:10px;align-items:center;flex:1;min-width:0;cursor:pointer">
+          <span class="type">${TYPE_ICON[c.type]||'❓'}</span>
+          <span class="body"><div class="title">${t}</div><div class="meta">${fmtMeta(c)}</div>${pick(c,'note_public')?`<div class="note">${pick(c,'note_public')}</div>`:''}</span>
+        </span>`;
+    return `<div class="card${seen?' watched':''}">${linkHtml}<button class="vote" data-id="${c.id}">👍 ${c.votes}</button></div>`;
+  }).join('') || ('<div class="loading">'+T.emptyCategory+'</div>');
+
+  document.querySelectorAll('.vote').forEach(b => b.onclick = () => vote(b.dataset.id, b));
+  updateWatchToggle();
+  document.querySelectorAll('[data-open]').forEach(a => a.onclick = (e) => {
+    e.preventDefault();
+    openSheet(DATA.content.find(c => c.id === a.dataset.open));
+  });
+}
+
+async function vote(contentId, btn){
+  const tok = getToken();
+  if(!tok){ requireLogin(); return; }
+  btn.disabled = true;
+  try{
+    const r = await fetch('/api/fantrack/vote', {
+      method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+tok},
+      body: JSON.stringify({content_id: contentId})
+    });
+    const j = await r.json();
+    if(r.status===401){ requireLogin(); return; }
+    const item = DATA.content.find(c=>c.id===contentId);
+    if(item) item.votes = j.votes;
+    renderContent();
+  }catch(e){ /* ignore */ }
+  btn.disabled = false;
+}
+
+function updateSortUI(){
+  $('sortBadge').textContent = SORT==='interest' ? T.sortPopular : T.sortRecent;
+  $('sortBtn').textContent = SORT==='interest' ? T.toYear : T.toPopular;
+}
+$('sortBtn').onclick = () => { SORT = SORT==='interest' ? 'year' : 'interest'; updateSortUI(); renderContent(); };
+
+function updateWatchToggle(){
+  const any = DATA && DATA.content.some(c => isWatched(c.id));
+  $('wtoggle').style.display = any ? 'flex' : 'none';
+  $('wtoggleBtn').textContent = HIDE_WATCHED ? T.showWatched : T.hideWatched;
+  $('wtoggleBtn').classList.toggle('on', HIDE_WATCHED);
+}
+$('wtoggleBtn').onclick = () => { HIDE_WATCHED = !HIDE_WATCHED; renderContent(); };
+
+// 시청 액션 시트 — 링크로 나가기 전에 '로그에 시청기록 남기기'를 제안한다.
+const LOG_API = 'https://log.cocy.io/api/external/watch';
+let SHEET_ITEM = null;
+
+function openSheet(c){
+  if(!c) return;
+  SHEET_ITEM = c;
+  $('sheetKicker').textContent = T.actionTitle;
+  $('sheetTitle').textContent = pick(c,'title');
+  $('sheetMeta').innerHTML = fmtMeta(c);
+  const go = $('sheetGo');
+  go.textContent = T.goLink;
+  const _lk = linkOf(c);
+  if(_lk){ go.href = _lk; go.style.display='block'; $('sheetNoLink').style.display='none'; }
+  else { go.style.display='none'; $('sheetNoLink').textContent = T.noLink; $('sheetNoLink').style.display='block'; }
+  const trip = tripUrl(c, celebName(DATA.celebrity));
+  const tripEl = $('sheetTrip');
+  if(c.type === 'concert' && trip){
+    const past = isPastShow(c);
+    tripEl.href = trip;
+    tripEl.textContent = past ? T.planTripPast : T.planTrip;
+    tripEl.style.display = 'block';
+    $('sheetTripHint').textContent = past ? T.planTripHintPast : T.planTripHint;
+    $('sheetTripHint').style.display = 'block';
+  } else {
+    tripEl.style.display = 'none'; $('sheetTripHint').style.display = 'none';
+  }
+  const lg = $('sheetLog');
+  lg.textContent = T.addLog; lg.disabled = false;
+  $('sheetHint').textContent = T.addLogHint;
+  updateSeenBtn();
+  $('sheetCancel').textContent = T.close;
+  $('sheet').classList.remove('hide');
+}
+function updateSeenBtn(){
+  if(!SHEET_ITEM) return;
+  $('sheetSeen').textContent = isWatched(SHEET_ITEM.id) ? T.unmarkWatched : T.markWatched;
+}
+$('sheetSeen').onclick = () => {
+  if(!SHEET_ITEM) return;
+  setWatched(SHEET_ITEM.id, !isWatched(SHEET_ITEM.id));
+  updateSeenBtn();
+  renderContent();
+};
+function closeSheet(){ $('sheet').classList.add('hide'); }
+$('sheetCancel').onclick = closeSheet;
+$('sheet').onclick = (e) => { if(e.target === $('sheet')) closeSheet(); };
+
+$('sheetLog').onclick = async () => {
+  const tok = getToken();
+  if(!tok){ closeSheet(); $('gateTitle').textContent = T.addLogLogin; requireLogin(); return; }
+  const c = SHEET_ITEM; if(!c) return;
+  const btn = $('sheetLog');
+  btn.disabled = true;
+  try{
+    const r = await fetch(LOG_API, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+tok},
+      body: JSON.stringify({
+        title: pick(c,'title'),
+        platform: pick(c,'platform'),
+        type: c.type,
+        url: linkOf(c) || null,
+        celebrity: celebName(DATA.celebrity),
+        source: 'fantrack',
+        watched_at: Date.now(),
+      })
+    });
+    if(r.status===401){ btn.disabled=false; closeSheet(); $('gateTitle').textContent = T.addLogLogin; requireLogin(); return; }
+    if(!r.ok) throw new Error('save_failed');
+    setWatched(c.id, true);
+    updateSeenBtn();
+    renderContent();
+    btn.textContent = T.addLogDone;
+    $('sheetHint').innerHTML = '<a href="https://log.cocy.io/" target="_blank" rel="noreferrer" style="color:var(--lime)">'+T.openLog+'</a>';
+  }catch(e){
+    btn.disabled = false;
+    $('sheetHint').textContent = T.addLogFail;
+  }
+};
+
+async function renderProfile(){
+  const c = DATA.celebrity;
+  const localPhoto = await idbGet(SLUG);
+  const src = localPhoto ? URL.createObjectURL(localPhoto) : 'icon.svg';
+  const snsLinks = Object.entries(c.sns||{}).map(([k,v]) => `<a href="${v}" target="_blank" rel="noreferrer">${k}</a>`).join('');
+  const ytLink = c.youtube_channel_id ? `<a href="https://www.youtube.com/@${c.youtube_channel_id}" target="_blank" rel="noreferrer">${T.youtube}</a>` : '';
+  $('profile').innerHTML = `
+    <img class="avatar" id="avatarImg" src="${src}" alt="${celebName(c)}">
+    <div class="name">${celebName(c)}</div>
+    <div class="sub">${LANG==='en' ? (c.group_name||'') : (c.name_en||'')}</div>
+    <div class="badges">
+      ${c.mbti ? `<span class="badge">${c.mbti}</span>`:''}
+      ${c.group_name ? `<span class="badge">${c.group_name}</span>`:''}
+      ${pick(c,'agency') ? `<span class="badge">${pick(c,'agency')}</span>`:''}
+      ${c.debut_date ? `<span class="badge">${T.debut} ${c.debut_date}</span>`:''}
+      ${c.fandom ? `<span class="badge">${T.fandomLabel} ${c.fandom}</span>`:''}
+    </div>
+    <div class="sns">${ytLink}${snsLinks}</div>
+    <input type="file" id="photoInput" accept="image/*" style="display:none">
+    <button class="myphoto-btn" id="photoBtn">${T.myPhoto}</button>
+  `;
+  $('photoBtn').onclick = () => $('photoInput').click();
+  $('photoInput').onchange = async (e) => {
+    const f = e.target.files[0]; if(!f) return;
+    await idbSet(SLUG, f);
+    $('avatarImg').src = URL.createObjectURL(f);
+  };
+}
+
+async function render(){
+  const r = await fetch('/api/fantrack/celebrity/'+SLUG);
+  if(!r.ok){ $('profile').innerHTML = '<div class="loading">'+T.notFound+'</div>'; return; }
+  DATA = await r.json();
+  await renderProfile();
+  $('sortUnit').style.display = 'block';
+  updateSortUI();
+  renderFilters();
+  renderContent();
+}
+render();
+</script>
+</body>
+</html>

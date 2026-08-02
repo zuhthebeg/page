@@ -1,0 +1,24 @@
+{
+  "name": "SS501 — FanTrack",
+  "short_name": "SS501",
+  "description": "63 works by SS501 — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/ss501/en/",
+  "start_url": "/fantrack/c/ss501/en/",
+  "scope": "/fantrack/c/ss501/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ss501/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "name": "온유 — FanTrack",
-  "short_name": "온유 FanTrack",
-  "description": "온유 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "온유",
+  "description": "온유 출연·활동 정보 29건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/onew/",
   "start_url": "/fantrack/c/onew/",
   "scope": "/fantrack/c/onew/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/onew/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

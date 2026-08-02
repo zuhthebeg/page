@@ -1,7 +1,7 @@
 {
   "name": "로이킴 — FanTrack",
-  "short_name": "로이킴 FanTrack",
-  "description": "로이킴 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "로이킴",
+  "description": "로이킴 출연·활동 정보 104건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/roykim/",
   "start_url": "/fantrack/c/roykim/",
   "scope": "/fantrack/c/roykim/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/roykim/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

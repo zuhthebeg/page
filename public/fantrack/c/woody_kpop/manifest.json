@@ -1,7 +1,7 @@
 {
   "name": "우디 — FanTrack",
-  "short_name": "우디 FanTrack",
-  "description": "우디 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "우디",
+  "description": "우디 출연·활동 정보 21건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/woody_kpop/",
   "start_url": "/fantrack/c/woody_kpop/",
   "scope": "/fantrack/c/woody_kpop/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/woody_kpop/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

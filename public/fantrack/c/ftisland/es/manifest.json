@@ -1,0 +1,24 @@
+{
+  "name": "FTISLAND — FanTrack",
+  "short_name": "FTISLAND",
+  "description": "41 trabajos de FTISLAND — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/ftisland/es/",
+  "start_url": "/fantrack/c/ftisland/es/",
+  "scope": "/fantrack/c/ftisland/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ftisland/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

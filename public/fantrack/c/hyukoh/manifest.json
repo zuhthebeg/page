@@ -1,7 +1,7 @@
 {
   "name": "혁오 — FanTrack",
-  "short_name": "혁오 FanTrack",
-  "description": "혁오 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "혁오",
+  "description": "혁오 출연·활동 정보 11건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/hyukoh/",
   "start_url": "/fantrack/c/hyukoh/",
   "scope": "/fantrack/c/hyukoh/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/hyukoh/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

@@ -1,0 +1,24 @@
+{
+  "name": "Donghae — FanTrack",
+  "short_name": "Donghae",
+  "description": "53 trabajos de Donghae — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/donghae/es/",
+  "start_url": "/fantrack/c/donghae/es/",
+  "scope": "/fantrack/c/donghae/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/donghae/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "TWS — FanTrack",
+  "short_name": "TWS",
+  "description": "11 trabajos de TWS — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/tws/es/",
+  "start_url": "/fantrack/c/tws/es/",
+  "scope": "/fantrack/c/tws/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/tws/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

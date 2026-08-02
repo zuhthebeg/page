@@ -1,0 +1,24 @@
+{
+  "name": "K.Will — FanTrack",
+  "short_name": "K.Will",
+  "description": "38 works by K.Will — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/kwill/en/",
+  "start_url": "/fantrack/c/kwill/en/",
+  "scope": "/fantrack/c/kwill/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kwill/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

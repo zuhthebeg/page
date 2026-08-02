@@ -1,0 +1,24 @@
+{
+  "name": "Young Tak — FanTrack",
+  "short_name": "Young Tak",
+  "description": "6 trabajos de Young Tak — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/youngtak/es/",
+  "start_url": "/fantrack/c/youngtak/es/",
+  "scope": "/fantrack/c/youngtak/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/youngtak/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "RAIN — FanTrack",
+  "short_name": "RAIN",
+  "description": "36 trabajos de RAIN — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/rain/es/",
+  "start_url": "/fantrack/c/rain/es/",
+  "scope": "/fantrack/c/rain/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/rain/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Shindong — FanTrack",
+  "short_name": "Shindong",
+  "description": "69 works by Shindong — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/shindong/en/",
+  "start_url": "/fantrack/c/shindong/en/",
+  "scope": "/fantrack/c/shindong/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/shindong/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "RIIZE — FanTrack",
+  "short_name": "RIIZE",
+  "description": "19 works by RIIZE — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/riize/en/",
+  "start_url": "/fantrack/c/riize/en/",
+  "scope": "/fantrack/c/riize/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/riize/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

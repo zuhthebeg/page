@@ -1,0 +1,24 @@
+{
+  "name": "BTS — FanTrack",
+  "short_name": "BTS",
+  "description": "42 works by BTS — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/bts/en/",
+  "start_url": "/fantrack/c/bts/en/",
+  "scope": "/fantrack/c/bts/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/bts/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

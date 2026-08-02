@@ -1,0 +1,24 @@
+{
+  "name": "Crying Nut — FanTrack",
+  "short_name": "Crying Nut",
+  "description": "16 works by Crying Nut — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/cryingnut/en/",
+  "start_url": "/fantrack/c/cryingnut/en/",
+  "scope": "/fantrack/c/cryingnut/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/cryingnut/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Silica Gel — FanTrack",
+  "short_name": "Silica Gel",
+  "description": "9 works by Silica Gel — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/silicagel/en/",
+  "start_url": "/fantrack/c/silicagel/en/",
+  "scope": "/fantrack/c/silicagel/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/silicagel/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

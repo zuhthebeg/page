@@ -1,7 +1,7 @@
 {
   "name": "박현빈 — FanTrack",
-  "short_name": "박현빈 FanTrack",
-  "description": "박현빈 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "박현빈",
+  "description": "박현빈 출연·활동 정보 18건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/parkhyunbin/",
   "start_url": "/fantrack/c/parkhyunbin/",
   "scope": "/fantrack/c/parkhyunbin/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/parkhyunbin/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

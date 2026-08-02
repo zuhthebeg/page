@@ -1,0 +1,24 @@
+{
+  "name": "SECHSKIES — FanTrack",
+  "short_name": "SECHSKIES",
+  "description": "12 works by SECHSKIES — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/sechskies/en/",
+  "start_url": "/fantrack/c/sechskies/en/",
+  "scope": "/fantrack/c/sechskies/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/sechskies/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

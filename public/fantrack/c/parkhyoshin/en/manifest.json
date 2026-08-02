@@ -1,0 +1,24 @@
+{
+  "name": "Park Hyo Shin — FanTrack",
+  "short_name": "Park Hyo Shin",
+  "description": "15 works by Park Hyo Shin — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/parkhyoshin/en/",
+  "start_url": "/fantrack/c/parkhyoshin/en/",
+  "scope": "/fantrack/c/parkhyoshin/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/parkhyoshin/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

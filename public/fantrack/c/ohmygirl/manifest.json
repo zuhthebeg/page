@@ -1,7 +1,7 @@
 {
   "name": "오마이걸 — FanTrack",
-  "short_name": "오마이걸 FanTrack",
-  "description": "오마이걸 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "오마이걸",
+  "description": "오마이걸 출연·활동 정보 21건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/ohmygirl/",
   "start_url": "/fantrack/c/ohmygirl/",
   "scope": "/fantrack/c/ohmygirl/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/ohmygirl/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

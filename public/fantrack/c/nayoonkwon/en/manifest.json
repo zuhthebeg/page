@@ -1,0 +1,24 @@
+{
+  "name": "Na Yoon Kwon — FanTrack",
+  "short_name": "Na Yoon Kwon",
+  "description": "13 works by Na Yoon Kwon — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/nayoonkwon/en/",
+  "start_url": "/fantrack/c/nayoonkwon/en/",
+  "scope": "/fantrack/c/nayoonkwon/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/nayoonkwon/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
-  "name": "슈퍼주니어-83z(SUPER JUNIOR) — FanTrack",
-  "short_name": "슈퍼주니어-83z FanTrack",
-  "description": "SUPER JUNIOR 슈퍼주니어-83z 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "name": "슈퍼주니어-83z — FanTrack",
+  "short_name": "슈퍼주니어-83z",
+  "description": "슈퍼주니어-83z 출연·활동 정보 3건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/superjunior-83z/",
   "start_url": "/fantrack/c/superjunior-83z/",
   "scope": "/fantrack/c/superjunior-83z/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/superjunior-83z/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

@@ -1,0 +1,24 @@
+{
+  "name": "Red Velvet — FanTrack",
+  "short_name": "Red Velvet",
+  "description": "37 works by Red Velvet — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/redvelvet/en/",
+  "start_url": "/fantrack/c/redvelvet/en/",
+  "scope": "/fantrack/c/redvelvet/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/redvelvet/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

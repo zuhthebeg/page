@@ -1,0 +1,24 @@
+{
+  "name": "Jin — FanTrack",
+  "short_name": "Jin",
+  "description": "7 trabajos de Jin — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/jin/es/",
+  "start_url": "/fantrack/c/jin/es/",
+  "scope": "/fantrack/c/jin/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jin/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

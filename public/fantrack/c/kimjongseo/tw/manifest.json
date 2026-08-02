@@ -1,0 +1,24 @@
+{
+  "name": "Kim Jong-seo — FanTrack",
+  "short_name": "Kim Jong-seo",
+  "description": "Kim Jong-seo 的出演與作品 10 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/kimjongseo/tw/",
+  "start_url": "/fantrack/c/kimjongseo/tw/",
+  "scope": "/fantrack/c/kimjongseo/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kimjongseo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

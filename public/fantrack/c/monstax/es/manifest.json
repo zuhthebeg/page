@@ -1,0 +1,24 @@
+{
+  "name": "MONSTA X — FanTrack",
+  "short_name": "MONSTA X",
+  "description": "28 trabajos de MONSTA X — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/monstax/es/",
+  "start_url": "/fantrack/c/monstax/es/",
+  "scope": "/fantrack/c/monstax/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/monstax/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

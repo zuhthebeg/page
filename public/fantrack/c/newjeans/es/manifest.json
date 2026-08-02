@@ -1,0 +1,24 @@
+{
+  "name": "NewJeans — FanTrack",
+  "short_name": "NewJeans",
+  "description": "7 trabajos de NewJeans — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/newjeans/es/",
+  "start_url": "/fantrack/c/newjeans/es/",
+  "scope": "/fantrack/c/newjeans/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/newjeans/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Jang Beom-june — FanTrack",
+  "short_name": "Jang Beom-june",
+  "description": "10 works by Jang Beom-june — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/jangbeomjune/en/",
+  "start_url": "/fantrack/c/jangbeomjune/en/",
+  "scope": "/fantrack/c/jangbeomjune/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jangbeomjune/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Wheesung — FanTrack",
+  "short_name": "Wheesung",
+  "description": "16 works by Wheesung — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/wheesung/en/",
+  "start_url": "/fantrack/c/wheesung/en/",
+  "scope": "/fantrack/c/wheesung/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/wheesung/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

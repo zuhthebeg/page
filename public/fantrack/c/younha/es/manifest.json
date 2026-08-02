@@ -1,0 +1,24 @@
+{
+  "name": "Younha — FanTrack",
+  "short_name": "Younha",
+  "description": "54 trabajos de Younha — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/younha/es/",
+  "start_url": "/fantrack/c/younha/es/",
+  "scope": "/fantrack/c/younha/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/younha/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

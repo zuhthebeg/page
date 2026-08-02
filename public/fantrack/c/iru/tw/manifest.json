@@ -1,0 +1,24 @@
+{
+  "name": "Eru — FanTrack",
+  "short_name": "Eru",
+  "description": "Eru 的出演與作品 7 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/iru/tw/",
+  "start_url": "/fantrack/c/iru/tw/",
+  "scope": "/fantrack/c/iru/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/iru/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

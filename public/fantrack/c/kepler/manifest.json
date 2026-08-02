@@ -1,7 +1,7 @@
 {
   "name": "케플러 — FanTrack",
-  "short_name": "케플러 FanTrack",
-  "description": "케플러 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "케플러",
+  "description": "케플러 출연·활동 정보 16건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/kepler/",
   "start_url": "/fantrack/c/kepler/",
   "scope": "/fantrack/c/kepler/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/kepler/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

@@ -1,0 +1,24 @@
+{
+  "name": "fromis_9 — FanTrack",
+  "short_name": "fromis_9",
+  "description": "fromis_9 的出演與作品 14 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/fromis9/tw/",
+  "start_url": "/fantrack/c/fromis9/tw/",
+  "scope": "/fantrack/c/fromis9/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/fromis9/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

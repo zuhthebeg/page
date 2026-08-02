@@ -1,0 +1,24 @@
+{
+  "name": "COOL — FanTrack",
+  "short_name": "COOL",
+  "description": "23 works by COOL — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/cool_kpop/en/",
+  "start_url": "/fantrack/c/cool_kpop/en/",
+  "scope": "/fantrack/c/cool_kpop/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/cool_kpop/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

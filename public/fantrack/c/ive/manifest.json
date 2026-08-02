@@ -1,7 +1,7 @@
 {
   "name": "아이브 — FanTrack",
-  "short_name": "아이브 FanTrack",
-  "description": "아이브 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "아이브",
+  "description": "아이브 출연·활동 정보 43건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/ive/",
   "start_url": "/fantrack/c/ive/",
   "scope": "/fantrack/c/ive/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/ive/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

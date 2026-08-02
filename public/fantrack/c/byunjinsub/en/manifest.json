@@ -1,0 +1,24 @@
+{
+  "name": "Byun Jin Sub — FanTrack",
+  "short_name": "Byun Jin Sub",
+  "description": "17 works by Byun Jin Sub — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/byunjinsub/en/",
+  "start_url": "/fantrack/c/byunjinsub/en/",
+  "scope": "/fantrack/c/byunjinsub/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/byunjinsub/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

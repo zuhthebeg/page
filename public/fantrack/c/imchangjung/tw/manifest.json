@@ -1,0 +1,24 @@
+{
+  "name": "任昌丁 — FanTrack",
+  "short_name": "任昌丁",
+  "description": "任昌丁 的出演與作品 74 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/imchangjung/tw/",
+  "start_url": "/fantrack/c/imchangjung/tw/",
+  "scope": "/fantrack/c/imchangjung/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/imchangjung/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

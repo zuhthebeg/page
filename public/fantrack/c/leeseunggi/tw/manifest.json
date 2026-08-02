@@ -1,0 +1,24 @@
+{
+  "name": "李昇基 — FanTrack",
+  "short_name": "李昇基",
+  "description": "李昇基 的出演與作品 63 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/leeseunggi/tw/",
+  "start_url": "/fantrack/c/leeseunggi/tw/",
+  "scope": "/fantrack/c/leeseunggi/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/leeseunggi/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

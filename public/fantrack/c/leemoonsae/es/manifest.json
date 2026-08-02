@@ -1,0 +1,24 @@
+{
+  "name": "Lee Moon Sae — FanTrack",
+  "short_name": "Lee Moon Sae",
+  "description": "24 trabajos de Lee Moon Sae — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/leemoonsae/es/",
+  "start_url": "/fantrack/c/leemoonsae/es/",
+  "scope": "/fantrack/c/leemoonsae/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/leemoonsae/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

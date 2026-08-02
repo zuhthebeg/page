@@ -1,7 +1,7 @@
 {
   "name": "아일릿 — FanTrack",
-  "short_name": "아일릿 FanTrack",
-  "description": "아일릿 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "아일릿",
+  "description": "아일릿 출연·활동 정보 9건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/illit/",
   "start_url": "/fantrack/c/illit/",
   "scope": "/fantrack/c/illit/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/illit/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

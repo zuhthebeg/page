@@ -1,0 +1,24 @@
+{
+  "name": "Lena Park — FanTrack",
+  "short_name": "Lena Park",
+  "description": "22 works by Lena Park — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/parkjunghyun/en/",
+  "start_url": "/fantrack/c/parkjunghyun/en/",
+  "scope": "/fantrack/c/parkjunghyun/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/parkjunghyun/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

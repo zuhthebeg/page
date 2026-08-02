@@ -1,0 +1,24 @@
+{
+  "name": "金娜英 — FanTrack",
+  "short_name": "金娜英",
+  "description": "金娜英 的出演與作品 9 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/kimnayoung/tw/",
+  "start_url": "/fantrack/c/kimnayoung/tw/",
+  "scope": "/fantrack/c/kimnayoung/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kimnayoung/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

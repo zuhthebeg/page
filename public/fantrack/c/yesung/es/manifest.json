@@ -1,0 +1,24 @@
+{
+  "name": "Yesung — FanTrack",
+  "short_name": "Yesung",
+  "description": "30 trabajos de Yesung — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/yesung/es/",
+  "start_url": "/fantrack/c/yesung/es/",
+  "scope": "/fantrack/c/yesung/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/yesung/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

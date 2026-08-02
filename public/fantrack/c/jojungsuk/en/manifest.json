@@ -1,0 +1,24 @@
+{
+  "name": "Jo Jung Suk — FanTrack",
+  "short_name": "Jo Jung Suk",
+  "description": "5 works by Jo Jung Suk — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/jojungsuk/en/",
+  "start_url": "/fantrack/c/jojungsuk/en/",
+  "scope": "/fantrack/c/jojungsuk/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jojungsuk/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

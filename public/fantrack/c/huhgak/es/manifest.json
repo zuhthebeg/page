@@ -1,0 +1,24 @@
+{
+  "name": "Huh Gak — FanTrack",
+  "short_name": "Huh Gak",
+  "description": "21 trabajos de Huh Gak — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/huhgak/es/",
+  "start_url": "/fantrack/c/huhgak/es/",
+  "scope": "/fantrack/c/huhgak/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/huhgak/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

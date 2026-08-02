@@ -1,7 +1,7 @@
 {
   "name": "이수현 — FanTrack",
-  "short_name": "이수현 FanTrack",
-  "description": "이수현 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "이수현",
+  "description": "이수현 출연·활동 정보 5건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/lee_suhyun/",
   "start_url": "/fantrack/c/lee_suhyun/",
   "scope": "/fantrack/c/lee_suhyun/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/lee_suhyun/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

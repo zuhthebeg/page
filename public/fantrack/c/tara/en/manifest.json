@@ -1,0 +1,24 @@
+{
+  "name": "T-ARA — FanTrack",
+  "short_name": "T-ARA",
+  "description": "40 works by T-ARA — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/tara/en/",
+  "start_url": "/fantrack/c/tara/en/",
+  "scope": "/fantrack/c/tara/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/tara/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

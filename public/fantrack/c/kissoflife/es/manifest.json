@@ -1,0 +1,24 @@
+{
+  "name": "KISS OF LIFE — FanTrack",
+  "short_name": "KISS OF LIFE",
+  "description": "10 trabajos de KISS OF LIFE — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/kissoflife/es/",
+  "start_url": "/fantrack/c/kissoflife/es/",
+  "scope": "/fantrack/c/kissoflife/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kissoflife/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

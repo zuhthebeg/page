@@ -1,0 +1,24 @@
+{
+  "name": "M.C the MAX — FanTrack",
+  "short_name": "M.C the MAX",
+  "description": "17 trabajos de M.C the MAX — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/mcthemax/es/",
+  "start_url": "/fantrack/c/mcthemax/es/",
+  "scope": "/fantrack/c/mcthemax/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/mcthemax/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Kim Yeon Woo — FanTrack",
+  "short_name": "Kim Yeon Woo",
+  "description": "33 trabajos de Kim Yeon Woo — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/kimyeonwoo/es/",
+  "start_url": "/fantrack/c/kimyeonwoo/es/",
+  "scope": "/fantrack/c/kimyeonwoo/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kimyeonwoo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

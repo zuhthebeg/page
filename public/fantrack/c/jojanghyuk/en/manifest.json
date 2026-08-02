@@ -1,0 +1,24 @@
+{
+  "name": "Jo Jang Hyuk — FanTrack",
+  "short_name": "Jo Jang Hyuk",
+  "description": "14 works by Jo Jang Hyuk — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/jojanghyuk/en/",
+  "start_url": "/fantrack/c/jojanghyuk/en/",
+  "scope": "/fantrack/c/jojanghyuk/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jojanghyuk/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

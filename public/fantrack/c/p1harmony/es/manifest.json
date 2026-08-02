@@ -1,0 +1,24 @@
+{
+  "name": "P1Harmony — FanTrack",
+  "short_name": "P1Harmony",
+  "description": "15 trabajos de P1Harmony — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/p1harmony/es/",
+  "start_url": "/fantrack/c/p1harmony/es/",
+  "scope": "/fantrack/c/p1harmony/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/p1harmony/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

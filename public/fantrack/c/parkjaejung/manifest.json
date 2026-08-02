@@ -1,7 +1,7 @@
 {
   "name": "박재정 — FanTrack",
-  "short_name": "박재정 FanTrack",
-  "description": "박재정 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "박재정",
+  "description": "박재정 출연·활동 정보 39건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/parkjaejung/",
   "start_url": "/fantrack/c/parkjaejung/",
   "scope": "/fantrack/c/parkjaejung/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/parkjaejung/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

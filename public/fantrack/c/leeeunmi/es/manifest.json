@@ -1,0 +1,24 @@
+{
+  "name": "Lee Eun-mi — FanTrack",
+  "short_name": "Lee Eun-mi",
+  "description": "17 trabajos de Lee Eun-mi — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/leeeunmi/es/",
+  "start_url": "/fantrack/c/leeeunmi/es/",
+  "scope": "/fantrack/c/leeeunmi/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/leeeunmi/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

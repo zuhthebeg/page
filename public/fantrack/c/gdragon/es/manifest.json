@@ -1,0 +1,24 @@
+{
+  "name": "G-DRAGON — FanTrack",
+  "short_name": "G-DRAGON",
+  "description": "49 trabajos de G-DRAGON — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/gdragon/es/",
+  "start_url": "/fantrack/c/gdragon/es/",
+  "scope": "/fantrack/c/gdragon/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/gdragon/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

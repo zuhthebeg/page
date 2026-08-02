@@ -1,0 +1,24 @@
+{
+  "name": "Park Hyun-bin — FanTrack",
+  "short_name": "Park Hyun-bin",
+  "description": "18 trabajos de Park Hyun-bin — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/parkhyunbin/es/",
+  "start_url": "/fantrack/c/parkhyunbin/es/",
+  "scope": "/fantrack/c/parkhyunbin/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/parkhyunbin/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

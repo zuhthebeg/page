@@ -1,0 +1,24 @@
+{
+  "name": "THE BOYZ — FanTrack",
+  "short_name": "THE BOYZ",
+  "description": "28 trabajos de THE BOYZ — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/theboyz/es/",
+  "start_url": "/fantrack/c/theboyz/es/",
+  "scope": "/fantrack/c/theboyz/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/theboyz/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

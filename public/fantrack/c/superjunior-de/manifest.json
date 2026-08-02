@@ -1,7 +1,7 @@
 {
-  "name": "슈퍼주니어-D&E(SUPER JUNIOR) — FanTrack",
-  "short_name": "슈퍼주니어-D&E FanTrack",
-  "description": "SUPER JUNIOR 슈퍼주니어-D&E 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "name": "슈퍼주니어-D&E — FanTrack",
+  "short_name": "슈퍼주니어-D&E",
+  "description": "슈퍼주니어-D&E 출연·활동 정보 36건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/superjunior-de/",
   "start_url": "/fantrack/c/superjunior-de/",
   "scope": "/fantrack/c/superjunior-de/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/superjunior-de/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

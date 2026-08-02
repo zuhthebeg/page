@@ -1,0 +1,24 @@
+{
+  "name": "Lee Moon Sae — FanTrack",
+  "short_name": "Lee Moon Sae",
+  "description": "24 works by Lee Moon Sae — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/leemoonsae/en/",
+  "start_url": "/fantrack/c/leemoonsae/en/",
+  "scope": "/fantrack/c/leemoonsae/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/leemoonsae/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

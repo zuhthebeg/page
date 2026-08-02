@@ -1,0 +1,24 @@
+{
+  "name": "MAKTUB — FanTrack",
+  "short_name": "MAKTUB",
+  "description": "8 trabajos de MAKTUB — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/maktub/es/",
+  "start_url": "/fantrack/c/maktub/es/",
+  "scope": "/fantrack/c/maktub/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/maktub/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

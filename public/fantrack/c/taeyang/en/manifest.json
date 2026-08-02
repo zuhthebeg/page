@@ -1,0 +1,24 @@
+{
+  "name": "TAEYANG — FanTrack",
+  "short_name": "TAEYANG",
+  "description": "17 works by TAEYANG — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/taeyang/en/",
+  "start_url": "/fantrack/c/taeyang/en/",
+  "scope": "/fantrack/c/taeyang/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/taeyang/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

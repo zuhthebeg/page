@@ -1,0 +1,24 @@
+{
+  "name": "Seol Woon-do — FanTrack",
+  "short_name": "Seol Woon-do",
+  "description": "39 trabajos de Seol Woon-do — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/seolundo/es/",
+  "start_url": "/fantrack/c/seolundo/es/",
+  "scope": "/fantrack/c/seolundo/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/seolundo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

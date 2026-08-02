@@ -1,0 +1,24 @@
+{
+  "name": "2AM — FanTrack",
+  "short_name": "2AM",
+  "description": "13 trabajos de 2AM — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/2am/es/",
+  "start_url": "/fantrack/c/2am/es/",
+  "scope": "/fantrack/c/2am/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/2am/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

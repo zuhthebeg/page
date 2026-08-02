@@ -1,0 +1,24 @@
+{
+  "name": "Kim Bum Soo — FanTrack",
+  "short_name": "Kim Bum Soo",
+  "description": "35 trabajos de Kim Bum Soo — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/kimbumsoo/es/",
+  "start_url": "/fantrack/c/kimbumsoo/es/",
+  "scope": "/fantrack/c/kimbumsoo/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kimbumsoo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

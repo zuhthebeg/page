@@ -1,7 +1,7 @@
 {
   "name": "넬 — FanTrack",
-  "short_name": "넬 FanTrack",
-  "description": "넬 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "넬",
+  "description": "넬 출연·활동 정보 23건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/nell/",
   "start_url": "/fantrack/c/nell/",
   "scope": "/fantrack/c/nell/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/nell/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

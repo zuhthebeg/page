@@ -1,0 +1,24 @@
+{
+  "name": "Lucy — FanTrack",
+  "short_name": "Lucy",
+  "description": "Lucy 的出演與作品 24 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/lucy/tw/",
+  "start_url": "/fantrack/c/lucy/tw/",
+  "scope": "/fantrack/c/lucy/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/lucy/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

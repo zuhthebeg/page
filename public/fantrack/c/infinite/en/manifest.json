@@ -1,0 +1,24 @@
+{
+  "name": "INFINITE — FanTrack",
+  "short_name": "INFINITE",
+  "description": "20 works by INFINITE — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/infinite/en/",
+  "start_url": "/fantrack/c/infinite/en/",
+  "scope": "/fantrack/c/infinite/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/infinite/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

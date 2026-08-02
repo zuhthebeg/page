@@ -1,0 +1,24 @@
+{
+  "name": "Leessang — FanTrack",
+  "short_name": "Leessang",
+  "description": "14 trabajos de Leessang — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/leessang/es/",
+  "start_url": "/fantrack/c/leessang/es/",
+  "scope": "/fantrack/c/leessang/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/leessang/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

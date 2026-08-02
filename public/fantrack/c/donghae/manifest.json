@@ -1,7 +1,7 @@
 {
-  "name": "동해(SUPER JUNIOR) — FanTrack",
-  "short_name": "동해 FanTrack",
-  "description": "SUPER JUNIOR 동해 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "name": "동해 — FanTrack",
+  "short_name": "동해",
+  "description": "동해 출연·활동 정보 53건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/donghae/",
   "start_url": "/fantrack/c/donghae/",
   "scope": "/fantrack/c/donghae/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/donghae/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

@@ -1,0 +1,24 @@
+{
+  "name": "Siwon — FanTrack",
+  "short_name": "Siwon",
+  "description": "32 trabajos de Siwon — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/siwon/es/",
+  "start_url": "/fantrack/c/siwon/es/",
+  "scope": "/fantrack/c/siwon/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/siwon/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

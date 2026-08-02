@@ -1,7 +1,7 @@
 {
   "name": "빅마마 — FanTrack",
-  "short_name": "빅마마 FanTrack",
-  "description": "빅마마 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "빅마마",
+  "description": "빅마마 출연·활동 정보 11건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/bigmama/",
   "start_url": "/fantrack/c/bigmama/",
   "scope": "/fantrack/c/bigmama/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/bigmama/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

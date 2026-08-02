@@ -1,0 +1,24 @@
+{
+  "name": "Hyun Cheol — FanTrack",
+  "short_name": "Hyun Cheol",
+  "description": "10 trabajos de Hyun Cheol — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/hyuncheol/es/",
+  "start_url": "/fantrack/c/hyuncheol/es/",
+  "scope": "/fantrack/c/hyuncheol/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/hyuncheol/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

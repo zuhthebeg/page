@@ -1,0 +1,24 @@
+{
+  "name": "NMIXX — FanTrack",
+  "short_name": "NMIXX",
+  "description": "11 trabajos de NMIXX — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/nmixx/es/",
+  "start_url": "/fantrack/c/nmixx/es/",
+  "scope": "/fantrack/c/nmixx/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/nmixx/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

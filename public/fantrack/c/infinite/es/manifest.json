@@ -1,0 +1,24 @@
+{
+  "name": "INFINITE — FanTrack",
+  "short_name": "INFINITE",
+  "description": "20 trabajos de INFINITE — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/infinite/es/",
+  "start_url": "/fantrack/c/infinite/es/",
+  "scope": "/fantrack/c/infinite/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/infinite/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

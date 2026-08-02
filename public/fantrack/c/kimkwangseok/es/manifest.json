@@ -1,0 +1,24 @@
+{
+  "name": "Kim Kwang Seok — FanTrack",
+  "short_name": "Kim Kwang Seok",
+  "description": "10 trabajos de Kim Kwang Seok — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/kimkwangseok/es/",
+  "start_url": "/fantrack/c/kimkwangseok/es/",
+  "scope": "/fantrack/c/kimkwangseok/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kimkwangseok/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

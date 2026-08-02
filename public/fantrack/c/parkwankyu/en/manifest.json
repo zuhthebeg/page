@@ -1,0 +1,24 @@
+{
+  "name": "Park Wan-kyu — FanTrack",
+  "short_name": "Park Wan-kyu",
+  "description": "11 works by Park Wan-kyu — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/parkwankyu/en/",
+  "start_url": "/fantrack/c/parkwankyu/en/",
+  "scope": "/fantrack/c/parkwankyu/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/parkwankyu/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

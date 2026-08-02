@@ -1,0 +1,24 @@
+{
+  "name": "Lim Young Woong — FanTrack",
+  "short_name": "Lim Young Woong",
+  "description": "6 works by Lim Young Woong — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/limyoungwoong/en/",
+  "start_url": "/fantrack/c/limyoungwoong/en/",
+  "scope": "/fantrack/c/limyoungwoong/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/limyoungwoong/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

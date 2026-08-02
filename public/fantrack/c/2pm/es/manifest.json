@@ -1,0 +1,24 @@
+{
+  "name": "2PM — FanTrack",
+  "short_name": "2PM",
+  "description": "52 trabajos de 2PM — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/2pm/es/",
+  "start_url": "/fantrack/c/2pm/es/",
+  "scope": "/fantrack/c/2pm/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/2pm/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

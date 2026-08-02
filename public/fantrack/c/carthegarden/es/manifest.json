@@ -1,0 +1,24 @@
+{
+  "name": "Car, the Garden — FanTrack",
+  "short_name": "Car, the Garden",
+  "description": "29 trabajos de Car, the Garden — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/carthegarden/es/",
+  "start_url": "/fantrack/c/carthegarden/es/",
+  "scope": "/fantrack/c/carthegarden/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/carthegarden/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

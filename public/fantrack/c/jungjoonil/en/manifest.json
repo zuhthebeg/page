@@ -1,0 +1,24 @@
+{
+  "name": "Jung Joon Il — FanTrack",
+  "short_name": "Jung Joon Il",
+  "description": "13 works by Jung Joon Il — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/jungjoonil/en/",
+  "start_url": "/fantrack/c/jungjoonil/en/",
+  "scope": "/fantrack/c/jungjoonil/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jungjoonil/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

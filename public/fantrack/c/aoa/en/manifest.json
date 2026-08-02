@@ -1,0 +1,24 @@
+{
+  "name": "AOA — FanTrack",
+  "short_name": "AOA",
+  "description": "43 works by AOA — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/aoa/en/",
+  "start_url": "/fantrack/c/aoa/en/",
+  "scope": "/fantrack/c/aoa/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/aoa/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

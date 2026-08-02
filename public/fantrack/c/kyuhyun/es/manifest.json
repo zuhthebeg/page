@@ -1,0 +1,24 @@
+{
+  "name": "Kyuhyun — FanTrack",
+  "short_name": "Kyuhyun",
+  "description": "88 trabajos de Kyuhyun — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/kyuhyun/es/",
+  "start_url": "/fantrack/c/kyuhyun/es/",
+  "scope": "/fantrack/c/kyuhyun/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kyuhyun/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

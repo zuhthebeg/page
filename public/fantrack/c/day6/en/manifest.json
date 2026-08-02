@@ -1,0 +1,24 @@
+{
+  "name": "DAY6 — FanTrack",
+  "short_name": "DAY6",
+  "description": "44 works by DAY6 — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/day6/en/",
+  "start_url": "/fantrack/c/day6/en/",
+  "scope": "/fantrack/c/day6/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/day6/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

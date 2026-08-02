@@ -1,0 +1,24 @@
+{
+  "name": "Jimin — FanTrack",
+  "short_name": "Jimin",
+  "description": "7 works by Jimin — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/jimin/en/",
+  "start_url": "/fantrack/c/jimin/en/",
+  "scope": "/fantrack/c/jimin/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jimin/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

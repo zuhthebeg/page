@@ -1,0 +1,24 @@
+{
+  "name": "Jang Yoon Jeong — FanTrack",
+  "short_name": "Jang Yoon Jeong",
+  "description": "61 trabajos de Jang Yoon Jeong — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/jangyoonjeong/es/",
+  "start_url": "/fantrack/c/jangyoonjeong/es/",
+  "scope": "/fantrack/c/jangyoonjeong/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jangyoonjeong/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

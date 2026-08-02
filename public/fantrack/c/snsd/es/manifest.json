@@ -1,0 +1,24 @@
+{
+  "name": "Girls — FanTrack",
+  "short_name": "Girls",
+  "description": "32 trabajos de Girls — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/snsd/es/",
+  "start_url": "/fantrack/c/snsd/es/",
+  "scope": "/fantrack/c/snsd/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/snsd/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

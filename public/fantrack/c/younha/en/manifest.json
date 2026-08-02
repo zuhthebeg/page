@@ -1,0 +1,24 @@
+{
+  "name": "Younha — FanTrack",
+  "short_name": "Younha",
+  "description": "54 works by Younha — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/younha/en/",
+  "start_url": "/fantrack/c/younha/en/",
+  "scope": "/fantrack/c/younha/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/younha/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

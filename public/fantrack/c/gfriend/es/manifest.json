@@ -1,0 +1,24 @@
+{
+  "name": "GFRIEND — FanTrack",
+  "short_name": "GFRIEND",
+  "description": "82 trabajos de GFRIEND — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/gfriend/es/",
+  "start_url": "/fantrack/c/gfriend/es/",
+  "scope": "/fantrack/c/gfriend/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/gfriend/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

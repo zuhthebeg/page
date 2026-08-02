@@ -1,0 +1,24 @@
+{
+  "name": "Red Velvet — FanTrack",
+  "short_name": "Red Velvet",
+  "description": "Red Velvet 的出演與作品 37 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/redvelvet/tw/",
+  "start_url": "/fantrack/c/redvelvet/tw/",
+  "scope": "/fantrack/c/redvelvet/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/redvelvet/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

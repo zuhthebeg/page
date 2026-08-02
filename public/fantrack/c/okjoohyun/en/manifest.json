@@ -1,0 +1,24 @@
+{
+  "name": "Ok Joo-hyun — FanTrack",
+  "short_name": "Ok Joo-hyun",
+  "description": "20 works by Ok Joo-hyun — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/okjoohyun/en/",
+  "start_url": "/fantrack/c/okjoohyun/en/",
+  "scope": "/fantrack/c/okjoohyun/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/okjoohyun/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

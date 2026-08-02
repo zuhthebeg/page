@@ -1,0 +1,24 @@
+{
+  "name": "LeeHi — FanTrack",
+  "short_name": "LeeHi",
+  "description": "14 trabajos de LeeHi — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/leehi/es/",
+  "start_url": "/fantrack/c/leehi/es/",
+  "scope": "/fantrack/c/leehi/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/leehi/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

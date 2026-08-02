@@ -1,0 +1,24 @@
+{
+  "name": "Leeteuk — FanTrack",
+  "short_name": "Leeteuk",
+  "description": "8 trabajos de Leeteuk — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/leeteuk/es/",
+  "start_url": "/fantrack/c/leeteuk/es/",
+  "scope": "/fantrack/c/leeteuk/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/leeteuk/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

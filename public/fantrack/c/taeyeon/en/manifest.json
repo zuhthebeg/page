@@ -1,0 +1,24 @@
+{
+  "name": "Taeyeon — FanTrack",
+  "short_name": "Taeyeon",
+  "description": "39 works by Taeyeon — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/taeyeon/en/",
+  "start_url": "/fantrack/c/taeyeon/en/",
+  "scope": "/fantrack/c/taeyeon/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/taeyeon/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

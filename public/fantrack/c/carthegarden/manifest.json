@@ -1,7 +1,7 @@
 {
   "name": "카더가든 — FanTrack",
-  "short_name": "카더가든 FanTrack",
-  "description": "카더가든 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "카더가든",
+  "description": "카더가든 출연·활동 정보 29건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/carthegarden/",
   "start_url": "/fantrack/c/carthegarden/",
   "scope": "/fantrack/c/carthegarden/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/carthegarden/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

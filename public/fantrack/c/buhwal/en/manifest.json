@@ -1,0 +1,24 @@
+{
+  "name": "Boohwal — FanTrack",
+  "short_name": "Boohwal",
+  "description": "19 works by Boohwal — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/buhwal/en/",
+  "start_url": "/fantrack/c/buhwal/en/",
+  "scope": "/fantrack/c/buhwal/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/buhwal/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

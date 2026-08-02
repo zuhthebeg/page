@@ -1,7 +1,7 @@
 {
   "name": "임한별 — FanTrack",
-  "short_name": "임한별 FanTrack",
-  "description": "임한별 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "임한별",
+  "description": "임한별 출연·활동 정보 5건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/imhanbyul/",
   "start_url": "/fantrack/c/imhanbyul/",
   "scope": "/fantrack/c/imhanbyul/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/imhanbyul/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

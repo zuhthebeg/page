@@ -1,0 +1,24 @@
+{
+  "name": "Buzz — FanTrack",
+  "short_name": "Buzz",
+  "description": "19 trabajos de Buzz — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/buzz/es/",
+  "start_url": "/fantrack/c/buzz/es/",
+  "scope": "/fantrack/c/buzz/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/buzz/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

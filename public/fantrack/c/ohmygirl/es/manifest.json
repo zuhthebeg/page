@@ -1,0 +1,24 @@
+{
+  "name": "OH MY GIRL — FanTrack",
+  "short_name": "OH MY GIRL",
+  "description": "21 trabajos de OH MY GIRL — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/ohmygirl/es/",
+  "start_url": "/fantrack/c/ohmygirl/es/",
+  "scope": "/fantrack/c/ohmygirl/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ohmygirl/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

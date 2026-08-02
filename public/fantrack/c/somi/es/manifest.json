@@ -1,0 +1,24 @@
+{
+  "name": "Jeon Somi — FanTrack",
+  "short_name": "Jeon Somi",
+  "description": "52 trabajos de Jeon Somi — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/somi/es/",
+  "start_url": "/fantrack/c/somi/es/",
+  "scope": "/fantrack/c/somi/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/somi/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

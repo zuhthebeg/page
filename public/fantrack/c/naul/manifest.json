@@ -1,7 +1,7 @@
 {
   "name": "나얼 — FanTrack",
-  "short_name": "나얼 FanTrack",
-  "description": "나얼 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "나얼",
+  "description": "나얼 출연·활동 정보 9건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/naul/",
   "start_url": "/fantrack/c/naul/",
   "scope": "/fantrack/c/naul/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/naul/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

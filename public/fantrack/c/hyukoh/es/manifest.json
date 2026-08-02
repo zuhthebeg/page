@@ -1,0 +1,24 @@
+{
+  "name": "HYUKOH — FanTrack",
+  "short_name": "HYUKOH",
+  "description": "11 trabajos de HYUKOH — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/hyukoh/es/",
+  "start_url": "/fantrack/c/hyukoh/es/",
+  "scope": "/fantrack/c/hyukoh/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/hyukoh/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

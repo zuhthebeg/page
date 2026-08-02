@@ -1,0 +1,24 @@
+{
+  "name": "SUPER JUNIOR-83z — FanTrack",
+  "short_name": "SUPER JUNIOR-83z",
+  "description": "3 works by SUPER JUNIOR-83z — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/superjunior-83z/en/",
+  "start_url": "/fantrack/c/superjunior-83z/en/",
+  "scope": "/fantrack/c/superjunior-83z/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/superjunior-83z/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

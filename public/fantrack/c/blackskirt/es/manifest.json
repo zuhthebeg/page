@@ -1,0 +1,24 @@
+{
+  "name": "The Black Skirts — FanTrack",
+  "short_name": "The Black Skirts",
+  "description": "11 trabajos de The Black Skirts — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/blackskirt/es/",
+  "start_url": "/fantrack/c/blackskirt/es/",
+  "scope": "/fantrack/c/blackskirt/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/blackskirt/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

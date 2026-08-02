@@ -1,0 +1,24 @@
+{
+  "name": "Kim Gun Mo — FanTrack",
+  "short_name": "Kim Gun Mo",
+  "description": "21 trabajos de Kim Gun Mo — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/kimgunmo/es/",
+  "start_url": "/fantrack/c/kimgunmo/es/",
+  "scope": "/fantrack/c/kimgunmo/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kimgunmo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

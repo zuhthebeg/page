@@ -1,0 +1,24 @@
+{
+  "name": "Kim Yeon-ja — FanTrack",
+  "short_name": "Kim Yeon-ja",
+  "description": "6 works by Kim Yeon-ja — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/kimyeonja/en/",
+  "start_url": "/fantrack/c/kimyeonja/en/",
+  "scope": "/fantrack/c/kimyeonja/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kimyeonja/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "LISA — FanTrack",
+  "short_name": "LISA",
+  "description": "14 trabajos de LISA — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/lisa/es/",
+  "start_url": "/fantrack/c/lisa/es/",
+  "scope": "/fantrack/c/lisa/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/lisa/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

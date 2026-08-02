@@ -1,0 +1,24 @@
+{
+  "name": "Cho Yong-pil — FanTrack",
+  "short_name": "Cho Yong-pil",
+  "description": "25 trabajos de Cho Yong-pil — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/choyongpil/es/",
+  "start_url": "/fantrack/c/choyongpil/es/",
+  "scope": "/fantrack/c/choyongpil/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/choyongpil/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

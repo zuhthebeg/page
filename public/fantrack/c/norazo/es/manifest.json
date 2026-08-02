@@ -1,0 +1,24 @@
+{
+  "name": "Norazo — FanTrack",
+  "short_name": "Norazo",
+  "description": "8 trabajos de Norazo — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/norazo/es/",
+  "start_url": "/fantrack/c/norazo/es/",
+  "scope": "/fantrack/c/norazo/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/norazo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

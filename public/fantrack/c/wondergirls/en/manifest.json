@@ -1,0 +1,24 @@
+{
+  "name": "Wonder Girls — FanTrack",
+  "short_name": "Wonder Girls",
+  "description": "17 works by Wonder Girls — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/wondergirls/en/",
+  "start_url": "/fantrack/c/wondergirls/en/",
+  "scope": "/fantrack/c/wondergirls/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/wondergirls/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

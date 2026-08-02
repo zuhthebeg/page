@@ -1,0 +1,24 @@
+{
+  "name": "崔始源 — FanTrack",
+  "short_name": "崔始源",
+  "description": "崔始源 的出演與作品 32 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/siwon/tw/",
+  "start_url": "/fantrack/c/siwon/tw/",
+  "scope": "/fantrack/c/siwon/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/siwon/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

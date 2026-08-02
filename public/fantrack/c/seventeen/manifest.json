@@ -1,7 +1,7 @@
 {
   "name": "세븐틴 — FanTrack",
-  "short_name": "세븐틴 FanTrack",
-  "description": "세븐틴 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "세븐틴",
+  "description": "세븐틴 출연·활동 정보 103건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/seventeen/",
   "start_url": "/fantrack/c/seventeen/",
   "scope": "/fantrack/c/seventeen/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/seventeen/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

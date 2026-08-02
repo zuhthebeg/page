@@ -1,0 +1,24 @@
+{
+  "name": "Jung Kook — FanTrack",
+  "short_name": "Jung Kook",
+  "description": "6 works by Jung Kook — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/jungkook/en/",
+  "start_url": "/fantrack/c/jungkook/en/",
+  "scope": "/fantrack/c/jungkook/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/jungkook/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

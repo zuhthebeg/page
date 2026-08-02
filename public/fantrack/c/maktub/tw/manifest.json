@@ -1,0 +1,24 @@
+{
+  "name": "MAKTUB — FanTrack",
+  "short_name": "MAKTUB",
+  "description": "MAKTUB 的出演與作品 8 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/maktub/tw/",
+  "start_url": "/fantrack/c/maktub/tw/",
+  "scope": "/fantrack/c/maktub/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/maktub/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

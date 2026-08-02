@@ -1,0 +1,24 @@
+{
+  "name": "Paul Kim — FanTrack",
+  "short_name": "Paul Kim",
+  "description": "13 works by Paul Kim — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/paulkim/en/",
+  "start_url": "/fantrack/c/paulkim/en/",
+  "scope": "/fantrack/c/paulkim/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/paulkim/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

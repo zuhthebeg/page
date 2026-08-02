@@ -1,7 +1,7 @@
 {
   "name": "SG워너비 — FanTrack",
-  "short_name": "SG워너비 FanTrack",
-  "description": "SG워너비 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "SG워너비",
+  "description": "SG워너비 출연·활동 정보 15건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/sgwannabe/",
   "start_url": "/fantrack/c/sgwannabe/",
   "scope": "/fantrack/c/sgwannabe/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/sgwannabe/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

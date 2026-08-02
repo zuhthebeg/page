@@ -1,0 +1,24 @@
+{
+  "name": "EXID — FanTrack",
+  "short_name": "EXID",
+  "description": "EXID 的出演與作品 13 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/exid/tw/",
+  "start_url": "/fantrack/c/exid/tw/",
+  "scope": "/fantrack/c/exid/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/exid/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

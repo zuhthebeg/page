@@ -1,0 +1,24 @@
+{
+  "name": "Roy Kim — FanTrack",
+  "short_name": "Roy Kim",
+  "description": "104 trabajos de Roy Kim — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/roykim/es/",
+  "start_url": "/fantrack/c/roykim/es/",
+  "scope": "/fantrack/c/roykim/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/roykim/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

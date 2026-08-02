@@ -1,7 +1,7 @@
 {
   "name": "최백호 — FanTrack",
-  "short_name": "최백호 FanTrack",
-  "description": "최백호 출연정보 모아보기 — 방송·유튜브·OTT.",
+  "short_name": "최백호",
+  "description": "최백호 출연·활동 정보 12건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
   "id": "/fantrack/c/choibaekho/",
   "start_url": "/fantrack/c/choibaekho/",
   "scope": "/fantrack/c/choibaekho/",
@@ -15,7 +15,7 @@
   ],
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/fantrack/c/choibaekho/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

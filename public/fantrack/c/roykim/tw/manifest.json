@@ -1,0 +1,24 @@
+{
+  "name": "Roy Kim — FanTrack",
+  "short_name": "Roy Kim",
+  "description": "Roy Kim 的出演與作品 104 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/roykim/tw/",
+  "start_url": "/fantrack/c/roykim/tw/",
+  "scope": "/fantrack/c/roykim/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/roykim/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
