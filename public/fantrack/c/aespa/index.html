@@ -191,16 +191,9 @@ function renderFilters(){
   document.querySelectorAll('.filter-chip').forEach(b => b.onclick = () => { TYPE_FILTER = b.dataset.t; renderFilters(); renderContent(); });
 }
 
-function renderContent(){
-  let list = [...DATA.content];
-  if(TYPE_FILTER!=='all') list = list.filter(c=>c.type===TYPE_FILTER);
-  if(HIDE_WATCHED) list = list.filter(c=>!isWatched(c.id));
-  if(SORT==='interest') list.sort((a,b)=> (b.votes-a.votes) || ((b.year||0)-(a.year||0)));
-  else list.sort((a,b)=> (b.year||0)-(a.year||0));
-
-
 // 링크가 없는 항목(앨범·콘서트 등)은 유튜브 검색으로라도 넘어갈 수 있게 한다.
 // 저장하지 않고 렌더 시점에 만든다 — 가수명/제목이 바뀌면 링크도 따라간다.
+// 목록·액션시트·공유가 모두 쓰므로 반드시 최상위 스코프에 둔다.
 function ytSearch(c){
   const cel = (typeof DATA !== 'undefined' && DATA.celebrity) || {};
   const who = cel.name_en || cel.name_ko || '';
@@ -209,7 +202,14 @@ function ytSearch(c){
   if(!q.trim()) return null;
   return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
 }
-function linkOf(c){ return c.external_link || ytSearch(c); }
+function linkOf(c){ return c && (c.external_link || ytSearch(c)); }
+
+function renderContent(){
+  let list = [...DATA.content];
+  if(TYPE_FILTER!=='all') list = list.filter(c=>c.type===TYPE_FILTER);
+  if(HIDE_WATCHED) list = list.filter(c=>!isWatched(c.id));
+  if(SORT==='interest') list.sort((a,b)=> (b.votes-a.votes) || ((b.year||0)-(a.year||0)));
+  else list.sort((a,b)=> (b.year||0)-(a.year||0));
 
   $('contentList').innerHTML = list.map(c => {
     const seen = isWatched(c.id);
