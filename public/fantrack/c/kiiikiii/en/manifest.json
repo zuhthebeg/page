@@ -1,0 +1,24 @@
+{
+  "name": "KiiiKiii — FanTrack",
+  "short_name": "KiiiKiii",
+  "description": "7 works by KiiiKiii — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/kiiikiii/en/",
+  "start_url": "/fantrack/c/kiiikiii/en/",
+  "scope": "/fantrack/c/kiiikiii/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kiiikiii/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

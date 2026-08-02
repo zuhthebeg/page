@@ -1,0 +1,24 @@
+{
+  "name": "영파씨 — FanTrack",
+  "short_name": "영파씨",
+  "description": "영파씨 출연·활동 정보 12건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
+  "id": "/fantrack/c/youngposse/",
+  "start_url": "/fantrack/c/youngposse/",
+  "scope": "/fantrack/c/youngposse/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/youngposse/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

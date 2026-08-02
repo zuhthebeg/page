@@ -1,0 +1,24 @@
+{
+  "name": "KickFlip — FanTrack",
+  "short_name": "KickFlip",
+  "description": "KickFlip 的出演與作品 9 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/kickflip/tw/",
+  "start_url": "/fantrack/c/kickflip/tw/",
+  "scope": "/fantrack/c/kickflip/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kickflip/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

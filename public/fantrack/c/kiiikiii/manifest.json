@@ -1,0 +1,24 @@
+{
+  "name": "KiiiKiii — FanTrack",
+  "short_name": "KiiiKiii",
+  "description": "KiiiKiii 출연·활동 정보 7건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
+  "id": "/fantrack/c/kiiikiii/",
+  "start_url": "/fantrack/c/kiiikiii/",
+  "scope": "/fantrack/c/kiiikiii/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kiiikiii/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

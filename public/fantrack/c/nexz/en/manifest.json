@@ -1,0 +1,24 @@
+{
+  "name": "NEXZ — FanTrack",
+  "short_name": "NEXZ",
+  "description": "5 works by NEXZ — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/nexz/en/",
+  "start_url": "/fantrack/c/nexz/en/",
+  "scope": "/fantrack/c/nexz/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/nexz/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

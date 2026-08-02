@@ -1,0 +1,24 @@
+{
+  "name": "izna — FanTrack",
+  "short_name": "izna",
+  "description": "izna 출연·활동 정보 8건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
+  "id": "/fantrack/c/izna/",
+  "start_url": "/fantrack/c/izna/",
+  "scope": "/fantrack/c/izna/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/izna/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

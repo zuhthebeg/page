@@ -1,0 +1,24 @@
+{
+  "name": "X:LOVE — FanTrack",
+  "short_name": "X:LOVE",
+  "description": "X:LOVE 的出演與作品 7 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/xlove/tw/",
+  "start_url": "/fantrack/c/xlove/tw/",
+  "scope": "/fantrack/c/xlove/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/xlove/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "IDNTT — FanTrack",
+  "short_name": "IDNTT",
+  "description": "IDNTT 출연·활동 정보 8건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
+  "id": "/fantrack/c/idntt/",
+  "start_url": "/fantrack/c/idntt/",
+  "scope": "/fantrack/c/idntt/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/idntt/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

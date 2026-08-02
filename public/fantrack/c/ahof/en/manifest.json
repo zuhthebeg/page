@@ -1,0 +1,24 @@
+{
+  "name": "AHOF — FanTrack",
+  "short_name": "AHOF",
+  "description": "8 works by AHOF — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/ahof/en/",
+  "start_url": "/fantrack/c/ahof/en/",
+  "scope": "/fantrack/c/ahof/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ahof/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

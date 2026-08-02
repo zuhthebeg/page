@@ -1,0 +1,24 @@
+{
+  "name": "올데이프로젝트 — FanTrack",
+  "short_name": "올데이프로젝트",
+  "description": "올데이프로젝트 출연·활동 정보 6건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
+  "id": "/fantrack/c/alldayproject/",
+  "start_url": "/fantrack/c/alldayproject/",
+  "scope": "/fantrack/c/alldayproject/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/alldayproject/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

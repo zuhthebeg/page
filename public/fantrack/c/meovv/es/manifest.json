@@ -1,0 +1,24 @@
+{
+  "name": "MEOVV — FanTrack",
+  "short_name": "MEOVV",
+  "description": "7 trabajos de MEOVV — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/meovv/es/",
+  "start_url": "/fantrack/c/meovv/es/",
+  "scope": "/fantrack/c/meovv/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/meovv/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

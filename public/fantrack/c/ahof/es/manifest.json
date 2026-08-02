@@ -1,0 +1,24 @@
+{
+  "name": "AHOF — FanTrack",
+  "short_name": "AHOF",
+  "description": "8 trabajos de AHOF — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/ahof/es/",
+  "start_url": "/fantrack/c/ahof/es/",
+  "scope": "/fantrack/c/ahof/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/ahof/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

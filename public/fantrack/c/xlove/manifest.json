@@ -1,0 +1,24 @@
+{
+  "name": "엑스러브 — FanTrack",
+  "short_name": "엑스러브",
+  "description": "엑스러브 출연·활동 정보 7건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
+  "id": "/fantrack/c/xlove/",
+  "start_url": "/fantrack/c/xlove/",
+  "scope": "/fantrack/c/xlove/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/xlove/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

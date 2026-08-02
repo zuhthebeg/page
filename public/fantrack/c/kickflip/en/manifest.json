@@ -1,0 +1,24 @@
+{
+  "name": "KickFlip — FanTrack",
+  "short_name": "KickFlip",
+  "description": "9 works by KickFlip — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/kickflip/en/",
+  "start_url": "/fantrack/c/kickflip/en/",
+  "scope": "/fantrack/c/kickflip/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kickflip/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

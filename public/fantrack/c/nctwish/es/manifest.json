@@ -1,0 +1,24 @@
+{
+  "name": "NCT WISH — FanTrack",
+  "short_name": "NCT WISH",
+  "description": "13 trabajos de NCT WISH — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/nctwish/es/",
+  "start_url": "/fantrack/c/nctwish/es/",
+  "scope": "/fantrack/c/nctwish/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/nctwish/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

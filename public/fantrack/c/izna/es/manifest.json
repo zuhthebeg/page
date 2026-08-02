@@ -1,0 +1,24 @@
+{
+  "name": "izna — FanTrack",
+  "short_name": "izna",
+  "description": "8 trabajos de izna — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/izna/es/",
+  "start_url": "/fantrack/c/izna/es/",
+  "scope": "/fantrack/c/izna/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/izna/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

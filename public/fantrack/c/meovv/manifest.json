@@ -1,0 +1,24 @@
+{
+  "name": "미야오 — FanTrack",
+  "short_name": "미야오",
+  "description": "미야오 출연·활동 정보 7건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
+  "id": "/fantrack/c/meovv/",
+  "start_url": "/fantrack/c/meovv/",
+  "scope": "/fantrack/c/meovv/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/meovv/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "IDNTT — FanTrack",
+  "short_name": "IDNTT",
+  "description": "8 works by IDNTT — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/idntt/en/",
+  "start_url": "/fantrack/c/idntt/en/",
+  "scope": "/fantrack/c/idntt/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/idntt/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

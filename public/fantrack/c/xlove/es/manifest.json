@@ -1,0 +1,24 @@
+{
+  "name": "X:LOVE — FanTrack",
+  "short_name": "X:LOVE",
+  "description": "7 trabajos de X:LOVE — programas, álbumes y conciertos en un solo lugar. FanTrack",
+  "id": "/fantrack/c/xlove/es/",
+  "start_url": "/fantrack/c/xlove/es/",
+  "scope": "/fantrack/c/xlove/es/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "es",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/xlove/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

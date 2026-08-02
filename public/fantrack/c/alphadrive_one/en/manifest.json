@@ -1,0 +1,24 @@
+{
+  "name": "ALPHA DRIVE ONE — FanTrack",
+  "short_name": "ALPHA DRIVE ONE",
+  "description": "6 works by ALPHA DRIVE ONE — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/alphadrive_one/en/",
+  "start_url": "/fantrack/c/alphadrive_one/en/",
+  "scope": "/fantrack/c/alphadrive_one/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/alphadrive_one/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

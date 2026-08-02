@@ -1,0 +1,24 @@
+{
+  "name": "YOUNG POSSE — FanTrack",
+  "short_name": "YOUNG POSSE",
+  "description": "12 works by YOUNG POSSE — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/youngposse/en/",
+  "start_url": "/fantrack/c/youngposse/en/",
+  "scope": "/fantrack/c/youngposse/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/youngposse/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

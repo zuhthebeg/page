@@ -1,0 +1,24 @@
+{
+  "name": "BBGIRLS — FanTrack",
+  "short_name": "BBGIRLS",
+  "description": "BBGIRLS 的出演與作品 12 筆 — 節目、專輯、演唱會一次看完。FanTrack",
+  "id": "/fantrack/c/bbgirls/tw/",
+  "start_url": "/fantrack/c/bbgirls/tw/",
+  "scope": "/fantrack/c/bbgirls/tw/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "zh-Hant",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/bbgirls/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

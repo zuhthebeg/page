@@ -1,0 +1,24 @@
+{
+  "name": "LIBELANTE — FanTrack",
+  "short_name": "LIBELANTE",
+  "description": "6 works by LIBELANTE — TV shows, albums and concerts in one place. FanTrack",
+  "id": "/fantrack/c/liberante/en/",
+  "start_url": "/fantrack/c/liberante/en/",
+  "scope": "/fantrack/c/liberante/en/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/liberante/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

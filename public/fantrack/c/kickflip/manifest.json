@@ -1,0 +1,24 @@
+{
+  "name": "KickFlip — FanTrack",
+  "short_name": "KickFlip",
+  "description": "KickFlip 출연·활동 정보 9건 — 방송·앨범·콘서트를 한 곳에서. FanTrack",
+  "id": "/fantrack/c/kickflip/",
+  "start_url": "/fantrack/c/kickflip/",
+  "scope": "/fantrack/c/kickflip/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141221",
+  "theme_color": "#141221",
+  "lang": "ko",
+  "categories": [
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/fantrack/c/kickflip/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
