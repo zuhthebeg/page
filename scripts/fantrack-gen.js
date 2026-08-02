@@ -20,7 +20,10 @@ const path = require('path');
 const vm = require('vm');
 
 const ROOT = path.join(__dirname, '..', 'public', 'fantrack', 'c');
-const TPL = path.join(ROOT, 'donghae');
+// 템플릿은 생성 대상 밖에 둔다.
+// donghae를 템플릿으로 쓰던 시절엔 생성기가 자기 템플릿을 덮어써서
+// 다음 실행 때 남의 프로필에 동해 데이터가 박히는 오염이 났다.
+const TPL = path.join(__dirname, '..', 'public', 'fantrack', '_tpl');
 const SITE = 'https://page.cocy.io';
 const API = SITE + '/api/fantrack/celebrities';
 const LANGS = ['ko', 'en', 'tw', 'es'];
@@ -170,9 +173,11 @@ async function main() {
       html = html.replace(/(src|href)="\.\.\/\.\.\/([^"]+)"/g, '$1="/fantrack/$2"')
                  .replace(/(src|href)="(manifest\.json|icon\.svg|sw\.js)"/g, `$1="/fantrack/c/${slug}/${sub}$2"`);
 
-      // 사전렌더 목록 + JSON-LD + hreflang 주입
-      html = html.replace(/(<div id="contentList"[^>]*>)([\s\S]*?)(<\/div>)/,
-        (m, open, _mid, close) => open + '\n' + prerenderList(detail, lang) + '\n' + close);
+      // 사전렌더 목록 + JSON-LD + hreflang 주입.
+      // 템플릿의 컨테이너는 항상 비어 있어야 한다(위 TPL 분리 참고).
+      const CONTAINER = '<div id="contentList"></div>';
+      if (!html.includes(CONTAINER)) throw new Error('템플릿 오염: contentList가 비어 있지 않다');
+      html = html.replace(CONTAINER, '<div id="contentList">\n' + prerenderList(detail, lang) + '\n</div>');
       html = html.replace('</head>', h.alts + '\n' + jsonLd(detail, lang) + '\n</head>');
 
       fs.writeFileSync(path.join(dir, 'index.html'), html);
