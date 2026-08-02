@@ -12,6 +12,16 @@ p{color:#aaa6a0}
 a{margin-top:2rem;color:#c9a86a;border:1px solid #c9a86a;padding:.8rem 1.6rem;border-radius:2px;text-decoration:none;
   font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
 </style>
+<script>
+// FanTrack 하위 경로에서 404가 나면 FanTrack 메인으로 보낸다(언어 유지).
+// voicematch 결과에서 아직 FanTrack에 없는 가수를 눌렀을 때를 위한 폴백.
+(function(){
+  var m = location.pathname.match(/^\/fantrack\/c\/[^/]+(?:\/([a-z]{2}))?\/?$/);
+  if (!m) return;
+  var lang = m[1] && ['en','tw','es'].indexOf(m[1]) >= 0 ? m[1] + '/' : '';
+  location.replace('/fantrack/' + lang + location.search);
+})();
+</script>
 </head>
 <body>
 <h1>여긴 아직 비어있어요</h1>
