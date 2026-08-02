@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/jungseunghwan/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260802es3"></script>
+<script src="/fantrack/i18n.js?v=20260802bg1"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -33,7 +33,13 @@ body{margin:0;font-family:'Pretendard',-apple-system,sans-serif;background:var(-
 .badge{background:var(--panel2);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700}
 .sns{display:flex;gap:10px;justify-content:center;margin-top:12px}
 .sns a{color:var(--mut);text-decoration:none;font-size:12px;background:var(--panel2);padding:6px 10px;border-radius:8px}
-.myphoto-btn{margin-top:10px;font-size:11px;color:var(--mut);background:none;border:1px dashed var(--line);border-radius:8px;padding:5px 10px;cursor:pointer}
+.vm-cta{display:block;margin-top:14px;padding:11px 12px;border-radius:12px;background:linear-gradient(135deg,#3a2a52,#2a2542);border:1px solid var(--lime);text-decoration:none;color:var(--txt)}
+.vm-cta .vm-t{display:block;font-size:13px;font-weight:800;color:var(--lime)}
+.vm-cta .vm-s{display:block;font-size:10.5px;color:var(--mut);margin-top:2px}
+.myphoto-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+body.has-bg{background-attachment:fixed;background-size:cover;background-position:center}
+body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
+.myphoto-btn{font-size:11px;color:var(--mut);background:none;border:1px dashed var(--line);border-radius:8px;padding:5px 10px;cursor:pointer}
 
 .mode-unit{border-radius:10px;overflow:hidden;box-shadow:0 3px 0 #0f0d1c;margin-bottom:14px}
 .mode-unit:active{transform:translateY(2px);box-shadow:0 1px 0 #0f0d1c}
@@ -174,6 +180,7 @@ const DB_NAME='fantrack_photos', STORE='photos';
 function idbOpen(){ return new Promise((res,rej)=>{ const r=indexedDB.open(DB_NAME,1); r.onupgradeneeded=()=>r.result.createObjectStore(STORE); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
 async function idbGet(key){ const db=await idbOpen(); return new Promise(res=>{ const tx=db.transaction(STORE,'readonly'); const rq=tx.objectStore(STORE).get(key); rq.onsuccess=()=>res(rq.result||null); rq.onerror=()=>res(null); }); }
 async function idbSet(key, blob){ const db=await idbOpen(); return new Promise(res=>{ const tx=db.transaction(STORE,'readwrite'); tx.objectStore(STORE).put(blob,key); tx.oncomplete=()=>res(); }); }
+async function idbDel(key){ const db=await idbOpen(); return new Promise(res=>{ const tx=db.transaction(STORE,'readwrite'); tx.objectStore(STORE).delete(key); tx.oncomplete=()=>res(); }); }
 
 let SORT = 'interest'; // interest | year
 let DATA = null;
@@ -364,6 +371,14 @@ $('sheetLog').onclick = async () => {
   }
 };
 
+
+// voicematch 진입. 언어를 그대로 넘겨 도착지도 같은 언어로 뜨게 한다.
+// FanTrack tw ↔ voicematch tw 처럼 코드가 같아 그대로 매핑된다.
+function vmUrl(){
+  const p = new URLSearchParams({ utm_source:'fantrack', utm_medium:'profile', utm_campaign:'voicetwin' });
+  return 'https://game.cocy.io/voicematch/' + (LANG === 'ko' ? '' : LANG + '/') + '?' + p.toString();
+}
+
 async function renderProfile(){
   const c = DATA.celebrity;
   const localPhoto = await idbGet(SLUG);
@@ -382,8 +397,16 @@ async function renderProfile(){
       ${c.fandom ? `<span class="badge">${T.fandomLabel} ${c.fandom}</span>`:''}
     </div>
     <div class="sns">${ytLink}${snsLinks}</div>
+    <a class="vm-cta" href="${vmUrl()}" target="_blank" rel="noreferrer">
+      <span class="vm-t">${T.vmCta}</span><span class="vm-s">${T.vmHint}</span>
+    </a>
     <input type="file" id="photoInput" accept="image/*" style="display:none">
-    <button class="myphoto-btn" id="photoBtn">${T.myPhoto}</button>
+    <input type="file" id="bgInput" accept="image/*" style="display:none">
+    <div class="myphoto-row">
+      <button class="myphoto-btn" id="photoBtn">${T.myPhoto}</button>
+      <button class="myphoto-btn" id="bgBtn">${T.myBg}</button>
+      <button class="myphoto-btn" id="bgClear" style="display:none">${T.myBgClear}</button>
+    </div>
   `;
   $('photoBtn').onclick = () => $('photoInput').click();
   $('photoInput').onchange = async (e) => {
@@ -391,6 +414,34 @@ async function renderProfile(){
     await idbSet(SLUG, f);
     $('avatarImg').src = URL.createObjectURL(f);
   };
+  $('bgBtn').onclick = () => $('bgInput').click();
+  $('bgInput').onchange = async (e) => {
+    const f = e.target.files[0]; if(!f) return;
+    await idbSet(BG_KEY, f);
+    applyBg(f);
+  };
+  $('bgClear').onclick = async () => { await idbDel(BG_KEY); applyBg(null); };
+  await loadBg();
+}
+
+// 배경 이미지 — 프로필 사진과 같은 원칙. 이 기기에만 저장하고 서버로 보내지 않는다.
+const BG_KEY = 'bg:' + SLUG;
+let _bgUrl = null;
+function applyBg(file){
+  if(_bgUrl){ URL.revokeObjectURL(_bgUrl); _bgUrl = null; }
+  const has = !!file;
+  document.body.classList.toggle('has-bg', has);
+  if(has){
+    _bgUrl = URL.createObjectURL(file);
+    document.body.style.backgroundImage = `linear-gradient(rgba(20,18,33,.82), rgba(20,18,33,.94)), url(${_bgUrl})`;
+  } else {
+    document.body.style.backgroundImage = '';
+  }
+  const clr = $('bgClear'); if(clr) clr.style.display = has ? '' : 'none';
+}
+async function loadBg(){
+  const f = await idbGet(BG_KEY);
+  if(f) applyBg(f);
 }
 
 async function render(){
