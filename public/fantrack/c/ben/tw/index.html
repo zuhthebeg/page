@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/ben/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260802bg1"></script>
+<script src="/fantrack/i18n.js?v=20260802sheet1"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -91,6 +91,7 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 .sheet .act.trip{background:var(--panel2);color:var(--lime);border:1px solid var(--lime)}
 .sheet .act[disabled]{opacity:.55;cursor:default}
 .sheet .hint{font-size:10.5px;color:var(--mut);text-align:center;margin:-2px 0 10px}
+.sheet-sep{height:1px;background:var(--line);margin:12px 0 10px;opacity:.6}
 .sheet .cancel{background:none;border:none;color:var(--mut);font-size:12px;cursor:pointer;display:block;width:100%;padding:8px}
 </style>
 <link rel="alternate" hreflang="ko" href="https://page.cocy.io/fantrack/c/ben/">
@@ -131,10 +132,12 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
     <div class="sm" id="sheetMeta"></div>
     <a class="act primary" id="sheetGo" target="_blank" rel="noreferrer"></a>
     <div class="hint" id="sheetNoLink" style="display:none"></div>
-    <button class="act second" id="sheetLog"></button>
     <a class="act trip" id="sheetTrip" target="_blank" rel="noreferrer"></a>
     <div class="hint" id="sheetTripHint"></div>
     <button class="act second" id="sheetSeen"></button>
+    <div class="hint" id="sheetSeenNote"></div>
+    <div class="sheet-sep"></div>
+    <button class="act second" id="sheetLog"></button>
     <div class="hint" id="sheetHint"></div>
     <button class="cancel" id="sheetCancel"></button>
   </div>
@@ -326,6 +329,8 @@ function openSheet(c){
 function updateSeenBtn(){
   if(!SHEET_ITEM) return;
   $('sheetSeen').textContent = isWatched(SHEET_ITEM.id) ? T.unmarkWatched : T.markWatched;
+  // '봤음' 표시가 이 기기에만 남는다는 걸 알리고, 계정 저장은 아래 log로 유도한다.
+  $('sheetSeenNote').textContent = T.seenNote;
 }
 $('sheetSeen').onclick = () => {
   if(!SHEET_ITEM) return;
