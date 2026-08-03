@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Claude Opus 5 — API 스펙 브리프 (4.8에서 뭐가 깨지나) · page.cocy.io</title>
+<meta name="description" content="Claude Opus 5(claude-opus-5) API 브리프: 4.8과 동일한 $5/$25, 1M 컨텍스트 표준단가(롱컨텍스트 할증 없음). 깨지는 변경 2개 — thinking 기본 ON, thinking:disabled는 effort high 이하만. 캐시 최소길이 512토큰으로 하향. Bedrock/Foundry 가용성과 캐싱 비용 구조 포함." />
+<link rel="canonical" href="https://page.cocy.io/opus-5/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Claude Opus 5 — API 스펙 브리프" />
+<meta property="og:description" content="4.8 대비 깨지는 변경은 딱 2개. 가격 동일, 캐시 최소길이는 절반으로. Bedrock·Foundry에서 못 쓰는 기능까지 정리." />
+<meta property="og:url" content="https://page.cocy.io/opus-5/" />
+<meta property="article:published_time" content="2026-08-04" />
+<meta property="article:modified_time" content="2026-08-04" />
+<meta name="author" content="cocy" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#3a5a78; --accent-2:#4f7ba0; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:60ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+b{font-weight:500;color:var(--ink)}
+code{font-family:var(--mono);font-size:.86em;background:rgba(58,90,120,.09);padding:.08em .4em;border-radius:4px;color:var(--accent)}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#f3f6f9);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.3rem;color:var(--ink);margin-top:.2rem;max-width:36ch}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1;white-space:nowrap}
+.score small{font-size:.95rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.mid{background:rgba(184,134,11,.14);color:var(--warn)}
+.tag.info{background:rgba(58,90,120,.13);color:var(--accent)}
+.tag.bad{background:rgba(168,68,58,.13);color:var(--bad)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.9rem}
+th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+td.num{font-family:var(--mono);text-align:right}
+tr.hl td{background:rgba(79,123,160,.09);font-weight:500}
+.b-good{color:var(--good)}.b-bad{color:var(--bad)}
+.bars{margin:1.2rem 0 .6rem;display:flex;flex-direction:column;gap:.5rem}
+.bar-row{display:grid;grid-template-columns:150px 1fr auto;align-items:center;gap:.7rem;font-size:.84rem}
+.bar-row .bl{font-family:var(--mono);color:var(--ink-soft);font-size:.76rem}
+.bar-track{background:var(--line-soft);border-radius:4px;height:18px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+.bar-fill.hl{background:linear-gradient(90deg,#cf8a3a,#b8860b)}
+.bar-fill.lo{background:linear-gradient(90deg,#9bb0bf,#7d92a1)}
+.bar-row .bv{font-family:var(--mono);font-size:.78rem;color:var(--ink);min-width:52px;text-align:right}
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+.callout{background:#f3f6f9;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout b{color:var(--accent)}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(58,90,120,.3)}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+
+<meta property="og:url" content="https://page.cocy.io/fable-5/" />
+<meta property="article:published_time" content="2026-06-10" />
+<meta property="article:modified_time" content="2026-06-10"
+
+.iface-grid{display:grid;gap:.9rem;margin:1.2rem 0}
+.iface{border:1px solid var(--line);border-radius:6px;padding:1rem 1.2rem;background:#fffefb}
+.iface h3{font-family:var(--display);font-size:1.05rem;font-weight:600;margin-bottom:.2rem}
+.iface .who{font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.04em}
+.iface .shape{font-family:var(--mono);font-size:.78rem;background:rgba(35,32,27,.045);border-radius:4px;padding:.5rem .7rem;margin:.6rem 0;color:var(--ink-soft);overflow-x:auto;white-space:pre}
+.iface p{font-size:.9rem;margin-bottom:0;color:var(--ink-soft)}
+.mlist{display:grid;gap:.7rem;margin-top:1rem}
+.mcard{display:flex;justify-content:space-between;align-items:center;gap:1rem;border:1px solid var(--line);border-radius:6px;padding:.85rem 1.1rem;background:#fffefb}
+.mcard .mt{font-family:var(--display);font-weight:600;font-size:1rem}
+.mcard .ms{font-family:var(--mono);font-size:.74rem;color:var(--muted);margin-top:.15rem}
+.mcard a{border:none;font-family:var(--mono);font-size:.78rem;white-space:nowrap}
+.mcard.soon{opacity:.55}
+
+
+/* 좁은 화면: 표가 뷰포트를 밀어내지 않도록 표 자체를 가로 스크롤 컨테이너로 */
+code{overflow-wrap:anywhere}
+@media (max-width:640px){
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table thead,table tbody,table tr{width:max-content;min-width:100%}
+  .bar-row{grid-template-columns:110px 1fr auto}
+}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Claude Opus 5 — API 스펙 브리프","description":"Claude Opus 5 API 브리프: 파라미터 변경·가격·캐싱·Bedrock/Foundry 가용성.","url":"https://page.cocy.io/opus-5/","mainEntityOfPage":{"@type":"WebPage","@id":"https://page.cocy.io/opus-5/"},"datePublished":"2026-08-04","dateModified":"2026-08-04","inLanguage":"ko","author":{"@type":"Person","name":"cocy","url":"https://page.cocy.io/cocy"},"publisher":{"@type":"Organization","name":"cocy.io","url":"https://cocy.io"},"isAccessibleForFree":true}</script>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Model Brief · Anthropic Frontier</div>
+    <h1>Claude Opus 5</h1>
+    <p class="lead"><b>Claude Opus 5</b>(<code>claude-opus-5</code>)는 Opus 4.8의 후속으로, <b>가격이 같다</b>($5/$25). 4.8에서 올라올 때 <b>깨지는 변경은 딱 두 개</b>인데 둘 다 <code>thinking</code> 관련이라 놓치기 쉽다. 실무에서 더 중요한 건 조용히 바뀐 것 — <b>캐시 최소 길이가 512토큰으로 절반</b>이 됐다.</p>
+    <div class="meta">
+      <span><b>조회</b> 2026-08-04</span>
+      <span><b>모델 ID</b> claude-opus-5</span>
+      <span><b>컨텍스트</b> 1M / 출력 128k</span>
+      <span><b>지식 컷오프</b> 2026-05</span>
+      <span><b>출처</b> platform.claude.com</span>
+    </div>
+  </section>
+
+  <div class="verdict">
+    <div class="v-top">
+      <div>
+        <div class="v-label">4.8 → 5 이전 판단</div>
+        <div class="v-main">같은 값에 상위 모델. <code>max_tokens</code>만 재검토하면 사실상 드롭인.</div>
+      </div>
+      <div class="score">$5<small> / $25</small></div>
+    </div>
+    <div class="tags">
+      <span class="tag yes">가격 동일</span>
+      <span class="tag yes">캐시 최소 512토큰</span>
+      <span class="tag mid">thinking 기본 ON</span>
+      <span class="tag bad">web fetch 미지원</span>
+      <span class="tag bad">Priority Tier 미지원</span>
+    </div>
+  </div>
+
+  <section data-block="spec">
+    <h2><span class="n">01</span> 스펙</h2>
+    <table>
+      <thead><tr><th>항목</th><th>Opus 5</th><th>Opus 4.8</th></tr></thead>
+      <tbody>
+        <tr><td>입력 / 출력</td><td class="num">$5 / $25</td><td class="num">$5 / $25</td></tr>
+        <tr><td>5분 캐시 쓰기</td><td class="num">$6.25</td><td class="num">$6.25</td></tr>
+        <tr><td>1시간 캐시 쓰기</td><td class="num">$10</td><td class="num">$10</td></tr>
+        <tr><td>캐시 읽기</td><td class="num">$0.50</td><td class="num">$0.50</td></tr>
+        <tr><td>Batch API</td><td class="num">$2.50 / $12.50</td><td class="num">$2.50 / $12.50</td></tr>
+        <tr class="hl"><td>캐시 최소 길이</td><td class="num b-good">512 토큰</td><td class="num">1,024 토큰</td></tr>
+        <tr><td>컨텍스트</td><td class="num">1M</td><td class="num">1M</td></tr>
+        <tr><td>최대 출력</td><td class="num">128k</td><td class="num">128k</td></tr>
+        <tr><td>지식 컷오프</td><td class="num">2026-05</td><td class="num">—</td></tr>
+      </tbody>
+    </table>
+    <p class="note">단위는 per MTok(백만 토큰). Batch API에서는 <code>output-300k-2026-03-24</code> 베타 헤더로 출력 300k까지 가능.</p>
+
+    <div class="callout">
+      <b>롱컨텍스트 할증은 없다 —</b> Claude 4.6 이후 모델은 <b>1M 컨텍스트 전 구간이 표준 단가</b>다. 문서 표현대로 "90만 토큰 요청도 9천 토큰 요청과 같은 per-token 단가"로 청구된다. 캐싱·배치 할인도 전 구간 동일 적용. 200k 초과 할증은 Sonnet 4/4.5 세대의 옛 정책이므로, 그 전제로 짜둔 비용 모델이 있다면 폐기 대상이다.
+    </div>
+  </section>
+
+  <section data-block="breaking">
+    <h2><span class="n">02</span> 4.8에서 깨지는 것 — 두 개</h2>
+
+    <p><b>① <code>thinking</code>이 기본 ON이 됐다.</b> 4.8에서는 <code>thinking</code> 필드를 생략하면 사고 없이 실행됐다. Opus 5는 같은 요청이 adaptive thinking으로 돈다. <code>max_tokens</code>는 <b>사고 + 응답 텍스트 합계</b>의 하드 리밋이므로, 4.8에서 사고 없이 빠듯한 <code>max_tokens</code>로 돌던 워크로드는 <b>응답이 잘린다</b>. 이전 동작을 유지하려면 명시적으로 꺼야 한다.</p>
+
+    <p><b>② <code>thinking:disabled</code>는 effort <code>high</code> 이하에서만 허용된다.</b> <code>{"type":"disabled"}</code>와 effort <code>xhigh</code>/<code>max</code>를 함께 보내면 <b>400</b>이다. 게다가 <b>요청마다 독립적으로 검증</b>돼서, 대화 중간에 effort만 올려도 그 요청이 거부된다.</p>
+
+    <div class="iface" style="margin-top:1rem">
+      <div class="who">거부되는 조합</div>
+      <div class="shape">{ model: "claude-opus-5",
+  thinking: { type: "disabled" },
+  output_config: { effort: "xhigh" } }   ← 400</div>
+      <div class="who" style="margin-top:.8rem">해결 A — 사고를 다시 켠다</div>
+      <div class="shape">{ model: "claude-opus-5",
+  output_config: { effort: "xhigh" } }   // thinking 생략 = ON</div>
+      <div class="who" style="margin-top:.8rem">해결 B — effort를 낮춘다</div>
+      <div class="shape">{ model: "claude-opus-5",
+  thinking: { type: "disabled" },
+  output_config: { effort: "high" } }</div>
+    </div>
+
+    <p class="note">문서 권고: 사고를 끄면 툴 호출이 평문으로 새거나 내부 XML 태그가 응답에 섞이는 경우가 있다. 가능하면 <b>사고를 켠 채 effort를 낮추는 쪽</b>을 택하라고 안내한다.</p>
+  </section>
+
+  <section data-block="older">
+    <h2><span class="n">03</span> 4.7 이전에서 올라온다면</h2>
+    <p>위 두 개에 더해, Opus 4.7 세대에서 이미 적용된 변경들이 함께 걸린다. 구버전 코드를 그대로 올리면 여기서 먼저 터진다.</p>
+    <ul class="clean">
+      <li><b>샘플링 파라미터 제거</b> — <code>temperature</code>·<code>top_p</code>·<code>top_k</code>를 보내면 400. 결정성이 목적이었다면 <code>effort:"low"</code> + 더 조인 프롬프트로, 변주가 목적이었다면 프롬프트 지시로 옮긴다</li>
+      <li><b>수동 확장사고 제거</b> — <code>thinking:{type:"enabled", budget_tokens:N}</code>은 400. <code>adaptive</code> + <code>effort</code>로 대체하며, 토큰 예산과 1:1 대응은 없다</li>
+      <li><b>assistant 프리필 제거</b> — 마지막 assistant 턴 선입력은 400. JSON 강제는 <code>output_config.format</code>, 서두 제거는 시스템 프롬프트 지시로</li>
+      <li><b>토크나이저 변경</b>(4.7부터) — 같은 텍스트가 더 많은 토큰이 된다. 옛 모델에서 잰 토큰 수·컨텍스트 예산·<code>max_tokens</code>를 재사용하지 말고 <code>count_tokens</code>로 다시 잰다</li>
+    </ul>
+  </section>
+
+  <section data-block="cache">
+    <h2><span class="n">04</span> 캐싱 — 이번 세대의 실질 이득</h2>
+    <p>Opus 5에서 조용히 바뀐 것 중 비용에 가장 직접 닿는 건 <b>최소 캐시 길이가 1,024 → 512 토큰</b>으로 내려간 것이다. 4.8에서 <b>짧아서 캐싱이 안 걸리던 프롬프트가 코드 변경 없이 캐싱 대상</b>이 된다.</p>
+
+    <p>주의할 건 <b>미달 시 에러가 없다</b>는 점이다. <code>cache_control</code>을 붙여도 조용히 캐싱되지 않고, 응답의 <code>cache_creation_input_tokens</code>와 <code>cache_read_input_tokens</code>가 둘 다 0인 것으로만 확인할 수 있다.</p>
+
+    <p><b>무효화 계층</b> — 전부 날아가는 게 아니라 단계가 있다. 게이트웨이 설계에서 이 표가 핵심이다.</p>
+    <table>
+      <thead><tr><th>바뀐 것</th><th>tools 캐시</th><th>system 캐시</th><th>messages 캐시</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>툴 정의 추가·삭제·순서 변경</td><td class="b-bad">무효</td><td class="b-bad">무효</td><td class="b-bad">무효</td></tr>
+        <tr class="hl"><td>모델 변경</td><td class="b-bad">무효</td><td class="b-bad">무효</td><td class="b-bad">무효</td></tr>
+        <tr><td>시스템 프롬프트 내용</td><td class="b-good">유지</td><td class="b-bad">무효</td><td class="b-bad">무효</td></tr>
+        <tr><td><code>tool_choice</code>·이미지 유무·<code>thinking</code>·<code>effort</code></td><td class="b-good">유지</td><td class="b-good">유지</td><td class="b-bad">무효</td></tr>
+      </tbody>
+    </table>
+    <p>즉 <b>모델 라우팅을 대화 중간에 바꾸면 캐시가 통째로 날아간다.</b> 툴 목록도 요청마다 동적으로 만들면 안 되고, 이름순 정렬 같은 <b>결정적 직렬화</b>가 필요하다. 렌더 순서가 <code>tools</code> → <code>system</code> → <code>messages</code>라, 앞쪽일수록 파괴력이 크다.</p>
+  </section>
+
+  <section data-block="platform">
+    <h2><span class="n">05</span> Bedrock · Foundry 가용성</h2>
+
+    <p><b>AWS Bedrock</b> — 모델 ID는 <code>anthropic.claude-opus-5</code>. <b>Claude in Amazon Bedrock</b>(Messages 엔드포인트 <code>bedrock-mantle.{region}.api.aws/anthropic/v1/messages</code>) 경유이며, 구 <code>InvokeModel</code>/<code>Converse</code> 통합과는 별개 경로다. 글로벌 엔드포인트 지원(할증 없음), 리전 엔드포인트는 +10%.</p>
+    <ul class="clean">
+      <li><b>지원</b> — Messages API, 프롬프트 캐싱, thinking, 툴 사용(bash·computer use·memory·text editor), citations, 구조화 출력</li>
+      <li><b>미지원</b> — Files API·URL 소스, 서버사이드 툴(코드실행·웹검색·웹페치), Agent Skills·MCP 커넥터·programmatic tool calling, Batches·Models·Admin API, Managed Agents, <b>서버사이드 폴백</b></li>
+      <li><b>접근 권한 확인 필요</b> — 문서상 "모든 Bedrock 고객에게 열려 있는" 목록은 Fable 5 / Opus 4.8 / Sonnet 5 / Opus 4.7 / Haiku 4.5다. <b>Opus 5는 그 목록에 없다</b> — 콘솔의 model access에서 조건을 확인해야 한다</li>
+    </ul>
+
+    <p><b>Microsoft Foundry</b> — <code>model</code> 파라미터에 <b>모델 ID가 아니라 배포(deployment) 이름</b>을 넣는다. 호스팅 옵션이 둘이고 <b>기능 차이가 크다</b>.</p>
+    <table>
+      <thead><tr><th>호스팅</th><th>배포 타입</th><th>제약</th></tr></thead>
+      <tbody>
+        <tr><td>Anthropic 호스팅</td><td>Global Standard</td><td>기능 제약 적음</td></tr>
+        <tr class="hl"><td>Azure 호스팅</td><td>Global Standard / US Data Zone</td><td class="b-bad">구조화 출력·서버사이드 툴·MCP·Agent Skills·PTC·Files API가 <b>400</b></td></tr>
+      </tbody>
+    </table>
+    <p>전 배포 공통으로 Admin·Compliance·Models·Batches API, Advisor 툴, Managed Agents, 서버사이드 폴백이 미지원이다. <b>데이터가 Azure 안에 머무는 대신 기능을 잃는 구조</b>이므로, 규제 요건과 기능 요건을 같은 표에 놓고 결정해야 한다. US Data Zone은 단가에 ×1.1.</p>
+
+    <div class="callout">
+      <b>게이트웨이 시사점 —</b> Bedrock·Foundry 둘 다 <b>서버사이드 폴백을 지원하지 않는다.</b> 모델 거부 시 다른 모델로 재시도하는 로직은 벤더에 맡길 수 없고 <b>게이트웨이 레이어에서 직접 구현</b>해야 한다.
+    </div>
+  </section>
+
+  <section data-block="notes">
+    <h2><span class="n">06</span> 그 밖에</h2>
+    <ul class="clean">
+      <li><b>effort 기본값은 <code>high</code></b> (Claude API·Claude Code 기준). <code>low</code>/<code>medium</code>/<code>high</code>/<code>xhigh</code>/<code>max</code> 전 레벨 지원</li>
+      <li><code>xhigh</code>·<code>max</code>로 돌릴 땐 <b><code>max_tokens</code>를 크게</b> — 문서 권고 시작값 64k</li>
+      <li><b>web fetch 툴 미지원</b>, <b>Priority Tier 미지원</b></li>
+      <li>툴 사용 시 고정 오버헤드 — <code>auto</code>/<code>none</code> 286토큰, <code>any</code>/<code>tool</code> 406토큰. 시스템 프롬프트 사용 시 325토큰</li>
+      <li>사이버보안 안전 분류기가 붙어 있어 해당 범주 요청은 거부될 수 있다. 서버사이드 폴백의 <code>"default"</code> 모드로 자동 재시도 구성 가능(1P 한정, 베타)</li>
+    </ul>
+  </section>
+
+  <div class="foot">
+    <span><a href="/models/">← 인터페이스 지도</a></span>
+    <span>조회 2026-08-04 · platform.claude.com</span>
+  </div>
+
+</article>
+</body>
+</html>

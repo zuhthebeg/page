@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>프론티어 모델 인터페이스 지도 — API 사용자를 위한 스펙 정본 · page.cocy.io</title>
+<meta name="description" content="Messages / Chat Completions / Responses / Converse — 프론티어 모델 API 인터페이스가 어떻게 갈라져 있고 파라미터가 어떤 방향으로 바뀌는지 정리. temperature 제거, adaptive thinking, effort 도입, Bedrock·Foundry·Vertex 접속 방식과 캐싱 비용 구조까지. 모델별 상세 브리프로 연결." />
+<link rel="canonical" href="https://page.cocy.io/models/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="프론티어 모델 인터페이스 지도 — API 사용자를 위한 스펙 정본" />
+<meta property="og:description" content="인터페이스는 평준화하려 하고 모델은 파라미터를 없애려 한다. 그 간극이 게이트웨이 운영자의 실제 작업량이다. Messages·Converse·Chat Completions·Responses 비교와 플랫폼별 접속 방식." />
+<meta property="og:url" content="https://page.cocy.io/models/" />
+<meta property="article:published_time" content="2026-08-04" />
+<meta property="article:modified_time" content="2026-08-04" />
+<meta name="author" content="cocy" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#3a5a78; --accent-2:#4f7ba0; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:60ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+b{font-weight:500;color:var(--ink)}
+code{font-family:var(--mono);font-size:.86em;background:rgba(58,90,120,.09);padding:.08em .4em;border-radius:4px;color:var(--accent)}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#f3f6f9);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.3rem;color:var(--ink);margin-top:.2rem;max-width:36ch}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1;white-space:nowrap}
+.score small{font-size:.95rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.mid{background:rgba(184,134,11,.14);color:var(--warn)}
+.tag.info{background:rgba(58,90,120,.13);color:var(--accent)}
+.tag.bad{background:rgba(168,68,58,.13);color:var(--bad)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.9rem}
+th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+td.num{font-family:var(--mono);text-align:right}
+tr.hl td{background:rgba(79,123,160,.09);font-weight:500}
+.b-good{color:var(--good)}.b-bad{color:var(--bad)}
+.bars{margin:1.2rem 0 .6rem;display:flex;flex-direction:column;gap:.5rem}
+.bar-row{display:grid;grid-template-columns:150px 1fr auto;align-items:center;gap:.7rem;font-size:.84rem}
+.bar-row .bl{font-family:var(--mono);color:var(--ink-soft);font-size:.76rem}
+.bar-track{background:var(--line-soft);border-radius:4px;height:18px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+.bar-fill.hl{background:linear-gradient(90deg,#cf8a3a,#b8860b)}
+.bar-fill.lo{background:linear-gradient(90deg,#9bb0bf,#7d92a1)}
+.bar-row .bv{font-family:var(--mono);font-size:.78rem;color:var(--ink);min-width:52px;text-align:right}
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+.callout{background:#f3f6f9;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout b{color:var(--accent)}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(58,90,120,.3)}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+
+<meta property="og:url" content="https://page.cocy.io/fable-5/" />
+<meta property="article:published_time" content="2026-06-10" />
+<meta property="article:modified_time" content="2026-06-10"
+
+.iface-grid{display:grid;gap:.9rem;margin:1.2rem 0}
+.iface{border:1px solid var(--line);border-radius:6px;padding:1rem 1.2rem;background:#fffefb}
+.iface h3{font-family:var(--display);font-size:1.05rem;font-weight:600;margin-bottom:.2rem}
+.iface .who{font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.04em}
+.iface .shape{font-family:var(--mono);font-size:.78rem;background:rgba(35,32,27,.045);border-radius:4px;padding:.5rem .7rem;margin:.6rem 0;color:var(--ink-soft);overflow-x:auto;white-space:pre}
+.iface p{font-size:.9rem;margin-bottom:0;color:var(--ink-soft)}
+.mlist{display:grid;gap:.7rem;margin-top:1rem}
+.mcard{display:flex;justify-content:space-between;align-items:center;gap:1rem;border:1px solid var(--line);border-radius:6px;padding:.85rem 1.1rem;background:#fffefb}
+.mcard .mt{font-family:var(--display);font-weight:600;font-size:1rem}
+.mcard .ms{font-family:var(--mono);font-size:.74rem;color:var(--muted);margin-top:.15rem}
+.mcard a{border:none;font-family:var(--mono);font-size:.78rem;white-space:nowrap}
+.mcard.soon{opacity:.55}
+
+
+/* 좁은 화면: 표가 뷰포트를 밀어내지 않도록 표 자체를 가로 스크롤 컨테이너로 */
+code{overflow-wrap:anywhere}
+@media (max-width:640px){
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table thead,table tbody,table tr{width:max-content;min-width:100%}
+  .bar-row{grid-template-columns:110px 1fr auto}
+}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"프론티어 모델 인터페이스 지도 — API 사용자를 위한 스펙 정본","description":"Messages / Chat Completions / Responses / Converse 인터페이스 계열 비교와 파라미터 변화 흐름, 플랫폼별 접속 방식.","url":"https://page.cocy.io/models/","mainEntityOfPage":{"@type":"WebPage","@id":"https://page.cocy.io/models/"},"datePublished":"2026-08-04","dateModified":"2026-08-04","inLanguage":"ko","author":{"@type":"Person","name":"cocy","url":"https://page.cocy.io/cocy"},"publisher":{"@type":"Organization","name":"cocy.io","url":"https://cocy.io"},"isAccessibleForFree":true}</script>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Reference · Frontier Model Interfaces</div>
+    <h1>프론티어 모델 인터페이스 지도</h1>
+    <p class="lead">API로 프론티어 모델을 붙이는 사람을 위한 정본. <b>인터페이스는 파라미터를 평준화하려 하고, 모델은 파라미터를 없애는 방향으로 간다.</b> 그 간극이 게이트웨이를 운영할 때 실제로 발생하는 작업량이다. 여기서는 인터페이스 계열이 어떻게 갈라져 있는지, 파라미터가 어떤 방향으로 바뀌는지, 플랫폼별로 무엇을 잃는지를 정리하고 모델별 상세로 연결한다.</p>
+    <div class="meta">
+      <span><b>갱신</b> 2026-08-04</span>
+      <span><b>대상</b> API 직접 사용자 · 게이트웨이 운영자</span>
+      <span><b>출처</b> 각 벤더 1차 문서 (아래 06 참조)</span>
+    </div>
+  </section>
+
+  <div class="verdict">
+    <div class="v-top">
+      <div>
+        <div class="v-label">한 줄 요약</div>
+        <div class="v-main">공통 인터페이스의 스키마는 <code>temperature</code>를 1급 필드로 두는데, 최신 모델은 그걸 보내면 400을 낸다.</div>
+      </div>
+    </div>
+    <div class="tags">
+      <span class="tag info">Messages</span>
+      <span class="tag info">Chat Completions</span>
+      <span class="tag info">Responses</span>
+      <span class="tag info">Converse</span>
+      <span class="tag mid">파라미터 축소기</span>
+    </div>
+  </div>
+
+  <section data-block="ifaces">
+    <h2><span class="n">01</span> 인터페이스는 네 갈래다</h2>
+    <p>2026년 현재 프론티어 모델을 호출하는 방식은 크게 네 계열로 갈린다. 같은 모델이라도 어느 계열로 붙느냐에 따라 <b>요청 바디 모양·상태 관리·쓸 수 있는 기능</b>이 전부 달라진다.</p>
+
+    <div class="iface-grid">
+      <div class="iface">
+        <h3>Messages</h3>
+        <div class="who">Anthropic 1P · Claude Platform on AWS · Bedrock(Mantle) · Foundry · Vertex</div>
+        <div class="shape">{ model, max_tokens, system, messages[], tools[],
+  thinking:{type:"adaptive"},
+  output_config:{ effort, format } }</div>
+        <p><code>system</code>이 <code>messages</code> 밖에 top-level로 나와 있는 게 특징. 사고량은 <code>thinking</code>과 <code>output_config.effort</code>로 제어하고, <b>샘플링 파라미터는 최신 모델에서 아예 거부된다</b>.</p>
+      </div>
+
+      <div class="iface">
+        <h3>Chat Completions</h3>
+        <div class="who">OpenAI · 그리고 사실상의 업계 호환 규격(vLLM·Ollama·대부분의 게이트웨이)</div>
+        <div class="shape">{ model, messages[{role,content}], tools[],
+  temperature, top_p, max_tokens }</div>
+        <p>가장 널리 복제된 형태. <code>system</code>도 <code>messages</code> 배열 안의 한 role이다. 대화 상태는 <b>클라이언트가 전부 다시 보내야</b> 한다. OpenAI 본가에서는 유지는 되지만 <b>신규 프로젝트에는 Responses를 권장</b>한다.</p>
+      </div>
+
+      <div class="iface">
+        <h3>Responses</h3>
+        <div class="who">OpenAI (신규 프로젝트 권장)</div>
+        <div class="shape">{ model, instructions, input,
+  store:true, previous_response_id }</div>
+        <p><code>messages</code> 대신 <b><code>instructions</code> + <code>input</code></b>으로 쪼갰고, <code>store:true</code>로 <b>서버가 대화 상태를 들고 간다</b>. 후속 요청은 <code>previous_response_id</code>로 이어 붙인다. 출력은 텍스트뿐 아니라 <b>추론(reasoning)·툴 호출이 타입 있는 항목</b>으로 나온다.</p>
+      </div>
+
+      <div class="iface">
+        <h3>Converse / InvokeModel</h3>
+        <div class="who">Amazon Bedrock (벤더 중립 추상화 계층)</div>
+        <div class="shape">{ modelId, messages[], system[], toolConfig,
+  inferenceConfig:{ maxTokens, temperature,
+                    topP, stopSequences },
+  additionalModelRequestFields:{ ... } }</div>
+        <p>"코드를 한 번 쓰고 여러 모델에 쓴다"가 설계 목표. 그래서 <b>공통 파라미터를 <code>inferenceConfig</code>에 고정 스키마로 박아뒀다</b>. 모델 고유 파라미터는 <code>additionalModelRequestFields</code>라는 탈출구로 넘긴다.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <b>혼동 주의 —</b> "Bedrock에 붙는다"는 말은 이제 두 가지를 뜻한다. ① 기존 <code>InvokeModel</code>/<code>Converse</code>(ARN 버전 모델 ID) ② <b>Claude in Amazon Bedrock</b>의 Messages 엔드포인트 <code>bedrock-mantle.{region}.api.aws/anthropic/v1/messages</code> — 후자는 1P와 <b>요청 바디가 동일</b>하다. SDK 클라이언트도 서로 다르다.
+    </div>
+  </section>
+
+  <section data-block="params">
+    <h2><span class="n">02</span> 파라미터는 사라지는 방향으로 간다</h2>
+    <p>지난 2년간 추가된 파라미터보다 <b>제거된 파라미터</b>가 더 중요하다. 추론(reasoning) 모델이 주류가 되면서, "출력 분포를 직접 흔드는" 손잡이가 "얼마나 생각할지를 지정하는" 손잡이로 대체됐다.</p>
+
+    <table>
+      <thead><tr><th>과거</th><th>현재</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><code>temperature</code> / <code>top_p</code> / <code>top_k</code></td><td class="b-bad">Claude Opus 4.7 이후 전송 시 400</td><td>프롬프트로 대체. OpenAI 추론 모델도 <code>temperature</code>를 받지 않는 방향</td></tr>
+        <tr><td><code>thinking.budget_tokens</code> (사고 토큰 상한)</td><td><code>thinking:{type:"adaptive"}</code></td><td>모델이 사안별로 사고량을 정한다. 고정 예산 개념 폐기</td></tr>
+        <tr><td>—</td><td><code>output_config.effort</code><br /><span class="note">low / medium / high / xhigh / max</span></td><td>사고 깊이 + 전체 토큰 지출을 함께 조절. OpenAI 계열의 <code>reasoning_effort</code>와 같은 계보</td></tr>
+        <tr><td>assistant 프리필(마지막 턴 선입력)</td><td class="b-bad">400 — 구조화 출력으로 대체</td><td><code>output_config.format</code>의 JSON Schema 사용</td></tr>
+        <tr><td>클라이언트가 대화 전체 재전송</td><td>서버 상태 보존</td><td>OpenAI <code>store</code>/<code>previous_response_id</code>, Anthropic 서버측 compaction</td></tr>
+      </tbody>
+    </table>
+
+    <p>방향성은 명확하다. <b>"모델이 무엇을 출력할지"를 숫자로 조종하던 시대에서, "얼마나 노력할지"를 지정하고 나머지는 모델에 맡기는 시대로</b> 넘어가고 있다. 창의성 편차가 필요해서 <code>temperature</code>를 쓰던 용례는 이제 프롬프트로 옮겨야 한다.</p>
+  </section>
+
+  <section data-block="gap">
+    <h2><span class="n">03</span> 여기서 실무 사고가 난다</h2>
+    <p>공통 인터페이스는 <b>파라미터를 평준화</b>하려 하고, 프론티어 모델은 <b>파라미터를 제거</b>하려 한다. 이 둘이 정면으로 부딪히는 지점이 있다.</p>
+
+    <ul class="clean">
+      <li><b>Converse의 <code>inferenceConfig</code>에는 <code>temperature</code>와 <code>topP</code>가 여전히 1급 필드다.</b> 스키마상 넣을 수 있게 생겼다. 그런데 최신 Claude 모델에 그대로 흘리면 거부된다. 추상화 계층의 스키마가 모델의 파라미터 축소를 아직 따라오지 못한 상태다.</li>
+      <li><b>새 기능은 공통 스키마에 자리가 없다.</b> <code>thinking</code>, <code>effort</code> 같은 최신 제어는 Converse의 고정 필드에 없어서 <code>additionalModelRequestFields</code>로 우회해야 한다. 즉 "한 번 쓰고 여러 모델에" 라는 약속이 최신 모델에서 가장 먼저 깨진다.</li>
+      <li><b>게이트웨이가 기본값을 채워 넣으면 그게 폭탄이 된다.</b> 프론트에서 안 보냈어도 게이트웨이가 <code>temperature: 0.7</code>을 관례적으로 주입하면, 구모델에선 잘 돌던 요청이 신모델로 라우팅되는 순간 400이 된다. <b>파라미터 주입 로직부터 감사할 것.</b></li>
+      <li><b>모델 교체가 캐시를 파괴한다.</b> 프롬프트 캐시는 모델 단위로 분리된다. 게이트웨이가 요청마다 모델을 갈아끼우거나 툴 목록을 동적으로 만들면 캐시 적중률이 0에 수렴한다. <b>라우팅 안정성이 곧 비용이다.</b></li>
+    </ul>
+  </section>
+
+  <section data-block="platform">
+    <h2><span class="n">04</span> 플랫폼별 접속 요약</h2>
+    <p>같은 모델이라도 어디에 붙느냐에 따라 <b>모델 ID 형식·인증·못 쓰는 기능</b>이 다르다. 아래는 Claude 계열 기준.</p>
+
+    <table>
+      <thead><tr><th>플랫폼</th><th>모델 지정</th><th>주의점</th></tr></thead>
+      <tbody>
+        <tr><td><b>Anthropic 1P</b></td><td><code>claude-opus-5</code></td><td>기능 전부 사용 가능. 기준선</td></tr>
+        <tr><td><b>Amazon Bedrock</b></td><td><code>anthropic.claude-opus-5</code></td><td>서버사이드 툴·Batches·Files·Managed Agents·서버측 폴백 <b>미지원</b>. 리전 엔드포인트는 <b>+10%</b></td></tr>
+        <tr><td><b>Microsoft Foundry</b></td><td class="b-bad">배포(deployment) 이름</td><td>모델 ID가 아니라 <b>내가 지은 배포 이름</b>을 <code>model</code>에 넣는다. Azure 호스팅을 고르면 구조화 출력·서버사이드 툴·MCP·Files API가 <b>400</b></td></tr>
+        <tr><td><b>Google Vertex</b></td><td><code>claude-opus-5</code> (접두사 없음)</td><td>구세대 모델은 <code>@날짜</code> 형식. 인증은 GCP ADC</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <b>데이터 레지던시는 공짜가 아니다 —</b> Foundry의 US Data Zone(또는 1P의 <code>inference_geo:"us"</code>)을 선택하면 토큰 단가 전 항목에 <b>×1.1</b>이 붙고, Azure 호스팅에서는 <b>기능 일부가 아예 막힌다</b>. 규제 요건과 기능 요건을 같은 표에 놓고 결정해야 한다.
+    </div>
+  </section>
+
+  <section data-block="cache">
+    <h2><span class="n">05</span> 비용을 줄이는 곳은 캐싱 하나다</h2>
+    <p>모델 단가는 협상 대상이 아니지만 <b>캐시 적중률은 설계 대상</b>이다. 프롬프트 캐싱은 <b>접두사(prefix) 일치</b>로 동작한다 — 앞쪽이 1바이트만 달라도 뒤가 전부 무효다.</p>
+
+    <table>
+      <thead><tr><th>동작</th><th>기본 입력 대비</th><th>손익분기</th></tr></thead>
+      <tbody>
+        <tr><td>캐시 읽기 (히트)</td><td class="b-good">0.1×</td><td>—</td></tr>
+        <tr><td>5분 캐시 쓰기</td><td>1.25×</td><td>요청 <b>2회</b>면 이득</td></tr>
+        <tr><td>1시간 캐시 쓰기</td><td>2×</td><td>요청 <b>3회</b>면 이득</td></tr>
+      </tbody>
+    </table>
+
+    <p><b>조용히 캐시를 깨는 것들</b> — 코드 리뷰에서 이것만 봐도 대부분 잡힌다.</p>
+    <ul class="clean">
+      <li>시스템 프롬프트 안의 <code>datetime.now()</code>·UUID·요청 ID — 매 요청 접두사가 달라진다</li>
+      <li>JSON 직렬화 시 키 정렬 누락. <b>Go·Swift는 맵 키 순서가 무작위</b>라 툴 정의 캐시가 깨진다</li>
+      <li>유저·세션 ID를 시스템 프롬프트에 보간 — 유저 수만큼 캐시가 쪼개진다</li>
+      <li>요청마다 툴 목록을 동적 생성 — 툴은 렌더 순서상 맨 앞이라 <b>전체가 무효</b></li>
+      <li>동시 요청 팬아웃 — 캐시는 첫 응답이 스트리밍되기 시작해야 읽힌다. 병렬로 N개 쏘면 <b>전부 미스</b></li>
+    </ul>
+    <p class="note">캐시 최소 길이 미달이면 에러 없이 조용히 캐싱되지 않는다. 응답의 <code>cache_creation_input_tokens</code>와 <code>cache_read_input_tokens</code>가 둘 다 0인지로만 확인할 수 있다.</p>
+  </section>
+
+  <section data-block="models">
+    <h2><span class="n">06</span> 모델별 상세</h2>
+    <p>계열별 최신 모델의 스펙·인터페이스 변경점·플랫폼 가용성을 개별 문서로 관리한다.</p>
+    <div class="mlist">
+      <div class="mcard">
+        <div>
+          <div class="mt">Claude Opus 5</div>
+          <div class="ms">claude-opus-5 · $5 / $25 · 1M ctx · 2026-08 기준</div>
+        </div>
+        <a href="/opus-5/">브리프 →</a>
+      </div>
+      <div class="mcard">
+        <div>
+          <div class="mt">Claude Fable 5</div>
+          <div class="ms">claude-fable-5 · $10 / $50 · Opus 위 티어</div>
+        </div>
+        <a href="/fable-5/">브리프 →</a>
+      </div>
+      <div class="mcard soon">
+        <div>
+          <div class="mt">Claude Sonnet 5</div>
+          <div class="ms">claude-sonnet-5 · 도입가 $2 / $10 (2026-08-31까지)</div>
+        </div>
+        <span class="ms">준비 중</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="src">
+    <h2><span class="n">07</span> 출처와 갱신 규칙</h2>
+    <ul class="clean">
+      <li><b>Anthropic</b> — platform.claude.com 모델 개요·가격·마이그레이션 가이드·프롬프트 캐싱·Bedrock/Foundry 문서</li>
+      <li><b>AWS</b> — Bedrock Runtime API Reference <code>Converse</code> (요청 스키마 원문 확인)</li>
+      <li><b>OpenAI</b> — platform.openai.com "Migrate to the Responses API" (Responses 권장·<code>store</code>·<code>previous_response_id</code> 확인)</li>
+    </ul>
+    <div class="callout">
+      <b>이 카테고리의 원칙 —</b> 모델 스펙은 <b>기억이나 캐시로 쓰지 않는다.</b> 프론티어 모델은 몇 주 단위로 바뀌고, 몇 달 전 정보가 그대로 틀린 값이 된다. 실제로 이 문서를 만들 때도 "200k 초과 롱컨텍스트 할증"이 이미 폐지된 정책이었다 — Claude 4.6 이후 <b>1M 전 구간이 표준 단가</b>다. 모든 수치는 조회일과 함께 적고, 다음 갱신 때 원문을 다시 연다.
+    </div>
+  </section>
+
+  <div class="foot">
+    <span>page.cocy.io / models</span>
+    <span>최종 갱신 2026-08-04</span>
+  </div>
+
+</article>
+</body>
+</html>

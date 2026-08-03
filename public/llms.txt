@@ -15,7 +15,9 @@
 
 ## 분석 보고서 (cocy 직접 실측·조사)
 - [한국어는 정말 토큰을 더 먹는가](https://page.cocy.io/korean-token-cost): "한국어 AI 비용 2.59배" 보도를 Claude 공식 count_tokens API로 직접 실측 검증. Sonnet·Haiku 2.59배, Opus 1.72배 확인.
+- [프론티어 모델 인터페이스 지도](https://page.cocy.io/models): Messages·Chat Completions·Responses·Converse 인터페이스 계열 비교와 파라미터 축소 흐름(temperature 제거 → adaptive thinking/effort), 플랫폼별 접속 방식·캐싱 비용 구조. 모델 브리프 정본.
 - [Claude Fable 5 분석](https://page.cocy.io/fable-5): Opus 위에 신설된 Mythos-class 티어 분석 — 무엇이 바뀌고 인터페이스는 왜 그대로인가.
+- [Claude Opus 5 API 브리프](https://page.cocy.io/opus-5): 4.8 대비 깨지는 변경 2개(thinking 기본 ON, disabled는 effort high 이하), 가격 동일, 캐시 최소길이 512토큰 하향, Bedrock·Foundry 미지원 기능 정리.
 - [Harness-1 논문 분석](https://page.cocy.io/harness-1): 검색 에이전트의 상태를 정책(모델)에서 환경(하니스)으로 외부화해 RL 학습 — 20B가 프런티어급 recall을 내는 구조.
 - [효과적인 에이전트 만들기 — 학습노트](https://page.cocy.io/effective-agents): 에이전트 설계 원칙(워크플로 vs 에이전트, 도구 설계, 검증 루프) 학습 정리.
 - [로컬 LLM으로 에이전트 코딩하기](https://page.cocy.io/local-llm-coding): 로컬 모델 기반 코딩 에이전트 필드가이드 분석 — VRAM 티어별 현실적 기대치.
