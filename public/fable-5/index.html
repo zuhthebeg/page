@@ -8,7 +8,7 @@
 <link rel="canonical" href="https://page.cocy.io/fable-5/" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="Claude Fable 5 — Opus 위의 새 티어 (분석)" />
-<meta property="og:description" content="Fable 5는 Opus 위 새 최상위 모델. API는 4.8과 거의 동일, 단 thinking:disabled 제거 + 거부/폴백 추가. 가격 2배. 우리 스택 시사점 포함." />
+<meta property="og:description" content="Fable 5는 Opus 위 새 최상위 모델. API는 4.8과 거의 동일, 단 thinking:disabled 제거 + 거부/폴백 추가. 가격 2배. 도입 검토 시 점검 항목 포함." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -177,26 +177,27 @@ code{overflow-wrap:anywhere}
     <p style="margin-top:1rem">SWE-Bench Pro는 GitHub 이슈 기반 실코딩 벤치마크. Fable 5는 Opus 4.8보다 <b>+11.1%p</b>, GPT-5.5보다 <b>+21.7%p</b> 높다. 앤트로픽은 소프트웨어 엔지니어링·지식 작업·비전·과학 연구 전반에서 거의 모든 AI 역량 벤치마크 최상위라고 발표했다.</p>
     <ul class="clean">
       <li><b>토큰 효율 주의</b> — Opus 4.7 토크나이저라 같은 글이 이전 모델보다 ~30% 더 토큰을 먹는다. "출력 단가 2배 × 토큰 수 증가"가 곱해지므로 <b>체감 비용은 단순 2배 이상</b>일 수 있다.</li>
-      <li><b>장기 에이전트</b> — 몇 주에 걸친 대규모 코드 마이그레이션·다단계 비동기 작업을 자율 처리하는 사례가 보고됨. 우리처럼 에이전트 루프가 많은 스택에선 "어려운 1건"에서 격차가 나올 수 있다.</li>
+      <li><b>장기 에이전트</b> — 몇 주에 걸친 대규모 코드 마이그레이션·다단계 비동기 작업을 자율 처리하는 사례가 보고됨. 에이전트 루프가 많은 워크로드일수록 "어려운 1건"에서 격차가 드러날 수 있다.</li>
     </ul>
   </section>
 
-  <section data-block="us">
-    <h2><span class="n">05</span> 우리 스택 시사점 (openclaw / cocy)</h2>
-    <p>우리는 이미 Fable 5를 openclaw에 추가했다(별칭 <code>fable</code> → <code>anthropic/claude-fable-5</code>, claude-cli 런타임). 운영 관점 정리:</p>
+  <section data-block="adopt">
+    <h2><span class="n">05</span> 도입 검토 시 점검 항목</h2>
+    <p>최상위 티어를 새로 붙일 때 실제로 걸리는 지점들. 대부분 코드보다 <b>라우팅 정책</b>의 문제다.</p>
     <ul class="clean">
-      <li><b>기본 모델은 그대로 Opus 4.8.</b> 출력 $50/MTok은 우리처럼 툴콜·장기 세션이 많은 에이전트엔 부담. Fable은 <b>"가장 어려운 1건"에만</b> 선택적으로 쓰고, 일상 작업은 4.8 유지가 ROI상 합리적.</li>
-      <li><b>한국어 비용이 곱으로 쌓인다.</b> 우리가 측정한 <a href="https://page.cocy.io/korean-token-cost">한국어 토큰 페널티</a> + Fable의 토크나이저(~30%↑) + 단가 2배 → 한국어 장문 작업에서 비용이 빠르게 커진다. 모델 라우팅 시 1순위 고려.</li>
-      <li><b>거부/폴백 흐름은 인프라적으로 유용.</b> <code>fallbacks</code> 파라미터 + 폴백 크레딧은 "Fable 거부 시 4.8로 자동 강등 후 캐시비 환급" 패턴을 표준 지원. 우리 openclaw는 이미 폴백 리스트(gpt-5.4)가 있으니, Fable 라우팅 시 <code>refusal</code>(HTTP 200) 분기만 점검하면 된다.</li>
-      <li><b>설정 호환성 1줄 점검.</b> 어딘가 <code>thinking:disabled</code>를 박아둔 곳이 있으면 Fable에서 400. 우리 게이트웨이는 claude-cli 런타임으로 돌아 일반적으로 무관하나, 커스텀 호출부가 있으면 "끄기 = 생략"으로 확인.</li>
-      <li><b>Mythos 5(안전분류기 제거판)는 우리 대상 아님</b> — 초대제. 인지만 해두면 됨.</li>
+      <li><b>전면 교체가 아니라 티어 분리로.</b> 출력 $50/MTok은 툴 호출과 장기 세션이 많은 에이전트 워크로드에 부담이 크다. 기본 모델은 Opus 티어로 두고, Fable은 <b>가장 어려운 소수 작업</b>에만 선택적으로 태우는 편이 비용 대비 합리적이다.</li>
+      <li><b>비한국어권 기준으로 계산하면 틀린다.</b> 한국어는 같은 의미를 더 많은 토큰으로 표현하고, 여기에 토크나이저 변경(~30%↑)과 2배 단가가 <b>곱으로 겹친다</b>. 한국어 장문 작업에서는 예상보다 훨씬 빨리 비용이 커지므로 라우팅 판단에서 1순위로 볼 것.</li>
+      <li><b>거부는 에러가 아니라 200이다.</b> 안전 분류기가 거부하면 HTTP 200에 <code>stop_reason: "refusal"</code>로 온다. <code>response.content[0]</code>을 무조건 읽는 코드는 여기서 깨진다. <b>분기부터 넣고</b> 그다음 폴백을 붙이는 순서가 맞다.</li>
+      <li><b><code>thinking:disabled</code>를 박아둔 곳을 먼저 찾아라.</b> Fable에서는 어느 effort에서도 400이다. 공통 래퍼나 기본값 주입 지점에 상수로 들어가 있는 경우가 많다.</li>
+      <li><b>폴백은 인프라로 세울 수 있다.</b> <code>fallbacks</code> 파라미터와 폴백 크레딧을 쓰면 "거부 시 하위 모델로 자동 강등 + 캐시 비용 재산정"이 표준 지원된다. 다만 <b>Bedrock·Foundry에서는 서버사이드 폴백이 없으므로</b> 클라이언트 측에서 직접 구현해야 한다.</li>
+      <li><b>Mythos 5는 초대제</b>(Project Glasswing)라 일반 도입 대상이 아니다. 스펙만 인지해 두면 된다.</li>
     </ul>
   </section>
 
   <section data-block="limits">
     <h2><span class="n">06</span> 유의점</h2>
     <ul class="clean">
-      <li>출시 직후(2026-06-09) 모델이라 <b>실사용 벤치/회귀 데이터가 아직 얇다.</b> 도입 전 우리 워크로드로 소규모 A/B 권장.</li>
+      <li>출시 직후(2026-06-09) 모델이라 <b>실사용 벤치/회귀 데이터가 아직 얇다.</b> 도입 전 실제 워크로드로 소규모 A/B 권장.</li>
       <li>Covered Model = <b>30일 데이터 보존 고정</b>, ZDR 불가 — 민감 데이터 파이프라인이면 확인.</li>
       <li>본 보고서 수치/사실은 platform.claude.com 공식 모델·런칭 문서 기준이며, <b>구체 성능 벤치는 의도적으로 비워뒀다</b>(공식 미공개분 추정 금지).</li>
     </ul>
@@ -252,12 +253,7 @@ code{overflow-wrap:anywhere}
 SWE-Bench Pro = GitHub 이슈 기반 실코딩 벤치. 앤트로픽은 소프트웨어 엔지니어링·지식 작업·비전·과학 연구 전반 최상위라고 발표.
 토큰 효율 주의: Opus4.7 토크나이저(~30% 토큰↑) × 단가 2배 → 체감 비용은 단순 2배 이상일 수 있음.
 
-## 우리 스택(openclaw/cocy) 시사점
-- openclaw에 추가됨(별칭 `fable`). 기본은 Opus 4.8 유지, Fable은 최난도 1건에만 선택적.
-- 한국어 비용이 곱으로 누적: 한국어 토큰 페널티 × 토크나이저 ~30%↑ × 단가 2배.
-- `fallbacks` + 폴백 크레딧은 "Fable 거부 시 4.8 자동 강등" 인프라로 유용. refusal(HTTP 200) 분기만 점검.
-- 호환성: `thinking:disabled` 박아둔 곳 있으면 Fable에서 400(끄기=생략).
-
+## 도입 검토 시 점검 항목\n- 전면 교체보다 티어 분리: 기본은 Opus 티어, Fable은 최난도 소수 작업에만.\n- 한국어 비용이 곱으로 누적: 한국어 토큰 페널티 x 토크나이저 ~30% 증가 x 단가 2배.\n- 거부는 에러가 아니라 HTTP 200 + stop_reason:"refusal" — 분기부터 넣을 것.\n- thinking:disabled 를 상수로 박아둔 지점을 먼저 찾을 것(Fable에서 400).\n- fallbacks + 폴백 크레딧으로 자동 강등 구성 가능. 단 Bedrock/Foundry는 서버사이드 폴백 미지원.\n- Mythos 5는 초대제라 일반 도입 대상 아님.
 ## 유의점
 - 출시 직후라 실사용 벤치 얇음 → 도입 전 소규모 A/B 권장.
 - Covered Model: 30일 보존 고정, ZDR 불가.

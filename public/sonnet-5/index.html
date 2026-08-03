@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Claude Sonnet 5 — API 스펙 브리프 (도입가 만료 · 새 토크나이저) · page.cocy.io</title>
+<meta name="description" content="Claude Sonnet 5(claude-sonnet-5) API 브리프: 도입가 $2/$10은 2026-08-31까지, 9/1부터 $3/$15. 새 토크나이저로 같은 텍스트가 약 30% 더 많은 토큰 — 단가 인상과 겹쳐 체감 비용이 크게 뛴다. Sonnet 4.6 대비 깨지는 변경 2개와 Opus 5와의 차이까지." />
+<link rel="canonical" href="https://page.cocy.io/sonnet-5/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Claude Sonnet 5 — API 스펙 브리프" />
+<meta property="og:description" content="도입가 만료(8/31)와 새 토크나이저(~30% 토큰 증가)가 겹친다. 9월 이후 체감 비용을 지금 계산해둘 것." />
+<meta property="og:url" content="https://page.cocy.io/sonnet-5/" />
+<meta property="article:published_time" content="2026-08-04" />
+<meta property="article:modified_time" content="2026-08-04" />
+<meta name="author" content="cocy" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#3a5a78; --accent-2:#4f7ba0; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:60ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+b{font-weight:500;color:var(--ink)}
+code{font-family:var(--mono);font-size:.86em;background:rgba(58,90,120,.09);padding:.08em .4em;border-radius:4px;color:var(--accent)}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#f3f6f9);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.3rem;color:var(--ink);margin-top:.2rem;max-width:36ch}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1;white-space:nowrap}
+.score small{font-size:.95rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.mid{background:rgba(184,134,11,.14);color:var(--warn)}
+.tag.info{background:rgba(58,90,120,.13);color:var(--accent)}
+.tag.bad{background:rgba(168,68,58,.13);color:var(--bad)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.9rem}
+th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+td.num{font-family:var(--mono);text-align:right}
+tr.hl td{background:rgba(79,123,160,.09);font-weight:500}
+.b-good{color:var(--good)}.b-bad{color:var(--bad)}
+.bars{margin:1.2rem 0 .6rem;display:flex;flex-direction:column;gap:.5rem}
+.bar-row{display:grid;grid-template-columns:150px 1fr auto;align-items:center;gap:.7rem;font-size:.84rem}
+.bar-row .bl{font-family:var(--mono);color:var(--ink-soft);font-size:.76rem}
+.bar-track{background:var(--line-soft);border-radius:4px;height:18px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+.bar-fill.hl{background:linear-gradient(90deg,#cf8a3a,#b8860b)}
+.bar-fill.lo{background:linear-gradient(90deg,#9bb0bf,#7d92a1)}
+.bar-row .bv{font-family:var(--mono);font-size:.78rem;color:var(--ink);min-width:52px;text-align:right}
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+.callout{background:#f3f6f9;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout b{color:var(--accent)}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(58,90,120,.3)}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+
+<meta property="og:url" content="https://page.cocy.io/fable-5/" />
+<meta property="article:published_time" content="2026-06-10" />
+<meta property="article:modified_time" content="2026-06-10"
+
+.iface-grid{display:grid;gap:.9rem;margin:1.2rem 0}
+.iface{border:1px solid var(--line);border-radius:6px;padding:1rem 1.2rem;background:#fffefb}
+.iface h3{font-family:var(--display);font-size:1.05rem;font-weight:600;margin-bottom:.2rem}
+.iface .who{font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.04em}
+.iface .shape{font-family:var(--mono);font-size:.78rem;background:rgba(35,32,27,.045);border-radius:4px;padding:.5rem .7rem;margin:.6rem 0;color:var(--ink-soft);overflow-x:auto;white-space:pre}
+.iface p{font-size:.9rem;margin-bottom:0;color:var(--ink-soft)}
+.mlist{display:grid;gap:.7rem;margin-top:1rem}
+.mcard{display:flex;justify-content:space-between;align-items:center;gap:1rem;border:1px solid var(--line);border-radius:6px;padding:.85rem 1.1rem;background:#fffefb}
+.mcard .mt{font-family:var(--display);font-weight:600;font-size:1rem}
+.mcard .ms{font-family:var(--mono);font-size:.74rem;color:var(--muted);margin-top:.15rem}
+.mcard a{border:none;font-family:var(--mono);font-size:.78rem;white-space:nowrap}
+.mcard.soon{opacity:.55}
+
+
+/* 좁은 화면: 표가 뷰포트를 밀어내지 않도록 표 자체를 가로 스크롤 컨테이너로 */
+code{overflow-wrap:anywhere}
+@media (max-width:640px){
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table thead,table tbody,table tr{width:max-content;min-width:100%}
+  .bar-row{grid-template-columns:110px 1fr auto}
+}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Claude Sonnet 5 — API 스펙 브리프","description":"Claude Sonnet 5 API 브리프: 도입가 만료·새 토크나이저·파라미터 변경·Opus 5와의 차이.","url":"https://page.cocy.io/sonnet-5/","mainEntityOfPage":{"@type":"WebPage","@id":"https://page.cocy.io/sonnet-5/"},"datePublished":"2026-08-04","dateModified":"2026-08-04","inLanguage":"ko","author":{"@type":"Person","name":"cocy","url":"https://page.cocy.io/cocy"},"publisher":{"@type":"Organization","name":"cocy.io","url":"https://cocy.io"},"isAccessibleForFree":true}</script>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Model Brief · Anthropic Frontier</div>
+    <h1>Claude Sonnet 5</h1>
+    <p class="lead"><b>Claude Sonnet 5</b>(<code>claude-sonnet-5</code>)는 속도와 지능의 균형을 노린 중간 티어로, Sonnet 4.6의 드롭인 후속이다. 스펙보다 <b>일정</b>이 먼저 중요하다 — 도입가 <b>$2/$10은 2026-08-31까지</b>이고, 9월 1일부터 <b>$3/$15</b>로 오른다. 여기에 <b>새 토크나이저(같은 텍스트가 약 30% 더 많은 토큰)</b>가 겹친다.</p>
+    <div class="meta">
+      <span><b>조회</b> 2026-08-04</span>
+      <span><b>모델 ID</b> claude-sonnet-5</span>
+      <span><b>컨텍스트</b> 1M / 출력 128k</span>
+      <span><b>출처</b> platform.claude.com</span>
+    </div>
+  </section>
+
+  <div class="verdict">
+    <div class="v-top">
+      <div>
+        <div class="v-label">먼저 확인할 것</div>
+        <div class="v-main">도입가 만료 + 토크나이저 변경이 겹쳐 <b>9월부터 체감 단가가 두 겹으로</b> 오른다.</div>
+      </div>
+      <div class="score">$2<small> / $10</small></div>
+    </div>
+    <div class="tags">
+      <span class="tag warn">도입가 8/31 종료</span>
+      <span class="tag mid">토크나이저 ~30%↑</span>
+      <span class="tag yes">web fetch 지원</span>
+      <span class="tag info">thinking 기본 ON</span>
+      <span class="tag bad">Priority Tier 미지원</span>
+    </div>
+  </div>
+
+  <section data-block="price">
+    <h2><span class="n">01</span> 가격 — 두 겹으로 오른다</h2>
+    <table>
+      <thead><tr><th>항목</th><th>~2026-08-31</th><th>2026-09-01~</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>입력 / 출력</td><td class="num">$2 / $10</td><td class="num">$3 / $15</td></tr>
+        <tr><td>5분 캐시 쓰기</td><td class="num">$2.50</td><td class="num">$3.75</td></tr>
+        <tr><td>1시간 캐시 쓰기</td><td class="num">$4</td><td class="num">$6</td></tr>
+        <tr><td>캐시 읽기</td><td class="num">$0.20</td><td class="num">$0.30</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <b>단가만 보면 +50%지만, 실제 체감은 그보다 크다 —</b> Sonnet 5는 <b>새 토크나이저</b>를 쓴다. 같은 입력 텍스트가 Sonnet 4.6 대비 <b>약 30% 더 많은 토큰</b>으로 계산된다(정확한 비율은 콘텐츠에 따라 다름). <b>per-token 단가는 그대로여도 요청당 비용이 달라진다.</b> 4.6에서 잰 토큰 수로 짠 예산은 그대로 쓸 수 없고, <code>count_tokens</code>를 Sonnet 5 기준으로 다시 돌려야 한다.
+    </div>
+
+    <p>부수 효과도 있다. <b>1M 컨텍스트에 들어가는 실제 텍스트 양이 줄고</b>, 4.6에 맞춰 잡아둔 <code>max_tokens</code>가 같은 분량의 출력을 <b>잘라먹을 수 있다</b>. 컨텍스트가 빠듯한 파이프라인일수록 먼저 재측정할 것.</p>
+  </section>
+
+  <section data-block="breaking">
+    <h2><span class="n">02</span> Sonnet 4.6에서 깨지는 것 — 두 개</h2>
+    <ul class="clean">
+      <li><b>수동 확장사고 제거</b> — <code>thinking:{type:"enabled", budget_tokens:N}</code>은 400. <code>adaptive</code> + <code>output_config.effort</code>로 대체한다. 토큰 예산과 1:1 대응은 없다</li>
+      <li><b>샘플링 파라미터</b> — <code>temperature</code>·<code>top_p</code>·<code>top_k</code>를 <b>기본값이 아닌 값</b>으로 보내면 400. 값을 지우고 프롬프트로 옮기는 게 안전하다</li>
+    </ul>
+
+    <p><b>조용히 바뀐 것</b> — 에러는 안 나지만 동작이 달라진다.</p>
+    <ul class="clean">
+      <li><b>adaptive thinking이 기본 ON.</b> 4.6은 <code>thinking</code> 필드를 생략하면 사고 없이 돌았다. Sonnet 5는 같은 요청이 사고하며 돈다. <code>max_tokens</code>는 <b>사고+응답 합계</b>의 상한이므로 빠듯하게 잡아둔 값은 잘릴 수 있다. 끄려면 <code>thinking:{type:"disabled"}</code>를 명시한다</li>
+      <li><b>사고 내용이 기본 비공개.</b> 사고 블록은 오지만 텍스트가 비어 있다. 사용자에게 추론을 스트리밍한다면 <code>display:"summarized"</code>를 명시해야 한다 — 안 그러면 <b>출력 전 긴 정적</b>으로 보인다</li>
+      <li><b>사이버보안 안전장치</b>가 Sonnet 티어에 처음 들어갔다. 거부는 에러가 아니라 <b>HTTP 200 + <code>stop_reason:"refusal"</code></b>로 온다. <code>content[0]</code>을 무조건 읽는 코드는 여기서 깨진다</li>
+    </ul>
+    <p class="note">Sonnet 4.5 이하에서 올라온다면 assistant 프리필 거부와 툴 파라미터 JSON 이스케이프 차이도 함께 걸린다.</p>
+  </section>
+
+  <section data-block="vs">
+    <h2><span class="n">03</span> Opus 5와 뭐가 다른가</h2>
+    <p>둘은 API 표면이 거의 같다 — 사고 기본 ON, effort 기본 <code>high</code>, 1M 컨텍스트, 128k 출력, Priority Tier 미지원, 수동 확장사고·샘플링 파라미터·프리필 모두 400. <b>다른 건 네 가지</b>고, 전부 게이트웨이 설계에 영향을 준다.</p>
+
+    <table>
+      <thead><tr><th>항목</th><th>Sonnet 5</th><th>Opus 5</th></tr></thead>
+      <tbody>
+        <tr><td>입력 / 출력</td><td class="num">$2 / $10 → $3 / $15</td><td class="num">$5 / $25</td></tr>
+        <tr class="hl"><td><code>thinking:disabled</code></td><td class="b-good">모든 effort에서 허용</td><td class="b-bad">effort <code>high</code> 이하만</td></tr>
+        <tr class="hl"><td>대화 중간 system 메시지</td><td class="b-bad">미지원</td><td class="b-good">지원</td></tr>
+        <tr class="hl"><td>web fetch 툴</td><td class="b-good">지원</td><td class="b-bad">미지원</td></tr>
+        <tr><td>캐시 최소 길이</td><td class="num">1,024 토큰</td><td class="num b-good">512 토큰</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <b>뒤집혀 있어서 헷갈리는 지점 —</b> 보통 상위 모델이 더 많은 걸 지원할 거라 기대하지만, <b>web fetch는 Sonnet 5에만 있고 Opus 5에는 없다.</b> 반대로 <b>대화 중간 <code>role:"system"</code> 메시지</b>는 Opus 5에만 있다. 후자는 단순한 기능 차이가 아니라 <b>비용 차이</b>다 — 대화 도중 지시를 바꿔야 할 때, top-level <code>system</code>을 수정하면 <b>그 앞의 캐시가 전부 무효</b>가 되는데, Opus 5는 <code>messages</code> 배열에 system 메시지를 덧붙여 <b>캐시를 살린 채</b> 지시를 갱신할 수 있다. Sonnet 5에서는 이 방법을 못 쓴다.
+    </div>
+  </section>
+
+  <section data-block="ops">
+    <h2><span class="n">04</span> 도입 검토 시 점검 항목</h2>
+    <ul class="clean">
+      <li><b>9월 1일 기준으로 비용을 다시 계산해 둘 것.</b> 단가 +50%와 토큰 수 ~30%↑가 곱해진다. 지금 도입가로 잡아둔 예산은 9월에 그대로 쓸 수 없다</li>
+      <li><b><code>count_tokens</code>를 Sonnet 5 기준으로 재측정.</b> 4.6에서 잰 값에 배수를 곱해 추정하지 말고 대표 프롬프트로 직접 잰다</li>
+      <li><b>사고를 끄고 쓰던 경로를 찾을 것.</b> 4.6에서 <code>thinking</code>을 생략하는 방식으로 "사고 없이" 돌던 코드는 Sonnet 5에서 조용히 사고를 시작한다. 의도한 동작이면 명시적으로 <code>disabled</code>를 넣는다</li>
+      <li><b>거부 분기를 먼저 넣는다.</b> HTTP 200에 <code>stop_reason:"refusal"</code>이므로 예외 처리로는 잡히지 않는다</li>
+      <li><b>캐시 최소 길이가 1,024 토큰</b>이라 짧은 시스템 프롬프트는 캐싱되지 않는다. 미달이면 <b>에러 없이 조용히</b> 캐싱만 안 되므로, <code>cache_read_input_tokens</code>가 계속 0인지로 확인한다</li>
+    </ul>
+  </section>
+
+  <div class="foot">
+    <span><a href="/models/">← 인터페이스 지도</a></span>
+    <span>조회 2026-08-04 · platform.claude.com</span>
+  </div>
+
+</article>
+</body>
+</html>
