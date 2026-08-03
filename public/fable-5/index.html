@@ -82,9 +82,9 @@ code{overflow-wrap:anywhere}
 </style>
 <meta property="og:url" content="https://page.cocy.io/fable-5/" />
 <meta property="article:published_time" content="2026-06-10" />
-<meta property="article:modified_time" content="2026-06-10" />
+<meta property="article:modified_time" content="2026-08-04" />
 <meta name="author" content="cocy" />
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Claude Fable 5 — Opus 위의 새 티어 (분석)", "description": "Claude Fable 5(claude-fable-5) 분석: Opus 위 최상위 티어, SWE-Bench Pro 80.3%(Opus4.8 69.2%, GPT-5.5 58.6%). 2026-06-09 GA. Messages API는 Opus 4.8과 동일하나 thinking:disabled 불가·adaptive 항상 on·거부/폴백 추가. 가격 2배($10/$50).", "url": "https://page.cocy.io/fable-5/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/fable-5/"}, "datePublished": "2026-06-10", "dateModified": "2026-06-10", "inLanguage": "ko", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Claude Fable 5 — Opus 위의 새 티어 (분석)", "description": "Claude Fable 5(claude-fable-5) 분석: Opus 위 최상위 티어, SWE-Bench Pro 80.3%(Opus4.8 69.2%, GPT-5.5 58.6%). 2026-06-09 GA. Messages API는 Opus 4.8과 동일하나 thinking:disabled 불가·adaptive 항상 on·거부/폴백 추가. 가격 2배($10/$50).", "url": "https://page.cocy.io/fable-5/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/fable-5/"}, "datePublished": "2026-06-10", "dateModified": "2026-08-04", "inLanguage": "ko", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true}</script>
 </head>
 <body>
 <article class="doc">
@@ -94,8 +94,8 @@ code{overflow-wrap:anywhere}
     <h1>Claude Fable 5 — Opus 위의 새 티어</h1>
     <p class="lead"><b>Claude Fable 5</b>(<code>claude-fable-5</code>)는 Opus 위에 새로 생긴 앤트로픽 <b>최상위 일반공개 모델</b>이다. 2026-06-09 전 플랫폼(Bedrock 포함) GA. Messages API는 Opus 4.8과 <b>거의 그대로</b>인데, 딱 몇 가지 — <code>thinking:disabled</code> 제거, adaptive 사고 항상 on, 거부/폴백 흐름 추가 — 가 다르다. 가격은 정확히 <b>2배</b>.</p>
     <div class="meta">
-      <span><b>분석</b> page.cocy.io · 2026-06-10</span>
-      <span><b>출시</b> 2026-06-09 GA</span>
+      <span><b>분석</b> page.cocy.io · 2026-06-10 · 갱신 2026-08-04</span>
+      <span><b>출시</b> 2026-06-09 GA · 6/12–30 수출통제 중단 → 7/1 복구</span>
       <span><b>모델 ID</b> claude-fable-5 / Bedrock: anthropic.claude-fable-5</span>
       <span><b>출처</b> platform.claude.com (공식 모델·런칭 문서)</span>
     </div>
@@ -112,6 +112,7 @@ code{overflow-wrap:anywhere}
         <span class="tag yes">✓ 6/9 전 플랫폼 GA (Bedrock 포함)</span>
         <span class="tag info">1M ctx · 128k out · $10/$50</span>
         <span class="tag yes">✓ SWE-Bench Pro 80.3% (Opus4.8 69.2% · GPT-5.5 58.6%)</span>
+        <span class="tag mid">6/12–30 수출통제로 접근 중단 → 7/1 복구</span>
       </div>
     </div>
   </section>
@@ -123,6 +124,7 @@ code{overflow-wrap:anywhere}
       <li><b>형제 모델 Mythos 5</b>(<code>claude-mythos-5</code>) — Fable 5와 <b>동일 능력에서 안전 분류기만 뺀</b> 버전. 일반공개 아님(초대제 Project Glasswing). Mythos Preview의 후속.</li>
       <li><b>플랫폼</b> — Claude API · Claude Platform on AWS · <b>Amazon Bedrock</b> · Vertex AI · Microsoft Foundry 전부 <b>6/9 GA</b>. (Bedrock ID는 접두사 붙어 <code>anthropic.claude-fable-5</code>.)</li>
       <li><b>데이터 보존</b> — Covered Model로 지정 → <b>30일 보존 고정</b>, 무보존(ZDR) 불가. 컴플라이언스에 민감한 워크로드는 확인 필요.</li>
+      <li><b>수출통제 중단 이력</b> — 출시 사흘 뒤인 <b>6/12 미 정부 수출통제 지정</b>으로 전 사용자 접근이 중단됐다가, 6/30 통제 해제 후 <b>7/1 접근 복구</b>. 재배포 시 보고된 우회 기법을 막는 분류기가 추가돼 <b>양성(benign) 요청 오탐이 다소 늘 수 있다</b>고 공식 명시.</li>
     </ul>
   </section>
 
@@ -154,7 +156,7 @@ code{overflow-wrap:anywhere}
     <table>
       <thead><tr><th>항목</th><th>Opus 4.8</th><th>Fable 5</th><th>코드 영향</th></tr></thead>
       <tbody>
-        <tr class="hl"><td><code>thinking:{type:"disabled"}</code></td><td>허용</td><td><b class="b-bad">✗ 미지원(400)</b></td><td>끄려면 <b>파라미터 자체를 생략</b></td></tr>
+        <tr class="hl"><td><code>thinking:{type:"disabled"}</code></td><td>허용</td><td><b class="b-bad">✗ 미지원</b></td><td>사고 자체를 <b>끌 수 없음</b> — 깊이는 <code>effort</code>로 조절</td></tr>
         <tr><td>adaptive thinking</td><td>생략 시 <b>off</b></td><td>생략 시 <b>적용(항상 on)</b></td><td>명시 안 해도 사고함</td></tr>
         <tr><td>raw 사고 내용</td><td>display 기본 omitted</td><td><b>raw CoT 절대 미반환</b>, <code>display:"summarized"</code>로 요약만</td><td>사고 표시 시 display 설정</td></tr>
         <tr><td>거부(refusal)</td><td>일반</td><td>안전분류기 → <code>stop_reason:"refusal"</code> (<b>HTTP 200</b>, 어느 분류기인지도 반환)</td><td><b>refusal 분기 필요</b></td></tr>
@@ -163,7 +165,7 @@ code{overflow-wrap:anywhere}
       </tbody>
     </table>
     <div class="callout">참고: <code>budget_tokens</code>·<code>temperature</code>/<code>top_p</code>/<code>top_k</code> 제거와 <b>마지막 assistant 프리필 400</b>은 <b>Fable 신규가 아니라 이미 Opus 4.7/4.8부터</b> 그렇다 — 4.8에서 올라오면 이 부분은 손댈 게 없다. Fable에서 <em>새로</em> 생긴 건 위 표의 <code>disabled</code> 금지·항상-on 사고·거부/폴백뿐.</div>
-    <p><b>지원 기능(런칭 시점):</b> Effort, Task budgets(beta <code>task-budgets-2026-03-13</code>), 메모리 툴, 컨텍스트 에디팅(beta), Compaction, Vision.</p>
+    <p><b>지원 기능(런칭 시점):</b> Effort, Task budgets(beta <code>task-budgets-2026-03-13</code>), 메모리 툴, Code execution, Programmatic tool calling, 컨텍스트 에디팅(beta), Compaction, Vision.</p>
   </section>
 
   <section data-block="perf">
@@ -175,6 +177,7 @@ code{overflow-wrap:anywhere}
       <div class="bar-row"><span class="bl">GPT-5.5</span><div class="bar-track"><div class="bar-fill lo" style="width:73%"></div></div><span class="bv">58.6%</span></div>
     </div>
     <p style="margin-top:1rem">SWE-Bench Pro는 GitHub 이슈 기반 실코딩 벤치마크. Fable 5는 Opus 4.8보다 <b>+11.1%p</b>, GPT-5.5보다 <b>+21.7%p</b> 높다. 앤트로픽은 소프트웨어 엔지니어링·지식 작업·비전·과학 연구 전반에서 거의 모든 AI 역량 벤치마크 최상위라고 발표했다.</p>
+    <div class="callout"><b>이후 변수 — Opus 5 (2026-07-24 출시).</b> 위 비교는 출시 시점(6/9) 기준이다. 이후 나온 Opus 5를 앤트로픽은 공식적으로 <b>"절반 가격에 Fable 5의 프론티어 지능에 근접"</b>이라 소개했다(CursorBench 3.2 max effort에서 Fable 5 피크 대비 0.5% 이내, 작업당 비용은 절반). 현행 Opus 티어는 4.8이 아니라 Opus 5($5/$25)이므로, 지금 티어를 고른다면 <b>Fable 5 vs Opus 5</b>로 비교하는 것이 맞다.</div>
     <ul class="clean">
       <li><b>토큰 효율 주의</b> — Opus 4.7 토크나이저라 같은 글이 이전 모델보다 ~30% 더 토큰을 먹는다. "출력 단가 2배 × 토큰 수 증가"가 곱해지므로 <b>체감 비용은 단순 2배 이상</b>일 수 있다.</li>
       <li><b>장기 에이전트</b> — 몇 주에 걸친 대규모 코드 마이그레이션·다단계 비동기 작업을 자율 처리하는 사례가 보고됨. 에이전트 루프가 많은 워크로드일수록 "어려운 1건"에서 격차가 드러날 수 있다.</li>
@@ -185,10 +188,10 @@ code{overflow-wrap:anywhere}
     <h2><span class="n">05</span> 도입 검토 시 점검 항목</h2>
     <p>최상위 티어를 새로 붙일 때 실제로 걸리는 지점들. 대부분 코드보다 <b>라우팅 정책</b>의 문제다.</p>
     <ul class="clean">
-      <li><b>전면 교체가 아니라 티어 분리로.</b> 출력 $50/MTok은 툴 호출과 장기 세션이 많은 에이전트 워크로드에 부담이 크다. 기본 모델은 Opus 티어로 두고, Fable은 <b>가장 어려운 소수 작업</b>에만 선택적으로 태우는 편이 비용 대비 합리적이다.</li>
+      <li><b>전면 교체가 아니라 티어 분리로.</b> 출력 $50/MTok은 툴 호출과 장기 세션이 많은 에이전트 워크로드에 부담이 크다. 기본 모델은 Opus 티어(현행 <b>Opus 5</b>, $5/$25)로 두고, Fable은 <b>가장 어려운 소수 작업</b>에만 선택적으로 태우는 편이 비용 대비 합리적이다.</li>
       <li><b>비한국어권 기준으로 계산하면 틀린다.</b> 한국어는 같은 의미를 더 많은 토큰으로 표현하고, 여기에 토크나이저 변경(~30%↑)과 2배 단가가 <b>곱으로 겹친다</b>. 한국어 장문 작업에서는 예상보다 훨씬 빨리 비용이 커지므로 라우팅 판단에서 1순위로 볼 것.</li>
-      <li><b>거부는 에러가 아니라 200이다.</b> 안전 분류기가 거부하면 HTTP 200에 <code>stop_reason: "refusal"</code>로 온다. <code>response.content[0]</code>을 무조건 읽는 코드는 여기서 깨진다. <b>분기부터 넣고</b> 그다음 폴백을 붙이는 순서가 맞다.</li>
-      <li><b><code>thinking:disabled</code>를 박아둔 곳을 먼저 찾아라.</b> Fable에서는 어느 effort에서도 400이다. 공통 래퍼나 기본값 주입 지점에 상수로 들어가 있는 경우가 많다.</li>
+      <li><b>거부는 에러가 아니라 200이다.</b> 안전 분류기가 거부하면 HTTP 200에 <code>stop_reason: "refusal"</code>로 온다. <code>response.content[0]</code>을 무조건 읽는 코드는 여기서 깨진다. <b>분기부터 넣고</b> 그다음 폴백을 붙이는 순서가 맞다. 발생 빈도는 공식 발표 기준 <b>평균 세션의 5% 미만</b> — 낮지만 0이 아니므로 분기는 필수다.</li>
+      <li><b><code>thinking:disabled</code>를 박아둔 곳을 먼저 찾아라.</b> Fable에서는 어느 effort에서도 요청이 거부된다(미지원 파라미터). 공통 래퍼나 기본값 주입 지점에 상수로 들어가 있는 경우가 많다.</li>
       <li><b>폴백은 인프라로 세울 수 있다.</b> <code>fallbacks</code> 파라미터와 폴백 크레딧을 쓰면 "거부 시 하위 모델로 자동 강등 + 캐시 비용 재산정"이 표준 지원된다. 다만 <b>Bedrock·Foundry에서는 서버사이드 폴백이 없으므로</b> 클라이언트 측에서 직접 구현해야 한다.</li>
       <li><b>Mythos 5는 초대제</b>(Project Glasswing)라 일반 도입 대상이 아니다. 스펙만 인지해 두면 된다.</li>
     </ul>
@@ -197,9 +200,9 @@ code{overflow-wrap:anywhere}
   <section data-block="limits">
     <h2><span class="n">06</span> 유의점</h2>
     <ul class="clean">
-      <li>출시 직후(2026-06-09) 모델이라 <b>실사용 벤치/회귀 데이터가 아직 얇다.</b> 도입 전 실제 워크로드로 소규모 A/B 권장.</li>
+      <li>수출통제 중단(6/12–7/1)을 한 차례 겪은 모델이다. 재배포 이후 분류기가 강화돼 <b>일상 코딩·디버깅에서도 오탐이 다소 늘 수 있다</b>고 공식 명시 — 도입 전 실제 워크로드로 소규모 A/B 권장.</li>
       <li>Covered Model = <b>30일 데이터 보존 고정</b>, ZDR 불가 — 민감 데이터 파이프라인이면 확인.</li>
-      <li>본 보고서 수치/사실은 platform.claude.com 공식 모델·런칭 문서 기준이며, <b>구체 성능 벤치는 의도적으로 비워뒀다</b>(공식 미공개분 추정 금지).</li>
+      <li>본 보고서 수치/사실은 platform.claude.com·anthropic.com 공식 문서 기준이며, <b>공식 발표분 외 벤치는 넣지 않았다</b>(비공식 수치 추정 금지).</li>
     </ul>
   </section>
 
@@ -214,7 +217,7 @@ code{overflow-wrap:anywhere}
 # Claude Fable 5 — Opus 위의 새 티어, 인터페이스는 거의 그대로 (분석)
 
 > Claude Fable 5(`claude-fable-5`) 분석. 출처: platform.claude.com 공식 모델·런칭 문서.
-> **한 줄 결론: Opus 위 새 최상위 일반공개 모델. 2026-06-09 전 플랫폼(Bedrock 포함) GA. Messages API는 Opus 4.8과 사실상 동일 — 단 `thinking:disabled` 불가 + adaptive 항상 on + 거부/폴백 흐름 추가. 가격은 정확히 2배($10/$50).**
+> **한 줄 결론: Opus 위 새 최상위 일반공개 모델. 2026-06-09 전 플랫폼(Bedrock 포함) GA — 6/12 미 정부 수출통제로 접근 중단, 6/30 해제 후 7/1 복구. Messages API는 Opus 4.8과 사실상 동일 — 단 `thinking:disabled` 불가 + adaptive 항상 on + 거부/폴백 흐름 추가. 가격은 정확히 2배($10/$50).**
 
 - 모델 ID: `claude-fable-5` (Claude API/AWS/Vertex), Bedrock: `anthropic.claude-fable-5`
 - 형제: Claude Mythos 5(`claude-mythos-5`) = 동일 능력에서 안전분류기만 뺀 초대제(Project Glasswing) 모델
@@ -234,7 +237,7 @@ code{overflow-wrap:anywhere}
 공식: "Messages API는 Opus/Sonnet/Haiku에선 그대로. 아래는 Fable 5/Mythos 5 전용."
 | 항목 | Opus 4.8 | Fable 5 |
 |---|---|---|
-| `thinking:{type:"disabled"}` | 허용 | ✗ 400 — 끄려면 파라미터 생략 |
+| `thinking:{type:"disabled"}` | 허용 | ✗ 미지원 — 사고를 끌 수 없음, 깊이는 `effort`로 조절 |
 | adaptive thinking | 생략 시 off | 생략 시 적용(항상 on) |
 | raw 사고 | display 기본 omitted | raw CoT 절대 미반환, `display:"summarized"`로 요약만 |
 | 거부 | 일반 | 안전분류기 → `stop_reason:"refusal"` (HTTP 200) |
@@ -243,7 +246,7 @@ code{overflow-wrap:anywhere}
 
 참고: `budget_tokens`/`temperature`/`top_p`/`top_k` 제거와 마지막 assistant 프리필 400은 **이미 Opus 4.7/4.8부터** — 4.8에서 올라오면 손댈 것 없음. Fable 신규는 위 표의 disabled 금지·항상-on·거부/폴백뿐.
 
-지원(런칭): Effort, Task budgets(beta), 메모리 툴, 컨텍스트 에디팅(beta), Compaction, Vision.
+지원(런칭): Effort, Task budgets(beta), 메모리 툴, Code execution, Programmatic tool calling, 컨텍스트 에디팅(beta), Compaction, Vision.
 
 ## 성능 — SWE-Bench Pro (공식 발표)
 - Fable 5: **80.3%** (+11.1%p vs Opus4.8, +21.7%p vs GPT-5.5)
@@ -253,9 +256,18 @@ code{overflow-wrap:anywhere}
 SWE-Bench Pro = GitHub 이슈 기반 실코딩 벤치. 앤트로픽은 소프트웨어 엔지니어링·지식 작업·비전·과학 연구 전반 최상위라고 발표.
 토큰 효율 주의: Opus4.7 토크나이저(~30% 토큰↑) × 단가 2배 → 체감 비용은 단순 2배 이상일 수 있음.
 
-## 도입 검토 시 점검 항목\n- 전면 교체보다 티어 분리: 기본은 Opus 티어, Fable은 최난도 소수 작업에만.\n- 한국어 비용이 곱으로 누적: 한국어 토큰 페널티 x 토크나이저 ~30% 증가 x 단가 2배.\n- 거부는 에러가 아니라 HTTP 200 + stop_reason:"refusal" — 분기부터 넣을 것.\n- thinking:disabled 를 상수로 박아둔 지점을 먼저 찾을 것(Fable에서 400).\n- fallbacks + 폴백 크레딧으로 자동 강등 구성 가능. 단 Bedrock/Foundry는 서버사이드 폴백 미지원.\n- Mythos 5는 초대제라 일반 도입 대상 아님.
+이후 변수 — Opus 5(2026-07-24 출시): 앤트로픽 공식 표현 "절반 가격에 Fable 5의 프론티어 지능에 근접"(CursorBench 3.2 max effort에서 Fable 피크 대비 0.5% 이내). 현행 Opus 티어는 4.8이 아니라 Opus 5($5/$25) — 지금 티어 선택은 Fable 5 vs Opus 5로 비교할 것.
+
+## 도입 검토 시 점검 항목
+- 전면 교체보다 티어 분리: 기본은 Opus 티어(현행 Opus 5, $5/$25), Fable은 최난도 소수 작업에만.
+- 한국어 비용이 곱으로 누적: 한국어 토큰 페널티 x 토크나이저 ~30% 증가 x 단가 2배.
+- 거부는 에러가 아니라 HTTP 200 + stop_reason:"refusal" — 분기부터 넣을 것. 발생 빈도는 공식 기준 평균 세션 5% 미만.
+- thinking:disabled 를 상수로 박아둔 지점을 먼저 찾을 것(Fable에서 요청 거부됨).
+- fallbacks + 폴백 크레딧으로 자동 강등 구성 가능. 단 Bedrock/Foundry는 서버사이드 폴백 미지원.
+- Mythos 5는 초대제라 일반 도입 대상 아님.
+
 ## 유의점
-- 출시 직후라 실사용 벤치 얇음 → 도입 전 소규모 A/B 권장.
+- 수출통제 중단(6/12–7/1) 이력 있음. 재배포 시 분류기 강화로 일상 코딩·디버깅 오탐이 다소 늘 수 있다고 공식 명시 → 도입 전 소규모 A/B 권장.
 - Covered Model: 30일 보존 고정, ZDR 불가.
 
 ## 출처
