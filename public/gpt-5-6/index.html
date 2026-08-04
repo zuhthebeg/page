@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GPT-5.6 계열 가격 브리프 — Azure 기준 (Sol·Terra·Luna) · page.cocy.io</title>
+<meta name="description" content="GPT-5.6 Sol·Terra·Luna 가격 분석 — Azure OpenAI(Foundry) 기준. 7/30 OpenAI 1P 인하(Luna -80%·Terra -20%)의 Azure 미반영 괴리, 캐시 쓰기 유료화(1.25×), 272K 롱컨텍스트 할증(입력 2×·출력 1.5× 전체 소급), Data Zone +10%, Priority/Fast mode 2× 등 할증 구조와 가격정책 변동 이력." />
+<link rel="canonical" href="https://page.cocy.io/gpt-5-6/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="GPT-5.6 계열 가격 브리프 — Azure 기준 (분석)" />
+<meta property="og:description" content="같은 모델, 두 가격표 — 7/30 1P 인하가 Azure엔 아직 없다. 지금 Azure의 Luna는 1P의 5배. 캐시 쓰기 유료화·272K 할증·배포 타입별 프리미엄까지 원문 실측 기준 정리." />
+<meta property="og:url" content="https://page.cocy.io/gpt-5-6/" />
+<meta property="article:published_time" content="2026-08-04" />
+<meta property="article:modified_time" content="2026-08-04" />
+<meta name="author" content="cocy" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#3a5a78; --accent-2:#4f7ba0; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:60ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+b{font-weight:500;color:var(--ink)}
+code{font-family:var(--mono);font-size:.86em;background:rgba(58,90,120,.09);padding:.08em .4em;border-radius:4px;color:var(--accent)}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#f3f6f9);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.3rem;color:var(--ink);margin-top:.2rem;max-width:36ch}
+.score{font-family:var(--display);font-weight:600;font-size:2.1rem;color:var(--bad);line-height:1;white-space:nowrap}
+.score small{font-size:.95rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.mid{background:rgba(184,134,11,.14);color:var(--warn)}
+.tag.info{background:rgba(58,90,120,.13);color:var(--accent)}
+.tag.bad{background:rgba(168,68,58,.13);color:var(--bad)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.9rem}
+th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+td.num{font-family:var(--mono);text-align:right}
+tr.hl td{background:rgba(79,123,160,.09);font-weight:500}
+tr.warn td{background:rgba(168,68,58,.07)}
+.b-good{color:var(--good)}.b-bad{color:var(--bad)}
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink)}
+.callout{background:#f3f6f9;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout b{color:var(--accent)}
+.callout.red{background:#faf1f0;border-left:3px solid var(--bad)}
+.callout.red b{color:var(--bad)}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(58,90,120,.3)}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+code{overflow-wrap:anywhere}
+@media (max-width:640px){
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table thead,table tbody,table tr{width:max-content;min-width:100%}
+}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"GPT-5.6 계열 가격 브리프 — Azure 기준 (Sol·Terra·Luna)","description":"GPT-5.6 가격·정책 변동 이력·할증 구조를 Azure OpenAI 기준으로 실측 정리. 7/30 1P 인하의 Azure 미반영 괴리 포함.","url":"https://page.cocy.io/gpt-5-6/","mainEntityOfPage":{"@type":"WebPage","@id":"https://page.cocy.io/gpt-5-6/"},"datePublished":"2026-08-04","dateModified":"2026-08-04","inLanguage":"ko","author":{"@type":"Person","name":"cocy","url":"https://page.cocy.io/cocy"},"publisher":{"@type":"Organization","name":"cocy.io","url":"https://cocy.io"},"isAccessibleForFree":true}</script>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Pricing Brief · OpenAI Frontier on Azure</div>
+    <h1>GPT-5.6 계열 가격 브리프 — Azure 기준</h1>
+    <p class="lead"><b>GPT-5.6</b>은 Sol(플래그십)·Terra(밸런스)·Luna(경량) 3모델 체제다. 2026-07-09 GA 이후 한 달 사이에 <b>가격 정책이 두 번 움직였다</b> — 캐시 쓰기 유료화(출시 시), Luna -80%·Terra -20% 인하(7/30). 문제는 이 인하가 <b>Azure OpenAI에는 아직 반영되지 않았다</b>는 것. 조회일(2026-08-04) 실측 기준으로 두 가격표의 괴리와 할증 구조 전체를 정리한다.</p>
+    <div class="meta">
+      <span><b>분석</b> page.cocy.io · 2026-08-04</span>
+      <span><b>모델</b> gpt-5.6-sol / -terra / -luna (별칭 <code>gpt-5.6</code> → Sol)</span>
+      <span><b>출처</b> developers.openai.com 가격·모델 문서 + azure.microsoft.com 가격표 실측</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">한 줄 결론</div>
+          <div class="v-main">같은 모델, 두 가격표. 7/30 인하가 Azure엔 없다 — 지금 Azure의 Luna는 1P의 5배다.</div>
+        </div>
+        <div class="score">5×<small> Luna 괴리</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag info">1.05M ctx · 922k in · 128k out</span>
+        <span class="tag bad">Azure: 7/30 인하 미반영 (8/4 실측)</span>
+        <span class="tag mid">캐시 쓰기 유료화 1.25× (5.6 신설)</span>
+        <span class="tag mid">272K 초과 시 입력 2×·출력 1.5× 전체 소급</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="family">
+    <h2><span class="n">01</span> 계열 구성 — 접미사가 티어다</h2>
+    <p>이전 세대의 무접미/mini/nano 3단 구조가 이름만 바뀌어 이어진다. 공식 모델 문서 기준 대응 관계와 공통 스펙:</p>
+    <table>
+      <thead><tr><th>모델</th><th>포지션</th><th>이전 세대 대응</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><code>gpt-5.6-sol</code></td><td>프론티어 — 까다로운 전문 작업</td><td>무접미 티어(gpt-5.5 등)</td><td>별칭 <code>gpt-5.6</code>이 Sol로 라우팅</td></tr>
+        <tr><td><code>gpt-5.6-terra</code></td><td>지능·비용 밸런스</td><td>mini 티어</td><td>ChatGPT Work Free/Go 기본</td></tr>
+        <tr><td><code>gpt-5.6-luna</code></td><td>대량·비용 민감 워크로드</td><td>nano 티어</td><td>7/30 인하의 최대 수혜</td></tr>
+      </tbody>
+    </table>
+    <ul class="clean">
+      <li><b>스펙은 3모델 동일</b> — 컨텍스트 1,050,000 토큰(입력 최대 922,000) · 출력 최대 128k · 지식 컷오프 2026-02-16 · reasoning 토큰 지원 · 텍스트+이미지 입력.</li>
+      <li><b>출시 이력</b> — 6/26 한정 프리뷰(Sol) → <b>7/9 GA</b>. Chat Completions·Responses 둘 다 지원, Realtime·파인튜닝·임베딩은 미지원.</li>
+    </ul>
+  </section>
+
+  <section data-block="price">
+    <h2><span class="n">02</span> 가격표 — Azure Global 실측 vs OpenAI 1P 현행</h2>
+    <p>Azure OpenAI 가격 페이지 실측값(2026-08-04, Global 배포, $/MTok). 5.6 시리즈는 현재 <b>Global 배포만 게시</b>돼 있다 — Data Zone·Regional 행이 없다.</p>
+    <table>
+      <thead><tr><th>Azure Global</th><th>입력</th><th>캐시 입력</th><th>캐시 쓰기</th><th>출력</th><th>Priority(입/출)</th></tr></thead>
+      <tbody>
+        <tr><td>Sol (≤272K)</td><td class="num">$5</td><td class="num">$0.50</td><td class="num">$6.25</td><td class="num">$30</td><td class="num">$10 / $60</td></tr>
+        <tr><td>Sol (&gt;272K)</td><td class="num">$10</td><td class="num">$1</td><td class="num">$12.50</td><td class="num">$45</td><td class="num">—</td></tr>
+        <tr class="warn"><td>Terra (≤272K)</td><td class="num">$2.50</td><td class="num">$0.25</td><td class="num">$3.13</td><td class="num">$15</td><td class="num">$5 / $30</td></tr>
+        <tr class="warn"><td>Terra (&gt;272K)</td><td class="num">$5</td><td class="num">$0.50</td><td class="num">$6.25</td><td class="num">$22.50</td><td class="num">—</td></tr>
+        <tr class="warn"><td>Luna (≤272K)</td><td class="num">$1</td><td class="num">$0.10</td><td class="num">$1.25</td><td class="num">$6</td><td class="num">—</td></tr>
+        <tr class="warn"><td>Luna (&gt;272K)</td><td class="num">$2</td><td class="num">$0.20</td><td class="num">$2.50</td><td class="num">$9</td><td class="num">—</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:1.2rem">같은 날 OpenAI 1P(직접 API) 가격과 대조하면 괴리가 이렇다:</p>
+    <table>
+      <thead><tr><th>모델 (≤272K, 입력/출력)</th><th>OpenAI 1P</th><th>Azure Global</th><th>괴리</th></tr></thead>
+      <tbody>
+        <tr><td>Sol</td><td class="num">$5 / $30</td><td class="num">$5 / $30</td><td><b class="b-good">동일</b></td></tr>
+        <tr><td>Terra</td><td class="num">$2 / $12</td><td class="num">$2.50 / $15</td><td><b class="b-bad">Azure +25%</b></td></tr>
+        <tr class="hl"><td>Luna</td><td class="num">$0.20 / $1.20</td><td class="num">$1 / $6</td><td><b class="b-bad">Azure 5배</b></td></tr>
+      </tbody>
+    </table>
+    <div class="callout red"><b>이 괴리는 정책이 아니라 시차다.</b> Azure의 Terra·Luna 값은 7/9 출시가 그대로다. 7/30 인하 발표문은 "AWS에는 오늘부터 롤아웃"이라고 명시했지만 <b>Azure는 언급하지 않았고</b>, 조회일 기준 Azure 가격표는 구가격이다. 곧 반영될 가능성이 높지만, <b>반영 전까지 Azure 경유 Luna 대량 워크로드는 5배를 내는 셈</b>이다. 집행 전 가격표를 다시 볼 것.</div>
+  </section>
+
+  <section data-block="history">
+    <h2><span class="n">03</span> 가격정책 변동 이력</h2>
+    <table>
+      <thead><tr><th>시점</th><th>변경</th><th>영향</th></tr></thead>
+      <tbody>
+        <tr><td>2026-03-05</td><td>이 날짜 이후 출시 모델의 <b>리전(데이터 레지던시) 처리에 +10%</b> 정책 도입 (1P)</td><td>5.6 계열은 전부 해당</td></tr>
+        <tr><td>2026-06-26</td><td>Sol 한정 프리뷰</td><td>—</td></tr>
+        <tr class="hl"><td>2026-07-09</td><td><b>GA.</b> 출시가 Sol $5/$30 · Terra $2.50/$15 · Luna $1/$6. 이 세대부터 <b>캐시 쓰기 유료화(입력의 1.25×)</b> — 5.5 이하는 쓰기 과금 없음</td><td>캐싱 손익 계산 변경</td></tr>
+        <tr class="hl"><td>2026-07-30</td><td><b>Luna -80%($0.20/$1.20) · Terra -20%($2/$12)</b>, Sol 동결. Priority Processing → <b>Fast mode 개명</b>(Sol 기준 최대 2.5× 속도, 2× 가격, <code>service_tier:"priority"</code> 하위호환). AWS 롤아웃 명시</td><td>Codex·ChatGPT Work 크레딧 소모율도 동반 인하</td></tr>
+        <tr class="warn"><td>2026-08-04 (조회)</td><td>Azure 가격표 <b>여전히 출시가</b> — 인하 미반영</td><td>Luna 5배·Terra +25% 괴리 지속 중</td></tr>
+      </tbody>
+    </table>
+    <p class="note">참고: 롱컨텍스트 할증(272K 초과)은 변동 없이 유지 중이다. Claude가 4.6 세대에서 롱컨텍스트 할증을 폐지(1M 전 구간 단일 단가)한 것과 달리, OpenAI는 문턱형 이중 단가를 계속 쓴다 — 벤더 간 비용 모델을 비교할 때 자주 틀리는 지점.</p>
+  </section>
+
+  <section data-block="premium">
+    <h2><span class="n">04</span> 할증 구조 — 기준가에 무엇이 곱해지나</h2>
+    <table>
+      <thead><tr><th>할증</th><th>배수</th><th>조건·비고</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>롱컨텍스트</td><td><b>입력 2× · 출력 1.5×</b></td><td>입력 272K 토큰 초과 시 — <b>초과분이 아니라 요청 전체에 소급</b>. 3모델 공통</td></tr>
+        <tr><td>Fast mode (Azure 표기: Priority)</td><td><b>2×</b> (입·출력 모두)</td><td>Sol·Terra 제공, Luna 미제공. 배수 변천: 5.4 = 2× → 5.5 = 2.5× → 5.6 = 2×</td></tr>
+        <tr><td>캐시 쓰기</td><td>1.25×</td><td><b>5.6 신설.</b> 캐시 읽기는 0.1×. 5분 내 재사용 1회면 이득인 구조는 유지</td></tr>
+        <tr><td>리전 데이터 레지던시 (1P)</td><td>+10%</td><td>2026-03-05 이후 출시 모델. 5.6 전 계열 해당</td></tr>
+        <tr><td>Azure Data Zone 배포</td><td>+10%</td><td>실측 확인(5.5: $5→$5.50, 5.4: $2.50→$2.75). 단 <b>5.6은 아직 Global 배포만 게시</b> — Data Zone·Regional 선택지 없음</td></tr>
+        <tr><td>Batch</td><td class="b-good">-50%</td><td>1P는 5.6 전 계열 게시(Flex도 동일 -50%). Azure는 5.4 이하만 Batch 단가 게시(조회일)</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><b>272K는 문턱이지 구간이 아니다.</b> 입력 271K 요청과 273K 요청의 차이는 "2K 토큰의 추가 비용"이 아니라 <b>요청 전체가 입력 2×·출력 1.5×로 재계산</b>되는 것이다. Sol 기준 273K 입력 요청 하나가 $1.36 → $2.73으로 뛴다. 긴 에이전트 세션이라면 272K 아래로 유지하는 컨텍스트 관리가 그대로 비용 절반이 된다.</div>
+  </section>
+
+  <section data-block="practice">
+    <h2><span class="n">05</span> 도입 검토 시 점검 항목</h2>
+    <ul class="clean">
+      <li><b>Luna 대량 워크로드는 지금 경로를 확인하라.</b> 1P 직결 $0.20/$1.20 vs Azure $1/$6. 분류·추출·대량 배치처럼 Luna가 어울리는 워크로드일수록 이 5배가 그대로 청구서 배수가 된다. Azure 반영 여부를 집행 시점에 재확인할 것.</li>
+      <li><b>캐시 쓰기 유료화 이후의 손익.</b> 읽기 0.1×는 그대로라 캐싱은 여전히 남는 장사지만, <b>재사용되지 않는 일회성 프롬프트까지 캐시에 쓰면 1.25×로 순손실</b>이다. 5.5 이하에서 "일단 다 캐시" 전략을 쓰던 코드라면 5.6 이전 시 재계산 필요.</li>
+      <li><b>272K 문턱 관리가 곧 예산 관리.</b> 이력 누적형 에이전트는 요약·트렁케이션 시점을 272K 이전으로 잡을 것. 문턱을 넘는 순간 그 요청 전체가 재계산된다.</li>
+      <li><b>레지던시 요건이 있으면 5.6은 아직 이르다.</b> Azure에서 Data Zone/Regional 배포가 필요한 컴플라이언스 워크로드는 현재 5.5 이하에서만 선택 가능. 5.6은 Global뿐이다(조회일 기준).</li>
+      <li><b>Fast mode는 이름이 두 개다.</b> 1P는 7/30부터 Fast mode(<code>service_tier:"fast"</code>, <code>"priority"</code> 하위호환), Azure 가격표는 여전히 Priority Processing 표기. 게이트웨이 설정·문서에서 두 명칭이 섞일 수 있다.</li>
+      <li><b>Sol만 보고 계열을 판단하지 말 것.</b> 인하 이후 Terra($2/$12)는 mini급 포지션인데 <b>한 세대 전 본체급인 gpt-5.4($2.50/$15)보다 싸다.</b> 세대 교체가 티어 강등 없이 단가를 끌어내린 케이스라, 5.4/5.5에 걸어둔 티어 라우팅은 다시 짤 가치가 있다.</li>
+    </ul>
+  </section>
+
+  <section data-block="src">
+    <h2><span class="n">06</span> 출처와 갱신 규칙</h2>
+    <ul class="clean">
+      <li><b>OpenAI</b> — developers.openai.com 가격 문서(Standard/Batch/Flex/Fast 표), 모델 문서(gpt-5.6-sol·terra·luna: 스펙·272K 규칙·캐시 쓰기 1.25×)</li>
+      <li><b>OpenAI 발표문</b> — "GPT-5.6" 런칭 포스트(GA·프리뷰 이력), "Advancing the price-performance frontier"(7/30 인하·Fast mode 개명·AWS 롤아웃)</li>
+      <li><b>Azure</b> — azure.microsoft.com Azure OpenAI 가격 페이지. <b>가격이 JS 렌더라 정적 수집이 안 돼 브라우저 실측</b>(2026-08-04, Global 배포 기준)</li>
+    </ul>
+    <div class="callout"><b>갱신 규칙 —</b> 이 문서의 Azure 값은 조회일 스냅샷이다. 7/30 인하의 Azure 반영이 확인되는 시점에 02·03 섹션을 갱신한다. 모든 수치는 원문 대조 없이는 쓰지 않는다.</div>
+  </section>
+
+  <div class="foot">
+    <span>analysis on page.cocy.io</span>
+    <span>GPT-5.6 Sol·Terra·Luna · Azure 실측 2026-08-04 · Luna 괴리 5×</span>
+  </div>
+</article>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# GPT-5.6 계열 가격 브리프 — Azure 기준 (Sol·Terra·Luna)
+
+> 출처: developers.openai.com 가격·모델 문서, OpenAI 발표문, Azure OpenAI 가격 페이지 브라우저 실측. 조회일 2026-08-04.
+> **한 줄 결론: 같은 모델, 두 가격표. 7/30 OpenAI 1P 인하(Luna -80%·Terra -20%)가 Azure엔 아직 미반영 — 지금 Azure의 Luna는 1P의 5배, Terra는 +25%.**
+
+## 계열 구성
+- gpt-5.6-sol = 프론티어(무접미 티어 대응, 별칭 gpt-5.6) / -terra = 밸런스(mini 대응) / -luna = 경량(nano 대응)
+- 3모델 공통: 1,050,000 ctx(입력 최대 922,000) · 출력 128k · 컷오프 2026-02-16 · reasoning 지원
+- 출시: 6/26 한정 프리뷰(Sol) → 2026-07-09 GA
+
+## 가격 (≤272K, $/MTok, 입력/출력)
+- Sol: 1P $5/$30 = Azure $5/$30 (동일)
+- Terra: 1P $2/$12 vs Azure $2.50/$15 (Azure +25%)
+- Luna: 1P $0.20/$1.20 vs Azure $1/$6 (Azure 5배)
+- Azure 5.6은 Global 배포만 게시(Data Zone·Regional 없음). 캐시 읽기 0.1×, 캐시 쓰기 1.25×(5.6 신설)
+
+## 가격정책 변동 이력
+- 2026-03-05: 이후 출시 모델 리전(데이터 레지던시) +10% (1P)
+- 2026-07-09: GA. 출시가 Sol $5/$30 · Terra $2.50/$15 · Luna $1/$6. 캐시 쓰기 유료화(1.25×) 신설
+- 2026-07-30: Luna -80% · Terra -20%, Sol 동결. Priority Processing → Fast mode 개명(2.5× 속도, 2× 가격, priority 하위호환). AWS 롤아웃 명시, Azure 언급 없음
+- 2026-08-04(조회): Azure 여전히 출시가 — 괴리 지속
+
+## 할증 구조
+- 롱컨텍스트: 입력 272K 초과 시 입력 2×·출력 1.5× — 초과분이 아니라 요청 전체 소급. 3모델 공통. (Claude 4.6+는 폐지, OpenAI는 유지)
+- Fast mode(Azure 표기 Priority): 2× — Sol·Terra 제공, Luna 미제공. 배수 변천 5.4=2× → 5.5=2.5× → 5.6=2×
+- 리전 데이터 레지던시(1P): +10% (2026-03-05 이후 모델)
+- Azure Data Zone: +10% 실측(5.5 $5→$5.50) — 단 5.6은 해당 옵션 자체가 아직 없음
+- Batch/Flex: 1P -50% (5.6 전 계열). Azure는 5.4 이하만 Batch 게시
+
+## 점검 항목
+- Luna 대량 워크로드: 현재 Azure 경유 시 5배 — 집행 전 반영 여부 재확인
+- 캐시: 일회성 프롬프트까지 캐시 쓰면 1.25× 순손실. 재사용 1회 이상이면 이득 구조 유지
+- 272K 문턱: 넘는 순간 요청 전체 재계산 (Sol 273K 입력 = $1.36 → $2.73)
+- 레지던시 요건 워크로드는 5.6에 Data Zone 없음 → 당분간 5.5 이하
+- Fast mode/Priority 명칭 혼재 주의 (1P 7/30 개명, Azure는 구명칭)
+
+## 출처
+- https://developers.openai.com/api/docs/pricing
+- https://developers.openai.com/api/docs/models/gpt-5.6-sol (terra·luna 동형)
+- https://openai.com/index/gpt-5-6/ · https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6/
+- https://azure.microsoft.com/en-us/pricing/details/azure-openai/ (브라우저 실측)
+- 분석 원문: https://page.cocy.io/gpt-5-6
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='gpt-5-6.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body>
+</html>
