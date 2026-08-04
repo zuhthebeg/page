@@ -15,7 +15,8 @@
 
 ## 분석 보고서 (cocy 직접 실측·조사)
 - [한국어는 정말 토큰을 더 먹는가](https://page.cocy.io/korean-token-cost): "한국어 AI 비용 2.59배" 보도를 Claude 공식 count_tokens API로 직접 실측 검증. Sonnet·Haiku 2.59배, Opus 1.72배 확인.
-- [프론티어 모델 인터페이스 지도](https://page.cocy.io/models): Messages·Chat Completions·Responses·Converse 인터페이스 계열 비교와 파라미터 축소 흐름(temperature 제거 → adaptive thinking/effort), 플랫폼별 접속 방식·캐싱 비용 구조. 모델 브리프 정본.
+- [프론티어 모델 인터페이스 지도](https://page.cocy.io/models): Messages·Chat Completions·Responses·Converse 인터페이스 계열 비교와 파라미터 축소 흐름(temperature 제거 → adaptive thinking/effort), 툴콜링 표기 차이, 플랫폼별 접속 방식·캐싱 비용 구조. 모델 브리프 정본.
+- [MCP 2026-07-28 스펙 브리프](https://page.cocy.io/mcp): 출시 이후 최대 개정 분석 — 무상태 코어(initialize·세션 폐지), MRTR, subscriptions/listen, ttlMs 캐시 힌트, Mcp-Method 헤더 라우팅, DCR→CIMD, Roots·Sampling·Logging 폐기(12개월 유예). 서버·클라이언트·게이트웨이별 마이그레이션 체크리스트.
 - [Claude Fable 5 분석](https://page.cocy.io/fable-5): Opus 위에 신설된 Mythos-class 티어 분석 — 무엇이 바뀌고 인터페이스는 왜 그대로인가.
 - [Claude Opus 5 API 브리프](https://page.cocy.io/opus-5): 4.8 대비 깨지는 변경 2개(thinking 기본 ON, disabled는 effort high 이하), 가격 동일, 캐시 최소길이 512토큰 하향, Bedrock·Foundry 미지원 기능 정리.
 - [Claude Sonnet 5 API 브리프](https://page.cocy.io/sonnet-5): 도입가 $2/$10은 2026-08-31까지(9/1부터 $3/$15), 새 토크나이저로 같은 텍스트가 약 30% 더 많은 토큰 — 단가 인상과 겹침. Opus 5와의 차이(thinking:disabled 허용범위·중간 system 메시지·web fetch) 정리.

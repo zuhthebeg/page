@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MCP 2026-07-28 — 세션을 버린 프로토콜 (스펙 개정 분석) · page.cocy.io</title>
+<meta name="description" content="MCP(Model Context Protocol) 2026-07-28 스펙 개정 분석: 무상태 코어(initialize·세션 폐지), MRTR, subscriptions/listen, ttlMs 캐싱, Mcp-Method 헤더 라우팅, DCR→CIMD 인증 개편, Roots·Sampling·Logging 폐기와 12개월 유예. 서버·클라이언트·게이트웨이 관점 마이그레이션 체크리스트." />
+<link rel="canonical" href="https://page.cocy.io/mcp/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="MCP 2026-07-28 — 세션을 버린 프로토콜 (분석)" />
+<meta property="og:description" content="출시 이후 최대 개정. MCP가 양방향 상태 프로토콜에서 무상태 request/response로 전환됐다. 무엇이 깨지고, 무엇을 준비해야 하는지 — 원문 체인지로그 기준 정리." />
+<meta property="og:url" content="https://page.cocy.io/mcp/" />
+<meta property="article:published_time" content="2026-08-04" />
+<meta property="article:modified_time" content="2026-08-04" />
+<meta name="author" content="cocy" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#3a5a78; --accent-2:#4f7ba0; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:60ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+b{font-weight:500;color:var(--ink)}
+code{font-family:var(--mono);font-size:.86em;background:rgba(58,90,120,.09);padding:.08em .4em;border-radius:4px;color:var(--accent)}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#f3f6f9);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.3rem;color:var(--ink);margin-top:.2rem;max-width:36ch}
+.score{font-family:var(--display);font-weight:600;font-size:2.1rem;color:var(--accent);line-height:1;white-space:nowrap}
+.score small{font-size:.95rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.mid{background:rgba(184,134,11,.14);color:var(--warn)}
+.tag.info{background:rgba(58,90,120,.13);color:var(--accent)}
+.tag.bad{background:rgba(168,68,58,.13);color:var(--bad)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.9rem}
+th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+tr.hl td{background:rgba(79,123,160,.09);font-weight:500}
+.b-good{color:var(--good)}.b-bad{color:var(--bad)}
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink)}
+.callout{background:#f3f6f9;border:1px solid var(--line-soft);border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout b{color:var(--accent)}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+.shape{font-family:var(--mono);font-size:.78rem;background:rgba(35,32,27,.045);border-radius:4px;padding:.6rem .8rem;margin:.6rem 0 1rem;color:var(--ink-soft);overflow-x:auto;white-space:pre}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(58,90,120,.3)}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+code{overflow-wrap:anywhere}
+@media (max-width:640px){
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table thead,table tbody,table tr{width:max-content;min-width:100%}
+}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"MCP 2026-07-28 — 세션을 버린 프로토콜 (스펙 개정 분석)","description":"MCP 2026-07-28 개정: 무상태 코어, MRTR, subscriptions/listen, 캐시 힌트, 헤더 라우팅, DCR→CIMD, Roots·Sampling·Logging 폐기. 원문 체인지로그 기준 마이그레이션 정리.","url":"https://page.cocy.io/mcp/","mainEntityOfPage":{"@type":"WebPage","@id":"https://page.cocy.io/mcp/"},"datePublished":"2026-08-04","dateModified":"2026-08-04","inLanguage":"ko","author":{"@type":"Person","name":"cocy","url":"https://page.cocy.io/cocy"},"publisher":{"@type":"Organization","name":"cocy.io","url":"https://cocy.io"},"isAccessibleForFree":true}</script>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Spec Brief · Model Context Protocol</div>
+    <h1>MCP 2026-07-28 — 세션을 버린 프로토콜</h1>
+    <p class="lead"><b>MCP</b>(Model Context Protocol) 스펙이 <b>2026-07-28 개정판</b>으로 정식 릴리스됐다. 메인테이너 스스로 "출시 이후 최대 개정"이라 부르는 판갈이로, 핵심은 하나다 — <b>양방향 상태(stateful) 프로토콜에서 무상태(stateless) request/response 프로토콜로의 전환.</b> 핸드셰이크와 세션이 사라졌고, 서버발 요청·알림·인증·확장 구조가 전부 그 위에서 다시 짜였다.</p>
+    <div class="meta">
+      <span><b>분석</b> page.cocy.io · 2026-08-04</span>
+      <span><b>스펙</b> 2026-07-28 (직전판 2025-11-25)</span>
+      <span><b>출처</b> modelcontextprotocol.io 스펙·체인지로그 + 공식 블로그 릴리스 노트</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">한 줄 결론</div>
+          <div class="v-main">MCP 서버가 "일반 HTTP 워크로드"가 됐다. 세션·스티키 라우팅·상시 스트림 전제가 전부 사라진다.</div>
+        </div>
+        <div class="score">12<small>개월 유예</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag info">무상태 코어</span>
+        <span class="tag info">MRTR</span>
+        <span class="tag info">캐시 힌트 ttlMs</span>
+        <span class="tag mid">Roots·Sampling·Logging 폐기</span>
+        <span class="tag mid">DCR → CIMD</span>
+        <span class="tag yes">✓ TS·Python·Go·C# SDK 당일 지원</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="glance">
+    <h2><span class="n">01</span> 한눈에 — 무엇이 바뀌었나</h2>
+    <table>
+      <thead><tr><th>영역</th><th>이전 (≤2025-11-25)</th><th>2026-07-28</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>연결 수립</td><td><code>initialize</code>/<code>initialized</code> 핸드셰이크</td><td><b>폐지.</b> 요청마다 <code>_meta</code>에 버전·능력 자기 기술. 사전 조회는 선택적 <code>server/discover</code></td></tr>
+        <tr class="hl"><td>세션</td><td><code>Mcp-Session-Id</code> 헤더, 연결별 상태</td><td><b>폐지.</b> 상태가 필요하면 툴이 명시적 핸들 발급 → 모델이 인자로 되넘김</td></tr>
+        <tr><td>서버발 요청</td><td><code>elicitation/create</code>·<code>sampling/createMessage</code>·<code>roots/list</code> (역방향 스트림 필요)</td><td><b>MRTR</b> — <code>resultType:"input_required"</code>로 반환, 클라이언트가 답을 붙여 재시도</td></tr>
+        <tr><td>변경 알림</td><td>HTTP GET 엔드포인트 + <code>resources/subscribe</code></td><td>단일 <code>subscriptions/listen</code> 스트림, 알림 타입별 opt-in</td></tr>
+        <tr><td>목록 응답</td><td>캐시 규약 없음, 순서 비보장</td><td><code>ttlMs</code>·<code>cacheScope</code> 필수 + 결정적 순서 권고</td></tr>
+        <tr><td>HTTP 라우팅</td><td>바디를 파싱해야 메서드 식별</td><td><code>Mcp-Method</code>·<code>Mcp-Name</code> 헤더 필수 — 게이트웨이가 헤더로 라우팅·인가</td></tr>
+        <tr><td>스트림 복구</td><td>SSE <code>Last-Event-ID</code> 재개·재전송</td><td><b>제거.</b> 끊기면 새 요청 ID로 재발행</td></tr>
+        <tr><td>장기 작업</td><td>실험적 Tasks (블로킹 <code>tasks/result</code>)</td><td>공식 확장 <code>io.modelcontextprotocol/tasks</code> — <code>tasks/get</code> 폴링 + <code>tasks/update</code></td></tr>
+        <tr><td>클라이언트 등록</td><td>DCR (RFC 7591)</td><td><b>DCR 폐기 예정</b> → CIMD(Client ID Metadata Documents)</td></tr>
+        <tr><td>폐기 정책</td><td>비공식</td><td>Active/Deprecated/Removed 수명주기 + <b>최소 12개월</b> 유예 공식화</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section data-block="stateless">
+    <h2><span class="n">02</span> 무상태 코어 — 요청이 스스로를 설명한다</h2>
+    <p>이번 개정의 심장. <code>initialize</code> 핸드셰이크와 프로토콜 세션이 사라지고, <b>모든 요청이 자기 기술(self-describing)</b>이 됐다. 프로토콜 버전·클라이언트 능력·클라이언트 정보가 요청의 <code>_meta</code>에 실려 다닌다.</p>
+    <div class="shape">POST /mcp HTTP/1.1
+MCP-Protocol-Version: 2026-07-28
+Mcp-Method: tools/call
+Mcp-Name: search
+
+{"jsonrpc":"2.0","id":1,"method":"tools/call",
+ "params":{"name":"search","arguments":{"q":"..."},
+  "_meta":{"io.modelcontextprotocol/clientInfo":{"name":"my-app","version":"1.0"}}}}</div>
+    <ul class="clean">
+      <li><b>어느 요청이든 어느 인스턴스에나 떨어질 수 있다.</b> 공유 저장소나 sticky session 없이 <b>라운드로빈 로드밸런서</b> 뒤에서 수평 확장. 이게 이번 개정의 존재 이유다.</li>
+      <li><b><code>server/discover</code>는 서버 필수, 클라이언트 선택.</b> 능력을 미리 알고 싶은 클라이언트만 호출한다. STDIO에서는 구버전 호환 탐지용으로도 쓴다. 버전 불일치는 <code>UnsupportedProtocolVersionError</code>.</li>
+      <li><b>상태는 사라진 게 아니라 자리를 옮겼다.</b> 스펙 권고: 호출 간 상태가 필요하면 <b>툴이 명시적 핸들을 발급</b>하고 모델이 인자로 되넘기게 하라. 전송 계층에 숨은 세션보다 이게 낫다 — <b>모델이 상태를 "볼 수 있어야" 툴 사이에 이어 쓸 수 있기 때문</b>이다.</li>
+      <li><b>같이 제거된 것들</b> — <code>ping</code>, <code>logging/setLevel</code>, <code>notifications/roots/list_changed</code>. 로그 레벨은 요청별 <code>_meta</code>의 <code>io.modelcontextprotocol/logLevel</code>로 지정하며, 이 필드가 없는 요청에 서버가 로그 알림을 보내는 것은 금지다.</li>
+    </ul>
+  </section>
+
+  <section data-block="mrtr">
+    <h2><span class="n">03</span> MRTR — 서버발 요청의 재설계</h2>
+    <p>툴 실행 중에 사용자 확인이나 추가 입력이 필요할 때, 기존에는 서버가 클라이언트로 <b>역방향 요청</b>(<code>elicitation/create</code> 등)을 보냈다 — 상시 열린 양방향 스트림이 전제였다. 무상태 코어에서는 불가능하므로 <b>Multi Round-Trip Requests</b> 패턴으로 바뀌었다.</p>
+    <ul class="clean">
+      <li><b>흐름:</b> 서버가 <code>resultType:"input_required"</code> + 필요한 질문 목록(<code>inputRequests</code>)을 <b>응답으로</b> 돌려준다 → 클라이언트가 답(<code>inputResponses</code>)을 붙여 <b>원래 요청을 재시도</b>한다.</li>
+      <li><b>모든 결과에 <code>resultType</code> 필드가 필수</b>가 됐다(<code>"complete"</code> / <code>"input_required"</code>). 구버전 서버가 필드를 생략하면 클라이언트는 <code>"complete"</code>로 간주해야 한다.</li>
+      <li><b>재시도 간 상관관계는 서버 몫.</b> 2025-11-25에서 도입됐던 elicitation 완료 알림·<code>elicitationId</code>는 한 버전 만에 제거됐다. 서버는 필요하면 <code>requestState</code>에 자체 식별자를 넣어 추적한다.</li>
+      <li><b>실전 의미:</b> "프로젝트 생성 전 비용 확인", "데이터 삭제 쿼리 승인" 같은 <b>실행 중 확인 UX</b>를 무상태 서버에서도 구현할 수 있다. 기존에 stateless로 운영하느라 elicitation을 포기했던 서버들이 이 패턴의 1차 수혜자다.</li>
+    </ul>
+    <div class="callout"><b>스트림 복구도 사라졌다 —</b> SSE <code>Last-Event-ID</code> 재개·메시지 재전송이 제거됐다. 응답 스트림이 끊기면 진행 중이던 요청은 유실이고, 클라이언트는 <b>새 요청 ID로 재발행</b>해야 한다. 재시도 로직을 "재개"가 아니라 "재실행" 전제로 다시 볼 것.</div>
+  </section>
+
+  <section data-block="notify">
+    <h2><span class="n">04</span> 알림과 구독 — 스트림 하나로 통합</h2>
+    <ul class="clean">
+      <li><b><code>subscriptions/listen</code> 단일 스트림.</b> 기존 HTTP GET 엔드포인트와 <code>resources/subscribe</code>/<code>unsubscribe</code>를 대체한다. 클라이언트가 원하는 알림 타입(<code>toolsListChanged</code>·<code>promptsListChanged</code>·<code>resourcesListChanged</code>·<code>resourceSubscriptions</code>)에 <b>명시적으로 opt-in</b>하고, 서버는 <code>subscriptionId</code>로 태깅해 내려보낸다.</li>
+      <li><b>요청 스코프 알림은 그대로 요청 응답 스트림에.</b> <code>notifications/progress</code>·<code>notifications/message</code>는 해당 요청의 응답 스트림으로 흐른다 — 구독 스트림과 섞이지 않는다.</li>
+      <li><b>관측성 표준화.</b> OpenTelemetry 트레이스 컨텍스트(<code>traceparent</code>·<code>tracestate</code>·<code>baggage</code>)를 <code>_meta</code>로 전파하는 규약이 문서화됐다. 게이트웨이 추적을 자체 규약으로 만들었다면 이쪽으로 수렴시킬 것.</li>
+    </ul>
+  </section>
+
+  <section data-block="cache">
+    <h2><span class="n">05</span> 캐싱과 라우팅 — 게이트웨이 친화 설계</h2>
+    <ul class="clean">
+      <li><b>목록 응답이 캐시 가능해졌다.</b> <code>tools/list</code>·<code>prompts/list</code>·<code>resources/list</code>·<code>resources/read</code>·<code>resources/templates/list</code> 응답에 <code>ttlMs</code>(신선도 힌트)와 <code>cacheScope</code>(<code>public</code>=공유 캐시 허용 / <code>private</code>) 필드가 <b>필수</b>다.</li>
+      <li><b>툴 목록은 결정적 순서로 반환 권고.</b> 이유가 명시돼 있다 — 클라이언트 캐싱과 <b>LLM 프롬프트 캐시 적중률</b>. 툴 정의는 프롬프트 접두사 맨 앞에 렌더되므로, 순서가 흔들리면 상위 모델 호출의 캐시가 통째로 깨진다. 프로토콜이 비용 구조까지 내려와 설계된 드문 사례.</li>
+      <li><b><code>Mcp-Method</code>·<code>Mcp-Name</code> 헤더 필수.</b> Streamable HTTP POST는 메서드·툴 이름을 헤더로 실어야 한다. 게이트웨이·레이트리미터·WAF가 <b>JSON 바디를 파싱하지 않고</b> 라우팅·인가·과금할 수 있다. 툴 파라미터에서 커스텀 헤더를 만드는 <code>x-mcp-header</code>도 추가됐다.</li>
+      <li><b>스키마 표현력 확장.</b> 툴의 <code>inputSchema</code>/<code>outputSchema</code>가 JSON Schema 2020-12 전체 키워드를 허용하게 풀렸고, <code>$ref</code> 해석 요건과 조합 키워드 리소스 상한이 함께 정의됐다.</li>
+      <li><b>에러 코드 정리.</b> 리소스 없음이 <code>-32002</code>→<code>-32602</code>(JSON-RPC 정합), 서버 에러 대역이 분할됐다 — <code>-32000~-32019</code>는 구현 정의, <code>-32020~-32099</code>는 MCP 스펙 예약.</li>
+    </ul>
+  </section>
+
+  <section data-block="auth">
+    <h2><span class="n">06</span> 인증 — DCR의 퇴장</h2>
+    <ul class="clean">
+      <li><b>Dynamic Client Registration(RFC 7591) 공식 폐기 예정.</b> 표준 경로는 <b>CIMD</b>(Client ID Metadata Documents)로 이동한다. DCR은 하위 호환으로만 유지.</li>
+      <li><b>RFC 9207 <code>iss</code> 검증.</b> 인가 서버는 응답에 <code>iss</code>를 포함해야 하고(SHOULD), 클라이언트는 코드 교환 전에 기록된 발급자와 대조 검증해야 한다(MUST) — 인가 서버 혼동(mix-up) 공격 차단.</li>
+      <li><b>자격증명은 발급자에 바인딩.</b> 발급자 식별자를 키로 저장하고, 다른 인가 서버에 재사용 금지, 인가 서버가 바뀌면 재등록.</li>
+      <li><b>데스크톱·CLI 앱의 고질병 수정.</b> DCR 시 <code>application_type</code>을 지정해 localhost 리다이렉트 거부(<code>redirect_uri</code> 에러) 문제를 해소했다.</li>
+      <li><b>EMA(Enterprise-Managed Authorization) 확장 stable.</b> 조직이 MCP 서버 인가를 중앙 관리하고, 사용자는 한 번의 로그인으로 연결된 서버 전체에 접근한다. Anthropic·Microsoft·Okta 등이 채택 발표.</li>
+    </ul>
+  </section>
+
+  <section data-block="ext">
+    <h2><span class="n">07</span> 확장 프레임워크 — 코어는 얇게</h2>
+    <p>이번 개정으로 "코어는 가볍게, 부가 기능은 확장으로"가 공식 구조가 됐다. <code>ClientCapabilities</code>/<code>ServerCapabilities</code>에 <code>extensions</code> 필드가 생겼고, 첫 공식 확장 라인업은 다음과 같다.</p>
+    <table>
+      <thead><tr><th>확장</th><th>역할</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td><b>Tasks</b> (<code>io.modelcontextprotocol/tasks</code>)</td><td>장기 실행 작업</td><td>실험 코어에서 확장으로 이동. 블로킹 <code>tasks/result</code> → <b><code>tasks/get</code> 폴링</b> + <code>tasks/update</code>(클라이언트→서버 입력). <code>tasks/list</code>는 제거, 서버가 요청 없이 작업 핸들을 돌려주는 것도 허용</td></tr>
+        <tr><td><b>MCP Apps</b></td><td>서버가 UI를 제공하는 앱 패턴</td><td>확장 프레임워크에 편입</td></tr>
+        <tr><td><b>EMA</b></td><td>엔터프라이즈 중앙 인가</td><td>stable 승격 (06 참조)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section data-block="deprecated">
+    <h2><span class="n">08</span> 폐기 목록 — 12개월 카운트다운</h2>
+    <p>공식 수명주기 정책(Active → Deprecated → Removed, <b>최소 12개월 유예</b>)이 이번에 도입됐고, 첫 폐기 대상이 지정됐다. 전부 아직 동작하지만 <b>신규 구현은 채택하지 말라</b>는 상태다.</p>
+    <table>
+      <thead><tr><th>폐기 대상</th><th>권고 이행 경로</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><b>Sampling</b> (<code>sampling/createMessage</code>)</td><td>LLM 프로바이더 API 직접 통합</td></tr>
+        <tr><td><b>Roots</b></td><td>디렉터리·파일을 툴 파라미터, 리소스 URI, 서버 설정으로 전달</td></tr>
+        <tr><td><b>Logging</b></td><td>stdio는 <code>stderr</code>, 그 외 OpenTelemetry</td></tr>
+        <tr><td>구 <b>HTTP+SSE 전송</b> (2025-03-26부터 비권장이던 것)</td><td>Streamable HTTP로 이행</td></tr>
+        <tr><td><code>includeContext</code>의 <code>"thisServer"</code>/<code>"allServers"</code></td><td>필드 생략 또는 <code>"none"</code></td></tr>
+        <tr><td><b>DCR</b> (RFC 7591 등록)</td><td>CIMD (06 참조)</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Sampling 폐기는 방향 선언이기도 하다 — "MCP 서버가 호스트의 모델을 빌려 쓴다"는 패턴을 접고, 모델 호출은 각자 프로바이더 API로 하라는 것. MCP는 도구·데이터 연결에 집중한다.</p>
+  </section>
+
+  <section data-block="adopt">
+    <h2><span class="n">09</span> 마이그레이션 체크리스트</h2>
+    <p><b>서버 구현자</b></p>
+    <ul class="clean">
+      <li><code>initialize</code>·세션 ID 의존 코드 제거, <code>server/discover</code> 구현(필수). 세션에 있던 상태는 툴 발급 핸들로 옮길 것.</li>
+      <li>목록 응답에 <code>ttlMs</code>·<code>cacheScope</code> 채우기 + 툴 목록 결정적 정렬.</li>
+      <li>elicitation을 쓰고 있다면 MRTR 패턴(<code>input_required</code> 반환)으로 재작성.</li>
+      <li>Roots·Sampling·Logging 사용처는 12개월 안에 권고 경로로 이행.</li>
+    </ul>
+    <p><b>클라이언트(호스트) 구현자</b></p>
+    <ul class="clean">
+      <li>모든 결과에서 <code>resultType</code> 분기 — <code>input_required</code>면 사용자 입력을 받아 원 요청 재시도.</li>
+      <li>알림이 필요하면 <code>subscriptions/listen</code>에 타입별 opt-in. 스트림 단절 시 "재개"가 아니라 <b>새 요청 ID로 재실행</b>.</li>
+      <li>OAuth: <code>iss</code> 검증 추가, 자격증명을 발급자 키로 저장, CIMD 지원 준비.</li>
+    </ul>
+    <p><b>게이트웨이·플랫폼 운영자</b></p>
+    <ul class="clean">
+      <li><code>Mcp-Method</code>·<code>Mcp-Name</code> 헤더 기반 라우팅·인가·미터링으로 전환 — 바디 파싱 제거.</li>
+      <li>MCP 서버를 일반 HTTP 서비스로 취급: sticky session 제거, 라운드로빈 LB, 수평 오토스케일.</li>
+      <li><code>cacheScope:"public"</code> 응답은 공유 캐시 적용 가능 — 툴 카탈로그 캐싱으로 upstream 프롬프트 캐시 안정화까지 연결.</li>
+    </ul>
+    <div class="callout"><b>SDK 준비 상태 —</b> TypeScript·Python·Go·C# 공식 SDK가 스펙 릴리스 당일 신버전을 지원하고, Rust는 베타다. 세션 식별자에 의존하던 코드가 마이그레이션 비용의 대부분이라고 메인테이너가 직접 언급했다.</div>
+  </section>
+
+  <section data-block="vendors">
+    <h2><span class="n">10</span> API 벤더 쪽 연결 통로</h2>
+    <p>MCP는 "클라이언트(호스트)↔툴 서버" 계약이고, 모델 API의 툴콜링은 "모델↔클라이언트" 계약이다. 두 계층을 잇는 통로는 벤더별로 이미 제품화돼 있다.</p>
+    <table>
+      <thead><tr><th>벤더</th><th>통로</th><th>제약</th></tr></thead>
+      <tbody>
+        <tr><td><b>Anthropic</b></td><td>Messages API <b>MCP 커넥터</b> — <code>mcp_servers[]</code> + <code>tools[{type:"mcp_toolset"}]</code>, beta 헤더 <code>mcp-client-2025-11-20</code></td><td><b>툴 호출만</b> 지원. HTTP 노출 서버만(STDIO 불가). Claude API·Claude Platform on AWS·Foundry(Hosted on Anthropic)에서 가용, <b>Bedrock·Vertex 미지원</b></td></tr>
+        <tr><td><b>OpenAI</b></td><td>Responses API 호스티드 <code>mcp</code> 툴</td><td>Responses 계열 전용</td></tr>
+        <tr><td><b>AWS</b></td><td>Bedrock AgentCore가 신 스펙(무상태 코어) 지원 발표. Tasks 확장은 AWS 기여</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p class="note">인터페이스 계열 전반의 툴콜링 표기 차이는 <a href="/models/">프론티어 모델 인터페이스 지도</a>의 04 섹션에 정리돼 있다.</p>
+  </section>
+
+  <section data-block="src">
+    <h2><span class="n">11</span> 출처와 갱신 규칙</h2>
+    <ul class="clean">
+      <li><b>스펙 체인지로그</b> — modelcontextprotocol.io/specification/2026-07-28/changelog (SEP 번호 포함 원문)</li>
+      <li><b>릴리스 노트</b> — blog.modelcontextprotocol.io "The 2026-07-28 Specification" · "Enterprise-Managed Auth" · SDK 베타 공지</li>
+      <li><b>Anthropic</b> — platform.claude.com MCP 커넥터 문서 (beta 헤더·가용 플랫폼·제약)</li>
+    </ul>
+    <div class="callout"><b>갱신 규칙 —</b> 이 페이지는 MCP 스펙 리비전 단위로 갱신한다. 모든 수치·규약은 조회일(2026-08-04) 기준 원문 대조이며, 다음 리비전이 나오면 이 문서가 그 차이를 다시 다룬다.</div>
+  </section>
+
+  <div class="foot">
+    <span>analysis on page.cocy.io</span>
+    <span>MCP spec 2026-07-28 · stateless core · 12-month deprecation window</span>
+  </div>
+</article>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# MCP 2026-07-28 — 세션을 버린 프로토콜 (스펙 개정 분석)
+
+> 출처: modelcontextprotocol.io 스펙 체인지로그 + 공식 블로그 릴리스 노트. 조회일 2026-08-04.
+> **한 줄 결론: MCP가 양방향 상태 프로토콜에서 무상태 request/response로 전환됐다(출시 이후 최대 개정, 직전판 2025-11-25). MCP 서버가 일반 HTTP 워크로드가 되어 세션·스티키 라우팅·상시 스트림 전제가 사라진다. 폐기 기능은 최소 12개월 유예.**
+
+## 핵심 변경
+- 무상태 코어: initialize/initialized 핸드셰이크·Mcp-Session-Id 폐지. 요청마다 _meta에 프로토콜 버전·클라이언트 능력·정보 자기 기술. 버전 불일치 = UnsupportedProtocolVersionError. 사전 조회는 server/discover(서버 구현 필수, 클라이언트 호출 선택)
+- 상태가 필요하면 툴이 명시적 핸들 발급 → 모델이 인자로 되넘김 (전송 계층 세션 금지 권고)
+- MRTR: 서버발 요청(elicitation/sampling/roots) 폐지 → 서버가 resultType:"input_required"+inputRequests 반환, 클라이언트가 inputResponses 붙여 원 요청 재시도. 모든 결과에 resultType 필수("complete"/"input_required")
+- SSE 재개 제거: Last-Event-ID 폐지. 스트림 끊기면 새 요청 ID로 재발행
+- 알림: HTTP GET·resources/subscribe → 단일 subscriptions/listen 스트림(타입별 opt-in). progress/message는 원 요청 응답 스트림 유지
+- 제거: ping, logging/setLevel, notifications/roots/list_changed. 로그 레벨은 요청별 _meta io.modelcontextprotocol/logLevel
+- 캐싱: tools/list 등 5종 응답에 ttlMs·cacheScope 필수, 툴 목록 결정적 순서 권고(LLM 프롬프트 캐시 적중률 명시)
+- 라우팅: Streamable HTTP POST에 Mcp-Method·Mcp-Name 헤더 필수, x-mcp-header 커스텀 헤더
+- 스키마: inputSchema/outputSchema에 JSON Schema 2020-12 전체 키워드 허용, $ref 해석 요건
+- 에러코드: 리소스 없음 -32002→-32602. -32000~-32019 구현 정의 / -32020~-32099 MCP 예약
+- OTel 트레이스 컨텍스트(traceparent/tracestate/baggage) _meta 전파 규약 문서화
+
+## 인증
+- DCR(RFC 7591) 공식 폐기 예정 → CIMD(Client ID Metadata Documents)
+- RFC 9207 iss: 인가 서버 SHOULD 포함, 클라이언트 MUST 검증 (mix-up 공격 차단)
+- 자격증명은 발급자 바인딩: 발급자 키로 저장, 재사용 금지, AS 변경 시 재등록
+- DCR 시 application_type 지정 (데스크톱/CLI localhost 리다이렉트 거부 해소)
+- EMA(Enterprise-Managed Authorization) 확장 stable — 중앙 인가+단일 로그인. Anthropic·Microsoft·Okta 채택
+
+## 확장 프레임워크
+- Capabilities에 extensions 필드. 공식 확장: Tasks(tasks/get 폴링+tasks/update, tasks/list 제거, 비요청 핸들 허용), MCP Apps, EMA
+
+## 폐기 (12개월 유예)
+- Sampling → LLM 프로바이더 API 직접 / Roots → 툴 파라미터·리소스 URI·설정 / Logging → stderr 또는 OTel
+- 구 HTTP+SSE 전송 → Streamable HTTP / includeContext thisServer·allServers → 생략 또는 "none" / DCR → CIMD
+
+## 마이그레이션 체크리스트
+- 서버: initialize·세션 제거, server/discover 구현, ttlMs/cacheScope 채우기, 결정적 정렬, elicitation→MRTR, 폐기 3종 이행
+- 클라이언트: resultType 분기, subscriptions/listen opt-in, 스트림 단절=재실행, iss 검증+발급자 키 저장+CIMD 준비
+- 게이트웨이: 헤더 기반 라우팅·미터링, sticky session 제거+라운드로빈, cacheScope:"public" 공유 캐시
+
+## API 벤더 연결
+- Anthropic: Messages MCP 커넥터(beta mcp-client-2025-11-20, mcp_servers+mcp_toolset). 툴 호출만·HTTP 서버만·Bedrock/Vertex 미지원
+- OpenAI: Responses 호스티드 mcp 툴
+- AWS: Bedrock AgentCore 신 스펙 지원, Tasks 확장은 AWS 기여
+- SDK: TS/Python/Go/C# 당일 지원, Rust 베타
+
+## 출처
+- https://modelcontextprotocol.io/specification/2026-07-28/changelog
+- https://blog.modelcontextprotocol.io/posts/2026-07-28/
+- https://platform.claude.com/docs/en/agents-and-tools/mcp-connector
+- 분석 원문: https://page.cocy.io/mcp
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='mcp-2026-07-28.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body>
+</html>
