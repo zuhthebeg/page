@@ -392,6 +392,23 @@
         `以及和這位藝人或成員有關的地點。`,
       ].filter(Boolean).join(' ');
     }
+    if (LANG === 'es') {
+      return past ? [
+        `Fui a un concierto: ${show}, el ${date}.`,
+        place ? `Lugar: ${place}.` : `Busca dónde se realizó este concierto y usa esa ciudad como base.`,
+        from ? `Viajé desde ${from}.` : '',
+        `Fueron 3 días / 2 noches: llegué el día antes del show y me fui al día siguiente.`,
+        `Escríbelo como un viaje que ya hice: cómo llegué al lugar del concierto, dónde comer cerca,`,
+        `y lugares relacionados con el artista o sus integrantes que pude haber visitado.`,
+      ].filter(Boolean).join(' ') : [
+        `Voy a un concierto: ${show}, el ${date}.`,
+        place ? `Lugar: ${place}.` : `Busca dónde se realiza este concierto y usa esa ciudad como base.`,
+        from ? `Viajo desde ${from}.` : '',
+        `Planea 3 días / 2 noches: llegar el día antes del show y salir al día siguiente.`,
+        `Incluye cómo llegar al lugar del concierto, dónde comer cerca,`,
+        `y lugares relacionados con el artista o sus integrantes.`,
+      ].filter(Boolean).join(' ');
+    }
     return past ? [
       `${date}에 ${show} 공연을 보러 다녀왔어.`,
       place ? `공연장: ${place}.` : `이 공연이 어디에서 열렸는지 찾아서 그 도시 기준으로 정리해줘.`,
