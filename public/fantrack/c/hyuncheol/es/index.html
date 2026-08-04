@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/hyuncheol/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/hyuncheol/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/hyuncheol/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/hyuncheol/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Hyun Cheol — FanTrack">
+<meta property="og:description" content="10 trabajos de Hyun Cheol — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/hyuncheol/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Hyun Cheol","alternateName":["현철","Hyun Cheol"],"url":"https://page.cocy.io/fantrack/c/hyuncheol/es/","inLanguage":"es","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"정원수엔터테인먼트"},"foundingDate":"1969","subjectOf":[{"@type":"TVSeries","name":"밤의 이야기쇼","datePublished":"1997"},{"@type":"TVSeries","name":"밤과 음악사이","datePublished":"1996"},{"@type":"TVSeries","name":"대추나무 사랑걸렸네","datePublished":"1994"},{"@type":"TVSeries","name":"밤으로 가는 쇼","datePublished":"1993"},{"@type":"TVSeries","name":"자니 윤 쇼","datePublished":"1990"},{"@type":"MusicRecording","name":"보고싶은 여인","url":"https://www.youtube.com/watch?v=7-MTMSOjUs8"},{"@type":"MusicRecording","name":"봉선화 연정","url":"https://www.youtube.com/watch?v=bQciLQ4bq6A"},{"@type":"MusicRecording","name":"Tears of a Man","url":"https://www.youtube.com/watch?v=dg-4JCpWaXA"},{"@type":"MusicRecording","name":"싫다 싫어","url":"https://www.youtube.com/watch?v=sDiKQpjUjZI"},{"@type":"MusicRecording","name":"사랑은 나비인가봐","url":"https://www.youtube.com/watch?v=m5jKZK6HUYM"}]}</script>
 </head>
 <body>
@@ -158,7 +168,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

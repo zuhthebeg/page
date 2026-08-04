@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/leechanwon/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/leechanwon/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/leechanwon/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/leechanwon/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Lee Chan Won — FanTrack">
+<meta property="og:description" content="12 trabajos de Lee Chan Won — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/leechanwon/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Lee Chan Won","alternateName":["이찬원","Lee Chan Won"],"url":"https://page.cocy.io/fantrack/c/leechanwon/es/","inLanguage":"es","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"티엔엔터테인먼트"},"foundingDate":"2020","subjectOf":[{"@type":"TVSeries","name":"선미의 SHOW 터뷰","datePublished":"2022"},{"@type":"TVSeries","name":"SBS","datePublished":"2021"},{"@type":"TVSeries","name":"KBS","datePublished":"2020"},{"@type":"TVSeries","name":"MBC","datePublished":"2020"},{"@type":"TVSeries","name":"CBS","datePublished":"2020"},{"@type":"TVSeries","name":"TBS","datePublished":"2020"},{"@type":"TVSeries","name":"BBS불교방송","datePublished":"2020"},{"@type":"MusicRecording","name":"이찬원 오늘은 왠지","url":"https://www.youtube.com/watch?v=AIh7UA7UoYI"},{"@type":"MusicRecording","name":"참 좋은 날","url":"https://www.youtube.com/watch?v=SElEK7mwca4"},{"@type":"MusicRecording","name":"빛나는 별","url":"https://www.youtube.com/watch?v=YyLMBmcFI64"},{"@type":"MusicRecording","name":"낙엽처럼 떨어진 너와 나","url":"https://www.youtube.com/watch?v=wPyqPlP2lKQ"},{"@type":"MusicRecording","name":"시월의 시","url":"https://www.youtube.com/watch?v=-4KbiCFkJw0"}]}</script>
 </head>
 <body>
@@ -160,7 +170,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

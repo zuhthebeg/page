@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/lucy/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/lucy/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/lucy/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/lucy/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="루시 — FanTrack">
+<meta property="og:description" content="루시 출연·활동 정보 24건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/lucy/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"루시","alternateName":["루시","Lucy"],"url":"https://page.cocy.io/fantrack/c/lucy/","inLanguage":"ko","affiliation":{"@type":"Organization","name":"미스틱스토리"},"foundingDate":"2020-05-08","subjectOf":[{"@type":"MusicAlbum","name":"Lucy Plays Wanton Witch","datePublished":"2022"},{"@type":"MusicAlbum","name":"Plasma","datePublished":"2022"},{"@type":"MusicAlbum","name":"Dyscamupia","datePublished":"2019"},{"@type":"MusicAlbum","name":"The Lotus Eaters II","datePublished":"2018"},{"@type":"MusicAlbum","name":"Tarkomania","datePublished":"2018"},{"@type":"MusicAlbum","name":"WSNWG001","datePublished":"2018"},{"@type":"MusicAlbum","name":"Eat, Drink, Shop, Relax","datePublished":"2016"},{"@type":"MusicAlbum","name":"Self Mythology","datePublished":"2016"},{"@type":"MusicAlbum","name":"The Lotus Eaters","datePublished":"2016"},{"@type":"MusicAlbum","name":"War Lullaby","datePublished":"2015"},{"@type":"MusicAlbum","name":"Churches Schools and Guns Remixed","datePublished":"2014"},{"@type":"MusicAlbum","name":"Churches Schools and Guns","datePublished":"2014"},{"@type":"MusicAlbum","name":"[untitled]","datePublished":"2013"},{"@type":"MusicAlbum","name":"Banality of Evil","datePublished":"2012"},{"@type":"MusicAlbum","name":"Finnegan","datePublished":"2012"},{"@type":"MusicAlbum","name":"Wordplay for Working Bees","datePublished":"2011"},{"@type":"MusicAlbum","name":"Monad X","datePublished":"2011"},{"@type":"MusicAlbum","name":"Gmork / So the Nothing Grows Stronger","datePublished":"2010"},{"@type":"MusicAlbum","name":"Kalachakra EP","datePublished":"2010"},{"@type":"MusicRecording","name":"조깅","url":"https://www.youtube.com/watch?v=8JlNgny1GKQ"},{"@type":"MusicRecording","name":"Falling Flower","url":"https://www.youtube.com/watch?v=pcxJMIVfyEg"},{"@type":"MusicRecording","name":"So What","url":"https://www.youtube.com/watch?v=mFETJWbutgM"},{"@type":"MusicRecording","name":"Some Day in the 21century","url":"https://www.youtube.com/watch?v=NrmLcwGjovc"},{"@type":"MusicRecording","name":"Flare","url":"https://www.youtube.com/watch?v=RsXljLNsm74"}]}</script>
 </head>
 <body>
@@ -172,7 +182,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

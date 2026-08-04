@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/rain/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/rain/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/rain/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/rain/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="RAIN — FanTrack">
+<meta property="og:description" content="36 trabajos de RAIN — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/rain/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"RAIN","alternateName":["비","RAIN"],"url":"https://page.cocy.io/fantrack/c/rain/es/","inLanguage":"es","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"레인컴퍼니"},"foundingDate":"1998","subjectOf":[{"@type":"TVSeries","name":"Be Mbitious","datePublished":"2022"},{"@type":"MusicAlbum","name":"PIECES by RAIN","datePublished":"2021"},{"@type":"TVSeries","name":"Knowing Bros","datePublished":"2021"},{"@type":"TVSeries","name":"Show! Music Core","datePublished":"2021"},{"@type":"TVSeries","name":"아침마당","datePublished":"2021"},{"@type":"TVSeries","name":"Golden Oldies","datePublished":"2021"},{"@type":"TVSeries","name":"너의 목소리가 보여","datePublished":"2021"},{"@type":"TVSeries","name":"Omniscient Interfering View","datePublished":"2021"},{"@type":"TVSeries","name":"Immortal Songs","datePublished":"2021"},{"@type":"TVSeries","name":"2TV 생생정보","datePublished":"2021"},{"@type":"TVSeries","name":"수미산장","datePublished":"2021"},{"@type":"TVSeries","name":"You Quiz on the Block","datePublished":"2021"},{"@type":"TVSeries","name":"DoReMi Market","datePublished":"2021"},{"@type":"TVSeries","name":"놀면 뭐하니? - 여름 혼성그룹","datePublished":"2020"},{"@type":"TVSeries","name":"I-LAND","datePublished":"2020"},{"@type":"TVSeries","name":"히든싱어 6","datePublished":"2020"},{"@type":"TVSeries","name":"My Little Old Boy","datePublished":"2020"},{"@type":"MusicAlbum","name":"MY LIFE愛","datePublished":"2017"},{"@type":"TVSeries","name":"The Unit: Idol Rebooting Project","datePublished":"2017"},{"@type":"MusicAlbum","name":"Rain Effect","datePublished":"2014"},{"@type":"TVSeries","name":"디펜스 리포트 2012","datePublished":"2012"},{"@type":"MusicAlbum","name":"Back to the Basic","datePublished":"2010"},{"@type":"TVSeries","name":"날려라 홈런왕","datePublished":"2010"},{"@type":"MusicAlbum","name":"Rainism","datePublished":"2008"},{"@type":"TVSeries","name":"대단한 도전","datePublished":"2007"},{"@type":"MusicAlbum","name":"Eternal Rain","datePublished":"2006"},{"@type":"MusicAlbum","name":"Rain's World","datePublished":"2006"},{"@type":"MusicAlbum","name":"It's Raining","datePublished":"2004"},{"@type":"TVSeries","name":"Inkigayo","datePublished":"2004"},{"@type":"MusicAlbum","name":"How to Avoid the Sun","datePublished":"2003"},{"@type":"MusicAlbum","name":"Bad Guy","datePublished":"2002"},{"@type":"MusicRecording","name":"MAGNETIC","url":"https://www.youtube.com/watch?v=mReq0PlE7bU"},{"@type":"MusicRecording","name":"Love Story Full v","url":"https://www.youtube.com/watch?v=2xnpFI3PLYs"},{"@type":"MusicRecording","name":"Love Story","url":"https://www.youtube.com/watch?v=FPgIUggsQqc"},{"@type":"MusicRecording","name":"GANG","url":"https://www.youtube.com/watch?v=8B8lFCJOerM"},{"@type":"MusicRecording","name":"GANG 깡","url":"https://www.youtube.com/watch?v=PNx_Pwq87qk"}]}</script>
 </head>
 <body>
@@ -184,7 +194,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

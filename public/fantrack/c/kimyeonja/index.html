@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/kimyeonja/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/kimyeonja/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/kimyeonja/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/kimyeonja/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="김연자 — FanTrack">
+<meta property="og:description" content="김연자 출연·활동 정보 6건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/kimyeonja/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"김연자","alternateName":["김연자","Kim Yeon-ja","金蓮子"],"url":"https://page.cocy.io/fantrack/c/kimyeonja/","inLanguage":"ko","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"초이크리에이티브랩"},"foundingDate":"1976","subjectOf":[{"@type":"TVSeries","name":"쌉니다 천리마마트","datePublished":"2019"},{"@type":"MusicAlbum","name":"아모르 파티","datePublished":"2013"},{"@type":"MusicAlbum","name":"恋歌よ、甦れ！ ～浜圭介を歌う～","datePublished":"1995"},{"@type":"MusicRecording","name":"Amor fati","url":"https://www.youtube.com/watch?v=z4lGgzEya-o"},{"@type":"MusicRecording","name":"10분 내로","url":"https://www.youtube.com/watch?v=rKmS-TH9DBc"},{"@type":"MusicRecording","name":"김연자","url":"https://www.youtube.com/watch?v=QdJ0ZRMm2No"}]}</script>
 </head>
 <body>
@@ -154,7 +164,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

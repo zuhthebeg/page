@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/superjunior-de/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/superjunior-de/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/superjunior-de/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/superjunior-de/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Super Junior-D&amp;E — FanTrack">
+<meta property="og:description" content="Super Junior-D&amp;E 的出演與作品 36 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/superjunior-de/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Super Junior-D&E","alternateName":["슈퍼주니어-D&E","SUPER JUNIOR-D&E","Super Junior-D&E"],"url":"https://page.cocy.io/fantrack/c/superjunior-de/tw/","inLanguage":"zh-Hant","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"SM 엔터테인먼트"},"foundingDate":"2011-12-16","subjectOf":[{"@type":"MusicEvent","name":"SUPER JUNIOR-D&E 2026 JAPAN FAN PARTY [ArcaDE","datePublished":"2026"},{"@type":"MusicEvent","name":"SUPER JUNIOR-D&E 2025 FANMEETING \"&-STATION\"","datePublished":"2025"},{"@type":"MusicEvent","name":"2025 SUPER JUNIOR D&E FAN PARTY [D&E Home Coming","datePublished":"2025"},{"@type":"MusicAlbum","name":"606","datePublished":"2024"},{"@type":"MusicAlbum","name":"Inevitable","datePublished":"2024"},{"@type":"MusicEvent","name":"Departure Japan Tour","datePublished":"2024"},{"@type":"MusicEvent","name":"Eclipse World Tour","datePublished":"2024"},{"@type":"MusicAlbum","name":"You&Me","datePublished":"2024"},{"@type":"MusicEvent","name":"2024 D&E FANMEETING \"DEar To...\"","datePublished":"2024"},{"@type":"MusicEvent","name":"2024 D&E FANMEETING 〈DE-code","datePublished":"2024"},{"@type":"MusicEvent","name":"SUPER JUNIOR-D&E 2024 JAPAN 1st FANMEETING ~'&'MATION~","datePublished":"2024"},{"@type":"MusicEvent","name":"2024 SUPER JUNIOR-D&E FAN PARTY 〈Jingle Jingle!","datePublished":"2024"},{"@type":"MusicEvent","name":"D&E World Tour Fancon \"DElight Party\"","datePublished":"2023"},{"@type":"MusicEvent","name":"2023 D&E WORLD TOUR FANCON [DElight Party","datePublished":"2023"},{"@type":"MusicAlbum","name":"Countdown","datePublished":"2021"},{"@type":"MusicAlbum","name":"Bad Blood","datePublished":"2020"},{"@type":"MusicAlbum","name":"Wings","datePublished":"2020"},{"@type":"MusicAlbum","name":"D&E DANGER","datePublished":"2019"},{"@type":"MusicEvent","name":"The D&E","datePublished":"2019"},{"@type":"MusicAlbum","name":"D&E STYLE","datePublished":"2018"},{"@type":"MusicAlbum","name":"D&E 'Bout You","datePublished":"2018"},{"@type":"MusicEvent","name":"Super Junior-D&E Japan Tour 2018 ~Style~","datePublished":"2018"},{"@type":"MusicEvent","name":"SUPER JUNIOR-D&E FAN MEETING \"Hello Again\"","datePublished":"2017"},{"@type":"MusicAlbum","name":"The Beat Goes On","datePublished":"2015"},{"@type":"MusicAlbum","name":"Let's Get It On","datePublished":"2015"},{"@type":"MusicAlbum","name":"Present","datePublished":"2015"},{"@type":"MusicEvent","name":"Super Junior D&E The 2nd Japan Tour","datePublished":"2015"},{"@type":"MusicEvent","name":"Super Junior D&E Asia Tour 2015 -Present-","datePublished":"2015"},{"@type":"MusicEvent","name":"SUPER JUNIOR D&E SHOWCASE \"The Beat Goes On\"","datePublished":"2015"},{"@type":"MusicAlbum","name":"Ride Me","datePublished":"2014"},{"@type":"MusicAlbum","name":"Skeleton","datePublished":"2014"},{"@type":"MusicEvent","name":"Super Junior D&E The 1st Japan Tour 2014","datePublished":"2014"},{"@type":"MusicAlbum","name":"I Wanna Dance","datePublished":"2013"},{"@type":"MusicAlbum","name":"Still You","datePublished":"2013"},{"@type":"MusicAlbum","name":"Oppa, Oppa","datePublished":"2012"},{"@type":"MusicAlbum","name":"Oppa, Oppa","datePublished":"2011"}]}</script>
 </head>
 <body>
@@ -184,7 +194,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

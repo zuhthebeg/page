@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/okjoohyun/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/okjoohyun/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/okjoohyun/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/okjoohyun/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Ok Joo-hyun — FanTrack">
+<meta property="og:description" content="20 trabajos de Ok Joo-hyun — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/okjoohyun/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Ok Joo-hyun","alternateName":["옥주현","Ok Joo-hyun","玉珠鉉"],"url":"https://page.cocy.io/fantrack/c/okjoohyun/es/","inLanguage":"es","jobTitle":"Singer","foundingDate":"1998-05-12","subjectOf":[{"@type":"TVSeries","name":"밥블레스유 2","datePublished":"2020"},{"@type":"TVSeries","name":"팬텀싱어3","datePublished":"2020"},{"@type":"MusicEvent","name":"Ok Joo-hyun Musical Concert VOKAL 2","datePublished":"2018"},{"@type":"MusicEvent","name":"Ok Joo-hyun 20th Debut Anniversary Concert TO FLY HIGHER (Solo Concert)","datePublished":"2018"},{"@type":"TVSeries","name":"King of Mask Singer","datePublished":"2017"},{"@type":"TVSeries","name":"Knowing Bros","datePublished":"2017"},{"@type":"MusicEvent","name":"Ok Joo-hyun Musical Debut 10th Anniversary Concert VOKAL","datePublished":"2016"},{"@type":"MusicEvent","name":"Ok Joo-hyun 1st Solo Concert OCK JOO HYUN 1st CONCERT (Solo Concert)","datePublished":"2011"},{"@type":"TVSeries","name":"I Am a Singer","datePublished":"2011"},{"@type":"TVSeries","name":"The Musical","datePublished":"2011"},{"@type":"TVSeries","name":"옥주현의 가요광장","datePublished":"2010"},{"@type":"MusicAlbum","name":"Remind","datePublished":"2008"},{"@type":"MusicAlbum","name":"L'Ordeur Original","datePublished":"2004"},{"@type":"MusicAlbum","name":"Nan","datePublished":"2003"},{"@type":"TVSeries","name":"별이 빛나는 밤에","datePublished":"2002"},{"@type":"MusicRecording","name":"지혈","url":"https://www.youtube.com/watch?v=0t073bifDAM"},{"@type":"MusicRecording","name":"옥주현","url":"https://www.youtube.com/watch?v=_87VYZpOGec"},{"@type":"MusicRecording","name":"I Don’t Cry","url":"https://www.youtube.com/watch?v=5KHWL4bpW5E"},{"@type":"MusicRecording","name":"Ich Gehör Nur Mir","url":"https://www.youtube.com/watch?v=DKlA1tqnwjM"},{"@type":"MusicRecording","name":"제목 없는 번호","url":"https://www.youtube.com/watch?v=nliW-ENc9tg"}]}</script>
 </head>
 <body>
@@ -168,7 +178,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

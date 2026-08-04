@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/taejina/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/taejina/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/taejina/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/taejina/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Tae Jin-ah — FanTrack">
+<meta property="og:description" content="42 trabajos de Tae Jin-ah — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/taejina/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Tae Jin-ah","alternateName":["태진아","Tae Jin-ah","太真兒"],"url":"https://page.cocy.io/fantrack/c/taejina/es/","inLanguage":"es","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"진아엔터테인먼트"},"foundingDate":"1972","subjectOf":[{"@type":"TVSeries","name":"수상한 그녀","datePublished":"2024"},{"@type":"TVSeries","name":"No Matter What","datePublished":"2020"},{"@type":"TVSeries","name":"저녁 같이 드실래요?","datePublished":"2020"},{"@type":"TVSeries","name":"Brilliant Heritage","datePublished":"2020"},{"@type":"MusicAlbum","name":"Tae Jin-ah Life Act 2","datePublished":"2016"},{"@type":"TVSeries","name":"Woman with a Suitcase","datePublished":"2016"},{"@type":"TVSeries","name":"My Precious You","datePublished":"2008"},{"@type":"MusicAlbum","name":"2006 Tae Jin-ah Ajumma","datePublished":"2006"},{"@type":"TVSeries","name":"단팥빵","datePublished":"2004"},{"@type":"TVSeries","name":"마주보며 사랑하며","datePublished":"1997"},{"@type":"MusicAlbum","name":"The Woman Who Doesn't Even Look in the Mirror / I Want to Fall Asleep Beside You","datePublished":"1989"},{"@type":"TVSeries","name":"코미디 세상만사"},{"@type":"TVSeries","name":"이소라의 프로포즈"},{"@type":"TVSeries","name":"TV는 사랑을 싣고"},{"@type":"TVSeries","name":"가족오락관"},{"@type":"TVSeries","name":"Korea Sings"},{"@type":"TVSeries","name":"상상플러스 : 세대공감 올드&뉴"},{"@type":"TVSeries","name":"전파견문록"},{"@type":"TVSeries","name":"행복주식회사"},{"@type":"TVSeries","name":"세바퀴"},{"@type":"TVSeries","name":"성인가요콘서트"},{"@type":"TVSeries","name":"뉴스N이슈 : 이슈&피플"},{"@type":"TVSeries","name":"뉴스 12 : 이슈&피플"},{"@type":"TVSeries","name":"코미디 하우스"},{"@type":"TVSeries","name":"박원숙의 같이 삽시다"},{"@type":"TVSeries","name":"King of Mask Singer"},{"@type":"TVSeries","name":"Problem Child in House"},{"@type":"TVSeries","name":"Hangout with Yoo"},{"@type":"TVSeries","name":"편애중계"},{"@type":"TVSeries","name":"생방송 행복드림 로또 6/45"},{"@type":"TVSeries","name":"아바드림"},{"@type":"TVSeries","name":"라디오스타"},{"@type":"TVSeries","name":"미쓰쓰리랑"},{"@type":"TVSeries","name":"태진아 송선경의 가요 리서치"},{"@type":"TVSeries","name":"태진아의 트로트 하이웨이"},{"@type":"TVSeries","name":"태진아 트로트쇼"},{"@type":"TVSeries","name":"태진아 쇼쇼쇼"},{"@type":"MusicRecording","name":"동반자","url":"https://www.youtube.com/watch?v=3UO5kuMX-KY"},{"@type":"MusicRecording","name":"옥경이","url":"https://www.youtube.com/watch?v=SX9kRV9ZJqw"},{"@type":"MusicRecording","name":"동반자","url":"https://www.youtube.com/watch?v=9RTvvdWklCA"},{"@type":"MusicRecording","name":"사랑은아무나하나","url":"https://www.youtube.com/watch?v=AS_-EpKw3hs"},{"@type":"MusicRecording","name":"태진아 가버린사랑","url":"https://www.youtube.com/watch?v=mRoC8m0Z4qU"}]}</script>
 </head>
 <body>
@@ -190,7 +200,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

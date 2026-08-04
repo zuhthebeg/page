@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/nilo/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/nilo/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/nilo/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/nilo/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="닐로 — FanTrack">
+<meta property="og:description" content="닐로 출연·활동 정보 5건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/nilo/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"닐로","alternateName":["닐로","Nilo"],"url":"https://page.cocy.io/fantrack/c/nilo/","inLanguage":"ko","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"레이벡스"},"foundingDate":"2015","subjectOf":[{"@type":"MusicRecording","name":"넋두리","url":"https://www.youtube.com/watch?v=0Wz530eWIQo"},{"@type":"MusicRecording","name":"Fool","url":"https://www.youtube.com/watch?v=AWRJ3GC6mds"},{"@type":"MusicRecording","name":"지나오다","url":"https://www.youtube.com/watch?v=dkcQt5L9vDY"},{"@type":"MusicRecording","name":"미운 날","url":"https://www.youtube.com/watch?v=mo_02ST3_cY"},{"@type":"MusicRecording","name":"닐로 _바보","url":"https://www.youtube.com/watch?v=I6c4DLdioFo"}]}</script>
 </head>
 <body>
@@ -153,7 +163,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

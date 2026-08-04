@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/leemoonsae/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/leemoonsae/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/leemoonsae/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/leemoonsae/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="李文世 — FanTrack">
+<meta property="og:description" content="李文世 的出演與作品 24 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/leemoonsae/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"李文世","alternateName":["이문세","Lee Moon Sae","李文世"],"url":"https://page.cocy.io/fantrack/c/leemoonsae/tw/","inLanguage":"zh-Hant","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"케이문에프엔디"},"foundingDate":"1978","subjectOf":[{"@type":"TVSeries","name":"안녕하세요 이문세입니다","datePublished":"2024"},{"@type":"MusicAlbum","name":"Between Us","datePublished":"2018"},{"@type":"MusicAlbum","name":"New Direction","datePublished":"2015"},{"@type":"TVSeries","name":"오늘아침 이문세입니다","datePublished":"2004"},{"@type":"MusicAlbum","name":"Red Underwear（紅色內衣）","datePublished":"2002"},{"@type":"MusicAlbum","name":"Chapter 13","datePublished":"2001"},{"@type":"MusicAlbum","name":"人與樹以及休息","datePublished":"1999"},{"@type":"MusicAlbum","name":"Sometimes","datePublished":"1998"},{"@type":"TVSeries","name":"2시의 데이트","datePublished":"1997"},{"@type":"MusicAlbum","name":"花舞","datePublished":"1996"},{"@type":"MusicAlbum","name":"如同一張舊照片","datePublished":"1993"},{"@type":"MusicAlbum","name":"李文世第7張專輯 [VII]","datePublished":"1991"},{"@type":"MusicAlbum","name":"That Was Me","datePublished":"1989"},{"@type":"MusicAlbum","name":"Standing Under the Shade of a Roadside Tree","datePublished":"1988"},{"@type":"MusicAlbum","name":"李文世第4輯","datePublished":"1987"},{"@type":"MusicAlbum","name":"我還不知道呢 / 口哨","datePublished":"1985"},{"@type":"TVSeries","name":"燦多的星光閃耀的夜晚","datePublished":"1985"},{"@type":"TVSeries","name":"가요데이트","datePublished":"1984"},{"@type":"TVSeries","name":"세븐틴","datePublished":"1978"},{"@type":"MusicRecording","name":"Farewell My Love )","url":"https://www.youtube.com/watch?v=TuIHSq-sOLU"},{"@type":"MusicRecording","name":"Early Morning Dis","url":"https://www.youtube.com/watch?v=erVh18XKxFg"},{"@type":"MusicRecording","name":"Lee Moonsae _ Spring Breeze","url":"https://www.youtube.com/watch?v=smVvQVCtka4"},{"@type":"MusicRecording","name":"소녀","url":"https://www.youtube.com/watch?v=sclOqrS8WNQ"},{"@type":"MusicRecording","name":"깊은 밤을 날아서","url":"https://www.youtube.com/watch?v=mH5PurEoDOc"}]}</script>
 </head>
 <body>
@@ -172,7 +182,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

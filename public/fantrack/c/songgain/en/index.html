@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/songgain/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/songgain/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/songgain/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/songgain/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Song Ga In — FanTrack">
+<meta property="og:description" content="8 works by Song Ga In — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/songgain/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Song Ga In","alternateName":["송가인","Song Ga In","宋歌人"],"url":"https://page.cocy.io/fantrack/c/songgain/en/","inLanguage":"en","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"가인달엔터테인먼트"},"foundingDate":"2012","subjectOf":[{"@type":"MusicAlbum","name":"GAIN;DAL","datePublished":"2025"},{"@type":"MusicAlbum","name":"Dream (夢)","datePublished":"2020"},{"@type":"TVSeries","name":"Zombie Detective","datePublished":"2020"},{"@type":"MusicRecording","name":"Always","url":"https://www.youtube.com/watch?v=SzAWhfQrdp0"},{"@type":"MusicRecording","name":"My Love","url":"https://www.youtube.com/watch?v=5j_xIz-Dprc"},{"@type":"MusicRecording","name":"사랑아 사랑아 사랑을 처방해 드립니다 O","url":"https://www.youtube.com/watch?v=vtq4W8bp8B0"},{"@type":"MusicRecording","name":"무명배우","url":"https://www.youtube.com/watch?v=SF_6sB9fjCs"},{"@type":"MusicRecording","name":"I Like Trot )","url":"https://www.youtube.com/watch?v=hwN4E5_t50Q"}]}</script>
 </head>
 <body>
@@ -156,7 +166,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

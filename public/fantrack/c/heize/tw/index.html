@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/heize/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/heize/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/heize/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/heize/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Heize — FanTrack">
+<meta property="og:description" content="Heize 的出演與作品 22 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/heize/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Heize","alternateName":["헤이즈","Heize"],"url":"https://page.cocy.io/fantrack/c/heize/tw/","inLanguage":"zh-Hant","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"무소속"},"foundingDate":"2014","subjectOf":[{"@type":"MusicAlbum","name":"Never Meant to Be","datePublished":"2026"},{"@type":"MusicAlbum","name":"LOVE VIRUS Pt.1","datePublished":"2025"},{"@type":"MusicAlbum","name":"FALLIN’","datePublished":"2024"},{"@type":"TVSeries","name":"감별사","datePublished":"2024"},{"@type":"MusicAlbum","name":"Last Winter","datePublished":"2023"},{"@type":"TVSeries","name":"미스터 라디오","datePublished":"2023"},{"@type":"MusicAlbum","name":"Undo","datePublished":"2022"},{"@type":"TVSeries","name":"Volume Up","datePublished":"2022"},{"@type":"MusicAlbum","name":"HAPPEN","datePublished":"2021"},{"@type":"MusicAlbum","name":"Lyricist","datePublished":"2020"},{"@type":"MusicAlbum","name":"She’s Fine","datePublished":"2019"},{"@type":"MusicAlbum","name":"Late Autumn","datePublished":"2019"},{"@type":"MusicAlbum","name":"風","datePublished":"2018"},{"@type":"MusicAlbum","name":"///","datePublished":"2017"},{"@type":"MusicEvent","name":"2017 Heize Canada Tour","datePublished":"2017"},{"@type":"MusicAlbum","name":"And July","datePublished":"2016"},{"@type":"MusicAlbum","name":"Heize","datePublished":"2014"},{"@type":"MusicRecording","name":"돌아오지마 (Feat. 용준형 of 비스트)","url":"https://www.youtube.com/watch?v=I7EwLNhPgpg"},{"@type":"MusicRecording","name":"Heize 헤이즈 'Even if' Official Audio","url":"https://www.youtube.com/watch?v=cOqV41axwxo"},{"@type":"MusicRecording","name":"Late Autumn (Feat. Crush)","url":"https://www.youtube.com/watch?v=H1NHCJLxHrs"},{"@type":"MusicRecording","name":"RULE (feat. Heize)","url":"https://www.youtube.com/watch?v=_4uUgLF8Ljw"},{"@type":"MusicRecording","name":"Midnight (밤하늘의 저 별처럼)","url":"https://www.youtube.com/watch?v=PIp-_SmvZsg"}]}</script>
 </head>
 <body>
@@ -170,7 +180,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

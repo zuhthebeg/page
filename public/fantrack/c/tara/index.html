@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/tara/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/tara/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/tara/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/tara/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="티아라 — FanTrack">
+<meta property="og:description" content="티아라 출연·활동 정보 40건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/tara/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"티아라","alternateName":["티아라","T-ARA"],"url":"https://page.cocy.io/fantrack/c/tara/","inLanguage":"ko","affiliation":{"@type":"Organization","name":"MBK 엔터테인먼트"},"foundingDate":"2009","subjectOf":[{"@type":"TVSeries","name":"아는형님","datePublished":"2021"},{"@type":"TVSeries","name":"한끼줍쇼","datePublished":"2019"},{"@type":"MusicAlbum","name":"What's my name?","datePublished":"2017"},{"@type":"MusicAlbum","name":"REMEMBER","datePublished":"2016"},{"@type":"TVSeries","name":"매력 티비","datePublished":"2016"},{"@type":"TVSeries","name":"직진의 달인","datePublished":"2016"},{"@type":"MusicAlbum","name":"So Good","datePublished":"2015"},{"@type":"MusicAlbum","name":"Gossip Girls","datePublished":"2014"},{"@type":"MusicAlbum","name":"And & End","datePublished":"2014"},{"@type":"TVSeries","name":"THE SHOW: All About K-POP","datePublished":"2014"},{"@type":"MusicAlbum","name":"TREASURE BOX","datePublished":"2013"},{"@type":"MusicAlbum","name":"Again","datePublished":"2013"},{"@type":"TVSeries","name":"쇼 챔피언","datePublished":"2013"},{"@type":"TVSeries","name":"Princess T-ara","datePublished":"2013"},{"@type":"TVSeries","name":"우람씨네 가족캠프","datePublished":"2013"},{"@type":"MusicAlbum","name":"Jewelry box","datePublished":"2012"},{"@type":"MusicAlbum","name":"Day by Day","datePublished":"2012"},{"@type":"TVSeries","name":"우리 결혼했어요 중국판","datePublished":"2012"},{"@type":"TVSeries","name":"티아라의 고백","datePublished":"2012"},{"@type":"MusicAlbum","name":"존트라볼타 워너비","datePublished":"2011"},{"@type":"MusicAlbum","name":"Black Eyes","datePublished":"2011"},{"@type":"TVSeries","name":"스쿨 버라이어티 백점만점","datePublished":"2011"},{"@type":"TVSeries","name":"우리 결혼했어요 시즌 3","datePublished":"2011"},{"@type":"TVSeries","name":"티아라의 꽃미남들","datePublished":"2011"},{"@type":"MusicAlbum","name":"Temptastic","datePublished":"2010"},{"@type":"TVSeries","name":"티아라월드","datePublished":"2010"},{"@type":"TVSeries","name":"티아라와 윤시윤의 Bubi Bubi","datePublished":"2010"},{"@type":"TVSeries","name":"일요일이 좋다 - 영웅호걸","datePublished":"2010"},{"@type":"TVSeries","name":"티아라의 드림걸즈","datePublished":"2010"},{"@type":"TVSeries","name":"쇼! 음악 중심","datePublished":"2010"},{"@type":"TVSeries","name":"티아라의 헬로 베이비","datePublished":"2010"},{"@type":"MusicAlbum","name":"Absolute First Album","datePublished":"2009"},{"@type":"TVSeries","name":"천하무적 토요일 - 천하무적 야구단","datePublished":"2009"},{"@type":"TVSeries","name":"여성 아이돌 그룹 서바이벌 달콤한 걸","datePublished":"2009"},{"@type":"TVSeries","name":"청춘불패","datePublished":"2009"},{"@type":"TVSeries","name":"티아라닷컴"},{"@type":"MusicRecording","name":"Lovey-Dovey","url":"https://www.youtube.com/watch?v=VPJC1fabdlU"},{"@type":"MusicRecording","name":"ROLY-POLY","url":"https://www.youtube.com/watch?v=Pws7laZhyP0"},{"@type":"MusicRecording","name":"01. T-ara - Day by Day","url":"https://www.youtube.com/watch?v=1sSRLikPmgY"},{"@type":"MusicRecording","name":"티아라","url":"https://www.youtube.com/watch?v=AmdgIK8-raM"}]}</script>
 </head>
 <body>
@@ -188,7 +198,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

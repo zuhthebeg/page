@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/jangbeomjune/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/jangbeomjune/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/jangbeomjune/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/jangbeomjune/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Jang Beom-june — FanTrack">
+<meta property="og:description" content="Jang Beom-june 的出演與作品 10 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/jangbeomjune/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Jang Beom-june","alternateName":["장범준","Jang Beom-june"],"url":"https://page.cocy.io/fantrack/c/jangbeomjune/tw/","inLanguage":"zh-Hant","jobTitle":"Singer","foundingDate":"2011","subjectOf":[{"@type":"MusicAlbum","name":"Jang Beom-june 4th Album (History of a Loser)","datePublished":"2025"},{"@type":"MusicAlbum","name":"Jang Beom-june Vol. 5 'Busker Busker'","datePublished":"2025"},{"@type":"MusicAlbum","name":"Jang Beom-june 3rd Album","datePublished":"2019"},{"@type":"MusicAlbum","name":"Jang Beom-june Vol. 2","datePublished":"2016"},{"@type":"MusicAlbum","name":"Jang Beom-june Vol. 1","datePublished":"2014"},{"@type":"MusicRecording","name":"사랑이란 말이 어울리는 사람","url":"https://www.youtube.com/watch?v=S8HAUbBLCPM"},{"@type":"MusicRecording","name":"Showers","url":"https://www.youtube.com/watch?v=xtxVjz_dJXI"},{"@type":"MusicRecording","name":"장범준3집 #05 엄마 용돈 좀 보내주세요","url":"https://www.youtube.com/watch?v=86NId3JKo6k"},{"@type":"MusicRecording","name":"The Flower","url":"https://www.youtube.com/watch?v=yzlv2yX7lzQ"},{"@type":"MusicRecording","name":"장범준3집 #08 상상속에서","url":"https://www.youtube.com/watch?v=BpliT2jr_X4"}]}</script>
 </head>
 <body>
@@ -158,7 +168,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

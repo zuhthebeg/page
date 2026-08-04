@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/jungjoonil/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/jungjoonil/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/jungjoonil/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/jungjoonil/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="정준일 — FanTrack">
+<meta property="og:description" content="정준일 출연·활동 정보 13건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/jungjoonil/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"정준일","alternateName":["정준일","Jung Joon Il"],"url":"https://page.cocy.io/fantrack/c/jungjoonil/","inLanguage":"ko","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"OOAS"},"foundingDate":"2004","subjectOf":[{"@type":"MusicAlbum","name":"어떤 무엇도 아닌","datePublished":"2024"},{"@type":"MusicAlbum","name":"LOVE YOU I DO","datePublished":"2019"},{"@type":"MusicAlbum","name":"Elephant","datePublished":"2018"},{"@type":"MusicAlbum","name":"정리(整理)","datePublished":"2018"},{"@type":"MusicAlbum","name":"더 아름다운 것","datePublished":"2017"},{"@type":"MusicAlbum","name":"UNDERWATER","datePublished":"2016"},{"@type":"MusicAlbum","name":"보고싶었어요","datePublished":"2014"},{"@type":"MusicAlbum","name":"Lo9ve3r4s","datePublished":"2011"},{"@type":"MusicRecording","name":"첫 눈","url":"https://www.youtube.com/watch?v=CArrDsjdhbs"},{"@type":"MusicRecording","name":"고백","url":"https://www.youtube.com/watch?v=gU8XZimeYaE"},{"@type":"MusicRecording","name":"Left","url":"https://www.youtube.com/watch?v=cF3EUViFoCQ"},{"@type":"MusicRecording","name":"Hey, I Love You","url":"https://www.youtube.com/watch?v=ZQmiqN09hCQ"},{"@type":"MusicRecording","name":"Eternity","url":"https://www.youtube.com/watch?v=jJmzJPbSBPs"}]}</script>
 </head>
 <body>
@@ -161,7 +171,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

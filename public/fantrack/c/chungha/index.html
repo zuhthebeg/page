@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/chungha/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/chungha/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/chungha/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/chungha/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="청하 — FanTrack">
+<meta property="og:description" content="청하 출연·활동 정보 39건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/chungha/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"청하","alternateName":["청하","CHUNG HA","請夏"],"url":"https://page.cocy.io/fantrack/c/chungha/","inLanguage":"ko","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"MORE VISION"},"foundingDate":"2016","subjectOf":[{"@type":"MusicAlbum","name":"Alivio","datePublished":"2025"},{"@type":"TVSeries","name":"집대성","datePublished":"2025"},{"@type":"TVSeries","name":"라디오스타","datePublished":"2024"},{"@type":"TVSeries","name":"놀라운 토요일 - 도레미마켓","datePublished":"2024"},{"@type":"TVSeries","name":"한문철의 블랙박스 리뷰 - 한블리","datePublished":"2024"},{"@type":"TVSeries","name":"감별사","datePublished":"2024"},{"@type":"TVSeries","name":"심야괴담회","datePublished":"2023"},{"@type":"TVSeries","name":"볼륨을 높여요","datePublished":"2023"},{"@type":"MusicAlbum","name":"Bare&Rare Pt.1","datePublished":"2022"},{"@type":"TVSeries","name":"꼬리에 꼬리를 무는 그날 이야기","datePublished":"2022"},{"@type":"TVSeries","name":"K-909","datePublished":"2022"},{"@type":"TVSeries","name":"선미의 SHOW 터뷰","datePublished":"2022"},{"@type":"MusicAlbum","name":"Querencia","datePublished":"2021"},{"@type":"TVSeries","name":"정글의 법칙","datePublished":"2020"},{"@type":"TVSeries","name":"TV 동물농장","datePublished":"2020"},{"@type":"MusicAlbum","name":"Flourishing","datePublished":"2019"},{"@type":"TVSeries","name":"전지적 참견 시점","datePublished":"2019"},{"@type":"TVSeries","name":"런닝맨","datePublished":"2019"},{"@type":"MusicAlbum","name":"Offset","datePublished":"2018"},{"@type":"MusicAlbum","name":"Blooming Blue","datePublished":"2018"},{"@type":"TVSeries","name":"대국민 토크쇼 안녕하세요","datePublished":"2018"},{"@type":"MusicAlbum","name":"Hands on Me","datePublished":"2017"},{"@type":"TVSeries","name":"아! 일요일 - 기적의 달리기","datePublished":"2017"},{"@type":"TVSeries","name":"유희열의 스케치북","datePublished":"2017"},{"@type":"TVSeries","name":"주간아이돌","datePublished":"2017"},{"@type":"TVSeries","name":"불후의 명곡 - 전설을 노래하다","datePublished":"2017"},{"@type":"TVSeries","name":"미스터리 음악쇼 복면가왕","datePublished":"2017"},{"@type":"TVSeries","name":"화장대를 부탁해","datePublished":"2017"},{"@type":"TVSeries","name":"마스터키","datePublished":"2017"},{"@type":"TVSeries","name":"현실남녀","datePublished":"2017"},{"@type":"TVSeries","name":"청소년소통프로젝트 경청","datePublished":"2017"},{"@type":"TVSeries","name":"PRODUCE 101","datePublished":"2016"},{"@type":"TVSeries","name":"힛 더 스테이지","datePublished":"2016"},{"@type":"TVSeries","name":"안투라지","datePublished":"2016"},{"@type":"MusicRecording","name":"CHUNG HA 청하 | 'Save me' Official Audio","url":"https://www.youtube.com/watch?v=4-QY4Q4cNjs"},{"@type":"MusicRecording","name":"Stay Tonight","url":"https://www.youtube.com/watch?v=WnvJ9RAoaOo"},{"@type":"MusicRecording","name":"Killing Me","url":"https://www.youtube.com/watch?v=xH7Cn6Br7vI"},{"@type":"MusicRecording","name":"CHUNG HA 청하 | 'Save me'  Official visualizer","url":"https://www.youtube.com/watch?v=JTFuuQg5Mhs"},{"@type":"MusicRecording","name":"Flying on Faith","url":"https://www.youtube.com/watch?v=YYoVfUrTqLk"}]}</script>
 </head>
 <body>
@@ -187,7 +197,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

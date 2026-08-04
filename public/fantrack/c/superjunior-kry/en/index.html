@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/superjunior-kry/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/superjunior-kry/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/superjunior-kry/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/superjunior-kry/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="SUPER JUNIOR-K.R.Y. — FanTrack">
+<meta property="og:description" content="10 works by SUPER JUNIOR-K.R.Y. — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/superjunior-kry/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"SUPER JUNIOR-K.R.Y.","alternateName":["슈퍼주니어-K.R.Y.","SUPER JUNIOR-K.R.Y.","Super Junior-K.R.Y."],"url":"https://page.cocy.io/fantrack/c/superjunior-kry/en/","inLanguage":"en","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"SM 엔터테인먼트"},"foundingDate":"2006-11-02","subjectOf":[{"@type":"MusicEvent","name":"The Moment With Us","datePublished":"2020"},{"@type":"MusicAlbum","name":"Traveler","datePublished":"2020"},{"@type":"MusicAlbum","name":"When We Were Us","datePublished":"2020"},{"@type":"MusicAlbum","name":"When We Were Us","datePublished":"2020"},{"@type":"MusicEvent","name":"Super Junior-K.R.Y. Asia Tour ~phonograph~","datePublished":"2015"},{"@type":"MusicAlbum","name":"Join Hands","datePublished":"2015"},{"@type":"MusicEvent","name":"Super Junior-K.R.Y. Japan Tour 2015 ~phonograph~","datePublished":"2015"},{"@type":"MusicAlbum","name":"Promise You","datePublished":"2013"},{"@type":"MusicEvent","name":"Super Junior-K.R.Y. Special Winter Concert 2012","datePublished":"2012"},{"@type":"MusicEvent","name":"Super Junior-K.R.Y. The 1st Concert","datePublished":"2010"}]}</script>
 </head>
 <body>
@@ -158,7 +168,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

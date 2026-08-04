@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/postmen/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/postmen/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/postmen/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/postmen/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Postmen — FanTrack">
+<meta property="og:description" content="Postmen 的出演與作品 5 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/postmen/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"Postmen","alternateName":["포스트맨","Postmen"],"url":"https://page.cocy.io/fantrack/c/postmen/tw/","inLanguage":"zh-Hant","subjectOf":[{"@type":"MusicRecording","name":"mp3","url":"https://www.youtube.com/watch?v=WVE-mKd1gDI"},{"@type":"MusicRecording","name":"I Should Have","url":"https://www.youtube.com/watch?v=XDJ6VdxjZ8c"},{"@type":"MusicRecording","name":"그리워 그리워하다","url":"https://www.youtube.com/watch?v=GPQgu5dJ8GI"},{"@type":"MusicRecording","name":"안녕 신촌 ┃ ┃ ┃K-pop┃","url":"https://www.youtube.com/watch?v=bBqhHeDawXk"},{"@type":"MusicRecording","name":"포스트맨 * 애인이 되어줄게 *","url":"https://www.youtube.com/watch?v=THjxpN7R_ZY"}]}</script>
 </head>
 <body>
@@ -153,7 +163,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

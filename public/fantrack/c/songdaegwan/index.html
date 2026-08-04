@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/songdaegwan/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/songdaegwan/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/songdaegwan/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/songdaegwan/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="송대관 — FanTrack">
+<meta property="og:description" content="송대관 출연·활동 정보 30건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/songdaegwan/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"송대관","alternateName":["송대관","Song Dae-kwan"],"url":"https://page.cocy.io/fantrack/c/songdaegwan/","inLanguage":"ko","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"예찬엔터테인먼트"},"foundingDate":"1967","subjectOf":[{"@type":"TVSeries","name":"6시 내고향","datePublished":"2020"},{"@type":"TVSeries","name":"속풀이쇼 동치미","datePublished":"2015"},{"@type":"TVSeries","name":"웰컴 투 힐링타운","datePublished":"2013"},{"@type":"TVSeries","name":"퀴즈 대한민국","datePublished":"2013"},{"@type":"TVSeries","name":"생방송 브라보 나눔로또","datePublished":"2012"},{"@type":"TVSeries","name":"스타 인생극장","datePublished":"2012"},{"@type":"TVSeries","name":"불후의 명곡: 전설을 노래하다","datePublished":"2012"},{"@type":"TVSeries","name":"GoShow","datePublished":"2012"},{"@type":"TVSeries","name":"주병진 토크 콘서트","datePublished":"2012"},{"@type":"TVSeries","name":"트로트가 간다","datePublished":"2012"},{"@type":"TVSeries","name":"퀴즈쇼 아이돌 시사회","datePublished":"2012"},{"@type":"TVSeries","name":"신기생뎐","datePublished":"2011"},{"@type":"TVSeries","name":"강심장","datePublished":"2011"},{"@type":"TVSeries","name":"해피투게더","datePublished":"2010"},{"@type":"TVSeries","name":"놀러와","datePublished":"2010"},{"@type":"TVSeries","name":"세바퀴","datePublished":"2010"},{"@type":"TVSeries","name":"공주가 돌아왔다","datePublished":"2009"},{"@type":"TVSeries","name":"퀴즈 육감대결","datePublished":"2007"},{"@type":"TVSeries","name":"상상플러스","datePublished":"2006"},{"@type":"TVSeries","name":"전파견문록","datePublished":"2003"},{"@type":"TVSeries","name":"TV는 사랑을 싣고","datePublished":"2000"},{"@type":"TVSeries","name":"순풍산부인과","datePublished":"1998"},{"@type":"TVSeries","name":"코미디 세상만사","datePublished":"1997"},{"@type":"TVSeries","name":"가족오락관","datePublished":"1990"},{"@type":"TVSeries","name":"전국노래자랑"},{"@type":"MusicRecording","name":"네박자","url":"https://www.youtube.com/watch?v=p6WgpWSUgk8"},{"@type":"MusicRecording","name":"네 박자","url":"https://www.youtube.com/watch?v=HZURb4aoU6M"},{"@type":"MusicRecording","name":"네박자","url":"https://www.youtube.com/watch?v=LVJKo-KfgHM"},{"@type":"MusicRecording","name":"네박자","url":"https://www.youtube.com/watch?v=1gyyDwxsa_Q"},{"@type":"MusicRecording","name":"네박자","url":"https://www.youtube.com/watch?v=_kJZbNXBVQE"}]}</script>
 </head>
 <body>
@@ -178,7 +188,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

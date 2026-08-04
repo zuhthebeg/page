@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/ive/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/ive/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/ive/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/ive/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="IVE — FanTrack">
+<meta property="og:description" content="43 trabajos de IVE — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/ive/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"IVE","alternateName":["아이브","IVE"],"url":"https://page.cocy.io/fantrack/c/ive/es/","inLanguage":"es","affiliation":{"@type":"Organization","name":"스타쉽 엔터테인먼트"},"foundingDate":"2021-12-01","subjectOf":[{"@type":"MusicAlbum","name":"REVIVE+","datePublished":"2026"},{"@type":"MusicAlbum","name":"LUCID DREAM","datePublished":"2026"},{"@type":"MusicAlbum","name":"IVE EMPATHY","datePublished":"2025"},{"@type":"MusicAlbum","name":"Be Alright","datePublished":"2025"},{"@type":"MusicAlbum","name":"IVE SECRET","datePublished":"2025"},{"@type":"MusicEvent","name":"SHOW WHAT I AM","datePublished":"2025"},{"@type":"MusicEvent","name":"IVE SCOUT","datePublished":"2025"},{"@type":"TVSeries","name":"Show! Music Core","datePublished":"2025"},{"@type":"MusicAlbum","name":"IVE SWITCH","datePublished":"2024"},{"@type":"MusicAlbum","name":"ALIVE","datePublished":"2024"},{"@type":"MusicEvent","name":"Magazine IVE","datePublished":"2024"},{"@type":"TVSeries","name":"Inkigayo","datePublished":"2024"},{"@type":"TVSeries","name":"틈만나면","datePublished":"2024"},{"@type":"TVSeries","name":"더 시즌즈 - 이영지의 레인보우","datePublished":"2024"},{"@type":"MusicAlbum","name":"I’ve IVE","datePublished":"2023"},{"@type":"MusicAlbum","name":"WAVE","datePublished":"2023"},{"@type":"MusicAlbum","name":"I’VE MINE","datePublished":"2023"},{"@type":"MusicEvent","name":"SHOW WHAT I HAVE","datePublished":"2023"},{"@type":"MusicEvent","name":"The Prom Queens","datePublished":"2023"},{"@type":"TVSeries","name":"Running Man","datePublished":"2023"},{"@type":"TVSeries","name":"Stars' Top Recipe at Fun-Staurant","datePublished":"2023"},{"@type":"TVSeries","name":"The Seasons","datePublished":"2023"},{"@type":"TVSeries","name":"King of Mask Singer","datePublished":"2023"},{"@type":"TVSeries","name":"너의 목소리가 보여 10","datePublished":"2023"},{"@type":"TVSeries","name":"K-909","datePublished":"2023"},{"@type":"TVSeries","name":"Knowing Bros","datePublished":"2022"},{"@type":"TVSeries","name":"강철부대2","datePublished":"2022"},{"@type":"TVSeries","name":"DoReMi Market","datePublished":"2022"},{"@type":"TVSeries","name":"구해줘! 홈즈","datePublished":"2022"},{"@type":"TVSeries","name":"2022 Chuseok Idol Star Championships","datePublished":"2022"},{"@type":"TVSeries","name":"개는 훌륭하다","datePublished":"2022"},{"@type":"TVSeries","name":"출장 십오야2","datePublished":"2022"},{"@type":"TVSeries","name":"2022 MBC 방송연예대상","datePublished":"2022"},{"@type":"TVSeries","name":"King of Mask Singer","datePublished":"2021"},{"@type":"TVSeries","name":"Weekly Idol","datePublished":"2021"},{"@type":"TVSeries","name":"라디오스타","datePublished":"2021"},{"@type":"TVSeries","name":"Omniscient Interfering View","datePublished":"2021"},{"@type":"TVSeries","name":"Paik Jong-won's Alley Restaurant","datePublished":"2021"},{"@type":"MusicRecording","name":"01. BLACKHOLE","url":"https://www.youtube.com/watch?v=qq8R7dTuMfQ"},{"@type":"MusicRecording","name":"02. BANG BANG","url":"https://www.youtube.com/watch?v=gYTDhHGK6TQ"},{"@type":"MusicRecording","name":"Off The Record","url":"https://www.youtube.com/watch?v=A67RYFTImTQ"},{"@type":"MusicRecording","name":"해야 (HEYA)","url":"https://www.youtube.com/watch?v=tsoOtq6utk4"},{"@type":"MusicRecording","name":"05. ATTITUDE","url":"https://www.youtube.com/watch?v=RVhY4yOYZ_4"}]}</script>
 </head>
 <body>
@@ -191,7 +201,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

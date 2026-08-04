@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/shinhwa/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/shinhwa/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/shinhwa/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/shinhwa/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="SHINHWA — FanTrack">
+<meta property="og:description" content="41 works by SHINHWA — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/shinhwa/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"SHINHWA","alternateName":["신화","SHINHWA","神話"],"url":"https://page.cocy.io/fantrack/c/shinhwa/en/","inLanguage":"en","affiliation":{"@type":"Organization","name":"신화컴퍼니"},"foundingDate":"1998-03-24","subjectOf":[{"@type":"MusicAlbum","name":"HEART","datePublished":"2018"},{"@type":"MusicEvent","name":"SHINHWA TWENTY FANPARTY \"ALL YOUR DREAMS\"","datePublished":"2018"},{"@type":"MusicAlbum","name":"UNCHANGING","datePublished":"2017"},{"@type":"MusicAlbum","name":"UNCHANGING PART1","datePublished":"2016"},{"@type":"MusicAlbum","name":"WE","datePublished":"2015"},{"@type":"MusicEvent","name":"2015 SHINHWA JAPAN FANMEETING \"TEN X TEN Party\"","datePublished":"2015"},{"@type":"MusicAlbum","name":"THE CLASSIC","datePublished":"2013"},{"@type":"MusicAlbum","name":"The Return","datePublished":"2012"},{"@type":"MusicAlbum","name":"Shinhwa","datePublished":"2008"},{"@type":"MusicEvent","name":"SHINHWA CHANGJO 8th FANMEETING \"Mission Impossible SHINHWA 0210\"","datePublished":"2007"},{"@type":"MusicAlbum","name":"State of the Art","datePublished":"2006"},{"@type":"MusicAlbum","name":"inspiration#1","datePublished":"2006"},{"@type":"MusicEvent","name":"SHINHWA 2006 JAPAN TOUR 'Inspiration #1'","datePublished":"2006"},{"@type":"MusicEvent","name":"THE LEGEND 2006 \"集\"","datePublished":"2006"},{"@type":"MusicEvent","name":"Live in Japan 2005","datePublished":"2005"},{"@type":"MusicEvent","name":"TROPICAL SUMMER STORY FESTIVAL","datePublished":"2005"},{"@type":"MusicEvent","name":"SHINHWA CHANGJO 7th FANMEETING","datePublished":"2005"},{"@type":"MusicAlbum","name":"Brand New","datePublished":"2004"},{"@type":"MusicAlbum","name":"Winter Story 2004-05","datePublished":"2004"},{"@type":"MusicEvent","name":"Winter Story 2004-05 \"We Are Shinhwa\"","datePublished":"2004"},{"@type":"MusicEvent","name":"SHINHWA Vol.7 \"Brand New\" Showcase","datePublished":"2004"},{"@type":"MusicEvent","name":"The Everlasting Mythlolgy","datePublished":"2003"},{"@type":"MusicEvent","name":"Winter Story Tour 2003-04","datePublished":"2003"},{"@type":"MusicEvent","name":"SHINHWA CHANGJO 6th FANMEETING","datePublished":"2003"},{"@type":"MusicEvent","name":"Have fun with SHINHWA on m.net tour","datePublished":"2003"},{"@type":"MusicAlbum","name":"Perfect Man","datePublished":"2002"},{"@type":"MusicAlbum","name":"Wedding","datePublished":"2002"},{"@type":"MusicAlbum","name":"Hey, Come on!","datePublished":"2001"},{"@type":"MusicEvent","name":"2001 First Mythology 1st Live Concert","datePublished":"2001"},{"@type":"MusicEvent","name":"SHINHWA CHANGJO 5th FANMEETING","datePublished":"2001"},{"@type":"MusicAlbum","name":"Only One","datePublished":"2000"},{"@type":"MusicEvent","name":"Shinhwa Changjo 3rd Fan Meeting","datePublished":"2000"},{"@type":"MusicEvent","name":"Shinhwa Changjo 4th Fan Meeting","datePublished":"2000"},{"@type":"MusicAlbum","name":"Twinkling Of Paradise","datePublished":"1999"},{"@type":"MusicEvent","name":"Shinhwa Changjo 2nd Fan Meeting","datePublished":"1999"},{"@type":"MusicAlbum","name":"Shinhwa","datePublished":"1998"},{"@type":"MusicEvent","name":"Shinhwa Changjo 1st Fan Meeting","datePublished":"1998"},{"@type":"MusicRecording","name":"표적","url":"https://www.youtube.com/watch?v=khqzeORPD9w"},{"@type":"MusicRecording","name":"HERO","url":"https://www.youtube.com/watch?v=5UiVq8MfF8A"},{"@type":"MusicRecording","name":"Free","url":"https://www.youtube.com/watch?v=tT79roEQjjM"},{"@type":"MusicRecording","name":"Dark","url":"https://www.youtube.com/watch?v=EQua2kYAXOI"}]}</script>
 </head>
 <body>
@@ -189,7 +199,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

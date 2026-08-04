@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/kimbumsoo/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/kimbumsoo/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/kimbumsoo/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/kimbumsoo/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="金範洙 — FanTrack">
+<meta property="og:description" content="金範洙 的出演與作品 35 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/kimbumsoo/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"金範洙","alternateName":["김범수","Kim Bum Soo","金範洙"],"url":"https://page.cocy.io/fantrack/c/kimbumsoo/tw/","inLanguage":"zh-Hant","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"영 엔터테인먼트"},"foundingDate":"1999","subjectOf":[{"@type":"MusicAlbum","name":"Journey","datePublished":"2024"},{"@type":"TVSeries","name":"더 시즌즈-이효리의 레드카펫","datePublished":"2024"},{"@type":"TVSeries","name":"꼬리에 꼬리를 무는 그날이야기","datePublished":"2024"},{"@type":"TVSeries","name":"驚人的星期六","datePublished":"2024"},{"@type":"TVSeries","name":"認識的哥哥","datePublished":"2024"},{"@type":"TVSeries","name":"劉QUIZ ON THE BLOCK","datePublished":"2024"},{"@type":"TVSeries","name":"脫掉鞋子恢單4Men","datePublished":"2023"},{"@type":"TVSeries","name":"라디오스타","datePublished":"2023"},{"@type":"TVSeries","name":"我家的熊孩子","datePublished":"2022"},{"@type":"TVSeries","name":"屋塔房的問題兒童們","datePublished":"2022"},{"@type":"TVSeries","name":"내일은 국민가수","datePublished":"2021"},{"@type":"TVSeries","name":"玩什麼好呢","datePublished":"2020"},{"@type":"TVSeries","name":"Fantastic Duo","datePublished":"2017"},{"@type":"TVSeries","name":"Superstar K 2016","datePublished":"2016"},{"@type":"TVSeries","name":"투명인간","datePublished":"2015"},{"@type":"TVSeries","name":"너의 목소리가 보여","datePublished":"2015"},{"@type":"TVSeries","name":"Superstar K 7","datePublished":"2015"},{"@type":"MusicAlbum","name":"HIM","datePublished":"2014"},{"@type":"TVSeries","name":"슈퍼스타K 6","datePublished":"2014"},{"@type":"TVSeries","name":"김범수의 가요광장","datePublished":"2012"},{"@type":"MusicAlbum","name":"SOLISTA Part.2","datePublished":"2011"},{"@type":"TVSeries","name":"日晚","datePublished":"2011"},{"@type":"MusicAlbum","name":"SOLISTA Part.1","datePublished":"2010"},{"@type":"TVSeries","name":"김범수와 꿈꾸는 라디오","datePublished":"2009"},{"@type":"MusicAlbum","name":"Kim Bum Soo","datePublished":"2008"},{"@type":"MusicAlbum","name":"5th... So Long (Remember)","datePublished":"2006"},{"@type":"MusicAlbum","name":"The 4th Episode","datePublished":"2004"},{"@type":"MusicAlbum","name":"第3張．我想你","datePublished":"2002"},{"@type":"MusicAlbum","name":"New Song & Special","datePublished":"2001"},{"@type":"MusicAlbum","name":"Remember","datePublished":"2000"},{"@type":"MusicRecording","name":"Walking on the memory (기억을 걷다)","url":"https://www.youtube.com/watch?v=MNpBafTp864"},{"@type":"MusicRecording","name":"Smoking Or Drinking ... (피우든 마시든)","url":"https://www.youtube.com/watch?v=MGl3Ba38tYY"},{"@type":"MusicRecording","name":"이별 뒤에서 (이별 뒤에서)","url":"https://www.youtube.com/watch?v=g3lZoIRouFo"},{"@type":"MusicRecording","name":"Amnesia (기억상실증)","url":"https://www.youtube.com/watch?v=Jf_shHJzauQ"},{"@type":"MusicRecording","name":"오직 너만 (Only You) - Hyde, Jekyll and I OS","url":"https://www.youtube.com/watch?v=CBskKrrJnHw"}]}</script>
 </head>
 <body>
@@ -183,7 +193,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

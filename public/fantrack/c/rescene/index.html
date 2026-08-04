@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/rescene/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/rescene/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/rescene/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/rescene/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="리센느 — FanTrack">
+<meta property="og:description" content="리센느 출연·활동 정보 11건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/rescene/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"리센느","alternateName":["리센느","RESCENE"],"url":"https://page.cocy.io/fantrack/c/rescene/","inLanguage":"ko","affiliation":{"@type":"Organization","name":"더뮤즈엔터테인먼트"},"foundingDate":"2024-03-26","subjectOf":[{"@type":"MusicEvent","name":"걸그루브","datePublished":"2026"},{"@type":"MusicAlbum","name":"Glow Up","datePublished":"2025"},{"@type":"MusicAlbum","name":"lip bomb","datePublished":"2025"},{"@type":"MusicEvent","name":"Project 326","datePublished":"2025"},{"@type":"MusicEvent","name":"RE:MIND","datePublished":"2025"},{"@type":"MusicAlbum","name":"SCENEDROME","datePublished":"2024"},{"@type":"MusicRecording","name":"Busy Boy","url":"https://www.youtube.com/watch?v=c70TkZH7fr0"},{"@type":"MusicRecording","name":"YoYo","url":"https://www.youtube.com/watch?v=_tADnkWlvnA"},{"@type":"MusicRecording","name":"RESCENE ‘LOVE ATTACK’","url":"https://www.youtube.com/watch?v=9XttLI0oH0I"},{"@type":"MusicRecording","name":"RESCENE ‘Pinball’","url":"https://www.youtube.com/watch?v=B8JJ8RNM-60"},{"@type":"MusicRecording","name":"RESCENE 리센느","url":"https://www.youtube.com/watch?v=5uubX_W3YFk"}]}</script>
 </head>
 <body>
@@ -159,7 +169,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

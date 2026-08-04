@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/buzz/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/buzz/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/buzz/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/buzz/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Buzz — FanTrack">
+<meta property="og:description" content="Buzz 的出演與作品 19 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/buzz/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"Buzz","alternateName":["버즈","Buzz"],"url":"https://page.cocy.io/fantrack/c/buzz/tw/","inLanguage":"zh-Hant","affiliation":{"@type":"Organization","name":"A1엔터테인먼트"},"foundingDate":"2003-10-11","subjectOf":[{"@type":"MusicAlbum","name":"Memorize","datePublished":"2014"},{"@type":"MusicAlbum","name":"Perfect","datePublished":"2006"},{"@type":"MusicAlbum","name":"Buzz Effect","datePublished":"2005"},{"@type":"MusicAlbum","name":"Morning of Buzz","datePublished":"2003"},{"@type":"TVSeries","name":"어쩌면..."},{"@type":"TVSeries","name":"Monologue"},{"@type":"TVSeries","name":"겁쟁이"},{"@type":"TVSeries","name":"나에게로 떠나는 여행"},{"@type":"TVSeries","name":"My Darling"},{"@type":"TVSeries","name":"약자의 눈물"},{"@type":"TVSeries","name":"남자를 몰라"},{"@type":"TVSeries","name":"My Love"},{"@type":"TVSeries","name":"Reds Go Together"},{"@type":"TVSeries","name":"Forever Love"},{"@type":"MusicRecording","name":"사랑 뒤의 사랑","url":"https://www.youtube.com/watch?v=Aa8Of9mVg94"},{"@type":"MusicRecording","name":"Here I Am","url":"https://www.youtube.com/watch?v=Nzqhx2IFQAM"},{"@type":"MusicRecording","name":"사랑하지 않은 것처럼","url":"https://www.youtube.com/watch?v=1i9LbT3VW3I"},{"@type":"MusicRecording","name":"희철 X 민경훈 나비잠","url":"https://www.youtube.com/watch?v=5JbVVlqrreE"},{"@type":"MusicRecording","name":"나비잠","url":"https://www.youtube.com/watch?v=8keFZr_dDaA"}]}</script>
 </head>
 <body>
@@ -167,7 +177,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

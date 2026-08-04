@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/imjaebum/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/imjaebum/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/imjaebum/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/imjaebum/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="任宰範 — FanTrack">
+<meta property="og:description" content="任宰範 的出演與作品 14 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/imjaebum/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"任宰範","alternateName":["임재범","Yim Jae Beum","任宰範"],"url":"https://page.cocy.io/fantrack/c/imjaebum/tw/","inLanguage":"zh-Hant","jobTitle":"Singer","foundingDate":"1986","subjectOf":[{"@type":"MusicAlbum","name":"Seven,","datePublished":"2022"},{"@type":"MusicAlbum","name":"回憶...內心 Part.3","datePublished":"2021"},{"@type":"MusicAlbum","name":"To...","datePublished":"2012"},{"@type":"TVSeries","name":"我是歌手","datePublished":"2011"},{"@type":"MusicAlbum","name":"Coexistence","datePublished":"2004"},{"@type":"MusicAlbum","name":"Story Of Two Years","datePublished":"2000"},{"@type":"MusicAlbum","name":"Return To The Rock","datePublished":"1998"},{"@type":"MusicAlbum","name":"Desire To Fly","datePublished":"1997"},{"@type":"MusicAlbum","name":"On The Turning Away","datePublished":"1991"},{"@type":"MusicRecording","name":"너를 위해","url":"https://www.youtube.com/watch?v=SgmJ5Yk89-0"},{"@type":"MusicRecording","name":"너를 위해","url":"https://www.youtube.com/watch?v=FtJUS7jW1sY"},{"@type":"MusicRecording","name":"비상","url":"https://www.youtube.com/watch?v=dqT3W2gR4Rg"},{"@type":"MusicRecording","name":"낙인","url":"https://www.youtube.com/watch?v=tNf_TxjolbA"},{"@type":"MusicRecording","name":"Life is a Drama_","url":"https://www.youtube.com/watch?v=YDr_9JI6zQ4"}]}</script>
 </head>
 <body>
@@ -162,7 +172,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

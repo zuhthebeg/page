@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/onew/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/onew/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/onew/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/onew/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="ONEW — FanTrack">
+<meta property="og:description" content="29 trabajos de ONEW — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/onew/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"ONEW","alternateName":["온유","ONEW","溫流"],"url":"https://page.cocy.io/fantrack/c/onew/es/","inLanguage":"es","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"그리핀 엔터테인먼트"},"foundingDate":"2008-05-25","subjectOf":[{"@type":"MusicAlbum","name":"TOUGH LOVE","datePublished":"2026"},{"@type":"MusicAlbum","name":"CONNECTION","datePublished":"2025"},{"@type":"MusicAlbum","name":"PERCENT","datePublished":"2025"},{"@type":"MusicAlbum","name":"SAKU","datePublished":"2025"},{"@type":"MusicAlbum","name":"FLOW","datePublished":"2024"},{"@type":"MusicAlbum","name":"Circle","datePublished":"2023"},{"@type":"MusicAlbum","name":"DICE","datePublished":"2022"},{"@type":"MusicAlbum","name":"Life goes on","datePublished":"2022"},{"@type":"MusicAlbum","name":"VOICE","datePublished":"2018"},{"@type":"TVSeries","name":"Descendants of the Sun","datePublished":"2016"},{"@type":"TVSeries","name":"Pure Love","datePublished":"2013"},{"@type":"TVSeries","name":"시트콩 로얄빌라","datePublished":"2013"},{"@type":"TVSeries","name":"오마이갓x2","datePublished":"2012"},{"@type":"TVSeries","name":"Athena: Goddess of War","datePublished":"2011"},{"@type":"TVSeries","name":"Dr. Champ","datePublished":"2010"},{"@type":"TVSeries","name":"Volume Up","datePublished":"2010"},{"@type":"TVSeries","name":"\"이수영의 뮤직쇼\"","datePublished":"2010"},{"@type":"TVSeries","name":"\"친한친구\"","datePublished":"2009"},{"@type":"TVSeries","name":"서경석의 뮤직쇼","datePublished":"2009"},{"@type":"TVSeries","name":"극과 극","datePublished":"2009"},{"@type":"TVSeries","name":"\"강인,태연의 친한친구\"","datePublished":"2009"},{"@type":"TVSeries","name":"\"슈퍼주니어의 키스 더 라디오\"","datePublished":"2008"},{"@type":"TVSeries","name":"\"신동,김신영의 심심타파\"","datePublished":"2008"},{"@type":"TVSeries","name":"\"박경림의 별이 빛나는 밤에\"","datePublished":"2008"},{"@type":"MusicRecording","name":"Cough","url":"https://www.youtube.com/watch?v=tO-GhNbIlnY"},{"@type":"MusicRecording","name":"TOUGH LOVE","url":"https://www.youtube.com/watch?v=RCRh-Mxs1qo"},{"@type":"MusicRecording","name":"Dot dot dot","url":"https://www.youtube.com/watch?v=f19KdIQKMqo"},{"@type":"MusicRecording","name":"Winner","url":"https://www.youtube.com/watch?v=bG7xV75rp_U"},{"@type":"MusicRecording","name":"온유 ONEW 매력","url":"https://www.youtube.com/watch?v=hps1BMuUOL4"}]}</script>
 </head>
 <body>
@@ -177,7 +187,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

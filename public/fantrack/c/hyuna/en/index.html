@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/hyuna/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/hyuna/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/hyuna/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/hyuna/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="HyunA — FanTrack">
+<meta property="og:description" content="34 works by HyunA — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/hyuna/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"HyunA","alternateName":["현아","HyunA","金泫雅"],"url":"https://page.cocy.io/fantrack/c/hyuna/en/","inLanguage":"en","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"무소속"},"foundingDate":"2007-02-10","subjectOf":[{"@type":"MusicAlbum","name":"Attitude","datePublished":"2024"},{"@type":"MusicAlbum","name":"Nabillera","datePublished":"2022"},{"@type":"MusicAlbum","name":"I’m Not Cool","datePublished":"2021"},{"@type":"MusicAlbum","name":"1+1=1","datePublished":"2021"},{"@type":"TVSeries","name":"Comedy Big League","datePublished":"2021"},{"@type":"TVSeries","name":"Knowing Bros","datePublished":"2019"},{"@type":"MusicAlbum","name":"Following","datePublished":"2017"},{"@type":"TVSeries","name":"은밀하게 위대하게","datePublished":"2017"},{"@type":"TVSeries","name":"The Unit: Idol Rebooting Project","datePublished":"2017"},{"@type":"MusicAlbum","name":"A’wesome","datePublished":"2016"},{"@type":"TVSeries","name":"앨리스와 그녀의 팀","datePublished":"2016"},{"@type":"TVSeries","name":"Same Bed, Different Dreams","datePublished":"2016"},{"@type":"TVSeries","name":"현아의 X-19","datePublished":"2016"},{"@type":"MusicAlbum","name":"A+","datePublished":"2015"},{"@type":"MusicAlbum","name":"A Talk","datePublished":"2014"},{"@type":"TVSeries","name":"현아의 FREE MONTH","datePublished":"2014"},{"@type":"MusicAlbum","name":"MELTING","datePublished":"2012"},{"@type":"TVSeries","name":"자유선언 토요일 - 가족의 탄생","datePublished":"2012"},{"@type":"MusicAlbum","name":"Bubble Pop!","datePublished":"2011"},{"@type":"TVSeries","name":"댄싱 위드 더 스타","datePublished":"2011"},{"@type":"TVSeries","name":"Crisis Escape No. 1","datePublished":"2011"},{"@type":"TVSeries","name":"스쿨 버라이어티 백점만점","datePublished":"2011"},{"@type":"TVSeries","name":"Show K Music","datePublished":"2011"},{"@type":"TVSeries","name":"태극기 휘날리며","datePublished":"2010"},{"@type":"TVSeries","name":"심야의 FM","datePublished":"2010"},{"@type":"TVSeries","name":"Invincible Youth","datePublished":"2009"},{"@type":"TVSeries","name":"Star Golden Bell","datePublished":"2009"},{"@type":"TVSeries","name":"Wonder Girls","datePublished":"2007"},{"@type":"TVSeries","name":"Show! Music Core","datePublished":"2007"},{"@type":"MusicRecording","name":"I m Not Cool","url":"https://www.youtube.com/watch?v=c3METvWkYno"},{"@type":"MusicRecording","name":"U&ME♡","url":"https://www.youtube.com/watch?v=xEm-rJpjUfQ"},{"@type":"MusicRecording","name":"Party, Feel, Love )","url":"https://www.youtube.com/watch?v=CHtRsEz82qE"},{"@type":"MusicRecording","name":"FLOWER SHOWER","url":"https://www.youtube.com/watch?v=_0s91iZzqts"},{"@type":"MusicRecording","name":"Cause I m God Girl )","url":"https://www.youtube.com/watch?v=NoW_wdmkcqk"}]}</script>
 </head>
 <body>
@@ -182,7 +192,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

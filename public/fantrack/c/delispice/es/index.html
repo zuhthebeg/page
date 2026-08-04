@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/delispice/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/delispice/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/delispice/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/delispice/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Deli Spice — FanTrack">
+<meta property="og:description" content="13 trabajos de Deli Spice — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/delispice/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"Deli Spice","alternateName":["델리스파이스","Deli Spice"],"url":"https://page.cocy.io/fantrack/c/delispice/es/","inLanguage":"es","foundingDate":"1995","subjectOf":[{"@type":"MusicAlbum","name":"聯","datePublished":"2012"},{"@type":"MusicAlbum","name":"Open Your Eyes","datePublished":"2011"},{"@type":"MusicAlbum","name":"Bombom","datePublished":"2006"},{"@type":"MusicAlbum","name":"Espresso","datePublished":"2003"},{"@type":"MusicAlbum","name":"D","datePublished":"2001"},{"@type":"MusicAlbum","name":"Sad but True...","datePublished":"2000"},{"@type":"MusicAlbum","name":"Welcome to the DeliHouse","datePublished":"1999"},{"@type":"MusicAlbum","name":"Deli Spice","datePublished":"1997"},{"@type":"MusicRecording","name":"chow chow-No matter how hard","url":"https://www.youtube.com/watch?v=wecpRs9p00E"},{"@type":"MusicRecording","name":"고백","url":"https://www.youtube.com/watch?v=Wlps3G2RYIU"},{"@type":"MusicRecording","name":"Y.A.T.C","url":"https://www.youtube.com/watch?v=avX68xfgCjA"},{"@type":"MusicRecording","name":"어린 나의 왕자에게","url":"https://www.youtube.com/watch?v=nj8Gocc_yvo"},{"@type":"MusicRecording","name":"챠우챠우","url":"https://www.youtube.com/watch?v=5l6Fz2bgos4"}]}</script>
 </head>
 <body>
@@ -161,7 +171,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

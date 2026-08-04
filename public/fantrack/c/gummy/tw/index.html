@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/gummy/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/gummy/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/gummy/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/gummy/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Gummy — FanTrack">
+<meta property="og:description" content="Gummy 的出演與作品 36 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/gummy/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Gummy","alternateName":["거미","Gummy"],"url":"https://page.cocy.io/fantrack/c/gummy/tw/","inLanguage":"zh-Hant","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"아메바컬쳐"},"foundingDate":"2001","subjectOf":[{"@type":"TVSeries","name":"집대성","datePublished":"2024"},{"@type":"TVSeries","name":"당신의 KBS 우리의 50년","datePublished":"2023"},{"@type":"TVSeries","name":"脫掉鞋子恢單4Men","datePublished":"2023"},{"@type":"MusicAlbum","name":"Sing Forest Part.1","datePublished":"2022"},{"@type":"TVSeries","name":"싱포레스트","datePublished":"2022"},{"@type":"TVSeries","name":"뉴페스타","datePublished":"2022"},{"@type":"TVSeries","name":"歡樂在一起","datePublished":"2021"},{"@type":"TVSeries","name":"2021 평화음악회 마음, 잇다","datePublished":"2021"},{"@type":"TVSeries","name":"불후의 명곡2 전설을 노래하다","datePublished":"2021"},{"@type":"TVSeries","name":"레전드 음악교실-랄라랜드","datePublished":"2021"},{"@type":"TVSeries","name":"홀로그램콘서트 'Re:present'","datePublished":"2021"},{"@type":"TVSeries","name":"노래에 반하다","datePublished":"2019"},{"@type":"MusicAlbum","name":"STROKE","datePublished":"2017"},{"@type":"TVSeries","name":"島劍客","datePublished":"2017"},{"@type":"TVSeries","name":"Vocal 戰爭：神的聲音","datePublished":"2016"},{"@type":"TVSeries","name":"김제동의 톡투유 - 걱정 말아요! 그대","datePublished":"2016"},{"@type":"TVSeries","name":"Superstar K 2016","datePublished":"2016"},{"@type":"MusicAlbum","name":"Fall in Memory","datePublished":"2015"},{"@type":"TVSeries","name":"일밤 - 미스터리 음악쇼 복면가왕","datePublished":"2015"},{"@type":"TVSeries","name":"柳喜烈的寫生簿","datePublished":"2015"},{"@type":"TVSeries","name":"隱藏歌手","datePublished":"2015"},{"@type":"MusicAlbum","name":"因為我愛過你... 已經夠了","datePublished":"2014"},{"@type":"MusicAlbum","name":"FATE(S)","datePublished":"2013"},{"@type":"MusicAlbum","name":"Loveless (Japanese Version)","datePublished":"2011"},{"@type":"TVSeries","name":"일밤 - 나는 가수다","datePublished":"2011"},{"@type":"MusicAlbum","name":"Loveless","datePublished":"2010"},{"@type":"MusicAlbum","name":"Comfort","datePublished":"2008"},{"@type":"TVSeries","name":"萬元的幸福","datePublished":"2008"},{"@type":"MusicAlbum","name":"For the Bloom","datePublished":"2005"},{"@type":"MusicAlbum","name":"Vol. 2 - It's Different","datePublished":"2004"},{"@type":"MusicAlbum","name":"Like Them","datePublished":"2003"},{"@type":"MusicRecording","name":"Love You Forever","url":"https://www.youtube.com/watch?v=m-gvPE6iD8M"},{"@type":"MusicRecording","name":"해줄 수 없는 일","url":"https://www.youtube.com/watch?v=W0xPDlR4QjE"},{"@type":"MusicRecording","name":"You Are My Everythin","url":"https://www.youtube.com/watch?v=8ykKs4gUuMg"},{"@type":"MusicRecording","name":"통증","url":"https://www.youtube.com/watch?v=TpLSClfyI0Q"},{"@type":"MusicRecording","name":"거미","url":"https://www.youtube.com/watch?v=Wp3pWdewetg"}]}</script>
 </head>
 <body>
@@ -184,7 +194,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

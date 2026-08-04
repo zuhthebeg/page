@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/kara/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/kara/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/kara/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/kara/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="카라 — FanTrack">
+<meta property="og:description" content="카라 출연·활동 정보 38건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/kara/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"카라","alternateName":["카라","KARA"],"url":"https://page.cocy.io/fantrack/c/kara/","inLanguage":"ko","affiliation":{"@type":"Organization","name":"DSP 미디어"},"foundingDate":"2007","subjectOf":[{"@type":"MusicEvent","name":"나만 없어, 카라","datePublished":"2024"},{"@type":"MusicAlbum","name":"MOVE AGAIN","datePublished":"2022"},{"@type":"MusicAlbum","name":"In Love","datePublished":"2015"},{"@type":"MusicAlbum","name":"Girl's Story","datePublished":"2015"},{"@type":"MusicAlbum","name":"Day&Night","datePublished":"2014"},{"@type":"MusicAlbum","name":"FANTASTIC GIRLS","datePublished":"2013"},{"@type":"MusicAlbum","name":"Full Bloom","datePublished":"2013"},{"@type":"MusicAlbum","name":"ガールズ フォーエバー","datePublished":"2012"},{"@type":"MusicAlbum","name":"Pandora","datePublished":"2012"},{"@type":"MusicAlbum","name":"スーパーガール","datePublished":"2011"},{"@type":"MusicAlbum","name":"STEP","datePublished":"2011"},{"@type":"MusicAlbum","name":"LUPIN","datePublished":"2010"},{"@type":"MusicAlbum","name":"Jumping","datePublished":"2010"},{"@type":"MusicAlbum","name":"ガールズトーク","datePublished":"2010"},{"@type":"TVSeries","name":"송은이 신봉선의 동고동락","datePublished":"2010"},{"@type":"TVSeries","name":"신동, 김신영의 심심타파","datePublished":"2010"},{"@type":"TVSeries","name":"신동, 박규리의 심심타파","datePublished":"2010"},{"@type":"MusicAlbum","name":"Revolution","datePublished":"2009"},{"@type":"TVSeries","name":"SS501의 뮤직하이","datePublished":"2009"},{"@type":"TVSeries","name":"두시의 데이트 박명수입니다","datePublished":"2009"},{"@type":"TVSeries","name":"시식코너","datePublished":"2009"},{"@type":"TVSeries","name":"라이브 리서치","datePublished":"2009"},{"@type":"TVSeries","name":"막무가내 리서치","datePublished":"2009"},{"@type":"TVSeries","name":"두 남녀가 미치는 영향","datePublished":"2009"},{"@type":"TVSeries","name":"퀴즈열전","datePublished":"2009"},{"@type":"TVSeries","name":"사연이 산다 시즌3","datePublished":"2009"},{"@type":"MusicAlbum","name":"Rock U","datePublished":"2008"},{"@type":"MusicAlbum","name":"Pretty Girl","datePublished":"2008"},{"@type":"TVSeries","name":"형처럼 살지 마라 2","datePublished":"2008"},{"@type":"TVSeries","name":"당신이 킹왕짱","datePublished":"2008"},{"@type":"MusicAlbum","name":"the First Bloooooming","datePublished":"2007"},{"@type":"TVSeries","name":"올챙이 서바이벌","datePublished":"2007"},{"@type":"TVSeries","name":"CSI 막무가내 수사대","datePublished":"2007"},{"@type":"TVSeries","name":"돌아온 남과 여","datePublished":"2007"},{"@type":"MusicRecording","name":"Wanna","url":"https://www.youtube.com/watch?v=uoMn9LjFvhE"},{"@type":"MusicRecording","name":"Mamma Mia","url":"https://www.youtube.com/watch?v=etfFwQw2UHY"},{"@type":"MusicRecording","name":"Honey","url":"https://www.youtube.com/watch?v=SXW6dworjAE"},{"@type":"MusicRecording","name":"Way","url":"https://www.youtube.com/watch?v=zkAmXgZbGPs"}]}</script>
 </head>
 <body>
@@ -186,7 +196,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

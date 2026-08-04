@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/gidle/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/gidle/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/gidle/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/gidle/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="(여자)아이들 — FanTrack">
+<meta property="og:description" content="(여자)아이들 출연·활동 정보 20건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/gidle/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"(여자)아이들","alternateName":["(여자)아이들","(G)I-DLE"],"url":"https://page.cocy.io/fantrack/c/gidle/","inLanguage":"ko","subjectOf":[{"@type":"MusicAlbum","name":"We made","datePublished":"2026"},{"@type":"MusicAlbum","name":"We are","datePublished":"2025"},{"@type":"MusicAlbum","name":"i‐dle","datePublished":"2025"},{"@type":"MusicAlbum","name":"2","datePublished":"2024"},{"@type":"MusicAlbum","name":"I SWAY","datePublished":"2024"},{"@type":"MusicAlbum","name":"I feel","datePublished":"2023"},{"@type":"MusicAlbum","name":"HEAT","datePublished":"2023"},{"@type":"MusicAlbum","name":"I NEVER DIE","datePublished":"2022"},{"@type":"MusicAlbum","name":"I love","datePublished":"2022"},{"@type":"MusicAlbum","name":"I burn","datePublished":"2021"},{"@type":"MusicAlbum","name":"I trust","datePublished":"2020"},{"@type":"MusicAlbum","name":"Oh my god","datePublished":"2020"},{"@type":"MusicAlbum","name":"I made","datePublished":"2019"},{"@type":"MusicAlbum","name":"LATATA","datePublished":"2019"},{"@type":"MusicAlbum","name":"I am","datePublished":"2018"},{"@type":"MusicRecording","name":"MAZE (MAZE)","url":"https://www.youtube.com/watch?v=klKKrmRY2R8"},{"@type":"MusicRecording","name":"Paradise (Paradise)","url":"https://www.youtube.com/watch?v=PCbx5U-S5ec"},{"@type":"MusicRecording","name":"LIAR","url":"https://www.youtube.com/watch?v=sGEWAOcbMZ0"},{"@type":"MusicRecording","name":"Lucid (Lucid)","url":"https://www.youtube.com/watch?v=Bd5950W2b5E"},{"@type":"MusicRecording","name":"LION (LION)","url":"https://www.youtube.com/watch?v=kr9_Nckh3RQ"}]}</script>
 </head>
 <body>
@@ -168,7 +178,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

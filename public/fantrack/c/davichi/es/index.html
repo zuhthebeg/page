@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/davichi/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/davichi/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/davichi/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/davichi/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Davichi — FanTrack">
+<meta property="og:description" content="16 trabajos de Davichi — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/davichi/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"Davichi","alternateName":["다비치","Davichi"],"url":"https://page.cocy.io/fantrack/c/davichi/es/","inLanguage":"es","affiliation":{"@type":"Organization","name":"코어콘텐츠미디어"},"foundingDate":"2008-02-22","subjectOf":[{"@type":"MusicAlbum","name":"Stitch","datePublished":"2024"},{"@type":"MusicAlbum","name":"Season Note","datePublished":"2022"},{"@type":"MusicAlbum","name":"&10","datePublished":"2018"},{"@type":"MusicAlbum","name":"50 X HALF","datePublished":"2016"},{"@type":"MusicAlbum","name":"DAVICHI HUG","datePublished":"2015"},{"@type":"MusicAlbum","name":"6.7","datePublished":"2014"},{"@type":"MusicAlbum","name":"Mystic Ballad Part.2","datePublished":"2013"},{"@type":"MusicAlbum","name":"Love Delight","datePublished":"2011"},{"@type":"MusicAlbum","name":"Innocence","datePublished":"2010"},{"@type":"MusicAlbum","name":"Davichi in Wonderland","datePublished":"2009"},{"@type":"MusicAlbum","name":"Amaranth","datePublished":"2008"},{"@type":"MusicRecording","name":"거북이 (거북이)","url":"https://www.youtube.com/watch?v=12u5oZpowzs"},{"@type":"MusicRecording","name":"타임캡슐 (TIME CAPSULE) [가사]","url":"https://www.youtube.com/watch?v=0Pey6Y-xogE"},{"@type":"MusicRecording","name":"Official Music Video","url":"https://www.youtube.com/watch?v=qE35JN1ogeI"},{"@type":"MusicRecording","name":"사랑 사랑아 (사랑 사랑아)","url":"https://www.youtube.com/watch?v=cBt2IAsD3Ro"},{"@type":"MusicRecording","name":"녹는 중 (feat. Verbal Jint) (녹는중 (Feat. 버벌진트))","url":"https://www.youtube.com/watch?v=_Zn6koleKv8"}]}</script>
 </head>
 <body>
@@ -164,7 +174,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

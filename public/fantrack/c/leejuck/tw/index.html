@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/leejuck/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/leejuck/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/leejuck/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/leejuck/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="李笛 — FanTrack">
+<meta property="og:description" content="李笛 的出演與作品 31 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/leejuck/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"李笛","alternateName":["이적","Lee Juck","李笛"],"url":"https://page.cocy.io/fantrack/c/leejuck/tw/","inLanguage":"zh-Hant","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"뮤직팜"},"foundingDate":"1995","subjectOf":[{"@type":"TVSeries","name":"싱크로유","datePublished":"2024"},{"@type":"TVSeries","name":"풍류대장 - 힙한 소리꾼들의 전쟁","datePublished":"2021"},{"@type":"MusicAlbum","name":"Trace","datePublished":"2020"},{"@type":"TVSeries","name":"Top 10 Student","datePublished":"2020"},{"@type":"TVSeries","name":"비긴 어게인 3","datePublished":"2019"},{"@type":"TVSeries","name":"玩什麼好呢","datePublished":"2019"},{"@type":"TVSeries","name":"요즘책방 : 책 읽어드립니다","datePublished":"2019"},{"@type":"TVSeries","name":"온주완의 뮤직쇼","datePublished":"2018"},{"@type":"TVSeries","name":"相親茶坊","datePublished":"2018"},{"@type":"MusicAlbum","name":"痕跡 PART1","datePublished":"2017"},{"@type":"TVSeries","name":"改變課堂","datePublished":"2017"},{"@type":"TVSeries","name":"花樣青春","datePublished":"2014"},{"@type":"MusicAlbum","name":"The Meaning of Solitude","datePublished":"2013"},{"@type":"TVSeries","name":"우리들의 일밤 - 아빠! 어디가?","datePublished":"2013"},{"@type":"TVSeries","name":"방송의 적","datePublished":"2013"},{"@type":"TVSeries","name":"無限挑戰","datePublished":"2011"},{"@type":"TVSeries","name":"하이킥 - 짧은 다리의 역습","datePublished":"2011"},{"@type":"MusicAlbum","name":"愛","datePublished":"2010"},{"@type":"TVSeries","name":"黃金漁場 Radio Star","datePublished":"2010"},{"@type":"TVSeries","name":"이적의 텐텐클럽","datePublished":"2008"},{"@type":"MusicAlbum","name":"木頭做的歌","datePublished":"2007"},{"@type":"TVSeries","name":"이적의 음악공간","datePublished":"2007"},{"@type":"TVSeries","name":"이적의 드림온","datePublished":"2004"},{"@type":"MusicAlbum","name":"2juck","datePublished":"2003"},{"@type":"TVSeries","name":"이적의 FM플러스","datePublished":"2000"},{"@type":"MusicAlbum","name":"Dead End","datePublished":"1999"},{"@type":"TVSeries","name":"이적의 별이 빛나는 밤에","datePublished":"1996"},{"@type":"MusicRecording","name":"Laundry","url":"https://www.youtube.com/watch?v=AYSTCqxAuTM"},{"@type":"MusicRecording","name":"Carousel","url":"https://www.youtube.com/watch?v=hjR7bJXMaVA"},{"@type":"MusicRecording","name":"pilgrim","url":"https://www.youtube.com/watch?v=UdiMLUDQ16w"},{"@type":"MusicRecording","name":"running on the sky","url":"https://www.youtube.com/watch?v=Z4itGGZTrtQ"}]}</script>
 </head>
 <body>
@@ -179,7 +189,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

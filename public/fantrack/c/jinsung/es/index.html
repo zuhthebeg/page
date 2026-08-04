@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/jinsung/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/jinsung/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/jinsung/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/jinsung/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Jin Sung — FanTrack">
+<meta property="og:description" content="34 trabajos de Jin Sung — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/jinsung/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Jin Sung","alternateName":["진성","Jin Sung"],"url":"https://page.cocy.io/fantrack/c/jinsung/es/","inLanguage":"es","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"토탈셋"},"subjectOf":[{"@type":"TVSeries","name":"Boss in the Mirror","datePublished":"2024"},{"@type":"TVSeries","name":"미스쓰리랑","datePublished":"2024"},{"@type":"TVSeries","name":"귀염뽕짝 원정대","datePublished":"2023"},{"@type":"TVSeries","name":"미스트롯3","datePublished":"2023"},{"@type":"TVSeries","name":"생방송 행복드림 로또 6/45","datePublished":"2023"},{"@type":"TVSeries","name":"미스터트롯2 - 새로운 전설의 시작","datePublished":"2022"},{"@type":"TVSeries","name":"일꾼의 탄생","datePublished":"2021"},{"@type":"TVSeries","name":"Dolsing Fourmen","datePublished":"2021"},{"@type":"TVSeries","name":"Mr. Trot","datePublished":"2020"},{"@type":"TVSeries","name":"Romantic Call Centre","datePublished":"2020"},{"@type":"TVSeries","name":"Master in the House","datePublished":"2020"},{"@type":"TVSeries","name":"My Little Old Boy","datePublished":"2020"},{"@type":"TVSeries","name":"K-Trot in Town","datePublished":"2020"},{"@type":"TVSeries","name":"아이콘택트","datePublished":"2020"},{"@type":"TVSeries","name":"Immortal Songs","datePublished":"2020"},{"@type":"TVSeries","name":"Hidden Singer","datePublished":"2020"},{"@type":"TVSeries","name":"인생앨범 - 예스터데이","datePublished":"2020"},{"@type":"TVSeries","name":"트롯파이터","datePublished":"2020"},{"@type":"TVSeries","name":"트로트의 민족","datePublished":"2020"},{"@type":"TVSeries","name":"내일은 미스트롯2","datePublished":"2020"},{"@type":"TVSeries","name":"행복한 아침","datePublished":"2019"},{"@type":"TVSeries","name":"Hangout with Yoo","datePublished":"2019"},{"@type":"TVSeries","name":"활기찬 주말 해피라이프","datePublished":"2018"},{"@type":"TVSeries","name":"생방송 오늘저녁","datePublished":"2018"},{"@type":"TVSeries","name":"휴먼다큐 사람이 좋다","datePublished":"2018"},{"@type":"TVSeries","name":"아침마당","datePublished":"2018"},{"@type":"TVSeries","name":"여유만만","datePublished":"2018"},{"@type":"TVSeries","name":"인생다큐 마이웨이","datePublished":"2018"},{"@type":"TVSeries","name":"구조신호 시그널","datePublished":"2018"},{"@type":"MusicRecording","name":"안동역에서","url":"https://www.youtube.com/watch?v=-kpve_FSzc4"},{"@type":"MusicRecording","name":"진성 KBS 방송","url":"https://www.youtube.com/watch?v=Z1pLqJoCp04"},{"@type":"MusicRecording","name":"못난놈","url":"https://www.youtube.com/watch?v=MOooIbhxunI"},{"@type":"MusicRecording","name":"그깟팔자","url":"https://www.youtube.com/watch?v=oevs78rZHnA"},{"@type":"MusicRecording","name":"동전인생","url":"https://www.youtube.com/watch?v=6cjFOHT9ccE"}]}</script>
 </head>
 <body>
@@ -182,7 +192,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

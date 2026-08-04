@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/browneyes/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/browneyes/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/browneyes/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/browneyes/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Brown Eyes — FanTrack">
+<meta property="og:description" content="8 trabajos de Brown Eyes — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/browneyes/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"Brown Eyes","alternateName":["브라운아이즈","Brown Eyes"],"url":"https://page.cocy.io/fantrack/c/browneyes/es/","inLanguage":"es","foundingDate":"2001","subjectOf":[{"@type":"MusicAlbum","name":"Two Things Needed for the Same Purpose and 5 Objets","datePublished":"2008"},{"@type":"MusicAlbum","name":"Reason for Breathing?","datePublished":"2002"},{"@type":"MusicAlbum","name":"Brown Eyes First Album","datePublished":"2001"},{"@type":"MusicRecording","name":"가지마 가지마","url":"https://www.youtube.com/watch?v=aq4_0vH2728"},{"@type":"MusicRecording","name":"Brown Eyes","url":"https://www.youtube.com/watch?v=Mktlac3D7H0"},{"@type":"MusicRecording","name":"With Coffee","url":"https://www.youtube.com/watch?v=_2zMo-Rhk54"},{"@type":"MusicRecording","name":"Because Of You","url":"https://www.youtube.com/watch?v=EqQx_X2zSJ0"},{"@type":"MusicRecording","name":"My Everything","url":"https://www.youtube.com/watch?v=v-xDpLBBwPk"}]}</script>
 </head>
 <body>
@@ -156,7 +166,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

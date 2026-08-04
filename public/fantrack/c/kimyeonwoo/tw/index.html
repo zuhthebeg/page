@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/kimyeonwoo/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/kimyeonwoo/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/kimyeonwoo/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/kimyeonwoo/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="金煙雨 — FanTrack">
+<meta property="og:description" content="金煙雨 的出演與作品 33 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/kimyeonwoo/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"金煙雨","alternateName":["김연우","Kim Yeon Woo","金煙雨"],"url":"https://page.cocy.io/fantrack/c/kimyeonwoo/tw/","inLanguage":"zh-Hant","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"디오뮤직"},"foundingDate":"1995","subjectOf":[{"@type":"TVSeries","name":"미스트롯3","datePublished":"2023"},{"@type":"TVSeries","name":"케이팝 어학당 - 노랫말싸미","datePublished":"2020"},{"@type":"TVSeries","name":"全知干預視角","datePublished":"2019"},{"@type":"TVSeries","name":"플레이어","datePublished":"2019"},{"@type":"TVSeries","name":"언니네 쌀롱","datePublished":"2019"},{"@type":"TVSeries","name":"加油吧威基基2","datePublished":"2019"},{"@type":"MusicAlbum","name":"我的你","datePublished":"2018"},{"@type":"TVSeries","name":"Fantastic Duo","datePublished":"2018"},{"@type":"TVSeries","name":"人生酒館","datePublished":"2018"},{"@type":"TVSeries","name":"時尚媽咪","datePublished":"2017"},{"@type":"TVSeries","name":"和遊記","datePublished":"2017"},{"@type":"TVSeries","name":"Superstar K 2016","datePublished":"2016"},{"@type":"TVSeries","name":"二重唱歌謠祭","datePublished":"2016"},{"@type":"TVSeries","name":"神秘音樂秀：蒙面歌王","datePublished":"2015"},{"@type":"TVSeries","name":"더 레이서","datePublished":"2015"},{"@type":"TVSeries","name":"隱藏歌手","datePublished":"2015"},{"@type":"MusicAlbum","name":"Move","datePublished":"2014"},{"@type":"TVSeries","name":"柳喜烈的寫生簿","datePublished":"2013"},{"@type":"TVSeries","name":"我是歌手第二季","datePublished":"2012"},{"@type":"TVSeries","name":"黃金漁場 Radio Star","datePublished":"2012"},{"@type":"TVSeries","name":"스탠바이","datePublished":"2012"},{"@type":"MusicAlbum","name":"Mr. Big","datePublished":"2011"},{"@type":"TVSeries","name":"我是歌手","datePublished":"2011"},{"@type":"MusicAlbum","name":"情","datePublished":"2010"},{"@type":"TVSeries","name":"李荷娜的薄荷糖","datePublished":"2009"},{"@type":"TVSeries","name":"挑戰千曲","datePublished":"2009"},{"@type":"MusicAlbum","name":"戀人","datePublished":"2004"},{"@type":"MusicAlbum","name":"在你身邊只有我...","datePublished":"1998"},{"@type":"MusicRecording","name":"도레미파솔 Do","url":"https://www.youtube.com/watch?v=HS6HIXX3KYg"},{"@type":"MusicRecording","name":"You Are My Love","url":"https://www.youtube.com/watch?v=M4o3cUHuce0"},{"@type":"MusicRecording","name":"나는 사랑이 뭔지 모르나봐요","url":"https://www.youtube.com/watch?v=GqQGutvY4LU"},{"@type":"MusicRecording","name":"I Belong","url":"https://www.youtube.com/watch?v=rIR79ivjpdw"},{"@type":"MusicRecording","name":"꽃보다 남자","url":"https://www.youtube.com/watch?v=SoLfmUQv_bo"}]}</script>
 </head>
 <body>
@@ -181,7 +191,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

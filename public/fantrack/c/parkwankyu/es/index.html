@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/parkwankyu/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/parkwankyu/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/parkwankyu/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/parkwankyu/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Park Wan-kyu — FanTrack">
+<meta property="og:description" content="11 trabajos de Park Wan-kyu — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/parkwankyu/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Park Wan-kyu","alternateName":["박완규","Park Wan-kyu"],"url":"https://page.cocy.io/fantrack/c/parkwankyu/es/","inLanguage":"es","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"라디오스타 엔터테인먼트"},"foundingDate":"1996","subjectOf":[{"@type":"MusicAlbum","name":"Guardian","datePublished":"2012"},{"@type":"MusicAlbum","name":"Love Story","datePublished":"2012"},{"@type":"MusicAlbum","name":"Love Hurts","datePublished":"2011"},{"@type":"MusicAlbum","name":"Love Song","datePublished":"2007"},{"@type":"MusicAlbum","name":"It's Now or Never","datePublished":"2002"},{"@type":"MusicAlbum","name":"Thousand Years of Love","datePublished":"1999"},{"@type":"MusicRecording","name":"Oneday love","url":"https://www.youtube.com/watch?v=esavh97BXzA"},{"@type":"MusicRecording","name":"비밀","url":"https://www.youtube.com/watch?v=_XyzRij5AqU"},{"@type":"MusicRecording","name":"사랑하기 전에는","url":"https://www.youtube.com/watch?v=1ZiWSLYX88U"},{"@type":"MusicRecording","name":"tving 스타리그 2012 OST 박완규-Here","url":"https://www.youtube.com/watch?v=rS2xO2pTv08"},{"@type":"MusicRecording","name":"하루애","url":"https://www.youtube.com/watch?v=-D6OHKpR2Lg"}]}</script>
 </head>
 <body>
@@ -159,7 +169,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

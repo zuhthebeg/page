@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/monstax/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/monstax/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/monstax/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/monstax/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="MONSTA X — FanTrack">
+<meta property="og:description" content="28 works by MONSTA X — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/monstax/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"MONSTA X","alternateName":["몬스타엑스","MONSTA X"],"url":"https://page.cocy.io/fantrack/c/monstax/en/","inLanguage":"en","foundingDate":"2015-05-14","subjectOf":[{"@type":"MusicAlbum","name":"Unfold","datePublished":"2026"},{"@type":"MusicAlbum","name":"Beautiful Liar / GAMBLER (JAPAN SPECIAL EDITION)","datePublished":"2025"},{"@type":"MusicAlbum","name":"THE X","datePublished":"2025"},{"@type":"MusicAlbum","name":"REASON","datePublished":"2023"},{"@type":"MusicAlbum","name":"SHAPE OF LOVE","datePublished":"2022"},{"@type":"MusicAlbum","name":"Flavors of love","datePublished":"2021"},{"@type":"MusicAlbum","name":"One Of a Kind","datePublished":"2021"},{"@type":"MusicAlbum","name":"NO LIMIT","datePublished":"2021"},{"@type":"MusicAlbum","name":"The Dreaming","datePublished":"2021"},{"@type":"MusicAlbum","name":"ALL ABOUT LUV","datePublished":"2020"},{"@type":"MusicAlbum","name":"FANTASIA X","datePublished":"2020"},{"@type":"MusicAlbum","name":"FATAL LOVE","datePublished":"2020"},{"@type":"MusicAlbum","name":"Take.2 WE ARE HERE","datePublished":"2019"},{"@type":"MusicAlbum","name":"Phenomenon","datePublished":"2019"},{"@type":"MusicAlbum","name":"FOLLOW – FIND YOU","datePublished":"2019"},{"@type":"MusicAlbum","name":"THE CONNECT : DEJAVU","datePublished":"2018"},{"@type":"MusicAlbum","name":"PIECE","datePublished":"2018"},{"@type":"MusicAlbum","name":"Take.1 ARE YOU THERE?","datePublished":"2018"},{"@type":"MusicAlbum","name":"THE CLAN PART 2.5 : THE FINAL CHAPTER - BEAUTIFUL","datePublished":"2017"},{"@type":"MusicAlbum","name":"THE CODE","datePublished":"2017"},{"@type":"MusicAlbum","name":"THE CLAN PART.1 LOST","datePublished":"2016"},{"@type":"MusicAlbum","name":"THE CLAN PART.2 GUILTY","datePublished":"2016"},{"@type":"MusicAlbum","name":"TRESPASS","datePublished":"2015"},{"@type":"MusicAlbum","name":"RUSH","datePublished":"2015"},{"@type":"MusicRecording","name":"Love Me A Little","url":"https://www.youtube.com/watch?v=E9WYODzBxGU"},{"@type":"MusicRecording","name":"Blame Me","url":"https://www.youtube.com/watch?v=8lAD_ToLd30"},{"@type":"MusicRecording","name":"Better","url":"https://www.youtube.com/watch?v=UpvVc34DIEA"},{"@type":"MusicRecording","name":"Secrets","url":"https://www.youtube.com/watch?v=7TF5PAG1-oc"}]}</script>
 </head>
 <body>
@@ -176,7 +186,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

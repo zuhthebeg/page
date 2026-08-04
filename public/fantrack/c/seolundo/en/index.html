@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/seolundo/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/seolundo/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/seolundo/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/seolundo/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Seol Woon-do — FanTrack">
+<meta property="og:description" content="39 works by Seol Woon-do — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/seolundo/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Seol Woon-do","alternateName":["설운도","Seol Woon-do"],"url":"https://page.cocy.io/fantrack/c/seolundo/en/","inLanguage":"en","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"루체엔터테인먼트"},"foundingDate":"1982","subjectOf":[{"@type":"TVSeries","name":"칠전팔기 구해라","datePublished":"2015"},{"@type":"TVSeries","name":"오로라 공주","datePublished":"2013"},{"@type":"TVSeries","name":"Assorted Gems","datePublished":"2009"},{"@type":"TVSeries","name":"그분이 오신다","datePublished":"2008"},{"@type":"TVSeries","name":"여고시절","datePublished":"2001"},{"@type":"TVSeries","name":"뉴 논스톱","datePublished":"2001"},{"@type":"TVSeries","name":"사랑은 생방송 - 오월동주 편","datePublished":"1993"},{"@type":"TVSeries","name":"타임머신"},{"@type":"TVSeries","name":"도전! 추리특급"},{"@type":"TVSeries","name":"Sunday Night"},{"@type":"TVSeries","name":"밤으로 가는 쇼"},{"@type":"TVSeries","name":"밤과 음악사이"},{"@type":"TVSeries","name":"밤의 이야기쇼"},{"@type":"TVSeries","name":"가족오락관"},{"@type":"TVSeries","name":"Korea Sings"},{"@type":"TVSeries","name":"쑈! TV유랑극단"},{"@type":"TVSeries","name":"전국 톱 10 가요 쇼"},{"@type":"TVSeries","name":"세상을 바꾸는 퀴즈"},{"@type":"TVSeries","name":"쇼! 노래하는 대한민국"},{"@type":"TVSeries","name":"트로트 엑스"},{"@type":"TVSeries","name":"Vocal War: God's Voice"},{"@type":"TVSeries","name":"My Little Television"},{"@type":"TVSeries","name":"King of Mask Singer"},{"@type":"TVSeries","name":"은밀하게 위대하게"},{"@type":"TVSeries","name":"The Return of Superman"},{"@type":"TVSeries","name":"행복한 아침"},{"@type":"TVSeries","name":"TV는 사랑을 싣고"},{"@type":"TVSeries","name":"K-Trot in Town"},{"@type":"TVSeries","name":"Mr. Trot"},{"@type":"TVSeries","name":"트롯 전국체전"},{"@type":"TVSeries","name":"테마스페셜"},{"@type":"TVSeries","name":"Dolsing Fourmen"},{"@type":"TVSeries","name":"아바드림"},{"@type":"TVSeries","name":"불타는 트롯맨"},{"@type":"MusicRecording","name":"다함께 차차차","url":"https://www.youtube.com/watch?v=RikgmODU33Y"},{"@type":"MusicRecording","name":"Let s Do Cha-Cha-Cha","url":"https://www.youtube.com/watch?v=hv8o_Xeq_0o"},{"@type":"MusicRecording","name":"사랑의 트위스트","url":"https://www.youtube.com/watch?v=M8flkwov0WA"},{"@type":"MusicRecording","name":"누이","url":"https://www.youtube.com/watch?v=lJKLSHiQ_rQ"},{"@type":"MusicRecording","name":"잊어야 해요","url":"https://www.youtube.com/watch?v=yVZUd0smEj8"}]}</script>
 </head>
 <body>
@@ -187,7 +197,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/blackpink/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/blackpink/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/blackpink/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/blackpink/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="BLACKPINK — FanTrack">
+<meta property="og:description" content="BLACKPINK 的出演與作品 33 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/blackpink/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"BLACKPINK","alternateName":["블랙핑크","BLACKPINK"],"url":"https://page.cocy.io/fantrack/c/blackpink/tw/","inLanguage":"zh-Hant","affiliation":{"@type":"Organization","name":"YG 엔터테인먼트"},"foundingDate":"2016","subjectOf":[{"@type":"MusicAlbum","name":"DEADLINE","datePublished":"2026"},{"@type":"MusicAlbum","name":"BORN PINK","datePublished":"2022"},{"@type":"MusicAlbum","name":"THE ALBUM -JP ver.-","datePublished":"2021"},{"@type":"MusicAlbum","name":"THE ALBUM","datePublished":"2020"},{"@type":"TVSeries","name":"美味的廣場","datePublished":"2020"},{"@type":"MusicAlbum","name":"KILL THIS LOVE","datePublished":"2019"},{"@type":"MusicAlbum","name":"KILL THIS LOVE -JP ver.-","datePublished":"2019"},{"@type":"TVSeries","name":"스테이지K","datePublished":"2019"},{"@type":"MusicAlbum","name":"SQUARE UP","datePublished":"2018"},{"@type":"TVSeries","name":"偶像室","datePublished":"2018"},{"@type":"MusicAlbum","name":"BLACKPINK","datePublished":"2017"},{"@type":"TVSeries","name":"라디오스타","datePublished":"2017"},{"@type":"TVSeries","name":"人氣歌謠","datePublished":"2016"},{"@type":"TVSeries","name":"一周偶像"},{"@type":"TVSeries","name":"Running Man"},{"@type":"TVSeries","name":"神秘音樂秀：蒙面歌王"},{"@type":"TVSeries","name":"My Little Television"},{"@type":"TVSeries","name":"Fantastic Duo"},{"@type":"TVSeries","name":"認識的哥哥"},{"@type":"TVSeries","name":"Party People"},{"@type":"TVSeries","name":"週三美食匯"},{"@type":"TVSeries","name":"겟 잇 뷰티"},{"@type":"TVSeries","name":"意外的Q"},{"@type":"TVSeries","name":"我家的熊孩子"},{"@type":"TVSeries","name":"驚人的星期六"},{"@type":"TVSeries","name":"真正的男人300"},{"@type":"TVSeries","name":"俘獲芳心頻道"},{"@type":"TVSeries","name":"놀라운토요일 도레미마켓"},{"@type":"MusicRecording","name":"‘Ready For Love’ (Official Audio)","url":"https://www.youtube.com/watch?v=-Wduzor_Y1Q"},{"@type":"MusicRecording","name":"‘뛰어(JUMP)’ (Official Audio)","url":"https://www.youtube.com/watch?v=RUKqwwyAiEU"},{"@type":"MusicRecording","name":"Kick It","url":"https://www.youtube.com/watch?v=-gZC9hC1PDQ"},{"@type":"MusicRecording","name":"Hope Not","url":"https://www.youtube.com/watch?v=l6zMnMMzsss"},{"@type":"MusicRecording","name":"‘Fxxxboy’ (Official Audio)","url":"https://www.youtube.com/watch?v=bgKZC7BgG-M"}]}</script>
 </head>
 <body>
@@ -181,7 +191,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

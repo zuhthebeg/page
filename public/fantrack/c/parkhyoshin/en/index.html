@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/parkhyoshin/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/parkhyoshin/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/parkhyoshin/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/parkhyoshin/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Park Hyo Shin — FanTrack">
+<meta property="og:description" content="15 works by Park Hyo Shin — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/parkhyoshin/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Park Hyo Shin","alternateName":["박효신","Park Hyo Shin","朴孝信"],"url":"https://page.cocy.io/fantrack/c/parkhyoshin/en/","inLanguage":"en","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"허비그하로"},"foundingDate":"1999","subjectOf":[{"@type":"MusicAlbum","name":"A & E","datePublished":"2026"},{"@type":"MusicAlbum","name":"I am A Dreamer","datePublished":"2016"},{"@type":"MusicAlbum","name":"Gift, Part 2","datePublished":"2010"},{"@type":"MusicAlbum","name":"Gift, Part 1","datePublished":"2009"},{"@type":"MusicAlbum","name":"The Breeze of Sea","datePublished":"2007"},{"@type":"MusicAlbum","name":"Neo Classicism","datePublished":"2005"},{"@type":"MusicAlbum","name":"Soul Tree","datePublished":"2004"},{"@type":"MusicAlbum","name":"Time-Honored Voice","datePublished":"2002"},{"@type":"MusicAlbum","name":"Second Story","datePublished":"2001"},{"@type":"MusicAlbum","name":"Something I Can't Do for You","datePublished":"1999"},{"@type":"MusicRecording","name":"[Lyric Video] 박효신 (Park Hyo Shin) - 연인 (LOVER)","url":"https://www.youtube.com/watch?v=u_WEhr84t8s"},{"@type":"MusicRecording","name":"LOVER","url":"https://www.youtube.com/watch?v=1kChcxolGCI"},{"@type":"MusicRecording","name":"그립고... 그리운...","url":"https://www.youtube.com/watch?v=z-K9a7TBzG4"},{"@type":"MusicRecording","name":"Goodbye","url":"https://www.youtube.com/watch?v=NGznnPbpZa4"},{"@type":"MusicRecording","name":"Wild Flower (야생화)","url":"https://www.youtube.com/watch?v=ZtcM3KhgF-s"}]}</script>
 </head>
 <body>
@@ -163,7 +173,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

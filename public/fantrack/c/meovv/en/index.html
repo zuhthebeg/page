@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/meovv/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/meovv/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/meovv/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/meovv/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="MEOVV — FanTrack">
+<meta property="og:description" content="7 works by MEOVV — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/meovv/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"MEOVV","alternateName":["미야오","MEOVV"],"url":"https://page.cocy.io/fantrack/c/meovv/en/","inLanguage":"en","affiliation":{"@type":"Organization","name":"더블랙레이블"},"foundingDate":"2024","subjectOf":[{"@type":"MusicAlbum","name":"BITE NOW","datePublished":"2026"},{"@type":"MusicAlbum","name":"MY EYES OPEN VVIDE","datePublished":"2025"},{"@type":"MusicRecording","name":"‘DDI RO RI’","url":"https://www.youtube.com/watch?v=wAcmabgnXQ4"},{"@type":"MusicRecording","name":"‘Hit Em’","url":"https://www.youtube.com/watch?v=xizPFgTA2eM"},{"@type":"MusicRecording","name":"‘DROP TOP’","url":"https://www.youtube.com/watch?v=Sm6c7e8_wpw"},{"@type":"MusicRecording","name":"‘Favorite song’","url":"https://www.youtube.com/watch?v=KooW6Fdo1s8"},{"@type":"MusicRecording","name":"‘In my hands’","url":"https://www.youtube.com/watch?v=lxoKDK7BNqY"}]}</script>
 </head>
 <body>
@@ -155,7 +165,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

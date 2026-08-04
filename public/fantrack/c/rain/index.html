@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/rain/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/rain/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/rain/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/rain/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="비 — FanTrack">
+<meta property="og:description" content="비 출연·활동 정보 36건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/rain/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"비","alternateName":["비","RAIN"],"url":"https://page.cocy.io/fantrack/c/rain/","inLanguage":"ko","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"레인컴퍼니"},"foundingDate":"1998","subjectOf":[{"@type":"TVSeries","name":"비 엠비셔스","datePublished":"2022"},{"@type":"MusicAlbum","name":"PIECES by RAIN","datePublished":"2021"},{"@type":"TVSeries","name":"아는형님","datePublished":"2021"},{"@type":"TVSeries","name":"쇼! 음악중심","datePublished":"2021"},{"@type":"TVSeries","name":"아침마당","datePublished":"2021"},{"@type":"TVSeries","name":"가요무대","datePublished":"2021"},{"@type":"TVSeries","name":"너의 목소리가 보여","datePublished":"2021"},{"@type":"TVSeries","name":"전지적 참견 시점","datePublished":"2021"},{"@type":"TVSeries","name":"불후의 명곡","datePublished":"2021"},{"@type":"TVSeries","name":"2TV 생생정보","datePublished":"2021"},{"@type":"TVSeries","name":"수미산장","datePublished":"2021"},{"@type":"TVSeries","name":"유 퀴즈 온 더 블럭","datePublished":"2021"},{"@type":"TVSeries","name":"놀라운 토요일","datePublished":"2021"},{"@type":"TVSeries","name":"놀면 뭐하니? - 여름 혼성그룹","datePublished":"2020"},{"@type":"TVSeries","name":"I-LAND","datePublished":"2020"},{"@type":"TVSeries","name":"히든싱어 6","datePublished":"2020"},{"@type":"TVSeries","name":"미운우리새끼","datePublished":"2020"},{"@type":"MusicAlbum","name":"MY LIFE愛","datePublished":"2017"},{"@type":"TVSeries","name":"아이돌 리부팅 프로젝트 더 유닛","datePublished":"2017"},{"@type":"MusicAlbum","name":"Rain Effect","datePublished":"2014"},{"@type":"TVSeries","name":"디펜스 리포트 2012","datePublished":"2012"},{"@type":"MusicAlbum","name":"Back to the Basic","datePublished":"2010"},{"@type":"TVSeries","name":"날려라 홈런왕","datePublished":"2010"},{"@type":"MusicAlbum","name":"Rainism","datePublished":"2008"},{"@type":"TVSeries","name":"대단한 도전","datePublished":"2007"},{"@type":"MusicAlbum","name":"Eternal Rain","datePublished":"2006"},{"@type":"MusicAlbum","name":"Rain's World","datePublished":"2006"},{"@type":"MusicAlbum","name":"It's Raining","datePublished":"2004"},{"@type":"TVSeries","name":"SBS 인기가요","datePublished":"2004"},{"@type":"MusicAlbum","name":"태양을 피하는 방법","datePublished":"2003"},{"@type":"MusicAlbum","name":"나쁜 남자","datePublished":"2002"},{"@type":"MusicRecording","name":"MAGNETIC","url":"https://www.youtube.com/watch?v=mReq0PlE7bU"},{"@type":"MusicRecording","name":"Love Story Full v","url":"https://www.youtube.com/watch?v=2xnpFI3PLYs"},{"@type":"MusicRecording","name":"Love Story","url":"https://www.youtube.com/watch?v=FPgIUggsQqc"},{"@type":"MusicRecording","name":"깡","url":"https://www.youtube.com/watch?v=8B8lFCJOerM"},{"@type":"MusicRecording","name":"GANG 깡","url":"https://www.youtube.com/watch?v=PNx_Pwq87qk"}]}</script>
 </head>
 <body>
@@ -184,7 +194,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/winner_kpop/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/winner_kpop/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/winner_kpop/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/winner_kpop/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="WINNER — FanTrack">
+<meta property="og:description" content="31 trabajos de WINNER — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/winner_kpop/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"WINNER","alternateName":["위너","WINNER"],"url":"https://page.cocy.io/fantrack/c/winner_kpop/es/","inLanguage":"es","affiliation":{"@type":"Organization","name":"YG 엔터테인먼트"},"foundingDate":"2014-08-12","subjectOf":[{"@type":"MusicAlbum","name":"HOLIDAY","datePublished":"2022"},{"@type":"MusicAlbum","name":"Remember","datePublished":"2020"},{"@type":"MusicAlbum","name":"WE","datePublished":"2019"},{"@type":"MusicAlbum","name":"CROSS","datePublished":"2019"},{"@type":"MusicAlbum","name":"OUR TWENTY FOR","datePublished":"2018"},{"@type":"MusicAlbum","name":"EVERYD4Y","datePublished":"2018"},{"@type":"MusicAlbum","name":"EVERYD4Y (Japanese ver.)","datePublished":"2018"},{"@type":"TVSeries","name":"My Little Television","datePublished":"2017"},{"@type":"TVSeries","name":"신서유기 3","datePublished":"2017"},{"@type":"TVSeries","name":"신서유기 4","datePublished":"2017"},{"@type":"TVSeries","name":"Youth Over Flowers","datePublished":"2017"},{"@type":"TVSeries","name":"Kang's Kitchen","datePublished":"2017"},{"@type":"MusicAlbum","name":"EXIT : E","datePublished":"2016"},{"@type":"TVSeries","name":"반달친구","datePublished":"2016"},{"@type":"MusicEvent","name":"Worldwide Inner Circle Conference : WWIC","datePublished":"2015"},{"@type":"TVSeries","name":"쇼미더머니4","datePublished":"2015"},{"@type":"TVSeries","name":"0시의 그녀","datePublished":"2015"},{"@type":"TVSeries","name":"심야식당","datePublished":"2015"},{"@type":"TVSeries","name":"The Producers","datePublished":"2015"},{"@type":"TVSeries","name":"We Broke Up","datePublished":"2015"},{"@type":"TVSeries","name":"마법의 휴대폰","datePublished":"2015"},{"@type":"MusicAlbum","name":"2014 S/S","datePublished":"2014"},{"@type":"MusicEvent","name":"WINNER 1st JAPAN TOUR 2014","datePublished":"2014"},{"@type":"TVSeries","name":"위너 TV","datePublished":"2014"},{"@type":"TVSeries","name":"SBS 가요대전","datePublished":"2014"},{"@type":"TVSeries","name":"WIN - Who Is Next","datePublished":"2013"},{"@type":"MusicRecording","name":"첫사랑","url":"https://www.youtube.com/watch?v=KE5dkJ4OQPY"},{"@type":"MusicRecording","name":"RAINING","url":"https://www.youtube.com/watch?v=JszOSGnr4AQ"},{"@type":"MusicRecording","name":"공허해","url":"https://www.youtube.com/watch?v=lrBpbNIixY8"},{"@type":"MusicRecording","name":"Different","url":"https://www.youtube.com/watch?v=1rfIgGWiJBE"},{"@type":"MusicRecording","name":"새끼손가락","url":"https://www.youtube.com/watch?v=VR9B7cLfFQU"}]}</script>
 </head>
 <body>
@@ -179,7 +189,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

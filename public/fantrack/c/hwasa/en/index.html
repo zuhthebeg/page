@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/hwasa/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/hwasa/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/hwasa/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/hwasa/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Hwasa — FanTrack">
+<meta property="og:description" content="27 works by Hwasa — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/hwasa/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Hwasa","alternateName":["화사","Hwasa","華莎"],"url":"https://page.cocy.io/fantrack/c/hwasa/en/","inLanguage":"en","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"P NATION"},"foundingDate":"2014-06-19","subjectOf":[{"@type":"MusicAlbum","name":"O","datePublished":"2024"},{"@type":"TVSeries","name":"Dancing Queens on the Road","datePublished":"2023"},{"@type":"TVSeries","name":"서울체크인","datePublished":"2022"},{"@type":"TVSeries","name":"화사쇼","datePublished":"2022"},{"@type":"MusicAlbum","name":"María","datePublished":"2020"},{"@type":"TVSeries","name":"텔레그나","datePublished":"2020"},{"@type":"TVSeries","name":"라디오스타","datePublished":"2019"},{"@type":"TVSeries","name":"King of Mask Singer","datePublished":"2017"},{"@type":"TVSeries","name":"스타킹","datePublished":"2016"},{"@type":"TVSeries","name":"2016 아육대","datePublished":"2016"},{"@type":"TVSeries","name":"Immortal Songs","datePublished":"2015"},{"@type":"TVSeries","name":"2015 아육대","datePublished":"2015"},{"@type":"TVSeries","name":"야만TV"},{"@type":"TVSeries","name":"끝까지 간다"},{"@type":"TVSeries","name":"Knowing Bros"},{"@type":"TVSeries","name":"I Live Alone"},{"@type":"TVSeries","name":"Life Bar"},{"@type":"TVSeries","name":"Let's Eat Dinner Together"},{"@type":"TVSeries","name":"We Will Channel You"},{"@type":"TVSeries","name":"히든싱어6"},{"@type":"TVSeries","name":"Hangout with Yoo"},{"@type":"TVSeries","name":"나 혼자 산다 - 여은파"},{"@type":"MusicRecording","name":"HWASA 화사 'Good Goodbye' Official Audio","url":"https://www.youtube.com/watch?v=-COVx822UK0"},{"@type":"MusicRecording","name":"LMM (LMM)","url":"https://www.youtube.com/watch?v=pKiqygPwSCE"},{"@type":"MusicRecording","name":"'Good Goodbye' MV","url":"https://www.youtube.com/watch?v=Qe8fa4b5xNU"},{"@type":"MusicRecording","name":"HWASA 화사 'So Cute' Official Audio","url":"https://www.youtube.com/watch?v=UVeWpehKm9w"},{"@type":"MusicRecording","name":"Bless U (Bless U)","url":"https://www.youtube.com/watch?v=gGph78U5oIw"}]}</script>
 </head>
 <body>
@@ -175,7 +185,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

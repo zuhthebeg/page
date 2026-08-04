@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/leeteuk/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/leeteuk/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/leeteuk/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/leeteuk/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="이특 — FanTrack">
+<meta property="og:description" content="이특 출연·활동 정보 8건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/leeteuk/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"이특","alternateName":["이특","Leeteuk","利特"],"url":"https://page.cocy.io/fantrack/c/leeteuk/","inLanguage":"ko","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"SM 엔터테인먼트"},"foundingDate":"2005-11-06","subjectOf":[{"@type":"MusicEvent","name":"2026 SUPER JUNIOR-83z FANCON TOUR [1983]","datePublished":"2026"},{"@type":"MusicAlbum","name":"너를 위한 약속","datePublished":"2026"},{"@type":"TVSeries","name":"슈퍼TV","datePublished":"2018","url":"https://www.youtube.com/@SUPERJUNIOR"},{"@type":"TVSeries","name":"아는 형님","datePublished":"2017","url":"https://www.youtube.com/results?search_query=%EC%95%84%EB%8A%94%ED%98%95%EB%8B%98+%EB%8F%99%ED%95%B4+2017"},{"@type":"MusicRecording","name":"주간 아이돌","datePublished":"2017","url":"https://www.youtube.com/results?search_query=%EC%A3%BC%EA%B0%84%EC%95%84%EC%9D%B4%EB%8F%8C+%EB%8F%99%ED%95%B4+2017"},{"@type":"TVSeries","name":"슈퍼주니어 어느 멋진 날","datePublished":"2014"},{"@type":"TVSeries","name":"슈퍼주니어의 선견지명","datePublished":"2010"},{"@type":"RadioSeries","name":"슈퍼주니어의 키스 더 라디오","datePublished":"2006"}]}</script>
 </head>
 <body>
@@ -156,7 +166,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

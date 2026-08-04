@@ -269,12 +269,34 @@
     }).join('');
   }
 
+  // 언어 전환은 "경로 이동"이 정본이다.
+  // detect()가 경로 로케일(/tw/ 등)을 쿼리보다 우선하므로, 언어 경로 위에서
+  // ?lang=만 바꾸면 아무 일도 일어나지 않는다(2026-08-04 버그: /c/{slug}/tw/?lang=ko).
+  function langHref(target) {
+    const path = location.pathname;
+    let base = null;
+    let m = path.match(/^(.*\/fantrack\/c\/[^/]+\/)(?:(?:ko|en|tw|es)\/)?$/);
+    if (m) base = m[1];
+    else {
+      m = path.match(/^(.*\/fantrack\/)(?:(?:ko|en|tw|es)\/)?$/);
+      if (m) base = m[1];
+    }
+    if (!base) return null;
+    const u = new URL(location.href);
+    u.pathname = base + (target === 'ko' ? '' : target + '/');
+    u.searchParams.delete('lang');
+    return u.toString();
+  }
+
   function bindSwitcher(el) {
     if (!el) return;
     el.innerHTML = switcherHtml();
     el.querySelectorAll('.lang-btn').forEach(function (b) {
       b.onclick = function () {
         try { localStorage.setItem('fantrack_lang', b.dataset.lang); } catch (e) {}
+        const href = langHref(b.dataset.lang);
+        if (href) { location.href = href; return; }
+        // 언어 경로가 없는 화면(예: 임시 페이지)에서만 쿼리 폴백
         const u = new URL(location.href);
         u.searchParams.set('lang', b.dataset.lang);
         location.href = u.toString();

@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/leeeunmi/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/leeeunmi/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/leeeunmi/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/leeeunmi/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="이은미 — FanTrack">
+<meta property="og:description" content="이은미 출연·활동 정보 17건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/leeeunmi/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"이은미","alternateName":["이은미","Lee Eun-mi"],"url":"https://page.cocy.io/fantrack/c/leeeunmi/","inLanguage":"ko","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"네오비즈"},"foundingDate":"1988","subjectOf":[{"@type":"TVSeries","name":"라디오스타","datePublished":"2024"},{"@type":"TVSeries","name":"신발 벗고 돌싱포맨","datePublished":"2024"},{"@type":"TVSeries","name":"골든걸스","datePublished":"2023"},{"@type":"TVSeries","name":"트로트의 민족","datePublished":"2020"},{"@type":"TVSeries","name":"이은미와 함께라면","datePublished":"2019"},{"@type":"TVSeries","name":"김제동의 톡투유 - 걱정 말아요! 그대","datePublished":"2017"},{"@type":"TVSeries","name":"나는 가수다 시즌2","datePublished":"2012"},{"@type":"MusicAlbum","name":"소리 위를 걷다 2","datePublished":"2010"},{"@type":"TVSeries","name":"스타 오디션 위대한 탄생","datePublished":"2010"},{"@type":"MusicAlbum","name":"소리 위를 걷다","datePublished":"2009"},{"@type":"MusicAlbum","name":"Ma Non Tanto","datePublished":"2005"},{"@type":"MusicAlbum","name":"1","datePublished":"1992"},{"@type":"MusicRecording","name":"이은미, 애인있어요","url":"https://www.youtube.com/watch?v=iy6pXVh6OCQ"},{"@type":"MusicRecording","name":"이은미, 녹턴","url":"https://www.youtube.com/watch?v=7vNU1WLjZeo"},{"@type":"MusicRecording","name":"이은미, 오래된기억","url":"https://www.youtube.com/watch?v=lKtVplGAaQw"},{"@type":"MusicRecording","name":"Some Yearning","url":"https://www.youtube.com/watch?v=06LCltoEYt8"},{"@type":"MusicRecording","name":"이은미,","url":"https://www.youtube.com/watch?v=38DnS1LL-Xo"}]}</script>
 </head>
 <body>
@@ -165,7 +175,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

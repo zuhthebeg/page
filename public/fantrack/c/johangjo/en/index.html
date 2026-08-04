@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/johangjo/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/johangjo/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/johangjo/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/johangjo/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Jo Hang-jo — FanTrack">
+<meta property="og:description" content="23 works by Jo Hang-jo — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/johangjo/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Jo Hang-jo","alternateName":["조항조","Jo Hang-jo"],"url":"https://page.cocy.io/fantrack/c/johangjo/en/","inLanguage":"en","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"우리엔터테인먼트"},"foundingDate":"1976","subjectOf":[{"@type":"TVSeries","name":"미스쓰리랑","datePublished":"2024"},{"@type":"TVSeries","name":"회장님네 사람들","datePublished":"2023"},{"@type":"TVSeries","name":"우리들의 트로트","datePublished":"2022"},{"@type":"TVSeries","name":"불타는 트롯맨","datePublished":"2022"},{"@type":"TVSeries","name":"트롯 전국체전","datePublished":"2020"},{"@type":"TVSeries","name":"Korea Sings"},{"@type":"TVSeries","name":"MBC가요베스트"},{"@type":"TVSeries","name":"전국 톱 10 가요쇼"},{"@type":"TVSeries","name":"쑈! TV유랑극단"},{"@type":"TVSeries","name":"가족오락관"},{"@type":"TVSeries","name":"뮤직 토크쇼 가요 1번지"},{"@type":"TVSeries","name":"특집 KBS 숲속음악회"},{"@type":"TVSeries","name":"Immortal Songs"},{"@type":"TVSeries","name":"King of Mask Singer"},{"@type":"TVSeries","name":"나는 트로트 가수다"},{"@type":"TVSeries","name":"Weekly Idol"},{"@type":"TVSeries","name":"Romantic Call Centre"},{"@type":"TVSeries","name":"내 사랑 투유"},{"@type":"MusicRecording","name":"남자라는 이유로","url":"https://www.youtube.com/watch?v=j-tMrgzSVk8"},{"@type":"MusicRecording","name":"거짓말","url":"https://www.youtube.com/watch?v=wqepLWLbT0k"},{"@type":"MusicRecording","name":"만약에","url":"https://www.youtube.com/watch?v=fgYv93eqvaE"},{"@type":"MusicRecording","name":"사랑찾아 인생찾아","url":"https://www.youtube.com/watch?v=Tc8xMSOUzhU"},{"@type":"MusicRecording","name":"조항조 후","url":"https://www.youtube.com/watch?v=LmOakyIdWWk"}]}</script>
 </head>
 <body>
@@ -171,7 +181,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

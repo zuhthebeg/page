@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/geobugi/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/geobugi/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/geobugi/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/geobugi/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Turtles — FanTrack">
+<meta property="og:description" content="26 trabajos de Turtles — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/geobugi/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"Turtles","alternateName":["거북이","Turtles"],"url":"https://page.cocy.io/fantrack/c/geobugi/es/","inLanguage":"es","affiliation":{"@type":"Organization","name":"엔터원"},"foundingDate":"2001-12-20","subjectOf":[{"@type":"MusicAlbum","name":"Turtles, Warm-Up","datePublished":"2007"},{"@type":"MusicAlbum","name":"Turtles for Sale!!","datePublished":"2006"},{"@type":"MusicAlbum","name":"Turtles:3","datePublished":"2004"},{"@type":"MusicAlbum","name":"Turtles 2","datePublished":"2003"},{"@type":"MusicAlbum","name":"Go! Boogie! Turtles","datePublished":"2001"},{"@type":"TVSeries","name":"행복주식회사"},{"@type":"TVSeries","name":"TV는 사랑을 싣고"},{"@type":"TVSeries","name":"Star Golden Bell"},{"@type":"TVSeries","name":"특집 요! 주의사항"},{"@type":"TVSeries","name":"박준형 김다래의 5학년 4반 15번 이서준은 천재"},{"@type":"TVSeries","name":"김구라의 가요광장"},{"@type":"TVSeries","name":"이민우의 자유선언"},{"@type":"TVSeries","name":"이주노의 뮤직토크"},{"@type":"TVSeries","name":"지상렬, 노사연의 2시만세"},{"@type":"TVSeries","name":"김영철 황보의 싱글즈"},{"@type":"TVSeries","name":"배칠수, 전영미의 와와쇼"},{"@type":"TVSeries","name":"김창남의 가요 일번지"},{"@type":"TVSeries","name":"황인용의 마이 웨이"},{"@type":"TVSeries","name":"김필원의 FM 매거진"},{"@type":"TVSeries","name":"음악FM 개국 8주년 기념 노 보이스 데이"},{"@type":"TVSeries","name":"행복한 아침 즐거운 FM"},{"@type":"MusicRecording","name":"One Mor","url":"https://www.youtube.com/watch?v=Jm0s0CEEd3Q"},{"@type":"MusicRecording","name":"What Happen","url":"https://www.youtube.com/watch?v=ky6nRe5985k"},{"@type":"MusicRecording","name":"비행기","url":"https://www.youtube.com/watch?v=dXQzwNb8G7g"},{"@type":"MusicRecording","name":"아이고","url":"https://www.youtube.com/watch?v=_19EcuPjZRM"},{"@type":"MusicRecording","name":"Ooops","url":"https://www.youtube.com/watch?v=vbyXD05wKcU"}]}</script>
 </head>
 <body>
@@ -174,7 +184,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

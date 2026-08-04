@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/nayoonkwon/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/nayoonkwon/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/nayoonkwon/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/nayoonkwon/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Na Yoon Kwon — FanTrack">
+<meta property="og:description" content="13 works by Na Yoon Kwon — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/nayoonkwon/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Na Yoon Kwon","alternateName":["나윤권","Na Yoon Kwon"],"url":"https://page.cocy.io/fantrack/c/nayoonkwon/en/","inLanguage":"en","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"S27M 엔터테인먼트"},"foundingDate":"2004","subjectOf":[{"@type":"MusicAlbum","name":"THE 3RD ALBUM - Thank You","datePublished":"2018"},{"@type":"TVSeries","name":"버저비터","datePublished":"2017"},{"@type":"TVSeries","name":"나는 가수다 3","datePublished":"2015"},{"@type":"TVSeries","name":"King of Mask Singer","datePublished":"2015"},{"@type":"MusicAlbum","name":"Encounter","datePublished":"2009"},{"@type":"MusicAlbum","name":"Expectation","datePublished":"2006"},{"@type":"TVSeries","name":"가족오락관","datePublished":"2005"},{"@type":"MusicAlbum","name":"Addiction","datePublished":"2004"},{"@type":"MusicRecording","name":"헤어져 보자","url":"https://www.youtube.com/watch?v=OKptp0TqpvU"},{"@type":"MusicRecording","name":"바람이 좋은 날","url":"https://www.youtube.com/watch?v=IwCHcMWAHak"},{"@type":"MusicRecording","name":"오늘이 지나면","url":"https://www.youtube.com/watch?v=6mHfOHoRYO8"},{"@type":"MusicRecording","name":"너 없는 시간","url":"https://www.youtube.com/watch?v=eMASpd4sgUA"},{"@type":"MusicRecording","name":"01 .. 더라면","url":"https://www.youtube.com/watch?v=HsczRZWOkE4"}]}</script>
 </head>
 <body>
@@ -161,7 +171,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

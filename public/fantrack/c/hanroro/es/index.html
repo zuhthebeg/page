@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/hanroro/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/hanroro/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/hanroro/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/hanroro/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Hanroro — FanTrack">
+<meta property="og:description" content="8 trabajos de Hanroro — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/hanroro/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Hanroro","alternateName":["한로로","Hanroro"],"url":"https://page.cocy.io/fantrack/c/hanroro/es/","inLanguage":"es","jobTitle":"Singer","foundingDate":"2022","subjectOf":[{"@type":"MusicAlbum","name":"Grapefruit Apricot Club","datePublished":"2025"},{"@type":"MusicAlbum","name":"Home","datePublished":"2024"},{"@type":"MusicAlbum","name":"Abnormal Flight","datePublished":"2023"},{"@type":"MusicRecording","name":"The Suspect","url":"https://www.youtube.com/watch?v=EPMh3g5qh2Y"},{"@type":"MusicRecording","name":"0+0 ㅣ","url":"https://www.youtube.com/watch?v=AXx3pu6YQmQ"},{"@type":"MusicRecording","name":"0+0","url":"https://www.youtube.com/watch?v=_Ngk-DCHfD0"},{"@type":"MusicRecording","name":"자처","url":"https://www.youtube.com/watch?v=IEVm5xMHybE"},{"@type":"MusicRecording","name":"게임 오버 ?","url":"https://www.youtube.com/watch?v=qrzKsS-4lZo"}]}</script>
 </head>
 <body>
@@ -156,7 +166,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

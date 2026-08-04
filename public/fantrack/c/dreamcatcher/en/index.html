@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/dreamcatcher/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/dreamcatcher/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/dreamcatcher/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/dreamcatcher/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="DREAMCATCHER — FanTrack">
+<meta property="og:description" content="20 works by DREAMCATCHER — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/dreamcatcher/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"DREAMCATCHER","alternateName":["드림캐쳐","DREAMCATCHER","Dreamcatcher"],"url":"https://page.cocy.io/fantrack/c/dreamcatcher/en/","inLanguage":"en","affiliation":{"@type":"Organization","name":"드림캐쳐 컴퍼니"},"foundingDate":"2014","subjectOf":[{"@type":"MusicAlbum","name":"[VirtuouS]","datePublished":"2024"},{"@type":"MusicAlbum","name":"[Apocalypse : From us]","datePublished":"2023"},{"@type":"MusicAlbum","name":"[VillainS]","datePublished":"2023"},{"@type":"MusicAlbum","name":"[Apocalypse : Save us]","datePublished":"2022"},{"@type":"MusicAlbum","name":"[Apocalypse : Follow us]","datePublished":"2022"},{"@type":"MusicAlbum","name":"[Dystopia : Road to Utopia]","datePublished":"2021"},{"@type":"MusicAlbum","name":"[Summer Holiday]","datePublished":"2021"},{"@type":"MusicAlbum","name":"[Dystopia : The Tree of Language]","datePublished":"2020"},{"@type":"MusicAlbum","name":"[Dystopia : Lose Myself]","datePublished":"2020"},{"@type":"MusicAlbum","name":"The End of Nightmare","datePublished":"2019"},{"@type":"MusicAlbum","name":"The Beginning of the End","datePublished":"2019"},{"@type":"MusicAlbum","name":"Raid of Dream","datePublished":"2019"},{"@type":"MusicAlbum","name":"Nightmare · Escape the ERA","datePublished":"2018"},{"@type":"MusicAlbum","name":"Alone in the City","datePublished":"2018"},{"@type":"MusicAlbum","name":"Prequel","datePublished":"2017"},{"@type":"MusicRecording","name":"Dreamcatcher BEcause","url":"https://www.youtube.com/watch?v=PEKkdIT8JPM"},{"@type":"MusicRecording","name":"Dreamcatcher Scream","url":"https://www.youtube.com/watch?v=FKlGHHhTOsQ"},{"@type":"MusicRecording","name":"Scream","url":"https://www.youtube.com/watch?v=E8B5cD9sQQo"},{"@type":"MusicRecording","name":"GOOD NIGHT","url":"https://www.youtube.com/watch?v=Jp3IeqS-W6A"},{"@type":"MusicRecording","name":"SCREAM","url":"https://www.youtube.com/watch?v=V0JXej0VWO4"}]}</script>
 </head>
 <body>
@@ -168,7 +178,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

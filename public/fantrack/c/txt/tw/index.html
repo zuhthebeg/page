@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/txt/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/txt/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/txt/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/txt/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="TXT — FanTrack">
+<meta property="og:description" content="TXT 的出演與作品 13 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/txt/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"TXT","alternateName":["투모로우바이투게더","TXT"],"url":"https://page.cocy.io/fantrack/c/txt/tw/","inLanguage":"zh-Hant","affiliation":{"@type":"Organization","name":"빅히트 뮤직"},"foundingDate":"2019-03-04","subjectOf":[{"@type":"TVSeries","name":"TO DO X TOMORROW X TOGETHER","datePublished":"2020"},{"@type":"TVSeries","name":"TALK X TODAY","datePublished":"2019"},{"@type":"TVSeries","name":"TXT Episode","datePublished":"2019"},{"@type":"TVSeries","name":"++line","datePublished":"2019"},{"@type":"TVSeries","name":"TTCAM","datePublished":"2019"},{"@type":"TVSeries","name":"X:TIME","datePublished":"2019"},{"@type":"TVSeries","name":"Daily_TXT","datePublished":"2019"},{"@type":"TVSeries","name":"T:TIME","datePublished":"2019"},{"@type":"MusicRecording","name":"거울 속의 미로","url":"https://www.youtube.com/watch?v=E6THLasU5-w"},{"@type":"MusicRecording","name":"내일에서 기다릴게 (I'll See You There Tomorrow)","url":"https://www.youtube.com/watch?v=MtDeVpVzLhY"},{"@type":"MusicRecording","name":"So What","url":"https://www.youtube.com/watch?v=LpOFAv6aed8"},{"@type":"MusicRecording","name":"21st Century Romance","url":"https://www.youtube.com/watch?v=JnSqh9VJ0Yc"},{"@type":"MusicRecording","name":"네버랜드를 떠나며","url":"https://www.youtube.com/watch?v=gd6B4kRgI78"}]}</script>
 </head>
 <body>
@@ -161,7 +171,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

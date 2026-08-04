@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/tim_kpop/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/tim_kpop/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/tim_kpop/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/tim_kpop/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Tim — FanTrack">
+<meta property="og:description" content="17 works by Tim — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/tim_kpop/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Tim","alternateName":["팀","Tim"],"url":"https://page.cocy.io/fantrack/c/tim_kpop/en/","inLanguage":"en","jobTitle":"Singer","foundingDate":"2003","subjectOf":[{"@type":"TVSeries","name":"와이프 카드 쓰는 남자","datePublished":"2021"},{"@type":"TVSeries","name":"투유 프로젝트 슈가맨 2","datePublished":"2018"},{"@type":"TVSeries","name":"듀엣가요제 45회","datePublished":"2017"},{"@type":"TVSeries","name":"Video Star","datePublished":"2017"},{"@type":"TVSeries","name":"복면가왕 54회","datePublished":"2016"},{"@type":"TVSeries","name":"King of Mask Singer","datePublished":"2016"},{"@type":"TVSeries","name":"불후의 명곡2 - 전설을 노래하다","datePublished":"2012"},{"@type":"TVSeries","name":"사랑해, I love you...","datePublished":"2012"},{"@type":"TVSeries","name":"백점만점 전국 아이돌 체전","datePublished":"2011"},{"@type":"TVSeries","name":"P.S. I Love You 박정현","datePublished":"2011"},{"@type":"TVSeries","name":"Star King","datePublished":"2010"},{"@type":"MusicAlbum","name":"Tim 영민","datePublished":"2003"},{"@type":"MusicRecording","name":"사랑합니다","url":"https://www.youtube.com/watch?v=7Zs7UM-EBLs"},{"@type":"MusicRecording","name":"사랑합니다","url":"https://www.youtube.com/watch?v=uy4fCaD9u8A"},{"@type":"MusicRecording","name":"Bye Bye Love","url":"https://www.youtube.com/watch?v=4MK1tkGaJGw"},{"@type":"MusicRecording","name":"Yes","url":"https://www.youtube.com/watch?v=Zv1ST-BfM4A"},{"@type":"MusicRecording","name":"Beautiful","url":"https://www.youtube.com/watch?v=iYIqwwY7p08"}]}</script>
 </head>
 <body>
@@ -165,7 +175,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

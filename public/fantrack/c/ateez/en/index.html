@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/ateez/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/ateez/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/ateez/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/ateez/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="ATEEZ — FanTrack">
+<meta property="og:description" content="33 works by ATEEZ — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/ateez/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"ATEEZ","alternateName":["에이티즈","ATEEZ"],"url":"https://page.cocy.io/fantrack/c/ateez/en/","inLanguage":"en","affiliation":{"@type":"Organization","name":"KQ 엔터테인먼트"},"foundingDate":"2018-10-24","subjectOf":[{"@type":"MusicAlbum","name":"GOLDEN HOUR : Part.4","datePublished":"2026"},{"@type":"MusicAlbum","name":"GOLDEN HOUR : Part.5","datePublished":"2026"},{"@type":"MusicAlbum","name":"GOLDEN HOUR : Part.3","datePublished":"2025"},{"@type":"MusicAlbum","name":"Ashes to Light","datePublished":"2025"},{"@type":"MusicAlbum","name":"GOLDEN HOUR : Part.1","datePublished":"2024"},{"@type":"MusicAlbum","name":"Birthday","datePublished":"2024"},{"@type":"MusicAlbum","name":"GOLDEN HOUR : Part.2","datePublished":"2024"},{"@type":"MusicAlbum","name":"THE WORLD EP.2 : OUTLAW","datePublished":"2023"},{"@type":"MusicAlbum","name":"THE WORLD EP.FIN : WILL","datePublished":"2023"},{"@type":"MusicAlbum","name":"BEYOND : ZERO","datePublished":"2022"},{"@type":"MusicAlbum","name":"THE WORLD EP.1 : MOVEMENT","datePublished":"2022"},{"@type":"MusicAlbum","name":"THE WORLD EP.PARADIGM","datePublished":"2022"},{"@type":"MusicAlbum","name":"ZERO : FEVER PART 2","datePublished":"2021"},{"@type":"MusicAlbum","name":"Into the A to Z","datePublished":"2021"},{"@type":"MusicAlbum","name":"KINGDOM ","datePublished":"2021"},{"@type":"MusicAlbum","name":"ZERO : FEVER Part.3","datePublished":"2021"},{"@type":"MusicAlbum","name":"ZERO : FEVER Epilogue","datePublished":"2021"},{"@type":"TVSeries","name":"거치면 흥하리","datePublished":"2021"},{"@type":"MusicAlbum","name":"TREASURE EPILOGUE : Action to Answer","datePublished":"2020"},{"@type":"MusicAlbum","name":"TREASURE EP. Map To Answer","datePublished":"2020"},{"@type":"MusicAlbum","name":"ZERO : FEVER Part.1","datePublished":"2020"},{"@type":"TVSeries","name":"Knowing Bros","datePublished":"2020"},{"@type":"MusicAlbum","name":"TREASURE EP.2 : Zero to One","datePublished":"2019"},{"@type":"MusicAlbum","name":"TREASURE EP.3 : One to All","datePublished":"2019"},{"@type":"MusicAlbum","name":"TREASURE EP.FIN : All to Action","datePublished":"2019"},{"@type":"MusicAlbum","name":"TREASURE EP. EXTRA: Shift The Map","datePublished":"2019"},{"@type":"MusicAlbum","name":"TREASURE EP.EXTRA : SHIFT THE MAP (Remixx!)","datePublished":"2019"},{"@type":"MusicAlbum","name":"TREASURE EP.1 : All to Zero","datePublished":"2018"},{"@type":"MusicRecording","name":"ARRIBA","url":"https://www.youtube.com/watch?v=_Pd5fZDV33M"},{"@type":"MusicRecording","name":"Body","url":"https://www.youtube.com/watch?v=2QXLW2AG1h4"},{"@type":"MusicRecording","name":"BAD","url":"https://www.youtube.com/watch?v=OHxYsZgq_6U"},{"@type":"MusicRecording","name":"Ice On My Teeth","url":"https://www.youtube.com/watch?v=5OflOlcHLb8"},{"@type":"MusicRecording","name":"Adrenaline","url":"https://www.youtube.com/watch?v=_Nmcp4VAY_8"}]}</script>
 </head>
 <body>
@@ -181,7 +191,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

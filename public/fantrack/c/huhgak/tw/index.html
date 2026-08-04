@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/huhgak/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/huhgak/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/huhgak/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/huhgak/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="許閣 — FanTrack">
+<meta property="og:description" content="許閣 的出演與作品 21 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/huhgak/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"許閣","alternateName":["허각","Huh Gak","許閣"],"url":"https://page.cocy.io/fantrack/c/huhgak/tw/","inLanguage":"zh-Hant","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"빅플래닛메이드엔터"},"foundingDate":"2008","subjectOf":[{"@type":"TVSeries","name":"더 리슨:오늘 너에게 닿다","datePublished":"2025"},{"@type":"MusicAlbum","name":"Hello","datePublished":"2020"},{"@type":"MusicAlbum","name":"戀書","datePublished":"2017"},{"@type":"TVSeries","name":"은밀하게 위대하게","datePublished":"2017"},{"@type":"TVSeries","name":"神秘音樂秀：蒙面歌王","datePublished":"2016"},{"@type":"MusicAlbum","name":"四月的雪","datePublished":"2015"},{"@type":"TVSeries","name":"七顛八起具海拉","datePublished":"2015"},{"@type":"TVSeries","name":"我去上學啦","datePublished":"2015"},{"@type":"MusicAlbum","name":"LITTLE GIANT","datePublished":"2013"},{"@type":"TVSeries","name":"隱藏歌手","datePublished":"2013"},{"@type":"MusicAlbum","name":"LACRIMOSO","datePublished":"2012"},{"@type":"TVSeries","name":"High Kick！短腿的反擊","datePublished":"2012"},{"@type":"MusicAlbum","name":"First Story","datePublished":"2011"},{"@type":"TVSeries","name":"Immortal Songs","datePublished":"2011"},{"@type":"MusicAlbum","name":"許閣首張迷你專輯","datePublished":"2010"},{"@type":"TVSeries","name":"슈퍼스타K 2","datePublished":"2010"},{"@type":"MusicRecording","name":"Town Bar","url":"https://www.youtube.com/watch?v=rRp_fqOi5D0"},{"@type":"MusicRecording","name":"Beautiful Days","url":"https://www.youtube.com/watch?v=u1F-mqV8oJ8"},{"@type":"MusicRecording","name":"언제나","url":"https://www.youtube.com/watch?v=RZOY6UbpLu4"},{"@type":"MusicRecording","name":"행복한 나를","url":"https://www.youtube.com/watch?v=mKasreQ1HLk"},{"@type":"MusicRecording","name":"You Are Mine )","url":"https://www.youtube.com/watch?v=vgz6oDXiAPk"}]}</script>
 </head>
 <body>
@@ -169,7 +179,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

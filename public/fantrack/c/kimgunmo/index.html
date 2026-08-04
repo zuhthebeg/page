@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/kimgunmo/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/kimgunmo/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/kimgunmo/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/kimgunmo/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="김건모 — FanTrack">
+<meta property="og:description" content="김건모 출연·활동 정보 21건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/kimgunmo/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"김건모","alternateName":["김건모","Kim Gun Mo","金健模"],"url":"https://page.cocy.io/fantrack/c/kimgunmo/","inLanguage":"ko","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"건음기획"},"foundingDate":"1992","subjectOf":[{"@type":"MusicAlbum","name":"Everything's Gonna Be Alright","datePublished":"2009"},{"@type":"MusicAlbum","name":"Soul Groove","datePublished":"2008"},{"@type":"MusicAlbum","name":"허수아비","datePublished":"2007"},{"@type":"MusicAlbum","name":"10: BeLike","datePublished":"2005"},{"@type":"MusicAlbum","name":"Kimgunmo.9","datePublished":"2004"},{"@type":"MusicAlbum","name":"Hestory, Volume 08","datePublished":"2003"},{"@type":"MusicAlbum","name":"Live","datePublished":"2002"},{"@type":"MusicAlbum","name":"Another Days...","datePublished":"2001"},{"@type":"MusicAlbum","name":"In My Pops","datePublished":"2000"},{"@type":"MusicAlbum","name":"Growing","datePublished":"1999"},{"@type":"MusicAlbum","name":"05: Myself","datePublished":"1997"},{"@type":"MusicAlbum","name":"Exchange Kg. M4","datePublished":"1996"},{"@type":"MusicAlbum","name":"Kim Gun Mo 3","datePublished":"1995"},{"@type":"MusicAlbum","name":"김건모 2","datePublished":"1993"},{"@type":"MusicAlbum","name":"Kim Gun Mo","datePublished":"1992"},{"@type":"MusicAlbum","name":"잔소리"},{"@type":"MusicRecording","name":"핑계","url":"https://www.youtube.com/watch?v=GSunUuKABhI"},{"@type":"MusicRecording","name":"Please!","url":"https://www.youtube.com/watch?v=eaB5IIyvlLM"},{"@type":"MusicRecording","name":"Swallow","url":"https://www.youtube.com/watch?v=3eGn975muIY"},{"@type":"MusicRecording","name":"Love is gone","url":"https://www.youtube.com/watch?v=g4sNE3hSlkk"},{"@type":"MusicRecording","name":"Wedding invitat","url":"https://www.youtube.com/watch?v=7nR9KuoqldY"}]}</script>
 </head>
 <body>
@@ -169,7 +179,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

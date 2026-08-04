@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/sgwannabe/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/sgwannabe/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/sgwannabe/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/sgwannabe/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="SG워너비 — FanTrack">
+<meta property="og:description" content="SG워너비 출연·활동 정보 15건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/sgwannabe/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"SG워너비","alternateName":["SG워너비","SG Wannabe"],"url":"https://page.cocy.io/fantrack/c/sgwannabe/","inLanguage":"ko","affiliation":{"@type":"Organization","name":"무소속"},"foundingDate":"2004","subjectOf":[{"@type":"MusicAlbum","name":"Our Days","datePublished":"2016"},{"@type":"MusicAlbum","name":"The Voice","datePublished":"2015"},{"@type":"MusicAlbum","name":"SG Wannabe 7 Part.I","datePublished":"2010"},{"@type":"MusicAlbum","name":"Gift From SG Wannabe","datePublished":"2009"},{"@type":"MusicAlbum","name":"My Friend","datePublished":"2008"},{"@type":"MusicAlbum","name":"The Sentimental Chord","datePublished":"2007"},{"@type":"MusicAlbum","name":"The 3rd Masterpiece","datePublished":"2006"},{"@type":"MusicAlbum","name":"살다가","datePublished":"2005"},{"@type":"MusicAlbum","name":"SG WANNA BE+","datePublished":"2004"},{"@type":"MusicAlbum","name":"SG Wannabe 7 Part.II"},{"@type":"MusicRecording","name":"The Story","url":"https://www.youtube.com/watch?v=M0BZvuvqs6o"},{"@type":"MusicRecording","name":"너와 내 이름","url":"https://www.youtube.com/watch?v=Loe99anysg0"},{"@type":"MusicRecording","name":"아리랑","url":"https://www.youtube.com/watch?v=m4LGuu5b57c"},{"@type":"MusicRecording","name":"내사람 :","url":"https://www.youtube.com/watch?v=G5hbOrbfSRY"},{"@type":"MusicRecording","name":"Ordninary People","url":"https://www.youtube.com/watch?v=0NtZvPVAVgs"}]}</script>
 </head>
 <body>
@@ -163,7 +173,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

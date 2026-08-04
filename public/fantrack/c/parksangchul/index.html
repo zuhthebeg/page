@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/parksangchul/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/parksangchul/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/parksangchul/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/parksangchul/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="박상철 — FanTrack">
+<meta property="og:description" content="박상철 출연·활동 정보 6건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/parksangchul/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"박상철","alternateName":["박상철","Park Sang-chul"],"url":"https://page.cocy.io/fantrack/c/parksangchul/","inLanguage":"ko","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"박라인 엔터테인먼트"},"foundingDate":"1988","subjectOf":[{"@type":"MusicAlbum","name":"빵빵","datePublished":"2010"},{"@type":"MusicRecording","name":"황진이","url":"https://www.youtube.com/watch?v=iHYHzipOJV4"},{"@type":"MusicRecording","name":"Hwang Jinyi","url":"https://www.youtube.com/watch?v=p2zx4hQo-Q4"},{"@type":"MusicRecording","name":"황진이","url":"https://www.youtube.com/watch?v=o8dGr3PsPm0"},{"@type":"MusicRecording","name":"Unconditional Love","url":"https://www.youtube.com/watch?v=rRK_HYsKCEk"},{"@type":"MusicRecording","name":"꽃바람","url":"https://www.youtube.com/watch?v=Bda8uoAHvHk"}]}</script>
 </head>
 <body>
@@ -154,7 +164,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

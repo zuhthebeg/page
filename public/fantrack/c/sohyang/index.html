@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/sohyang/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/sohyang/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/sohyang/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/sohyang/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="소향 — FanTrack">
+<meta property="og:description" content="소향 출연·활동 정보 18건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/sohyang/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"소향","alternateName":["소향","Sohyang"],"url":"https://page.cocy.io/fantrack/c/sohyang/","inLanguage":"ko","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"KQ엔터테인먼트"},"foundingDate":"1996","subjectOf":[{"@type":"MusicAlbum","name":"Diva","datePublished":"2024"},{"@type":"MusicAlbum","name":"사랑하는 척 (REVIBE Vol.7)","datePublished":"2022"},{"@type":"TVSeries","name":"미스터리 음악쇼 복면가왕","datePublished":"2017"},{"@type":"TVSeries","name":"상암 DMC 페스티벌 - 나는 가수다 레전드","datePublished":"2015"},{"@type":"TVSeries","name":"히든싱어 4","datePublished":"2015"},{"@type":"TVSeries","name":"불후의 명곡 2 - 전설을 노래하다","datePublished":"2014"},{"@type":"TVSeries","name":"미라클 코리아","datePublished":"2013"},{"@type":"MusicAlbum","name":"15th Anniversary POS","datePublished":"2012"},{"@type":"TVSeries","name":"우리들의 일밤 - 나는 가수다 II","datePublished":"2012"},{"@type":"TVSeries","name":"위대한 탄생 3","datePublished":"2012"},{"@type":"TVSeries","name":"놀라운 대회 스타킹","datePublished":"2010"},{"@type":"TVSeries","name":"열린음악회","datePublished":"2000"},{"@type":"MusicAlbum","name":"Contemporary Christian Music"},{"@type":"MusicRecording","name":"🎤 말이 필요 없는 감동， 소향 의 ′바람의 노래′","url":"https://www.youtube.com/watch?v=GG6ZVcnNcRM"},{"@type":"MusicRecording","name":"🎤 첫 소절부터 소름 쫙↗ 소향 의 ′I Will","url":"https://www.youtube.com/watch?v=DO845EqU3eE"},{"@type":"MusicRecording","name":"사의찬미 OST Part.1 - 가슴만 알","url":"https://www.youtube.com/watch?v=hl9EXRLRZlI"},{"@type":"MusicRecording","name":"신기루","url":"https://www.youtube.com/watch?v=JPmjrww-IMk"},{"@type":"MusicRecording","name":"조율 KBS 260516 방송","url":"https://www.youtube.com/watch?v=or2y3uWvk9s"}]}</script>
 </head>
 <body>
@@ -166,7 +176,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

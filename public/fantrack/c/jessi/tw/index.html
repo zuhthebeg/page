@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/jessi/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/jessi/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/jessi/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/jessi/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Jessi — FanTrack">
+<meta property="og:description" content="Jessi 的出演與作品 42 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/jessi/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Jessi","alternateName":["제시","Jessi"],"url":"https://page.cocy.io/fantrack/c/jessi/tw/","inLanguage":"zh-Hant","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"무소속"},"foundingDate":"2005","subjectOf":[{"@type":"MusicAlbum","name":"P.M.S.","datePublished":"2025"},{"@type":"TVSeries","name":"驚人的星期六","datePublished":"2023"},{"@type":"TVSeries","name":"더 시즌즈-악뮤의 오날오밤","datePublished":"2023"},{"@type":"TVSeries","name":"脫掉鞋子恢單4Men","datePublished":"2023"},{"@type":"TVSeries","name":"핑계고","datePublished":"2023"},{"@type":"TVSeries","name":"노빠꾸 탁재훈","datePublished":"2023"},{"@type":"TVSeries","name":"식스센스 시즌3","datePublished":"2022"},{"@type":"TVSeries","name":"식스센스 시즌2","datePublished":"2021"},{"@type":"TVSeries","name":"幫我找房子吧","datePublished":"2021"},{"@type":"TVSeries","name":"街頭女戰士","datePublished":"2021"},{"@type":"MusicAlbum","name":"NUNA","datePublished":"2020"},{"@type":"TVSeries","name":"Running Man","datePublished":"2020"},{"@type":"TVSeries","name":"악인전","datePublished":"2020"},{"@type":"TVSeries","name":"飯 bless you","datePublished":"2020"},{"@type":"TVSeries","name":"라디오스타","datePublished":"2020"},{"@type":"TVSeries","name":"玩什麼好呢","datePublished":"2020"},{"@type":"TVSeries","name":"第六感","datePublished":"2020"},{"@type":"TVSeries","name":"全知干預視角","datePublished":"2020"},{"@type":"TVSeries","name":"我家的熊孩子","datePublished":"2020"},{"@type":"TVSeries","name":"屋塔房的問題兒童們","datePublished":"2020"},{"@type":"TVSeries","name":"認識的哥哥","datePublished":"2020"},{"@type":"TVSeries","name":"叢林的法則","datePublished":"2020"},{"@type":"TVSeries","name":"偶然的家族","datePublished":"2020"},{"@type":"TVSeries","name":"我獨自生活","datePublished":"2019"},{"@type":"TVSeries","name":"高等Rapper 2","datePublished":"2018"},{"@type":"TVSeries","name":"請給一頓飯","datePublished":"2018"},{"@type":"MusicAlbum","name":"UN2VERSE","datePublished":"2017"},{"@type":"TVSeries","name":"同床異夢，沒關係沒關係","datePublished":"2016"},{"@type":"TVSeries","name":"二重唱歌謠祭","datePublished":"2016"},{"@type":"TVSeries","name":"姐姐們的Slam Dunk","datePublished":"2016"},{"@type":"TVSeries","name":"Two Yoo Project Sugar Man","datePublished":"2016"},{"@type":"TVSeries","name":"너의 목소리가 보여","datePublished":"2016"},{"@type":"TVSeries","name":"언프리티 랩스타","datePublished":"2015"},{"@type":"TVSeries","name":"My Little Television","datePublished":"2015"},{"@type":"TVSeries","name":"真正的男人","datePublished":"2015"},{"@type":"TVSeries","name":"神秘音樂秀：蒙面歌王","datePublished":"2015"},{"@type":"MusicAlbum","name":"Get Up","datePublished":"2005"},{"@type":"MusicRecording","name":"HELL","url":"https://www.youtube.com/watch?v=FUyEc-V-5QQ"},{"@type":"MusicRecording","name":"인생은 즐거워","url":"https://www.youtube.com/watch?v=LfDPu9nADCE"},{"@type":"MusicRecording","name":"Jessi Gum","url":"https://www.youtube.com/watch?v=B_UyjX0fLt4"},{"@type":"MusicRecording","name":"Newsflash","url":"https://www.youtube.com/watch?v=yPBrXvv3v3Y"},{"@type":"MusicRecording","name":"Ssenunni","url":"https://www.youtube.com/watch?v=zOpljkFfT2o"}]}</script>
 </head>
 <body>
@@ -190,7 +200,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/sochanwhee/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/sochanwhee/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/sochanwhee/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/sochanwhee/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="So Chan Whee — FanTrack">
+<meta property="og:description" content="8 trabajos de So Chan Whee — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/sochanwhee/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"So Chan Whee","alternateName":["소찬휘","So Chan Whee","蘇燦輝"],"url":"https://page.cocy.io/fantrack/c/sochanwhee/es/","inLanguage":"es","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"와이드엔터테인먼트"},"foundingDate":"1988","subjectOf":[{"@type":"TVSeries","name":"쌍갑포차","datePublished":"2020"},{"@type":"TVSeries","name":"김제동의 톡투유 - 걱정 말아요! 그대","datePublished":"2016"},{"@type":"TVSeries","name":"King of Mask Singer","datePublished":"2016"},{"@type":"MusicRecording","name":"Fine","url":"https://www.youtube.com/watch?v=Dx_IazSxVhs"},{"@type":"MusicRecording","name":"Tears","url":"https://www.youtube.com/watch?v=gRV8pMtyzvI"},{"@type":"MusicRecording","name":"A Smart Choice","url":"https://www.youtube.com/watch?v=hIYPwlrQGxc"},{"@type":"MusicRecording","name":"다시 나를 떠나버려","url":"https://www.youtube.com/watch?v=t_2SfRBj4Ik"},{"@type":"MusicRecording","name":"Trace","url":"https://www.youtube.com/watch?v=FZ18UOh3J9M"}]}</script>
 </head>
 <body>
@@ -156,7 +166,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

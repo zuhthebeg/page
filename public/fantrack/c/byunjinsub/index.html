@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/byunjinsub/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/byunjinsub/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/byunjinsub/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/byunjinsub/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="변진섭 — FanTrack">
+<meta property="og:description" content="변진섭 출연·활동 정보 17건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/byunjinsub/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"변진섭","alternateName":["변진섭","Byun Jin Sub","卞真燮"],"url":"https://page.cocy.io/fantrack/c/byunjinsub/","inLanguage":"ko","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"J 엔터테인먼트"},"foundingDate":"1987","subjectOf":[{"@type":"TVSeries","name":"트롯 올스타전 금요일 밤에","datePublished":"2025"},{"@type":"TVSeries","name":"황금어장 라디오스타","datePublished":"2024"},{"@type":"TVSeries","name":"아침마당","datePublished":"2023"},{"@type":"TVSeries","name":"무한도전","datePublished":"2016"},{"@type":"MusicAlbum","name":"Sweet Memories","datePublished":"2013"},{"@type":"TVSeries","name":"TV는 사랑을 싣고","datePublished":"1996"},{"@type":"TVSeries","name":"서세원의 화요스페셜","datePublished":"1996"},{"@type":"TVSeries","name":"가족오락관","datePublished":"1995"},{"@type":"TVSeries","name":"밤과 음악사이","datePublished":"1994"},{"@type":"TVSeries","name":"밤으로 가는 쇼","datePublished":"1992"},{"@type":"MusicAlbum","name":"변진섭2","datePublished":"1989"},{"@type":"MusicAlbum","name":"변진섭","datePublished":"1988"},{"@type":"MusicRecording","name":"새들처럼","url":"https://www.youtube.com/watch?v=JU0VGkPJm-E"},{"@type":"MusicRecording","name":"그대에게","url":"https://www.youtube.com/watch?v=41LPRFP7Unc"},{"@type":"MusicRecording","name":"네게 줄수 있는 건 오직 사랑뿐","url":"https://www.youtube.com/watch?v=V6ZXNSfyhHU"},{"@type":"MusicRecording","name":"로라","url":"https://www.youtube.com/watch?v=v62Fi5R1xRw"},{"@type":"MusicRecording","name":"사랑할 수 밖에 없는 그대","url":"https://www.youtube.com/watch?v=6AX6M1G2m7s"}]}</script>
 </head>
 <body>
@@ -165,7 +175,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

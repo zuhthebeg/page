@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/norazo/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/norazo/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/norazo/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/norazo/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Norazo — FanTrack">
+<meta property="og:description" content="8 works by Norazo — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/norazo/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"Norazo","alternateName":["노라조","Norazo"],"url":"https://page.cocy.io/fantrack/c/norazo/en/","inLanguage":"en","foundingDate":"2005-08-02","subjectOf":[{"@type":"MusicAlbum","name":"Conquest of the Nation","datePublished":"2011"},{"@type":"MusicAlbum","name":"Metamorphosis","datePublished":"2010"},{"@type":"MusicAlbum","name":"Three Go","datePublished":"2008"},{"@type":"MusicRecording","name":"형","url":"https://www.youtube.com/watch?v=K7LnjbxJB9E"},{"@type":"MusicRecording","name":"판매왕","url":"https://www.youtube.com/watch?v=iv8lwsNg-kE"},{"@type":"MusicRecording","name":"형","url":"https://www.youtube.com/watch?v=GdAlyV7LSDA"},{"@type":"MusicRecording","name":"슈퍼맨","url":"https://www.youtube.com/watch?v=F6nweq7GexY"},{"@type":"MusicRecording","name":"A Love Song","url":"https://www.youtube.com/watch?v=n2nDO_yUUMw"}]}</script>
 </head>
 <body>
@@ -156,7 +166,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

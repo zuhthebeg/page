@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/kissoflife/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/kissoflife/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/kissoflife/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/kissoflife/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="KISS OF LIFE — FanTrack">
+<meta property="og:description" content="10 works by KISS OF LIFE — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/kissoflife/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"KISS OF LIFE","alternateName":["키스오브라이프","KISS OF LIFE"],"url":"https://page.cocy.io/fantrack/c/kissoflife/en/","inLanguage":"en","affiliation":{"@type":"Organization","name":"S2 엔터테인먼트"},"foundingDate":"2023-07-05","subjectOf":[{"@type":"MusicAlbum","name":"224","datePublished":"2025"},{"@type":"MusicAlbum","name":"TOKYO MISSION START","datePublished":"2025"},{"@type":"MusicAlbum","name":"Lose Yourself","datePublished":"2024"},{"@type":"MusicAlbum","name":"KISS OF LIFE","datePublished":"2023"},{"@type":"MusicAlbum","name":"Born to be XX","datePublished":"2023"},{"@type":"MusicRecording","name":"KISS OF LIFE 'W.House' Lyrics (키스 오브 라이프 W.House 가사) [Color","url":"https://www.youtube.com/watch?v=Lozy0pVnfnQ"},{"@type":"MusicRecording","name":"W.House (W.House)","url":"https://www.youtube.com/watch?v=lcpVk4dHL-U"},{"@type":"MusicRecording","name":"No One But Us (No One But Us)","url":"https://www.youtube.com/watch?v=ozoPZdb_lUA"},{"@type":"MusicRecording","name":"KISS OF LIFE (키스오브라이프) 'Sugarcoat (NATTY Solo)' MV","url":"https://www.youtube.com/watch?v=NaIRQ5v0914"},{"@type":"MusicRecording","name":"Sugarcoat (NATTY Solo) (Sugarcoat (NATTY Solo))","url":"https://www.youtube.com/watch?v=4EcNa_cOr4o"}]}</script>
 </head>
 <body>
@@ -158,7 +168,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

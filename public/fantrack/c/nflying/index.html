@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/nflying/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/nflying/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/nflying/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/nflying/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="엔플라잉 — FanTrack">
+<meta property="og:description" content="엔플라잉 출연·활동 정보 17건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/nflying/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"엔플라잉","alternateName":["엔플라잉","N.Flying"],"url":"https://page.cocy.io/fantrack/c/nflying/","inLanguage":"ko","affiliation":{"@type":"Organization","name":"FNC 엔터테인먼트"},"foundingDate":"2015-05-20","subjectOf":[{"@type":"MusicAlbum","name":"Everlasting","datePublished":"2025"},{"@type":"MusicAlbum","name":"Dearest","datePublished":"2022"},{"@type":"MusicAlbum","name":"TURBULENCE","datePublished":"2021"},{"@type":"MusicAlbum","name":"Man on the Moon","datePublished":"2021"},{"@type":"MusicAlbum","name":"So, 通 (COMMUNICATION)","datePublished":"2020"},{"@type":"MusicAlbum","name":"봄이 부시게","datePublished":"2019"},{"@type":"MusicAlbum","name":"BROTHERHOOD","datePublished":"2019"},{"@type":"MusicAlbum","name":"YAHO","datePublished":"2019"},{"@type":"MusicAlbum","name":"THE HOTTEST : N.Flying","datePublished":"2018"},{"@type":"MusicAlbum","name":"HOW ARE YOU?","datePublished":"2018"},{"@type":"MusicAlbum","name":"THE REAL : N.Flying","datePublished":"2017"},{"@type":"MusicAlbum","name":"기가 막혀","datePublished":"2015"},{"@type":"MusicRecording","name":"Songbird )","url":"https://www.youtube.com/watch?v=uhxw4beTM3U"},{"@type":"MusicRecording","name":"1 )","url":"https://www.youtube.com/watch?v=4lxwR_GAKeU"},{"@type":"MusicRecording","name":"4242","url":"https://www.youtube.com/watch?v=ZYP2tMOSI3s"},{"@type":"MusicRecording","name":"Shooting Star","url":"https://www.youtube.com/watch?v=h_f3FDLAnZg"},{"@type":"MusicRecording","name":"Born To Be","url":"https://www.youtube.com/watch?v=v3aS9WYBZ6w"}]}</script>
 </head>
 <body>
@@ -165,7 +175,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

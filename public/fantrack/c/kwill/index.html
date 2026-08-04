@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/kwill/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/kwill/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/kwill/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/kwill/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="케이윌 — FanTrack">
+<meta property="og:description" content="케이윌 출연·활동 정보 38건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/kwill/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"케이윌","alternateName":["케이윌","K.Will"],"url":"https://page.cocy.io/fantrack/c/kwill/","inLanguage":"ko","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"스타쉽 엔터테인먼트"},"foundingDate":"2007","subjectOf":[{"@type":"MusicAlbum","name":"All The Way","datePublished":"2024"},{"@type":"TVSeries","name":"핑계고","datePublished":"2024"},{"@type":"TVSeries","name":"집대성","datePublished":"2024"},{"@type":"TVSeries","name":"슈퍼히어러","datePublished":"2019"},{"@type":"MusicAlbum","name":"The 4th Album Part.1 [Nonfiction]","datePublished":"2017"},{"@type":"TVSeries","name":"보컬 전쟁: 신의 목소리","datePublished":"2016"},{"@type":"MusicAlbum","name":"RE:","datePublished":"2015"},{"@type":"TVSeries","name":"케이윌의 대단한 라디오","datePublished":"2015"},{"@type":"TVSeries","name":"미스터리 음악쇼: 복면가왕","datePublished":"2015"},{"@type":"TVSeries","name":"하이드 지킬, 나","datePublished":"2015"},{"@type":"TVSeries","name":"칠전팔기 구해라","datePublished":"2015"},{"@type":"TVSeries","name":"프로듀사","datePublished":"2015"},{"@type":"TVSeries","name":"동상이몽, 괜찮아 괜찮아","datePublished":"2015"},{"@type":"TVSeries","name":"너의 목소리가 보여 시즌 2","datePublished":"2015"},{"@type":"MusicAlbum","name":"ONE FINE DAY","datePublished":"2014"},{"@type":"TVSeries","name":"진짜 사나이","datePublished":"2014"},{"@type":"TVSeries","name":"엠카운트다운 비긴즈","datePublished":"2014"},{"@type":"TVSeries","name":"No.Mercy","datePublished":"2014"},{"@type":"MusicAlbum","name":"The Third Album, Part 2: Love Blossom","datePublished":"2013"},{"@type":"MusicAlbum","name":"Will in FALL","datePublished":"2013"},{"@type":"TVSeries","name":"케이윌의 영스트리트","datePublished":"2013"},{"@type":"TVSeries","name":"히든싱어","datePublished":"2013"},{"@type":"MusicAlbum","name":"니가 필요해 (I Need You)","datePublished":"2012"},{"@type":"TVSeries","name":"불후의 명곡: 전설을 노래하다","datePublished":"2012"},{"@type":"MusicAlbum","name":"가슴이 뛴다","datePublished":"2011"},{"@type":"MusicAlbum","name":"The Third Album, Part 1","datePublished":"2011"},{"@type":"TVSeries","name":"코이카의 꿈","datePublished":"2011"},{"@type":"TVSeries","name":"더 뮤지트","datePublished":"2010"},{"@type":"MusicAlbum","name":"눈물이 뚝뚝","datePublished":"2009"},{"@type":"MusicAlbum","name":"그립고 그립고 그립다","datePublished":"2009"},{"@type":"TVSeries","name":"무한도전","datePublished":"2009"},{"@type":"TVSeries","name":"쏘울 스페셜","datePublished":"2009"},{"@type":"MusicAlbum","name":"왼쪽 가슴","datePublished":"2007"},{"@type":"MusicRecording","name":"Lay back","url":"https://www.youtube.com/watch?v=6-xrHZ8g3GQ"},{"@type":"MusicRecording","name":"love isn’t far","url":"https://www.youtube.com/watch?v=8W1rXj5BOlg"},{"@type":"MusicRecording","name":"Self-Falling Moon","url":"https://www.youtube.com/watch?v=Fi5l-fkhqIQ"},{"@type":"MusicRecording","name":"I ll be with you )","url":"https://www.youtube.com/watch?v=rI1tGS3Wf4g"},{"@type":"MusicRecording","name":"The Sun","url":"https://www.youtube.com/watch?v=-69HbObM8kk"}]}</script>
 </head>
 <body>
@@ -186,7 +196,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

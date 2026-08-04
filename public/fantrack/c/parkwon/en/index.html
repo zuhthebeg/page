@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/parkwon/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/parkwon/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/parkwon/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/parkwon/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Park Won — FanTrack">
+<meta property="og:description" content="13 works by Park Won — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/parkwon/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Park Won","alternateName":["박원","Park Won"],"url":"https://page.cocy.io/fantrack/c/parkwon/en/","inLanguage":"en","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"어비스컴퍼니"},"foundingDate":"2008","subjectOf":[{"@type":"MusicAlbum","name":"r","datePublished":"2018"},{"@type":"TVSeries","name":"Kiss the Radio","datePublished":"2018"},{"@type":"MusicAlbum","name":"0M","datePublished":"2017"},{"@type":"TVSeries","name":"박원의 뮤직 원더랜드","datePublished":"2017"},{"@type":"MusicAlbum","name":"1/24","datePublished":"2016"},{"@type":"TVSeries","name":"음악이 흐르는 책방, 박원입니다","datePublished":"2016"},{"@type":"MusicAlbum","name":"Like A Wonder","datePublished":"2015"},{"@type":"TVSeries","name":"세상을 여는 아침","datePublished":"2012"},{"@type":"MusicRecording","name":"OH YEAH )","url":"https://www.youtube.com/watch?v=jaOycDHqIvc"},{"@type":"MusicRecording","name":"나","url":"https://www.youtube.com/watch?v=8sN1dFBv9mY"},{"@type":"MusicRecording","name":"My Tale :: It s O","url":"https://www.youtube.com/watch?v=Kg9ach14Ijw"},{"@type":"MusicRecording","name":"rumor","url":"https://www.youtube.com/watch?v=2WEnKN2IzMM"},{"@type":"MusicRecording","name":"play","url":"https://www.youtube.com/watch?v=zcntVD4TEJM"}]}</script>
 </head>
 <body>
@@ -161,7 +171,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

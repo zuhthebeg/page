@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/leeseungchul/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/leeseungchul/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/leeseungchul/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/leeseungchul/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Lee Seung Chul — FanTrack">
+<meta property="og:description" content="31 works by Lee Seung Chul — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/leeseungchul/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Lee Seung Chul","alternateName":["이승철","Lee Seung Chul"],"url":"https://page.cocy.io/fantrack/c/leeseungchul/en/","inLanguage":"en","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"MLD엔터테인먼트"},"foundingDate":"1985-07-03","subjectOf":[{"@type":"TVSeries","name":"사건파일 24","datePublished":"2024"},{"@type":"TVSeries","name":"노빠꾸 탁재훈 탁스패치","datePublished":"2024"},{"@type":"TVSeries","name":"신랑수업","datePublished":"2022"},{"@type":"TVSeries","name":"싱어게인 유명가수전","datePublished":"2021"},{"@type":"TVSeries","name":"새가수","datePublished":"2021"},{"@type":"TVSeries","name":"도올학당 수다승철","datePublished":"2020"},{"@type":"TVSeries","name":"Stars' Top Recipe at Fun-Staurant","datePublished":"2019"},{"@type":"MusicAlbum","name":"Time Really Flies","datePublished":"2015"},{"@type":"TVSeries","name":"글로벌 리더스 포럼 2014","datePublished":"2014"},{"@type":"MusicAlbum","name":"My Love","datePublished":"2013"},{"@type":"MusicAlbum","name":"Mutopia","datePublished":"2009"},{"@type":"MusicAlbum","name":"sound of double","datePublished":"2007"},{"@type":"MusicAlbum","name":"The Secret Of Color 2","datePublished":"2007"},{"@type":"MusicAlbum","name":"The Livelong Day","datePublished":"2004"},{"@type":"MusicAlbum","name":"Confession","datePublished":"2002"},{"@type":"MusicAlbum","name":"1999 & Live Best","datePublished":"1999"},{"@type":"TVSeries","name":"TV는 사랑을 싣고","datePublished":"1999"},{"@type":"TVSeries","name":"밤과 음악사이","datePublished":"1997"},{"@type":"MusicAlbum","name":"The Bridge Of Sonic Heaven","datePublished":"1996"},{"@type":"TVSeries","name":"가족오락관","datePublished":"1995"},{"@type":"MusicAlbum","name":"The Secret Of Color","datePublished":"1994"},{"@type":"MusicAlbum","name":"The Moon... a Dream the Sun Dreams","datePublished":"1992"},{"@type":"MusicAlbum","name":"Wandering","datePublished":"1992"},{"@type":"MusicAlbum","name":"Sunset, and Me","datePublished":"1990"},{"@type":"MusicAlbum","name":"Lee Seung Chul Part 2","datePublished":"1989"},{"@type":"MusicAlbum","name":"Lee Seung Chul Part 1","datePublished":"1988"},{"@type":"MusicRecording","name":"오직 너뿐인 나를","url":"https://www.youtube.com/watch?v=B3I0iChwgCQ"},{"@type":"MusicRecording","name":"사랑 참 어렵다","url":"https://www.youtube.com/watch?v=6QZ5vgmmAt0"},{"@type":"MusicRecording","name":"그런사람 또 없습니다","url":"https://www.youtube.com/watch?v=9QpzvH3O4KI"},{"@type":"MusicRecording","name":"1. 아마추어","url":"https://www.youtube.com/watch?v=sO91LOgCv3I"},{"@type":"MusicRecording","name":"사랑한다","url":"https://www.youtube.com/watch?v=fwBVGWE07FY"}]}</script>
 </head>
 <body>
@@ -179,7 +189,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

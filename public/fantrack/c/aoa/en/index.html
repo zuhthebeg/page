@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/aoa/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/aoa/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/aoa/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/aoa/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="AOA — FanTrack">
+<meta property="og:description" content="43 works by AOA — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/aoa/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"AOA","alternateName":["에이오에이","AOA"],"url":"https://page.cocy.io/fantrack/c/aoa/en/","inLanguage":"en","affiliation":{"@type":"Organization","name":"FNC 엔터테인먼트"},"foundingDate":"2012-07-30","subjectOf":[{"@type":"TVSeries","name":"Running Man","datePublished":"2020"},{"@type":"MusicAlbum","name":"NEW MOON","datePublished":"2019"},{"@type":"MusicAlbum","name":"BINGLE BANGLE","datePublished":"2018"},{"@type":"MusicAlbum","name":"ANGEL’S KNOCK","datePublished":"2017"},{"@type":"TVSeries","name":"글로벌 아빠 찾아 삼만리","datePublished":"2017"},{"@type":"MusicAlbum","name":"Good Luck","datePublished":"2016"},{"@type":"MusicAlbum","name":"RUNWAY","datePublished":"2016"},{"@type":"TVSeries","name":"생방송 톡!톡! 보니하니","datePublished":"2016"},{"@type":"TVSeries","name":"Law of the Jungle","datePublished":"2016"},{"@type":"MusicAlbum","name":"Heart Attack","datePublished":"2015"},{"@type":"MusicAlbum","name":"Ace of Angels","datePublished":"2015"},{"@type":"TVSeries","name":"My Little Television","datePublished":"2015"},{"@type":"TVSeries","name":"맴을 열어봐","datePublished":"2015"},{"@type":"TVSeries","name":"스포츠특선 카!센터","datePublished":"2015"},{"@type":"TVSeries","name":"Same Bed, Different Dreams","datePublished":"2015"},{"@type":"TVSeries","name":"날씬한 도시락","datePublished":"2015"},{"@type":"TVSeries","name":"Radio Star","datePublished":"2015"},{"@type":"TVSeries","name":"King of Mask Singer","datePublished":"2015"},{"@type":"TVSeries","name":"Saturday Night Live Korea","datePublished":"2015"},{"@type":"TVSeries","name":"위대한 유산","datePublished":"2015"},{"@type":"TVSeries","name":"오렌지 마말레이드","datePublished":"2015"},{"@type":"TVSeries","name":"All About My Mom","datePublished":"2015"},{"@type":"MusicAlbum","name":"Short Hair","datePublished":"2014"},{"@type":"MusicAlbum","name":"Like a Cat","datePublished":"2014"},{"@type":"TVSeries","name":"Weekly Idol","datePublished":"2014"},{"@type":"TVSeries","name":"Cheongdam-dong 111","datePublished":"2014"},{"@type":"TVSeries","name":"Crisis Escape No. 1","datePublished":"2014"},{"@type":"TVSeries","name":"Hello Counselor","datePublished":"2014"},{"@type":"TVSeries","name":"Wonderful Days","datePublished":"2014"},{"@type":"TVSeries","name":"Flower Grandpa Investigation Unit","datePublished":"2014"},{"@type":"TVSeries","name":"Modern Farmer","datePublished":"2014"},{"@type":"TVSeries","name":"Cheongdam-dong 111","datePublished":"2013"},{"@type":"TVSeries","name":"Ugly Alert","datePublished":"2013"},{"@type":"TVSeries","name":"The Blade and Petal","datePublished":"2013"},{"@type":"TVSeries","name":"Puberty Medley","datePublished":"2013"},{"@type":"TVSeries","name":"더로맨틱 & 아이돌","datePublished":"2012"},{"@type":"TVSeries","name":"A Gentleman's Dignity","datePublished":"2012"},{"@type":"TVSeries","name":"Seoyoung, My Daughter","datePublished":"2012"},{"@type":"TVSeries","name":"Cheongdam-dong Alice","datePublished":"2012"},{"@type":"MusicRecording","name":"너나 해","url":"https://www.youtube.com/watch?v=4_Ws3x9PhwA"},{"@type":"MusicRecording","name":"Temptation","url":"https://www.youtube.com/watch?v=ijZwVQ3iPfI"},{"@type":"MusicRecording","name":"Short Hair","url":"https://www.youtube.com/watch?v=H8MdaqKFuBI"},{"@type":"MusicRecording","name":"HEART ATTACK 심쿵해","url":"https://www.youtube.com/watch?v=kLTqY2EZ6EE"}]}</script>
 </head>
 <body>
@@ -191,7 +201,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

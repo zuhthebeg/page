@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/snsd/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/snsd/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/snsd/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/snsd/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="소녀시대 — FanTrack">
+<meta property="og:description" content="소녀시대 출연·활동 정보 32건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/snsd/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"소녀시대","alternateName":["소녀시대","Girls","少女時代"],"url":"https://page.cocy.io/fantrack/c/snsd/","inLanguage":"ko","affiliation":{"@type":"Organization","name":"SM 엔터테인먼트"},"foundingDate":"2007","subjectOf":[{"@type":"MusicAlbum","name":"FOREVER 1","datePublished":"2022"},{"@type":"MusicEvent","name":"2022 Girl's Generation Special Event \"Long Lasting Love\"","datePublished":"2022"},{"@type":"MusicAlbum","name":"Holiday Night","datePublished":"2017"},{"@type":"MusicEvent","name":"Girl's Generation 10th Anniversary \"Holiday to Remember\"","datePublished":"2017"},{"@type":"MusicAlbum","name":"Lion Heart","datePublished":"2015"},{"@type":"MusicEvent","name":"SONE LIMITED PARTY","datePublished":"2015"},{"@type":"MusicAlbum","name":"Mr.Mr.","datePublished":"2014"},{"@type":"MusicEvent","name":"Girls' Generation Debut 7th Anniversary Party","datePublished":"2014"},{"@type":"MusicEvent","name":"GIRLS' GENERATION 1st FAN PARTY \"Mr.Mr.\"","datePublished":"2014"},{"@type":"MusicAlbum","name":"I GOT A BOY","datePublished":"2013"},{"@type":"MusicAlbum","name":"LOVE&PEACE","datePublished":"2013"},{"@type":"MusicAlbum","name":"GIRLS’ GENERATION II ～Girls & Peace～","datePublished":"2012"},{"@type":"MusicEvent","name":"Girls' Generation Debut 5th Anniversary Party","datePublished":"2012"},{"@type":"MusicAlbum","name":"The Boys","datePublished":"2011"},{"@type":"MusicAlbum","name":"GIRLS’ GENERATION","datePublished":"2011"},{"@type":"MusicEvent","name":"Girls' Generation \"The Boys\" Event","datePublished":"2011"},{"@type":"MusicAlbum","name":"Oh!","datePublished":"2010"},{"@type":"MusicAlbum","name":"훗","datePublished":"2010"},{"@type":"MusicEvent","name":"Girls' Generation Official Fanclub S♡NE 1st Fanmeeting","datePublished":"2010"},{"@type":"MusicAlbum","name":"Gee","datePublished":"2009"},{"@type":"MusicAlbum","name":"소원을 말해봐","datePublished":"2009"},{"@type":"TVSeries","name":"태연의 친한친구","datePublished":"2009"},{"@type":"MusicEvent","name":"Girls' Generation The 1st Year Party","datePublished":"2008"},{"@type":"TVSeries","name":"강인, 태연의 친한친구","datePublished":"2008"},{"@type":"TVSeries","name":"안재욱 차태현의 미스터 라디오","datePublished":"2008"},{"@type":"MusicAlbum","name":"Girls' Generation","datePublished":"2007"},{"@type":"TVSeries","name":"성민, 수영의 천방지축 라디오","datePublished":"2007"},{"@type":"TVSeries","name":"슈퍼주니어의 키스 더 라디오","datePublished":"2007"},{"@type":"TVSeries","name":"강인, 조정린의 친한친구","datePublished":"2007"},{"@type":"MusicRecording","name":"다시 만난 세계","url":"https://www.youtube.com/watch?v=I1OzfxybATE"},{"@type":"MusicRecording","name":"Express 999","url":"https://www.youtube.com/watch?v=wuJWpzgPGos"},{"@type":"MusicRecording","name":"Promise","url":"https://www.youtube.com/watch?v=mxWxBX09kdw"}]}</script>
 </head>
 <body>
@@ -180,7 +190,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

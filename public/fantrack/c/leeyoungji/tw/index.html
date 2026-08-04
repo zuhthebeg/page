@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/leeyoungji/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/leeyoungji/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/leeyoungji/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/leeyoungji/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="李泳知 — FanTrack">
+<meta property="og:description" content="李泳知 的出演與作品 22 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/leeyoungji/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"李泳知","alternateName":["이영지","Lee Young-ji","李泳知"],"url":"https://page.cocy.io/fantrack/c/leeyoungji/tw/","inLanguage":"zh-Hant","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"메인스트림"},"foundingDate":"2019","subjectOf":[{"@type":"MusicAlbum","name":"16 Fantasy","datePublished":"2024"},{"@type":"TVSeries","name":"나영석의 와글와글","datePublished":"2024"},{"@type":"TVSeries","name":"더 시즌즈 이영지의 레인보우","datePublished":"2024"},{"@type":"TVSeries","name":"소통의 神","datePublished":"2023"},{"@type":"TVSeries","name":"認識的哥哥","datePublished":"2022"},{"@type":"TVSeries","name":"Biong Biong地球娛樂室","datePublished":"2022"},{"@type":"TVSeries","name":"쇼미더머니 11","datePublished":"2022"},{"@type":"TVSeries","name":"玩什麼好呢","datePublished":"2021"},{"@type":"TVSeries","name":"歡樂在一起","datePublished":"2021"},{"@type":"TVSeries","name":"神秘音樂秀：蒙面歌王","datePublished":"2021"},{"@type":"TVSeries","name":"GOOD GIRL：誰洗劫了電視台","datePublished":"2020"},{"@type":"TVSeries","name":"黃金漁場 Radio Star","datePublished":"2020"},{"@type":"TVSeries","name":"Running Man","datePublished":"2020"},{"@type":"TVSeries","name":"Show Me The Money 9","datePublished":"2020"},{"@type":"TVSeries","name":"영지발굴단","datePublished":"2020"},{"@type":"TVSeries","name":"喪屍偵探","datePublished":"2020"},{"@type":"TVSeries","name":"高等Rapper 3","datePublished":"2019"},{"@type":"MusicRecording","name":"NOT SORRY","url":"https://www.youtube.com/watch?v=mMrefw3xMEM"},{"@type":"MusicRecording","name":"GO HIGH","url":"https://www.youtube.com/watch?v=2WhHrXon6Bg"},{"@type":"MusicRecording","name":"Small girl feat","url":"https://www.youtube.com/watch?v=11iZcYbq_is"},{"@type":"MusicRecording","name":"Lee Young Ji Small girl )","url":"https://www.youtube.com/watch?v=zRrbEK7Nnnc"},{"@type":"MusicRecording","name":"ADHD","url":"https://www.youtube.com/watch?v=9tJ4fGmxssw"}]}</script>
 </head>
 <body>
@@ -170,7 +180,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

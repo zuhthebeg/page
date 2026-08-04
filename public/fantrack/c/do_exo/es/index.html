@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/do_exo/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/do_exo/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/do_exo/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/do_exo/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="D.O. — FanTrack">
+<meta property="og:description" content="5 trabajos de D.O. — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/do_exo/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"D.O.","alternateName":["디오","D.O."],"url":"https://page.cocy.io/fantrack/c/do_exo/es/","inLanguage":"es","jobTitle":"Singer","foundingDate":"1982","subjectOf":[{"@type":"MusicRecording","name":"D.O. 디오 '별 떨어진다 (I Do)' MV","url":"https://www.youtube.com/watch?v=5vmJ_wq2NeA"},{"@type":"MusicRecording","name":"Rose (English Version)","url":"https://www.youtube.com/watch?v=cb5rI6fWgP0"},{"@type":"MusicRecording","name":"It's Love","url":"https://www.youtube.com/watch?v=_kPjsgwSm4c"},{"@type":"MusicRecording","name":"D.O. 디오 'Somebody' MV","url":"https://www.youtube.com/watch?v=jNYVbmVIP4A"},{"@type":"MusicRecording","name":"I Do' Official Audio","url":"https://www.youtube.com/watch?v=_yPzNsmk3Og"}]}</script>
 </head>
 <body>
@@ -153,7 +163,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

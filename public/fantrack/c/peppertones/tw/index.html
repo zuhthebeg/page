@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/peppertones/tw/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/peppertones/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/peppertones/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/peppertones/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Peppertones — FanTrack">
+<meta property="og:description" content="Peppertones 的出演與作品 23 筆 — 節目、專輯、演唱會一次看完。FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/peppertones/tw/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"Peppertones","alternateName":["페퍼톤스","Peppertones"],"url":"https://page.cocy.io/fantrack/c/peppertones/tw/","inLanguage":"zh-Hant","affiliation":{"@type":"Organization","name":"안테나"},"foundingDate":"2004","subjectOf":[{"@type":"MusicAlbum","name":"Thousand Years","datePublished":"2022"},{"@type":"TVSeries","name":"家師父一體","datePublished":"2021"},{"@type":"TVSeries","name":"출장 십오야","datePublished":"2021"},{"@type":"TVSeries","name":"선미네 비디오가게","datePublished":"2020"},{"@type":"MusicAlbum","name":"long way","datePublished":"2018"},{"@type":"TVSeries","name":"鍵盤上的鬣狗","datePublished":"2018"},{"@type":"TVSeries","name":"I'm LIVE X Digging","datePublished":"2018"},{"@type":"TVSeries","name":"歡樂在一起","datePublished":"2017"},{"@type":"TVSeries","name":"Trick & True","datePublished":"2016"},{"@type":"TVSeries","name":"歡迎SHOW","datePublished":"2016"},{"@type":"MusicAlbum","name":"HIGH-FIVE","datePublished":"2014"},{"@type":"TVSeries","name":"K팝스타 시즌4","datePublished":"2014"},{"@type":"MusicAlbum","name":"Beginner’s Luck","datePublished":"2012"},{"@type":"MusicAlbum","name":"Open Run","datePublished":"2012"},{"@type":"MusicAlbum","name":"Sounds Good!","datePublished":"2009"},{"@type":"MusicAlbum","name":"New Standard","datePublished":"2008"},{"@type":"MusicAlbum","name":"Colorful Express","datePublished":"2005"},{"@type":"MusicAlbum","name":"A Preview","datePublished":"2004"},{"@type":"MusicRecording","name":"Ready, Get Set, Go!","url":"https://www.youtube.com/watch?v=wHNTpaTXxwM"},{"@type":"MusicRecording","name":"Freshman","url":"https://www.youtube.com/watch?v=_-WLJvGT7ZA"},{"@type":"MusicRecording","name":"Eye of the Typhoon )","url":"https://www.youtube.com/watch?v=UdV59TOZjBk"},{"@type":"MusicRecording","name":"coma","url":"https://www.youtube.com/watch?v=2thnNRlRP2Y"},{"@type":"MusicRecording","name":"Song Runs Like a Light","url":"https://www.youtube.com/watch?v=MMg8e3thLog"}]}</script>
 </head>
 <body>
@@ -171,7 +181,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

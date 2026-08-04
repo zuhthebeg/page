@@ -28,6 +28,7 @@ const SITE = 'https://page.cocy.io';
 const API = SITE + '/api/fantrack/celebrities';
 const LANGS = ['ko', 'en', 'tw', 'es'];
 const HREFLANG = { ko: 'ko', en: 'en', tw: 'zh-Hant', es: 'es' };
+const OG_LOCALE = { ko: 'ko_KR', en: 'en_US', tw: 'zh_TW', es: 'es_ES' };
 // 사전렌더는 상위 N건만 — 크롤러에 충분하고 HTML이 비대해지지 않는다.
 const PRERENDER_MAX = 60;
 
@@ -144,7 +145,20 @@ function head(detail, lang) {
   const alts = LANGS.map((l) =>
     `<link rel="alternate" hreflang="${HREFLANG[l]}" href="${SITE}/fantrack/c/${c.id}${l === 'ko' ? '/' : '/' + l + '/'}">`).join('\n');
   const url = SITE + '/fantrack/c/' + c.id + (lang === 'ko' ? '/' : '/' + lang + '/');
-  return { name, desc, alts, url, title: `${name} — FanTrack` };
+  const title = `${name} — FanTrack`;
+  // 공유 카드(OG)도 페이지 언어를 따라야 한다 — 없으면 공유 시 스크레이퍼가
+  // 엉뚱한(주로 한국어) 텍스트를 집어간다. 이미지 에셋은 없으므로 텍스트 카드만 정확히.
+  const og = [
+    `<meta property="og:type" content="profile">`,
+    `<meta property="og:site_name" content="FanTrack">`,
+    `<meta property="og:title" content="${esc(title)}">`,
+    `<meta property="og:description" content="${esc(desc)}">`,
+    `<meta property="og:url" content="${url}">`,
+    `<meta property="og:locale" content="${OG_LOCALE[lang]}">`,
+    ...LANGS.filter((l) => l !== lang).map((l) => `<meta property="og:locale:alternate" content="${OG_LOCALE[l]}">`),
+    `<meta name="twitter:card" content="summary">`,
+  ].join('\n');
+  return { name, desc, alts, og, url, title };
 }
 
 
@@ -157,16 +171,26 @@ function buildIndexPages() {
     if (lang === 'ko') continue;
     const dir = path.join(FT, lang);
     fs.mkdirSync(dir, { recursive: true });
+    const T = I18N[lang].T;
+    const url = `${SITE}/fantrack/${lang}/`;
     let html = src
       // 하위 디렉터리라 상대경로가 깨진다 → 절대경로
       .replace(/(src|href)="(i18n\.js|manifest\.json|icon\.svg|sw\.js)/g, '$1="/fantrack/$2')
       .replace(/href="c\//g, 'href="/fantrack/c/')
-      .replace(/<html lang="[^"]*"/, `<html lang="${HREFLANG[lang]}"`);
-    // 언어별 canonical/hreflang
+      .replace(/<html lang="[^"]*"/, `<html lang="${HREFLANG[lang]}"`)
+      // head도 페이지 언어로 — 한국어 복사본이면 공유 카드·검색 스니펫이 전부 한국어로 나간다(2026-08-04 버그)
+      .replace(/<title>[^<]*<\/title>/, `<title>${esc(T.indexTitle)} — ${esc(T.indexTagline)}</title>`)
+      .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(T.indexDesc)}">`)
+      .replace(/<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="${esc(T.indexTitle)}">`)
+      .replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${esc(T.indexTagline)}">`)
+      .replace(/<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="${url}">`)
+      .replace(/<meta property="og:locale" content="[^"]*">/, `<meta property="og:locale" content="${OG_LOCALE[lang]}">`);
+    // 루트 소스에 박힌 hreflang은 제거하고 언어별로 다시 주입
+    html = html.replace(/<link rel="alternate" hreflang="[^"]*"[^>]*>\n?/g, '');
     const alts = LANGS.map((l) =>
       `<link rel="alternate" hreflang="${HREFLANG[l]}" href="${SITE}/fantrack/${l === 'ko' ? '' : l + '/'}">`).join('\n');
     html = html.replace(/<link rel="canonical"[^>]*>/,
-      `<link rel="canonical" href="${SITE}/fantrack/${lang}/">`);
+      `<link rel="canonical" href="${url}">`);
     html = html.replace('</head>', alts + '\n</head>');
     fs.writeFileSync(path.join(dir, 'index.html'), html);
   }
@@ -205,7 +229,7 @@ async function main() {
       const CONTAINER = '<div id="contentList"></div>';
       if (!html.includes(CONTAINER)) throw new Error('템플릿 오염: contentList가 비어 있지 않다');
       html = html.replace(CONTAINER, '<div id="contentList">\n' + prerenderList(detail, lang) + '\n</div>');
-      html = html.replace('</head>', h.alts + '\n' + jsonLd(detail, lang) + '\n</head>');
+      html = html.replace('</head>', h.alts + '\n' + h.og + '\n' + jsonLd(detail, lang) + '\n</head>');
 
       fs.writeFileSync(path.join(dir, 'index.html'), html);
 

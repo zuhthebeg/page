@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/ohmygirl/en/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/ohmygirl/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/ohmygirl/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/ohmygirl/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="OH MY GIRL — FanTrack">
+<meta property="og:description" content="21 works by OH MY GIRL — TV shows, albums and concerts in one place. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/ohmygirl/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"OH MY GIRL","alternateName":["오마이걸","OH MY GIRL"],"url":"https://page.cocy.io/fantrack/c/ohmygirl/en/","inLanguage":"en","affiliation":{"@type":"Organization","name":"WM 엔터테인먼트"},"foundingDate":"2015-04-21","subjectOf":[{"@type":"MusicAlbum","name":"Dreamy Resonance","datePublished":"2024"},{"@type":"MusicAlbum","name":"Golden Hourglass","datePublished":"2023"},{"@type":"MusicAlbum","name":"Real Love","datePublished":"2022"},{"@type":"MusicAlbum","name":"Dear OHMYGIRL","datePublished":"2021"},{"@type":"MusicAlbum","name":"NONSTOP","datePublished":"2020"},{"@type":"MusicAlbum","name":"OH MY GIRL JAPAN DEBUT ALBUM","datePublished":"2019"},{"@type":"MusicAlbum","name":"THE FIFTH SEASON","datePublished":"2019"},{"@type":"MusicAlbum","name":"OH MY GIRL JAPAN 2nd ALBUM","datePublished":"2019"},{"@type":"MusicAlbum","name":"Eternally","datePublished":"2019"},{"@type":"MusicAlbum","name":"Secret Garden","datePublished":"2018"},{"@type":"MusicAlbum","name":"REMEMBER ME","datePublished":"2018"},{"@type":"MusicAlbum","name":"COLORING BOOK","datePublished":"2017"},{"@type":"MusicAlbum","name":"PINK OCEAN","datePublished":"2016"},{"@type":"MusicAlbum","name":"Listen to My Word","datePublished":"2016"},{"@type":"MusicAlbum","name":"OH MY GIRL","datePublished":"2015"},{"@type":"MusicAlbum","name":"CLOSER","datePublished":"2015"},{"@type":"MusicRecording","name":"Destiny","url":"https://www.youtube.com/watch?v=d2R9O-Agy_8"},{"@type":"MusicRecording","name":"Start Up","url":"https://www.youtube.com/watch?v=PX2z7ZC90qE"},{"@type":"MusicRecording","name":"OH MY GIRL _ CUPID","url":"https://www.youtube.com/watch?v=fCrCUv6rQ7I"},{"@type":"MusicRecording","name":"Cupid","url":"https://www.youtube.com/watch?v=lJnsoqYEOhE"},{"@type":"MusicRecording","name":"OH MY GIRL Classified","url":"https://www.youtube.com/watch?v=R8ECxvn_DTw"}]}</script>
 </head>
 <body>
@@ -169,7 +179,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

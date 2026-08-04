@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/parkjunghyun/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/parkjunghyun/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/parkjunghyun/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/parkjunghyun/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="Lena Park — FanTrack">
+<meta property="og:description" content="22 trabajos de Lena Park — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/parkjunghyun/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Lena Park","alternateName":["박정현","Lena Park","朴正炫"],"url":"https://page.cocy.io/fantrack/c/parkjunghyun/es/","inLanguage":"es","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"블루프린트 뮤직"},"foundingDate":"1997","subjectOf":[{"@type":"MusicAlbum","name":"STAY WITH ME","datePublished":"2024"},{"@type":"MusicAlbum","name":"The Bridge","datePublished":"2023"},{"@type":"MusicAlbum","name":"Another Winter","datePublished":"2022"},{"@type":"MusicAlbum","name":"The Wonder","datePublished":"2019"},{"@type":"MusicAlbum","name":"Syncrofusion Lena Park + Brand New Music","datePublished":"2014"},{"@type":"MusicAlbum","name":"Parallax","datePublished":"2012"},{"@type":"MusicAlbum","name":"10 ways to say I love you","datePublished":"2009"},{"@type":"MusicAlbum","name":"come to where I am","datePublished":"2007"},{"@type":"MusicAlbum","name":"COSMORAMA","datePublished":"2006"},{"@type":"MusicAlbum","name":"On&On","datePublished":"2005"},{"@type":"MusicAlbum","name":"Beyond the Line","datePublished":"2005"},{"@type":"MusicAlbum","name":"another piece","datePublished":"2004"},{"@type":"MusicAlbum","name":"Op.4","datePublished":"2002"},{"@type":"MusicAlbum","name":"Naturally","datePublished":"2000"},{"@type":"MusicAlbum","name":"A Second Helping","datePublished":"1999"},{"@type":"MusicAlbum","name":"piece","datePublished":"1998"},{"@type":"TVSeries","name":"I Am a Singer"},{"@type":"MusicRecording","name":"어땠을까 (What Would Have Been) ft. 박정현","url":"https://www.youtube.com/watch?v=iT267zwmFBw"},{"@type":"MusicRecording","name":"You Are The Sea (그대라는 바다)","url":"https://www.youtube.com/watch?v=G9qdqjfka3A"},{"@type":"MusicRecording","name":"Breaking up is bad (헤어짐은 못됐어요)","url":"https://www.youtube.com/watch?v=MgYGTwwBqDQ"},{"@type":"MusicRecording","name":"What a pretty girlfriend (여자친구 참 예쁘네)","url":"https://www.youtube.com/watch?v=ahKiPwv7CfE"},{"@type":"MusicRecording","name":"박정현 (Lena Park)","url":"https://www.youtube.com/watch?v=e0cgjW4xyew"}]}</script>
 </head>
 <body>
@@ -170,7 +180,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

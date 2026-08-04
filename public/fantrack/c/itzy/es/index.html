@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/itzy/es/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/itzy/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/itzy/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/itzy/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="ITZY — FanTrack">
+<meta property="og:description" content="20 trabajos de ITZY — programas, álbumes y conciertos en un solo lugar. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/itzy/es/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"ITZY","alternateName":["있지","ITZY"],"url":"https://page.cocy.io/fantrack/c/itzy/es/","inLanguage":"es","affiliation":{"@type":"Organization","name":"JYP 엔터테인먼트"},"foundingDate":"2019-02-12","subjectOf":[{"@type":"MusicAlbum","name":"Motto","datePublished":"2026"},{"@type":"MusicAlbum","name":"Girls Will Be Girls","datePublished":"2025"},{"@type":"MusicAlbum","name":"Collector","datePublished":"2025"},{"@type":"MusicAlbum","name":"TUNNEL VISION","datePublished":"2025"},{"@type":"MusicAlbum","name":"BORN TO BE","datePublished":"2024"},{"@type":"MusicAlbum","name":"GOLD","datePublished":"2024"},{"@type":"MusicAlbum","name":"KILL MY DOUBT","datePublished":"2023"},{"@type":"MusicAlbum","name":"RINGO","datePublished":"2023"},{"@type":"MusicAlbum","name":"CHECKMATE","datePublished":"2022"},{"@type":"MusicAlbum","name":"CHESHIRE","datePublished":"2022"},{"@type":"MusicAlbum","name":"Not Shy (English ver.)","datePublished":"2021"},{"@type":"MusicAlbum","name":"GUESS WHO","datePublished":"2021"},{"@type":"MusicAlbum","name":"CRAZY IN LOVE","datePublished":"2021"},{"@type":"MusicAlbum","name":"IT’z ME","datePublished":"2020"},{"@type":"MusicAlbum","name":"Not Shy","datePublished":"2020"},{"@type":"MusicAlbum","name":"IT’z ICY","datePublished":"2019"},{"@type":"MusicRecording","name":"THAT S A NO NO","url":"https://www.youtube.com/watch?v=ajdX8MQVkdo"},{"@type":"MusicRecording","name":"UNTOUCHABLE","url":"https://www.youtube.com/watch?v=Vq1PNZkUQjg"},{"@type":"MusicRecording","name":"Ice Cream","url":"https://www.youtube.com/watch?v=8QcODxTBG48"},{"@type":"MusicRecording","name":"#Twenty","url":"https://www.youtube.com/watch?v=ptK2ksLVYwE"}]}</script>
 </head>
 <body>
@@ -168,7 +178,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/taeyeon/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/taeyeon/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/taeyeon/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/taeyeon/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="태연 — FanTrack">
+<meta property="og:description" content="태연 출연·활동 정보 39건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/taeyeon/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"태연","alternateName":["태연","Taeyeon","太妍"],"url":"https://page.cocy.io/fantrack/c/taeyeon/","inLanguage":"ko","jobTitle":"Singer","affiliation":{"@type":"Organization","name":"SM 엔터테인먼트"},"foundingDate":"2007","subjectOf":[{"@type":"MusicEvent","name":"The TENSE","datePublished":"2025"},{"@type":"MusicAlbum","name":"Letter to Myself","datePublished":"2024"},{"@type":"MusicAlbum","name":"To. X","datePublished":"2023"},{"@type":"MusicEvent","name":"The ODD Of LOVE","datePublished":"2023"},{"@type":"MusicAlbum","name":"INVU","datePublished":"2022"},{"@type":"TVSeries","name":"퀸덤 2","datePublished":"2022"},{"@type":"TVSeries","name":"개취존중 여행배틀 - 펫키지","datePublished":"2021"},{"@type":"MusicAlbum","name":"#GirlsSpkOut","datePublished":"2020"},{"@type":"MusicAlbum","name":"What Do I Call You","datePublished":"2020"},{"@type":"MusicEvent","name":"The UNSEEN","datePublished":"2020"},{"@type":"TVSeries","name":"놀라운 토요일 - 도레미 마켓","datePublished":"2020"},{"@type":"MusicAlbum","name":"VOICE","datePublished":"2019"},{"@type":"MusicAlbum","name":"Purpose","datePublished":"2019"},{"@type":"MusicEvent","name":"TAEYEON JAPAN TOUR 2019 ~Signal~","datePublished":"2019"},{"@type":"TVSeries","name":"비긴어게인 3","datePublished":"2019"},{"@type":"MusicAlbum","name":"Something New","datePublished":"2018"},{"@type":"MusicEvent","name":"'s...TAEYEON CONCERT","datePublished":"2018"},{"@type":"MusicAlbum","name":"My Voice","datePublished":"2017"},{"@type":"MusicAlbum","name":"this Christmas - winter is coming","datePublished":"2017"},{"@type":"MusicEvent","name":"TAEYEON Concert \"PERSONA\"","datePublished":"2017"},{"@type":"MusicEvent","name":"The Magic Of Christmas Time","datePublished":"2017"},{"@type":"TVSeries","name":"런닝맨","datePublished":"2017"},{"@type":"MusicAlbum","name":"Why","datePublished":"2016"},{"@type":"MusicEvent","name":"TAEYEON, Butterfly Kiss","datePublished":"2016"},{"@type":"MusicAlbum","name":"I","datePublished":"2015"},{"@type":"MusicEvent","name":"태연의 아주 특별한 하루","datePublished":"2015"},{"@type":"TVSeries","name":"프로듀사","datePublished":"2015"},{"@type":"TVSeries","name":"도롱뇽도사와 그림자 조작단","datePublished":"2012"},{"@type":"TVSeries","name":"김승우의 승승장구","datePublished":"2010"},{"@type":"TVSeries","name":"설날특집 맛있는 초대","datePublished":"2010"},{"@type":"TVSeries","name":"우리 결혼했어요","datePublished":"2009"},{"@type":"TVSeries","name":"태연의 친한친구","datePublished":"2009"},{"@type":"TVSeries","name":"못말리는 결혼","datePublished":"2008"},{"@type":"TVSeries","name":"강인 태연의 친한친구","datePublished":"2008"},{"@type":"MusicRecording","name":"Siren","url":"https://www.youtube.com/watch?v=kci45V8zPx8"},{"@type":"MusicRecording","name":"Blue","url":"https://www.youtube.com/watch?v=tVtTdZt-HtI"},{"@type":"MusicRecording","name":"I (Solo Version)","url":"https://www.youtube.com/watch?v=13OcyTDR4D8"},{"@type":"MusicRecording","name":"Gravity","url":"https://www.youtube.com/watch?v=0hNde677fAE"},{"@type":"MusicRecording","name":"Melt Away","url":"https://www.youtube.com/watch?v=PrBnp5_hFMM"}]}</script>
 </head>
 <body>
@@ -187,7 +197,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;

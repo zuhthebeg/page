@@ -16,7 +16,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="theme-color" content="#141221">
 <link rel="manifest" href="/fantrack/c/riize/manifest.json">
 <script>if('serviceWorker'in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});</script>
-<script src="/fantrack/i18n.js?v=20260803idx"></script>
+<script src="/fantrack/i18n.js?v=20260804path"></script>
 <style>
 :root{
   --bg:#141221; --panel:#1e1b30; --panel2:#2a2542; --txt:#f2f0fa; --mut:#a8a3c4;
@@ -98,6 +98,16 @@ body.has-bg .profile,body.has-bg .card{backdrop-filter:blur(2px)}
 <link rel="alternate" hreflang="en" href="https://page.cocy.io/fantrack/c/riize/en/">
 <link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/fantrack/c/riize/tw/">
 <link rel="alternate" hreflang="es" href="https://page.cocy.io/fantrack/c/riize/es/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="FanTrack">
+<meta property="og:title" content="라이즈 — FanTrack">
+<meta property="og:description" content="라이즈 출연·활동 정보 19건 — 방송·앨범·콘서트를 한 곳에서. FanTrack">
+<meta property="og:url" content="https://page.cocy.io/fantrack/c/riize/">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MusicGroup","name":"라이즈","alternateName":["라이즈","RIIZE"],"url":"https://page.cocy.io/fantrack/c/riize/","inLanguage":"ko","affiliation":{"@type":"Organization","name":"SM 엔터테인먼트"},"foundingDate":"2023-09-04","subjectOf":[{"@type":"MusicAlbum","name":"Ⅱ","datePublished":"2026"},{"@type":"MusicEvent","name":"RIIZE 1000 DAYS FAN PARTY [RIIZE OFFIICE","datePublished":"2026"},{"@type":"MusicEvent","name":"RIIZE JAPAN FANMEETING 2026 RPG - RIIZE PLAYING GAME -","datePublished":"2026"},{"@type":"MusicEvent","name":"RIIZE 3RD ANNIVERSARY FANMEETING - Ch. RIIZE : ON AIR","datePublished":"2026"},{"@type":"MusicAlbum","name":"ODYSSEY","datePublished":"2025"},{"@type":"MusicEvent","name":"R.B.R. DAY FOR NEW YEAR","datePublished":"2025"},{"@type":"MusicEvent","name":"RIIZE JAPAN FANMEETING 2025 \"RIIZE：The Secret LIEZ\"","datePublished":"2025"},{"@type":"MusicEvent","name":"RIIZE The 1st Album 'ODYSSEY' Premiere","datePublished":"2025"},{"@type":"MusicEvent","name":"RIIZE The 2nd Single Premiere","datePublished":"2025"},{"@type":"MusicAlbum","name":"RIIZING","datePublished":"2024"},{"@type":"MusicEvent","name":"2024 RIIZE FAN-CON TOUR 'RIIZING DAY'","datePublished":"2024"},{"@type":"MusicEvent","name":"RIIZE The 1st Mini Album 'RIIZING' Premiere","datePublished":"2024"},{"@type":"MusicEvent","name":"2023 RIIZE 100 DAYS PARTY 'Hello, BRIIZE'","datePublished":"2023"},{"@type":"MusicEvent","name":"RIIZING DAY: RIIZE Press Premiere","datePublished":"2023"},{"@type":"MusicRecording","name":"Get A Guitar","url":"https://www.youtube.com/watch?v=fJdi9OAY9s4"},{"@type":"MusicRecording","name":"RIIZE 'In a Loop' (Official Audio)","url":"https://www.youtube.com/watch?v=5upwIKbF3DI"},{"@type":"MusicRecording","name":"RIIZE 라이즈 'Impossible' MV","url":"https://www.youtube.com/watch?v=Ey53EQhkLY8"},{"@type":"MusicRecording","name":"RIIZE (라이즈) 'Impossible' Official Audio","url":"https://www.youtube.com/watch?v=mVqvfA4B1j8"},{"@type":"MusicRecording","name":"RIIZE 'Honestly' (Official Audio)","url":"https://www.youtube.com/watch?v=ablEaBQd3lU"}]}</script>
 </head>
 <body>
@@ -167,7 +177,7 @@ const { LANG, T, pick, celebName, htmlLang, bindSwitcher, isWatched, setWatched,
 document.documentElement.lang = htmlLang();
 bindSwitcher($('langbar'));
 $('homeLink').textContent = T.home;
-$('homeLink').href = '../../?lang=' + LANG;
+$('homeLink').href = '/fantrack/' + (LANG === 'ko' ? '' : LANG + '/');
 $('gateTitle').textContent = T.gateTitle;
 $('gateClose').textContent = T.close;
 $('profile').querySelector('.loading').textContent = T.loading;
