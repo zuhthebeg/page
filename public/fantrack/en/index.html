@@ -90,6 +90,9 @@ const SEC = {
 // 새 언어에 라벨이 아직 없으면 undefined 대신 영어로 (2026-08-04 es undefined 버그)
 function secLabel(k){ return SEC[k][LANG] || SEC[k].en; }
 let ALL = [], FILTER = 'all', Q = '';
+// 외부 서비스(동물상 판독기 등)가 ?q=이름 으로 사람을 찍어 보낸다. 검색어를 미리 채워 바로 보여준다.
+{ const q0 = new URLSearchParams(location.search).get('q');
+  if (q0) { Q = q0.trim().toLowerCase(); $('q').value = q0; } }
 
 function matches(c){
   if(FILTER !== 'all' && c.kind !== FILTER) return false;
