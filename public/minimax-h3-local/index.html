@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MiniMax-H3 로컬에서 돌릴 수 있나 · page.cocy.io</title>
+<meta name="description" content="33B 오디오·비디오 동시 생성 모델 MiniMax-H3를 RTX 3080 Ti 12GB 등 소비자 GPU에서 돌릴 수 있는지 조사. 판정: 불가(2/10) — 한국은 오픈웨이트 라이선스 제외 지역이고, 12GB로는 양자화해도 안 들어간다." />
+<link rel="canonical" href="https://page.cocy.io/minimax-h3-local/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="MiniMax-H3 로컬에서 돌릴 수 있나 — 12GB GPU 실행 가능성 조사" />
+<meta property="og:description" content="가중치·양자화 실측 계산 · 판정: 불가 (2/10) · 한국은 라이선스 제외 지역 · 12GB로는 DiT조차 안 들어감" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#9a5b34; --accent-2:#c2683f; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:58ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+a{color:var(--accent-2)}
+
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#fbf7f1);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--ink);margin-top:.2rem}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1}
+.score small{font-size:1rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.no{background:rgba(168,68,58,.12);color:var(--bad)}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+.tag.warn{background:rgba(184,134,11,.14);color:var(--warn)}
+
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.92rem}
+th,td{text-align:left;padding:.7rem .6rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:500}
+td .pct{font-family:var(--display);font-weight:600}
+.b-good{color:var(--good)}.b-warn{color:var(--warn)}.b-bad{color:var(--bad)}
+.tdtag{font-size:.78rem}
+
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+ol.steps{list-style:none;counter-reset:s;margin:.4rem 0}
+ol.steps li{position:relative;padding-left:2.2rem;margin-bottom:.9rem;counter-increment:s}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--mono);font-size:.78rem;display:flex;align-items:center;justify-content:center}
+ol.steps li b{color:var(--ink);font-weight:500}
+
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+.src{font-size:.8rem;color:var(--muted)}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+</style>
+<meta property="og:url" content="https://page.cocy.io/minimax-h3-local/" />
+<meta property="article:published_time" content="2026-08-06" />
+<meta property="article:modified_time" content="2026-08-06" />
+<meta name="author" content="cocy" />
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "MiniMax-H3 로컬에서 돌릴 수 있나 — 12GB GPU 실행 가능성 조사", "description": "33B 오디오·비디오 동시 생성 모델 MiniMax-H3의 소비자 GPU 실행 가능성과 라이선스 지역 제한 조사. 판정: 불가(2/10).", "url": "https://page.cocy.io/minimax-h3-local/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/minimax-h3-local/"}, "datePublished": "2026-08-06", "dateModified": "2026-08-06", "inLanguage": "ko", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true}</script>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Tech Feasibility · Local Video Model</div>
+    <h1>MiniMax-H3 로컬에서 돌릴 수 있나</h1>
+    <p class="lead">공개 3일 만에 좋아요 2,600개를 넘긴 <b>MiniMax-H3</b>는 영상과 스테레오 오디오를 <b>동시에</b> 만드는 33B 옴니모달 모델이다. RTX 3080 Ti 12GB 한 장으로 돌릴 수 있는지, 가중치·양자화 파일 크기와 라이선스 원문을 직접 확인해 계산했다.</p>
+    <div class="meta">
+      <span><b>작성</b> 2026-08-06</span>
+      <span><b>대상</b> RTX 3080 Ti 12GB 단일 GPU</span>
+      <span><b>방법</b> HF API 파일 크기 실측 + 공식 라이선스·README 원문 확인</span>
+      <span><b>출처</b> huggingface.co/MiniMaxAI/MiniMax-H3 (LICENSE, README, docs/QA-about-License.md), 커뮤니티 GGUF 3개 저장소</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">최종 판정</div>
+          <div class="v-main">불가 — 기술적으로도 안 들어가고, 한국은 라이선스 대상 지역이 아니다</div>
+        </div>
+        <div class="score">2<small>/10</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag no">✗ 한국은 오픈웨이트 라이선스 제외 지역</span>
+        <span class="tag no">✗ 12GB에 DiT 최소 양자화도 여유 없음</span>
+        <span class="tag warn">△ 24GB부터 pruned 양자화로 시도 가능</span>
+        <span class="tag yes">✓ API는 전 세계 사용 가능(유료)</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="license">
+    <h2><span class="n">01</span> 먼저 확인해야 할 것 — 라이선스 지역 제한</h2>
+    <p>성능이나 VRAM보다 먼저 걸리는 게 있다. H3의 <a href="https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/LICENSE" target="_blank" rel="noopener">커뮤니티 라이선스</a>는 적용 범위를 <b>“Applicable Territory”로 한정</b>하고, 거기서 <b>제외 지역(Excluded Territories)</b>을 이렇게 못박는다.</p>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>제외 지역</td><td class="b-bad">유럽연합 · 영국 · <b>대한민국</b> · 미국</td></tr>
+        <tr><td>근거 조항</td><td>LICENSE I-5 “Excluded Territories”, II “Solely within the Applicable Territory”</td></tr>
+        <tr><td>사유(공식 Q&amp;A)</td><td>영상 생성 모델에 대한 규제 환경이 빠르게 바뀌는 중이라 판단 — 초상·저작권·콘텐츠 안전 규제를 이유로 듦</td></tr>
+        <tr><td>예외 경로</td><td>제외 지역 사용자는 개별 문의로 별도 라이선스를 받을 수 있다고 명시</td></tr>
+        <tr><td>API</td><td class="b-good">전 세계 사용 가능 — 가중치 배포와 달리 자체 인프라에서 통제 가능하기 때문</td></tr>
+      </tbody>
+    </table>
+    <p>공식 문서는 이 제한을 <a href="https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/docs/QA-about-License.md" target="_blank" rel="noopener">“not yet, not never”</a>라고 표현한다. 언젠가 풀릴 수 있다는 뜻이지만, <b>2026년 8월 현재 한국에서 가중치를 받아 로컬로 돌리는 것은 이 라이선스가 허용하는 범위 밖이다.</b></p>
+    <p class="note">가중치가 HF에서 다운로드 가능하다는 사실과 라이선스가 허용한다는 사실은 다른 문제다. 이 리포트가 아래에서 VRAM 계산을 계속하는 이유는, 제한이 풀렸을 때 혹은 제외 지역 밖에서 판단할 근거를 남기기 위해서다.</p>
+  </section>
+
+  <section data-block="spec">
+    <h2><span class="n">02</span> 모델 스펙 — 무엇이 무거운가</h2>
+    <p>H3는 단일 모델이 아니라 <b>세 덩어리가 묶인 시스템</b>이다. 그래서 "33B"라는 숫자만 보면 크게 오해한다.</p>
+    <table>
+      <thead><tr><th>구성</th><th>내용</th><th>메모리 부담</th></tr></thead>
+      <tbody>
+        <tr><td>H3-Base (DiT)</td><td>영상+오디오 동시 생성 본체. FL2VA / Ref2VA 두 변형</td><td class="b-bad">가장 큼</td></tr>
+        <tr><td>텍스트·멀티모달 인코더</td><td><b>Qwen3-VL-32B</b> — 별도 32B급 모델이 통째로 붙는다</td><td class="b-bad">본체급</td></tr>
+        <tr><td>Video VAE + Audio VAE</td><td>영상 디코더 + DAC 계열 오디오 VAE(스테레오)</td><td class="b-warn">보조</td></tr>
+        <tr><td>H3-Regenerate-2K</td><td>2K 업스케일 모듈 — <b>미공개</b>, API로만 제공</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p>공개된 safetensors 합계는 <b>331억 파라미터(BF16 기준 약 66GB)</b>다. 출력 사양은 <b>기본 짧은 변 768px · 24fps · 4~15초 · 네이티브 스테레오 오디오</b>이며, 2K는 미공개 모듈이 필요하다.</p>
+    <p>공식 README가 안내하는 로컬 실행 명령은 이렇게 시작한다 — <code>sglang serve --num-gpus 4 --ulysses-degree 4</code>. <b>즉 제조사가 상정한 최소 구성이 GPU 4장</b>이고, 시퀀스 병렬(ulysses)을 4로 쪼개서야 돌아간다는 뜻이다.</p>
+  </section>
+
+  <section data-block="quant">
+    <h2><span class="n">03</span> 양자화하면 12GB에 들어가나 — 실측 파일 크기</h2>
+    <p>커뮤니티가 GGUF·NVFP4·INT4로 빠르게 양자화해 올렸다. 실제 파일 크기를 HF API로 직접 조회했다.</p>
+    <table>
+      <thead><tr><th>파일</th><th>크기</th><th>12GB 적재</th></tr></thead>
+      <tbody>
+        <tr><td>DiT FL2VA Q4_K_M</td><td>19.9 GB</td><td class="b-bad tdtag">불가</td></tr>
+        <tr><td>DiT FL2VA Q3_K_M</td><td>15.6 GB</td><td class="b-bad tdtag">불가</td></tr>
+        <tr><td>DiT <b>pruned</b> Q4_K_M</td><td>11.4 GB</td><td class="b-bad tdtag">가중치만으로 12GB 중 11.4GB — 활성 메모리 없음</td></tr>
+        <tr><td>DiT <b>pruned</b> Q2_K_M</td><td>6.7 GB</td><td class="b-warn tdtag">적재는 되나 품질 붕괴 구간</td></tr>
+        <tr><td>텍스트 인코더 Qwen3-VL-32B Q4_K_M</td><td>14.6~18.2 GB</td><td class="b-bad tdtag">불가 (별도 로드 필요)</td></tr>
+        <tr><td>텍스트 인코더 Q2_K</td><td>8.5~13.1 GB</td><td class="b-warn tdtag">단독으로도 12GB를 거의 다 씀</td></tr>
+      </tbody>
+    </table>
+    <p>여기서 끝이 아니다. <b>영상 확산은 활성 메모리가 지배적</b>이다. 768p·24fps·10초면 240프레임 분량의 latent를 들고 디노이징을 돌려야 하고, 어텐션이 프레임 축까지 걸린다. 이미지 한 장 뽑는 것과 메모리 성격이 다르다.</p>
+    <p>우리가 <a href="https://game.cocy.io/animalface/" target="_blank" rel="noopener">동물상 판독기</a> 아트를 만들 때 쓴 기법 — 텍스트 인코더를 CPU에서 먼저 돌려 임베딩만 뽑아두고 그 다음 본체를 GPU에 올리는 순차 로딩 — 을 그대로 적용하면 <b>이론상 최저 구성은 만들어진다.</b> pruned Q2_K_M(6.7GB) + 인코딩 선행 + 짧은 길이. 하지만 그건 "돌아간다"이지 "쓸 만하다"가 아니다.</p>
+  </section>
+
+  <section data-block="line">
+    <h2><span class="n">04</span> 현실적인 하드웨어 기준선</h2>
+    <ul class="clean">
+      <li><b>12GB (3080 Ti / 4070)</b> — 실용 불가. DiT 최소 양자화를 올리면 활성 메모리가 남지 않는다.</li>
+      <li><b>24GB (3090 / 4090)</b> — 시작선. pruned Q4_K_M(11.4GB) + 인코더 순차 로딩으로 짧은 길이·768p 시도가 가능한 구간. 커뮤니티 양자화가 이 급을 겨냥해 쏟아지는 이유다.</li>
+      <li><b>32~48GB</b> — 전체 품질 양자화(Q4_K_M 19.9GB)를 얹고 길이를 늘릴 수 있는 구간.</li>
+      <li><b>80GB×4</b> — 제조사 기준 구성. BF16 원본 66GB + 시퀀스 병렬.</li>
+    </ul>
+    <p>참고로 커뮤니티는 이미 <b>4-step Turbo LoRA</b>를 올려놨다. 스텝을 줄이면 시간은 줄지만 <b>피크 VRAM은 거의 그대로</b>다 — 메모리 벽을 LoRA로 넘지는 못한다.</p>
+  </section>
+
+  <section data-block="alt">
+    <h2><span class="n">05</span> 그래서 무엇을 쓸 것인가</h2>
+    <ol class="steps">
+      <li><b>지금 한국에서 영상 생성이 필요하면 API</b> — H3 API는 지역 제한 없이 열려 있고 2K 리제너레이션도 API에만 있다. 다만 유료이고, 로컬 우선 원칙과는 어긋난다.</li>
+      <li><b>12GB로 계속 갈 거면 이미지 + 모션 조합</b> — 로컬에서 이미지를 뽑고 짧은 I2V 모델로 움직임만 얹는 쪽이 같은 VRAM에서 훨씬 낫다.</li>
+      <li><b>H3를 진짜 쓰고 싶으면 24GB 이상 확보 후 재검토</b> — 그때는 라이선스 제한이 풀렸는지부터 다시 확인해야 한다.</li>
+    </ol>
+  </section>
+
+  <section data-block="conclusion">
+    <h2><span class="n">06</span> 결론</h2>
+    <p><b>두 겹으로 막혀 있다.</b> 기술적으로는 12GB에 DiT 최소 양자화조차 여유를 남기지 못하고, 텍스트 인코더가 Qwen3-VL-32B라는 또 하나의 대형 모델이라 순차 로딩을 해도 실용 구간이 안 나온다. 제조사가 상정한 최소 구성이 GPU 4장이라는 사실이 이미 답에 가깝다.</p>
+    <p>그리고 그보다 앞서, <b>이 모델의 오픈웨이트 라이선스는 대한민국을 명시적으로 제외한다.</b> 성능 논의와 무관하게 지금 한국에서 가중치를 받아 로컬로 돌리는 건 허용 범위 밖이다. 규제 상황이 정리되면 열릴 수 있다고 공식 문서가 밝혔으니, <b>재검토 시점은 “24GB GPU를 확보했을 때”가 아니라 “제외 지역 조항이 바뀌었을 때”</b>다.</p>
+  </section>
+
+  <div class="foot">
+    <span>made on page.cocy.io</span>
+    <span>판정: 불가 · 2/10</span>
+  </div>
+</article>
+</body>
+</html>
