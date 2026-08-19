@@ -245,28 +245,28 @@ const UI={
      phase:n=>'페이즈 '+n, series:'디즈니+ 시리즈', apex:'페이즈 6 · 사가의 정점',
      release:'2026년 12월 18일 개봉', ytBtn:'▶ 공식 예고편 유튜브에서 보기',
      foot:'비공식 팬 페이지 — 각 작품의 권리는 Marvel Studios에 있습니다',
-     sortRel:'개봉순',sortStory:'스토리순',soonTag:'개봉 임박',swTag:'사가 완결 — 예정작'},
+     sortRel:'개봉순',sortStory:'스토리순',soonTag:'개봉 임박',nowTag:'상영 중',swTag:'사가 완결 — 예정작'},
  en:{h1:'MARVEL UNIVERSE <span class="rd">FAMILY TREE</span>',
      sub:'From Iron Man to <b>Avengers: Doomsday</b> — zoom, drag, tap',
      hint:'🔍 Scroll/pinch to zoom · drag to pan · tap a title for its summary',
      phase:n=>'Phase '+n, series:'Disney+ series', apex:'Phase 6 · The apex of the saga',
      release:'In theaters December 18, 2026', ytBtn:'▶ Watch the official trailer on YouTube',
      foot:'Unofficial fan page — all works © Marvel Studios',
-     sortRel:'Release',sortStory:'Story order',soonTag:'Coming soon',swTag:'Saga finale — upcoming'},
+     sortRel:'Release',sortStory:'Story order',soonTag:'Coming soon',nowTag:'Now showing',swTag:'Saga finale — upcoming'},
  ja:{h1:'マーベル・ユニバース <span class="rd">系譜</span>',
      sub:'アイアンマンから<b>アベンジャーズ:ドゥームズデイ</b>まで — 拡大して、動かして、タップ',
      hint:'🔍 ホイール・ピンチで拡大 / ドラッグで移動 / 作品タップ → あらすじ',
      phase:n=>'フェーズ'+n, series:'ディズニー+ シリーズ', apex:'フェーズ6 · サーガの頂点',
      release:'2026年12月18日公開', ytBtn:'▶ 公式予告編をYouTubeで見る',
      foot:'非公式ファンページ — 各作品の権利はMarvel Studiosに帰属します',
-     sortRel:'公開順',sortStory:'時系列',soonTag:'公開間近',swTag:'サーガ完結 — 予定作'},
+     sortRel:'公開順',sortStory:'時系列',soonTag:'公開間近',nowTag:'公開中',swTag:'サーガ完結 — 予定作'},
  zh:{h1:'漫威宇宙 <span class="rd">族譜</span>',
      sub:'從鋼鐵人到<b>復仇者聯盟:毀滅日</b> — 縮放、拖曳、點擊',
      hint:'🔍 滾輪/雙指縮放 · 拖曳移動 · 點作品看簡介',
      phase:n=>'第'+n+'階段', series:'Disney+ 影集', apex:'第6階段 · 傳奇的頂點',
      release:'2026年12月18日上映', ytBtn:'▶ 在 YouTube 觀看官方預告',
      foot:'非官方粉絲頁 — 各作品版權屬於 Marvel Studios',
-     sortRel:'上映順序',sortStory:'故事時間軸',soonTag:'即將上映',swTag:'傳奇完結 — 預定作'},
+     sortRel:'上映順序',sortStory:'故事時間軸',soonTag:'即將上映',nowTag:'上映中',swTag:'傳奇完結 — 預定作'},
 };
 const EN_TR=[
 {s:"Arms dealer Tony Stark builds his first suit after being kidnapped and declares 'I am Iron Man.' The starting point of the entire MCU.",n:"Where it all began — Nick Fury first mentions the 'Avengers Initiative' in the post-credits scene"},
@@ -576,10 +576,10 @@ function dday(){
 }
 function ddayTo(dateStr){
   const t=new Date(dateStr+'T00:00:00+09:00'),ms=t-new Date();
-  return {d:Math.max(0,Math.floor(ms/86400000)),h:Math.max(0,Math.floor(ms/3600000)%24),m:Math.max(0,Math.floor(ms/60000)%60)};
+  return {past:ms<0,d:Math.max(0,Math.floor(ms/86400000)),h:Math.max(0,Math.floor(ms/3600000)%24),m:Math.max(0,Math.floor(ms/60000)%60)};
 }
 document.getElementById('node-dday').textContent='D-'+dday().d;
-{const b=document.getElementById('node-dday-bnd');if(b){const bd=ddayTo('2026-07-31');b.textContent=(bd.d===0?'D-DAY':'D-'+bd.d)+' · '+L.soonTag;}}
+{const b=document.getElementById('node-dday-bnd');if(b){const bd=ddayTo('2026-07-31');b.textContent=bd.past?L.nowTag:(bd.d===0?'D-DAY':'D-'+bd.d)+' · '+L.soonTag;}}
 
 /* ── 상세 시트 ── */
 const sheet=document.getElementById('sheet'),body=document.getElementById('sheet-body');
@@ -596,13 +596,13 @@ function openSheet(n,el){
   if(n.soon){
     const bd=ddayTo(n.date);
     body.innerHTML=`<div class="doom-final" style="--pc:${pc}">
-      <span class="ph-tag" style="--pc:${pc}">${L.phase(n.ph)} · ${L.soonTag}</span>
+      <span class="ph-tag" style="--pc:${pc}">${L.phase(n.ph)} · ${bd.past?L.nowTag:L.soonTag}</span>
       <h2>${titleOf(n)}</h2><div class="en2">${LANG==='en'?'':n.en+' · '}${n.relL[LANG]}</div>
-      <div class="dd-count">
+      ${bd.past?'':`<div class="dd-count">
         <div class="dd-cell"><b>${bd.d}</b><span>DAYS</span></div>
         <div class="dd-cell"><b>${bd.h}</b><span>HOURS</span></div>
         <div class="dd-cell"><b>${bd.m}</b><span>MIN</span></div>
-      </div>
+      </div>`}
       <p class="sum">${sumOf(n)}</p>
       <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${n.yt}" title="${n.en} Official Trailer"
         allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
