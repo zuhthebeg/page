@@ -147,6 +147,16 @@
       for (var j = 0; j < clean.length; j += stride) ds.push(clean[j]);
       clean = ds;
     }
+    // 경도 언랩: 시간순으로 ±360° 보정 → 태평양 횡단(한국→미국)이 지도 오른쪽으로 이어짐.
+    // merc()는 ±180 밖 경도도 선형 확장으로 처리하고 타일은 wx 모듈로로 랩되므로 전체 파이프라인 안전.
+    for (var u = 1; u < clean.length; u++) {
+      clean[u].lng -= 360 * Math.round((clean[u].lng - clean[u - 1].lng) / 360);
+    }
+    var uMin = 180, uMax = -180;
+    clean.forEach(function (p) { uMin = Math.min(uMin, p.lng); uMax = Math.max(uMax, p.lng); });
+    var uCenter = (uMin + uMax) / 2;
+    data.visits.forEach(function (v) { v.lng -= 360 * Math.round((v.lng - uCenter) / 360); });
+
     // 점프(비행) 세그먼트 표시: i → i+1 거리가 JUMP_KM 초과
     var jumps = [];
     for (var k2 = 1; k2 < clean.length; k2++) jumps.push(hav(clean[k2 - 1], clean[k2]) > JUMP_KM);
@@ -539,7 +549,9 @@
       [37.5665, 126.9780], [37.4563, 126.7052], [36.3504, 127.3845], [35.8714, 128.6014],
       [35.1796, 129.0756], [33.4996, 126.5312], [33.2541, 126.5601], [37.5665, 126.9780],
       [35.6762, 139.6503], [34.6937, 135.5023], [37.5665, 126.9780],
-      [25.0330, 121.5654], [37.5665, 126.9780], [37.7519, 128.8761], [37.5665, 126.9780],
+      [25.0330, 121.5654], [37.5665, 126.9780],
+      [34.0522, -118.2437], [37.7749, -122.4194], [37.5665, 126.9780],
+      [37.7519, 128.8761], [37.5665, 126.9780],
     ];
     var out = { points: [], visits: [] };
     var t = Date.UTC(2026, 0, 5);
