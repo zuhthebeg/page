@@ -430,7 +430,8 @@
   }
 
   function fmtDate(d) {
-    return d.getFullYear() + "." + String(d.getMonth() + 1).padStart(2, "0") + "." + String(d.getDate()).padStart(2, "0");
+    // 일 단위는 과잉 정보 + 이동 중 시선 분산 — 연.월만 표시 (cocy 피드백)
+    return d.getFullYear() + "." + String(d.getMonth() + 1).padStart(2, "0");
   }
 
   // ── 재생 루프 ──
@@ -644,11 +645,34 @@
     }
   });
 
-  // ── GIF 내보내기 — 팔로우 캠 재생을 캡처해 GIF 인코딩 (gifenc, CDN 동적 로드) ──
-  var recBtn = $("#rec");
-  recBtn.addEventListener("click", function () {
+  // ── GIF 생성 + 공유 — 공유의 본체는 결과물(GIF). 없으면 만들어서 공유한다 ──
+  var recBtn = $("#rec"), shareBtn = $("#share");
+  var lastGifBlob = null;
+
+  function shareOrSaveGif(blob) {
+    var file = new File([blob], "footprints.gif", { type: "image/gif" });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: S.shareTitle, text: S.shareText + " " + S.pageUrl }).catch(function () {});
+    } else {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "footprints.gif";
+      a.click();
+      if (navigator.clipboard && shareBtn) {
+        navigator.clipboard.writeText(S.shareText + " " + S.pageUrl).then(function () {
+          var orig = shareBtn.textContent;
+          shareBtn.textContent = S.copied;
+          setTimeout(function () { shareBtn.textContent = orig; }, 1800);
+        }).catch(function () {});
+      }
+    }
+    if (window.dataLayer) window.dataLayer.push({ event: "fp_share", fp_has_gif: true });
+  }
+
+  function makeGif(done) {
     if (!state.data || recBtn.disabled) return;
-    recBtn.disabled = true; recBtn.textContent = S.recBusy;
+    recBtn.disabled = true; if (shareBtn) shareBtn.disabled = true;
+    recBtn.textContent = S.recBusy;
     import("https://cdn.jsdelivr.net/npm/gifenc@1.0.3/+esm").then(function (G) {
       var W2 = 420, H2 = Math.max(2, Math.round(canvas.height / canvas.width * 420));
       var oc = document.createElement("canvas"); oc.width = W2; oc.height = H2;
@@ -665,6 +689,7 @@
       state.onFinish = function () {
         state.captureHook = null;
         state.duration = savedDur;
+        var blob = null;
         try {
           if (!frames.length) throw new Error("no frames");
           var gif = G.GIFEncoder();
@@ -673,42 +698,28 @@
             gif.writeFrame(G.applyPalette(frames[i], palette), W2, H2, { palette: palette, delay: 80 });
           }
           gif.finish();
-          var blob = new Blob([gif.bytes()], { type: "image/gif" });
-          var file = new File([blob], "footprints.gif", { type: "image/gif" });
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            navigator.share({ files: [file], title: S.shareTitle, text: S.shareText + " " + S.pageUrl }).catch(function () {});
-          } else {
-            var a = document.createElement("a");
-            a.href = URL.createObjectURL(blob);
-            a.download = "footprints.gif";
-            a.click();
-          }
+          blob = new Blob([gif.bytes()], { type: "image/gif" });
+          lastGifBlob = blob;
           if (window.dataLayer) window.dataLayer.push({ event: "fp_export", fp_type: "gif", fp_frames: frames.length });
         } catch (e) {
           showErr(S.errPng);
         }
         frames = null;
-        recBtn.disabled = false; recBtn.textContent = S.recIdle;
+        recBtn.disabled = false; if (shareBtn) shareBtn.disabled = false;
+        recBtn.textContent = S.recIdle;
+        if (blob && done) done(blob);
       };
       play(true);
     }).catch(function () {
-      recBtn.disabled = false; recBtn.textContent = S.recIdle;
+      recBtn.disabled = false; if (shareBtn) shareBtn.disabled = false;
+      recBtn.textContent = S.recIdle;
       showErr(S.errPng);
     });
-  });
+  }
 
-  // ── 공유 버튼 ──
-  var shareBtn = $("#share");
+  recBtn.addEventListener("click", function () { makeGif(shareOrSaveGif); });
   if (shareBtn) shareBtn.addEventListener("click", function () {
-    if (window.dataLayer) window.dataLayer.push({ event: "fp_share" });
-    if (navigator.share) {
-      navigator.share({ title: S.shareTitle, text: S.shareText, url: S.pageUrl }).catch(function () {});
-    } else if (navigator.clipboard) {
-      navigator.clipboard.writeText(S.shareText + " " + S.pageUrl).then(function () {
-        var orig = shareBtn.textContent;
-        shareBtn.textContent = S.copied;
-        setTimeout(function () { shareBtn.textContent = orig; }, 1800);
-      });
-    }
+    if (lastGifBlob) shareOrSaveGif(lastGifBlob);
+    else makeGif(shareOrSaveGif);
   });
 })();
