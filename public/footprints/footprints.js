@@ -510,6 +510,8 @@
     state.progress = 0;
     snapCamera();
     play(true);
+    // gifenc 모듈 워밍업 — 콜드 CDN 로드로 첫 GIF 시도가 실패하는 것 방지
+    setTimeout(function () { import("https://cdn.jsdelivr.net/npm/gifenc@1.0.3/+esm").catch(function () {}); }, 2500);
     if (window.dataLayer) window.dataLayer.push({ event: "fp_load", fp_points: refined.points.length });
     $("#viewer").scrollIntoView({ behavior: "smooth", block: "start" });
   }
