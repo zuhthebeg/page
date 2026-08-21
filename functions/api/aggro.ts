@@ -213,92 +213,137 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
     return json({ error: "bad_request" }, 400);
   }
 
-  try {
-    const res = await fetch("https://llm.cocy.io/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${ctx.env.LLM_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "gpt-5.4-mini", // 분석 루브릭이 명확해 mini로 충분. 항상 살아있는 서버리스 경로(OpenAI via AI Gateway)
-        max_tokens: 1100,
-        reasoning_effort: "low", // minimal은 표면 수사만 보고 계몽글도 선동 판정 — 캘리브레이션에 추론이 필요 (2026-08-21 실측)
-        response_format: { type: "json_object" },
-        messages: [
-          { role: "system", content: buildSystem(ui) },
-          { role: "user", content: userContent },
-        ],
-      }),
-      signal: AbortSignal.timeout(30000),
-    });
-    if (!res.ok) return json({ error: "upstream" }, 502);
-    const data = (await res.json()) as any;
-    const raw = (data?.choices?.[0]?.message?.content || "").trim();
-    let parsed: any;
+  // ─── 앙상블 분류 → 서버측 결정론적 채점 ───
+  // v1: 모델이 점수 직접 출력 → 같은 글 28↔66 출렁 (gpt-5.x temperature 미지원)
+  // v2: 점수는 서버 공식으로 옮겼지만 검출(intent·기법·플래그) 자체가 런마다 흔들려 여전히 ±수십 점
+  // v3(현재): 병렬 3회 분류 → 다수결 합의 → 고정 공식. 검출 변동이 다수결에서 상쇄된다.
+
+  const callOnce = async (model: string): Promise<any | null> => {
     try {
-      parsed = JSON.parse(raw.replace(/^```json?\s*/i, "").replace(/```\s*$/, ""));
+      const res = await fetch("https://llm.cocy.io/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${ctx.env.LLM_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 1100,
+          reasoning_effort: "low", // minimal은 표면 수사만 보고 계몽글도 선동 판정 — 캘리브레이션에 추론이 필요
+          response_format: { type: "json_object" },
+          messages: [
+            { role: "system", content: buildSystem(ui) },
+            { role: "user", content: userContent },
+          ],
+        }),
+        signal: AbortSignal.timeout(30000),
+      });
+      if (!res.ok) return null;
+      const data = (await res.json()) as any;
+      const raw = (data?.choices?.[0]?.message?.content || "").trim();
+      return JSON.parse(raw.replace(/^```json?\s*/i, "").replace(/```\s*$/, ""));
     } catch {
-      return json({ error: "parse" }, 502);
+      return null;
     }
+  };
 
-    // 서버측 결정론적 채점 — 모델은 분류만, 점수는 고정 공식.
-    // gpt-5.x는 temperature 미지원이라 모델이 뽑는 스칼라 점수는 런마다 28↔66 출렁였다(2026-08-21 실측).
-    // 같은 검출 결과 → 항상 같은 점수가 신뢰의 최소 조건.
-    const techniques = Array.isArray(parsed.techniques)
-      ? parsed.techniques
-          .filter((t: any) => t && TECH_IDS.includes(t.id))
-          .slice(0, 6)
-          .map((t: any) => ({
-            id: String(t.id),
-            strength: ["weak", "clear", "severe"].includes(t.strength) ? t.strength : "weak",
-            quote: String(t.quote || "").slice(0, 160),
-            why: String(t.why || "").slice(0, 400),
-          }))
-      : [];
-
-    const BASE: Record<string, number> = { inform: 6, opinion: 22, engage_bait: 35, inflame: 58, mobilize: 72 };
-    const STRENGTH_PTS: Record<string, number> = { weak: 2, clear: 6, severe: 11 };
-    const HEAVY = ["dehumanization", "conspiracy", "moral_outrage", "urgency_fear"];
-    const intent = Object.prototype.hasOwnProperty.call(BASE, parsed.intent) ? parsed.intent : "opinion";
-
-    let score = BASE[intent];
-    for (const t of techniques) {
-      score += STRENGTH_PTS[t.strength];
-      if (HEAVY.includes(t.id) && t.strength !== "weak") score += 3;
-    }
-    if (parsed.deescalating === true) score = Math.min(score, 39); // 결론이 진정·검증 권유면 "확정" 도장 불가
-    if (parsed.satire === true) score = Math.min(score, 45);
-    // 증거 가드 — 스탬프("확정"/"극단")는 검출 증거량이 받쳐줄 때만
-    const severeTrio = techniques.some((t: any) => ["dehumanization", "conspiracy", "moral_outrage"].includes(t.id) && t.strength !== "weak");
-    if (score >= 80 && !(techniques.length >= 4 && severeTrio)) score = 79;
-    if (score >= 60 && techniques.length < 3) score = 59;
-    score = Math.max(0, Math.min(100, Math.round(score)));
-    const level = score >= 80 ? "extreme" : score >= 60 ? "high" : score >= 40 ? "mid" : score >= 20 ? "low" : "clean";
-
-    const result = {
-      score,
-      level,
-      headline: String(parsed.headline || "").slice(0, 200),
-      summary: String(parsed.summary || "").slice(0, 800),
-      techniques,
-      advice: String(parsed.advice || "").slice(0, 400),
-      confidence: ["low", "mid", "high"].includes(parsed.confidence) ? parsed.confidence : "mid",
-      gist: String(parsed.input_gist || "").slice(0, 120),
-    };
-
-    // 공유용 영구링크 — 결과를 KV에 저장 (원문은 저장하지 않는다: "입력은 저장 안 함" 약속 유지)
-    const id = crypto.randomUUID().replace(/-/g, "").slice(0, 10);
-    ctx.waitUntil(
-      ctx.env.page_cache.put(
-        `aggro:r:${id}`,
-        JSON.stringify({ r: result, ui, ts: Date.now() }),
-        { expirationTtl: 60 * 86400 },
-      ),
-    );
-
-    return json({ result, share: `/aggro/r/${id}` });
-  } catch {
-    return json({ error: "upstream" }, 502);
+  const N = 3;
+  let runs = (await Promise.all(Array.from({ length: N }, () => callOnce("gpt-5.4-mini")))).filter(Boolean);
+  if (!runs.length) {
+    // OpenAI 크레딧 소진 등 mini 경로 전면 장애 → haiku(터널 구독 경로, 워커가 자체 폴백 보유) 1회 시도
+    const fb = await callOnce("haiku");
+    if (fb) runs = [fb];
   }
+  if (!runs.length) return json({ error: "upstream" }, 502);
+
+  // ── 다수결 합의 ──
+  const INTENT_ORDER = ["inform", "opinion", "engage_bait", "inflame", "mobilize"];
+  const majority = runs.length >= 2 ? Math.ceil(runs.length / 2) : 1;
+
+  const intentVotes = runs.map((r) => (INTENT_ORDER.includes(r.intent) ? r.intent : "opinion"));
+  const intentCount: Record<string, number> = {};
+  for (const v of intentVotes) intentCount[v] = (intentCount[v] || 0) + 1;
+  // 최다득표, 동률이면 낮은(온건한) 쪽
+  const intent = INTENT_ORDER.filter((i) => intentCount[i]).sort(
+    (a, b) => intentCount[b] - intentCount[a] || INTENT_ORDER.indexOf(a) - INTENT_ORDER.indexOf(b),
+  )[0];
+
+  const voteBool = (key: string) => runs.filter((r) => r[key] === true).length >= majority;
+  const deescalating = voteBool("deescalating");
+  const satire = voteBool("satire");
+
+  // 기법: 과반 런에서 검출된 id만 채택, 강도는 해당 id 투표 중 중앙값(짝수면 낮은 쪽)
+  const STR_ORDER = ["weak", "clear", "severe"];
+  const techMap: Record<string, { strengths: string[]; best: any }> = {};
+  for (const r of runs) {
+    const seen = new Set<string>();
+    for (const t of Array.isArray(r.techniques) ? r.techniques : []) {
+      if (!t || !TECH_IDS.includes(t.id) || seen.has(t.id)) continue;
+      seen.add(t.id);
+      const st = STR_ORDER.includes(t.strength) ? t.strength : "weak";
+      if (!techMap[t.id]) techMap[t.id] = { strengths: [], best: t };
+      techMap[t.id].strengths.push(st);
+      if (STR_ORDER.indexOf(st) > STR_ORDER.indexOf(techMap[t.id].best.strength || "weak")) techMap[t.id].best = t;
+    }
+  }
+  const techniques = Object.entries(techMap)
+    .filter(([, v]) => v.strengths.length >= majority)
+    .map(([tid, v]) => {
+      const sorted = v.strengths.slice().sort((a, b) => STR_ORDER.indexOf(a) - STR_ORDER.indexOf(b));
+      const strength = sorted[Math.floor((sorted.length - 1) / 2)];
+      return {
+        id: tid,
+        strength,
+        quote: String(v.best.quote || "").slice(0, 160),
+        why: String(v.best.why || "").slice(0, 400),
+      };
+    })
+    .sort((a, b) => STR_ORDER.indexOf(b.strength) - STR_ORDER.indexOf(a.strength))
+    .slice(0, 6);
+
+  // 텍스트 필드는 최종 intent와 같은 판단을 내린 런에서 채택 (합의와 어긋나는 서사 방지)
+  const rep = runs.find((r) => r.intent === intent) || runs[0];
+
+  // ── 고정 공식 ──
+  const BASE: Record<string, number> = { inform: 6, opinion: 22, engage_bait: 35, inflame: 58, mobilize: 72 };
+  const STRENGTH_PTS: Record<string, number> = { weak: 2, clear: 6, severe: 11 };
+  const HEAVY = ["dehumanization", "conspiracy", "moral_outrage", "urgency_fear"];
+
+  let score = BASE[intent];
+  for (const t of techniques) {
+    score += STRENGTH_PTS[t.strength];
+    if (HEAVY.includes(t.id) && t.strength !== "weak") score += 3;
+  }
+  if (deescalating) score = Math.min(score, 39); // 결론이 진정·검증 권유면 "확정" 도장 불가
+  if (satire) score = Math.min(score, 45);
+  // 증거 가드 — 스탬프("확정"/"극단")는 검출 증거량이 받쳐줄 때만
+  const severeTrio = techniques.some((t) => ["dehumanization", "conspiracy", "moral_outrage"].includes(t.id) && t.strength !== "weak");
+  if (score >= 80 && !(techniques.length >= 4 && severeTrio)) score = 79;
+  if (score >= 60 && techniques.length < 3) score = 59;
+  score = Math.max(0, Math.min(100, Math.round(score)));
+  const level = score >= 80 ? "extreme" : score >= 60 ? "high" : score >= 40 ? "mid" : score >= 20 ? "low" : "clean";
+
+  const result = {
+    score,
+    level,
+    headline: String(rep.headline || "").slice(0, 200),
+    summary: String(rep.summary || "").slice(0, 800),
+    techniques,
+    advice: String(rep.advice || "").slice(0, 400),
+    confidence: runs.length < 2 ? "low" : ["low", "mid", "high"].includes(rep.confidence) ? rep.confidence : "mid",
+    gist: String(rep.input_gist || "").slice(0, 120),
+  };
+
+  // 공유용 영구링크 — 결과를 KV에 저장 (원문은 저장하지 않는다: "입력은 저장 안 함" 약속 유지)
+  // intent/플래그는 디버깅용으로 함께 저장 (공유 페이지엔 미노출)
+  const id = crypto.randomUUID().replace(/-/g, "").slice(0, 10);
+  ctx.waitUntil(
+    ctx.env.page_cache.put(
+      `aggro:r:${id}`,
+      JSON.stringify({ r: result, ui, ts: Date.now(), dbg: { intent, deescalating, satire, runs: runs.length, votes: intentVotes } }),
+      { expirationTtl: 60 * 86400 },
+    ),
+  );
+
+  return json({ result, share: `/aggro/r/${id}` });
 };
