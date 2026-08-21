@@ -150,17 +150,18 @@
     // 점프(비행) 세그먼트 표시: i → i+1 거리가 JUMP_KM 초과
     var jumps = [];
     for (var k2 = 1; k2 < clean.length; k2++) jumps.push(hav(clean[k2 - 1], clean[k2]) > JUMP_KM);
-    var totalKm = 0, dayKm = {}, days = {};
+    var totalKm = 0, dayKm = {}, days = {}, cumKm = [0];
     for (var k = 1; k < clean.length; k++) {
       var d = hav(clean[k - 1], clean[k]);
       totalKm += d;
+      cumKm.push(totalKm);
       var day = new Date(clean[k].t).toISOString().slice(0, 10);
       dayKm[day] = (dayKm[day] || 0) + d;
     }
     clean.forEach(function (p) { days[new Date(p.t).toISOString().slice(0, 10)] = 1; });
     var maxDay = Object.keys(dayKm).sort(function (a, b) { return dayKm[b] - dayKm[a]; })[0];
     return {
-      points: clean, jumps: jumps,
+      points: clean, jumps: jumps, cumKm: cumKm,
       visits: data.visits.filter(function (v) { return isFinite(v.lat); }),
       stats: {
         totalKm: totalKm, days: Object.keys(days).length, visits: data.visits.length,
@@ -201,7 +202,7 @@
 
   // ── 상태 ──
   var state = {
-    data: null, progress: 0, playing: false, lastFrame: 0, duration: 20000,
+    data: null, progress: 0, playing: false, lastFrame: 0, duration: 20000, baseDuration: 20000, speedMul: 1,
     cam: null,            // {lat,lng,z(float)} 현재 카메라
     follow: true,         // 팔로우 캠 vs 전체 보기
     fitZ: 3, overviewCam: null, onFinish: null,
@@ -228,20 +229,24 @@
     state.overviewCam = { lat: c.lat, lng: c.lng, z: state.fitZ };
   }
 
-  // ── 시간→현재 위치/세그먼트 ──
-  function headAt(tCur) {
-    var pts = state.data.points;
-    if (tCur <= pts[0].t) return { p: pts[0], idx: 0, frac: 0 };
-    for (var i = 0; i < pts.length - 1; i++) {
-      if (pts[i + 1].t > tCur) {
-        var f = (tCur - pts[i].t) / Math.max(1, pts[i + 1].t - pts[i].t);
-        return {
-          idx: i, frac: f,
-          p: { lat: pts[i].lat + (pts[i + 1].lat - pts[i].lat) * f, lng: pts[i].lng + (pts[i + 1].lng - pts[i].lng) * f },
-        };
-      }
-    }
-    return { p: pts[pts.length - 1], idx: pts.length - 1, frac: 1 };
+  // ── 진행률→현재 위치 (거리 도메인: 정지 기간은 건너뛰고 이동은 등속 — 뚝뚝 끊김 방지) ──
+  function headAtProgress(p) {
+    var pts = state.data.points, cum = state.data.cumKm;
+    var total = cum[cum.length - 1];
+    var last = pts.length - 1;
+    if (!total || p <= 0) return { p: pts[0], idx: 0, frac: 0, t: pts[0].t, km: 0 };
+    if (p >= 1) return { p: pts[last], idx: Math.max(0, last - 1), frac: 1, t: pts[last].t, km: total };
+    var km = total * p;
+    var lo = 0, hi = cum.length - 1;
+    while (lo < hi) { var mid = (lo + hi + 1) >> 1; if (cum[mid] <= km) lo = mid; else hi = mid - 1; }
+    var i = Math.min(lo, last - 1);
+    var segKm = cum[i + 1] - cum[i] || 1;
+    var f = Math.max(0, Math.min(1, (km - cum[i]) / segKm));
+    return {
+      idx: i, frac: f, km: km,
+      t: pts[i].t + (pts[i + 1].t - pts[i].t) * f,
+      p: { lat: pts[i].lat + (pts[i + 1].lat - pts[i].lat) * f, lng: pts[i].lng + (pts[i + 1].lng - pts[i].lng) * f },
+    };
   }
 
   // ── 카메라 ──
@@ -262,8 +267,7 @@
     return { lat: head.p.lat, lng: head.p.lng, z: followZ };
   }
   function snapCamera() {
-    var t0 = state.data.stats.from, t1 = state.data.stats.to;
-    state.cam = Object.assign({}, desiredCam(headAt(t0 + (t1 - t0) * state.progress)));
+    state.cam = Object.assign({}, desiredCam(headAtProgress(state.progress)));
   }
   function lerpCamera(head) {
     var d = desiredCam(head);
@@ -289,14 +293,14 @@
     ctx.fillStyle = "#0a0f1a";
     ctx.fillRect(0, 0, w, h);
 
-    // 타일
-    var n = Math.pow(2, zi);
+    // 타일 — tileN = 이 줌의 타일 개수(2^zi). 픽셀 단위와 혼동 금지 (v3에서 n/TILE 오계산으로 상단만 렌더되던 버그)
+    var tileN = Math.pow(2, zi);
     var x0 = Math.floor((c.x - w / 2 / scale) / TILE), x1 = Math.floor((c.x + w / 2 / scale) / TILE);
-    var y0 = Math.max(0, Math.floor((c.y - h / 2 / scale) / TILE)), y1 = Math.min(n / TILE * TILE - 1, Math.floor((c.y + h / 2 / scale) / TILE));
+    var y0 = Math.max(0, Math.floor((c.y - h / 2 / scale) / TILE)), y1 = Math.min(tileN - 1, Math.floor((c.y + h / 2 / scale) / TILE));
     for (var tx = x0; tx <= x1; tx++) {
       for (var ty = y0; ty <= y1; ty++) {
-        if (ty < 0 || ty >= n / TILE) continue;
-        var wx = ((tx % (n / TILE)) + n / TILE) % (n / TILE);
+        if (ty < 0 || ty >= tileN) continue;
+        var wx = ((tx % tileN) + tileN) % tileN;
         var key = zi + "/" + wx + "/" + ty;
         var img = tileCache[key];
         if (!img) {
@@ -319,9 +323,8 @@
 
     var pts = state.data.points;
     if (!pts.length) return;
-    var t0 = state.data.stats.from, t1 = state.data.stats.to;
-    var tCur = t0 + (t1 - t0) * state.progress;
-    var head = headAt(tCur);
+    var head = headAtProgress(state.progress);
+    var tCur = head.t;
 
     drawPath(ctx, px, pts, state.data.jumps, head, w, h, DPR);
 
@@ -342,8 +345,7 @@
     ctx.shadowBlur = 0;
 
     // HUD
-    var km = 0;
-    for (var j2 = 1; j2 <= head.idx; j2++) km += hav(pts[j2 - 1], pts[j2]);
+    var km = head.km;
     ctx.font = (13 * DPR) + "px 'IBM Plex Mono', monospace";
     ctx.fillStyle = "rgba(220,230,245,.92)";
     ctx.fillText(fmtDate(new Date(tCur)), 14 * DPR, 24 * DPR);
@@ -355,54 +357,62 @@
     $("#scrub").value = Math.round(state.progress * 1000);
   }
 
-  // 경로 그리기 — 일반=실선 그라데이션, 점프=점선 비행 아크. head.idx까지 + 현재 세그먼트 부분 진행
+  // 경로 그리기 — 실선(일반)·점선 아크(점프) 각각 1회 stroke로 일괄 처리 (세그먼트별 stroke는 프레임 드랍 원인)
   function drawPath(x, px, pts, jumps, head, w, h, dpr) {
+    var end = head.idx, frac = head.frac;
+    var margin = 60 * dpr;
+    function offscreen(a, b) {
+      return (a.x < -margin && b.x < -margin) || (a.x > w + margin && b.x > w + margin) ||
+             (a.y < -margin && b.y < -margin) || (a.y > h + margin && b.y > h + margin);
+    }
+    // 1) 일반 세그먼트 — 단일 패스
+    x.beginPath();
+    var pen = -1;
+    function solid(i, f) {
+      var a = px(pts[i]), b = px(pts[i + 1]);
+      if (Math.abs(b.x - a.x) > w * 1.5 || offscreen(a, b)) { pen = -1; return; }
+      if (pen !== i) x.moveTo(a.x, a.y);
+      x.lineTo(a.x + (b.x - a.x) * f, a.y + (b.y - a.y) * f);
+      pen = i + 1;
+    }
+    for (var i = 0; i < end; i++) { if (!jumps[i]) solid(i, 1); else pen = -1; }
+    if (end < pts.length - 1 && frac > 0 && !jumps[end]) solid(end, frac);
     var grad = x.createLinearGradient(0, 0, w, h);
     grad.addColorStop(0, "hsl(190,95%,62%)");
     grad.addColorStop(1, "hsl(140,90%,58%)");
+    x.strokeStyle = grad;
+    x.lineWidth = 2.2 * dpr;
     x.lineJoin = x.lineCap = "round";
-
-    function seg(i, frac) { // i → i+1 세그먼트를 frac(0..1)까지. jumps[i] = 이 세그먼트가 점프인지
+    x.shadowColor = "rgba(57,192,255,.7)"; x.shadowBlur = 5 * dpr;
+    x.stroke();
+    x.shadowBlur = 0;
+    // 2) 점프(비행) 아크 — 점선 단일 패스
+    x.save();
+    x.setLineDash([5 * dpr, 7 * dpr]);
+    x.beginPath();
+    function arc(i, f) {
       var a = px(pts[i]), b = px(pts[i + 1]);
-      if (Math.abs(b.x - a.x) > w * 1.5) return; // 랩어라운드 방지
-      var isJump = jumps[i];
-      var end = frac == null ? 1 : frac;
-      if (isJump) {
-        // 비행 아크: 수직 오프셋 곡선 + 점선
-        var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
-        var dx = b.x - a.x, dy = b.y - a.y;
-        var len = Math.sqrt(dx * dx + dy * dy) || 1;
-        var off = Math.min(len * 0.22, 90 * dpr);
-        var cx2 = mx - dy / len * off, cy2 = my + dx / len * off;
-        x.save();
-        x.setLineDash([5 * dpr, 7 * dpr]);
-        x.strokeStyle = "rgba(180,140,255,.9)";
-        x.lineWidth = 1.8 * dpr;
-        x.shadowColor = "rgba(180,140,255,.6)"; x.shadowBlur = 5 * dpr;
-        x.beginPath();
-        var steps = 26, lim = Math.max(1, Math.round(steps * end));
-        x.moveTo(a.x, a.y);
-        for (var s2 = 1; s2 <= lim; s2++) {
-          var t2 = (s2 / lim) * end;
-          var xx = (1 - t2) * (1 - t2) * a.x + 2 * (1 - t2) * t2 * cx2 + t2 * t2 * b.x;
-          var yy = (1 - t2) * (1 - t2) * a.y + 2 * (1 - t2) * t2 * cy2 + t2 * t2 * b.y;
-          x.lineTo(xx, yy);
-        }
-        x.stroke();
-        x.restore();
-      } else {
-        x.strokeStyle = grad;
-        x.lineWidth = 2.2 * dpr;
-        x.shadowColor = "rgba(57,192,255,.8)"; x.shadowBlur = 6 * dpr;
-        x.beginPath();
-        x.moveTo(a.x, a.y);
-        x.lineTo(a.x + (b.x - a.x) * end, a.y + (b.y - a.y) * end);
-        x.stroke();
-        x.shadowBlur = 0;
+      if (Math.abs(b.x - a.x) > w * 1.5 || offscreen(a, b)) return;
+      var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      var dx = b.x - a.x, dy = b.y - a.y;
+      var len = Math.sqrt(dx * dx + dy * dy) || 1;
+      var off = Math.min(len * 0.22, 90 * dpr);
+      var cx2 = mx - dy / len * off, cy2 = my + dx / len * off;
+      x.moveTo(a.x, a.y);
+      var steps = 22, lim = Math.max(1, Math.round(steps * f));
+      for (var s2 = 1; s2 <= lim; s2++) {
+        var t2 = (s2 / lim) * f;
+        x.lineTo((1 - t2) * (1 - t2) * a.x + 2 * (1 - t2) * t2 * cx2 + t2 * t2 * b.x,
+                 (1 - t2) * (1 - t2) * a.y + 2 * (1 - t2) * t2 * cy2 + t2 * t2 * b.y);
       }
     }
-    for (var i = 0; i < head.idx; i++) seg(i, 1);
-    if (head.idx < pts.length - 1 && head.frac > 0) seg(head.idx, head.frac);
+    for (var j = 0; j < end; j++) if (jumps[j]) arc(j, 1);
+    if (end < pts.length - 1 && frac > 0 && jumps[end]) arc(end, frac);
+    x.strokeStyle = "rgba(180,140,255,.9)";
+    x.lineWidth = 1.8 * dpr;
+    x.shadowColor = "rgba(180,140,255,.5)"; x.shadowBlur = 4 * dpr;
+    x.stroke();
+    x.restore();
   }
 
   function fmtDate(d) {
@@ -415,8 +425,7 @@
     var dt = now - (state.lastFrame || now);
     state.lastFrame = now;
     state.progress = Math.min(1, state.progress + dt / state.duration);
-    var t0 = state.data.stats.from, t1 = state.data.stats.to;
-    lerpCamera(headAt(t0 + (t1 - t0) * state.progress));
+    lerpCamera(headAtProgress(state.progress));
     render();
     if (state.progress >= 1) {
       state.playing = false;
@@ -450,7 +459,10 @@
     state.progress = Number(this.value) / 1000;
     snapCamera(); render();
   });
-  $("#speed").addEventListener("change", function () { state.duration = Number(this.value); });
+  $("#speed").addEventListener("change", function () {
+    state.speedMul = Number(this.value) || 1;
+    state.duration = state.baseDuration / state.speedMul;
+  });
   $("#cam").addEventListener("click", function () {
     state.follow = !state.follow;
     this.textContent = state.follow ? S.camFollow : S.camOverview;
@@ -475,6 +487,9 @@
     $("#s-visits").textContent = s.visits.toLocaleString();
     $("#s-maxday").textContent = Math.round(s.maxDayKm).toLocaleString();
     $("#range").textContent = s.from ? fmtDate(new Date(s.from)) + " – " + fmtDate(new Date(s.to)) : "";
+    // 재생 길이 = 기록된 날 수 비례 (하루당 0.2초, 12초~60초)
+    state.baseDuration = Math.max(12000, Math.min(60000, s.days * 200));
+    state.duration = state.baseDuration / state.speedMul;
     resize();
     computeOverview();
     state.progress = 0;
