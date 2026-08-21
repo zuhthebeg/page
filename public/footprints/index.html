@@ -99,10 +99,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section class="sect">
     <h2><span class="num">01</span>타임라인 파일 받는 법</h2>
     <ol>
-      <li><b>휴대폰에서 (추천)</b> — 구글지도 앱 → 프로필 → <b>타임라인</b> → 우상단 ⋯ → <b>위치 및 개인정보 설정</b> → <b>타임라인 데이터 내보내기</b>. 저장된 <b>Timeline.json</b>을 그대로 여기에 놓으면 됩니다.</li>
-      <li><b>Google Takeout</b> — <a href="https://takeout.google.com" target="_blank" rel="noopener" style="color:#39c0ff">takeout.google.com</a>에서 "위치 기록(Timeline)"만 선택해 내보내기. 압축을 풀고 나온 JSON들(Semantic Location History 월별 파일 여러 개도 OK)을 한꺼번에 선택하세요.</li>
+      <li><b>안드로이드 (추천)</b> — <b>폰 설정 → 위치 → 위치 서비스 → 타임라인 → 타임라인 데이터 내보내기</b>. 저장된 <b>Timeline.json</b>을 그대로 여기에 놓으면 됩니다.</li>
+      <li><b>아이폰</b> — 구글지도 앱 → 프로필 사진 → <b>설정 → 개인 콘텐츠 → 타임라인 데이터 내보내기</b>.</li>
+      <li><b>Google Takeout (예전 기록용)</b> — <a href="https://takeout.google.com" target="_blank" rel="noopener" style="color:#39c0ff">takeout.google.com</a>의 "위치 기록(Timeline)". 단, 2024년 이후 기록은 여기 없을 수 있고, <b>Settings.json이 아니라</b> Records.json / Semantic Location History 월별 JSON을 넣어야 합니다.</li>
     </ol>
-    <p>2024년부터 타임라인이 기기 저장으로 바뀌어서, 최신 기록은 휴대폰 내보내기에만 있는 경우가 많습니다.</p>
+    <p>⚠️ 2024년부터 구글이 타임라인을 <b>휴대폰 안에만</b> 저장하도록 바꿨습니다. 그래서 구글 로그인으로 자동으로 가져오는 것은 구글 정책상 불가능하고(공식 API 없음), 최신 기록은 반드시 폰에서 내보내야 합니다 — 대신 그 덕에 이 페이지도 여러분의 파일을 서버 없이 처리할 수 있는 거죠.</p>
   </section>
 
   <section class="sect">
@@ -120,6 +121,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </footer>
 </div>
 
-<script src="/footprints/footprints.js?v=1"></script>
+<script src="/footprints/footprints.js?v=2"></script>
 </body>
 </html>

@@ -92,6 +92,8 @@
     }
   }
   function parseJson(obj, out) {
+    // Takeout의 Settings.json — 위치 데이터가 아니라 설정 파일. 흔한 실수라 전용 안내로 분기
+    if (obj && Array.isArray(obj.deviceSettings) && obj.timelineEnabled !== undefined) return "settings";
     if (obj && Array.isArray(obj.semanticSegments)) parseSegments(obj.semanticSegments, out);
     else if (Array.isArray(obj) && obj.length && (obj[0].startTime || obj[0].timelinePath)) parseSegments(obj, out);
     else if (obj && Array.isArray(obj.timelineObjects)) parseLegacyObjects(obj.timelineObjects, out);
@@ -350,18 +352,21 @@
   function handleFiles(files) {
     hideErr();
     var out = { points: [], visits: [] };
-    var pending = files.length, okAny = false;
+    var pending = files.length, okAny = false, sawSettings = false;
     if (!pending) return;
     Array.prototype.forEach.call(files, function (f) {
       if (f.size > 300 * 1024 * 1024) { pending--; showErr(f.name + ": 300MB 초과 파일은 브라우저에서 처리하기 어려워요."); return; }
       var reader = new FileReader();
       reader.onload = function () {
         try {
-          if (parseJson(JSON.parse(reader.result), out)) okAny = true;
+          var r = parseJson(JSON.parse(reader.result), out);
+          if (r === "settings") sawSettings = true;
+          else if (r) okAny = true;
         } catch (e) { /* skip */ }
         if (--pending === 0) {
-          if (!okAny) showErr("지원하는 형식이 아니에요. 구글지도 앱 → 타임라인 → 내보내기의 JSON을 넣어주세요.");
-          else loadData(refine(out));
+          if (okAny) loadData(refine(out));
+          else if (sawSettings) showErr("이건 위치 데이터가 아니라 타임라인 '설정' 파일이에요 (Settings.json). 2024년부터 이동 기록은 Takeout이 아니라 휴대폰 안에 저장됩니다. 안드로이드: 폰 설정 → 위치 → 위치 서비스 → 타임라인 → '타임라인 데이터 내보내기'로 Timeline.json을 만들어 넣어주세요.");
+          else showErr("지원하는 형식이 아니에요. 폰 설정 → 위치 → 위치 서비스 → 타임라인 → '타임라인 데이터 내보내기'의 Timeline.json을 넣어주세요.");
         }
       };
       reader.readAsText(f);
