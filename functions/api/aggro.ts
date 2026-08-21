@@ -62,12 +62,18 @@ Technique taxonomy — use ONLY these ids:
 - ragebait_hook: clickbait phrasing designed to provoke replies/quote-dunks
 - distortion: quotes/statistics stripped of context or twisted
 
-Scoring calibration (0-100):
+Scoring calibration (0-100) — the single most important question is: WHAT DOES THIS CONTENT WANT THE READER TO DO?
+- Content that mobilizes rage/hatred against a group, or demands immediate hostile action → high.
+- Content that ultimately urges calm, verification, media literacy, or de-escalation → LOW, even if it uses dramatic hooks. A scary opening on an awareness/PSA/news piece is an engagement device, not incitement. Judge the destination, not the doorway.
+Anchors:
 - 0-19 (clean): factual, calm, or ordinary opinion. Strong criticism with reasons is NOT incitement.
-- 20-39 (low): emotionally charged but argues in good faith.
-- 40-59 (mid): 1-2 clear manipulation devices; opinion dressed as fact.
-- 60-79 (high): multiple devices; designed to inflame rather than inform.
-- 80-100 (extreme): saturated manipulation — division is the point (the pattern the KAIST study found).
+- 20-45 (low~mid): dramatic-hook journalism, awareness/PSA content with fear-flavored framing, clickbait, emotionally charged but good-faith argument.
+- 46-59 (mid): opinion dressed as fact with 1-2 real manipulation devices central to the message.
+- 60-79 (high): multiple devices AND the content's purpose is to inflame against a target, not to inform.
+- 80-100 (extreme): saturated manipulation — division/mobilization is the point (the pattern the KAIST study found).
+Bias check before you output: LLMs over-detect. Most real-world content belongs in 10-45. When torn between two bands, pick the LOWER one. Reserve 60+ for content you could defend calling incitement in front of its author.
+unfounded_claim requires a claim with NO attribution. A claim citing a named institution, study, date, or outlet (e.g. "KAIST research found...") is attributed — do not tag it unfounded, and citing big numbers from a named source is not distortion.
+Only include a technique when it serves manipulation of the reader. A device serving an educational or narrative point (suspense hook on a literacy PSA) belongs in the summary as an observation, NOT in techniques.
 Satire/jokes/aggro-for-fun lower the score; note it in the summary. Political stance itself NEVER affects the score — measure technique, not opinion. Apply the same bar to content you agree or disagree with.
 
 Output STRICT JSON only, no markdown fence, with EXACTLY this shape:
@@ -211,7 +217,7 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
       body: JSON.stringify({
         model: "gpt-5.4-mini", // 분석 루브릭이 명확해 mini로 충분. 항상 살아있는 서버리스 경로(OpenAI via AI Gateway)
         max_tokens: 1100,
-        reasoning_effort: mode === "image" ? "low" : "minimal",
+        reasoning_effort: "low", // minimal은 표면 수사만 보고 계몽글도 선동 판정 — 캘리브레이션에 추론이 필요 (2026-08-21 실측)
         response_format: { type: "json_object" },
         messages: [
           { role: "system", content: buildSystem(ui) },
@@ -231,10 +237,7 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
     }
 
     // 서버측 정규화 — 클라를 신뢰 가능한 형태로만 내보냄
-    const score = Math.max(0, Math.min(100, Math.round(Number(parsed.score) || 0)));
-    const level = ["clean", "low", "mid", "high", "extreme"].includes(parsed.level)
-      ? parsed.level
-      : score >= 80 ? "extreme" : score >= 60 ? "high" : score >= 40 ? "mid" : score >= 20 ? "low" : "clean";
+    let score = Math.max(0, Math.min(100, Math.round(Number(parsed.score) || 0)));
     const techniques = Array.isArray(parsed.techniques)
       ? parsed.techniques
           .filter((t: any) => t && TECH_IDS.includes(t.id))
@@ -245,6 +248,14 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
             why: String(t.why || "").slice(0, 400),
           }))
       : [];
+
+    // 증거 가드 — 스탬프("확정"/"극단")는 검출 증거량이 받쳐줄 때만.
+    // 모델의 과검출 편향을 서버에서 눌러 신뢰도를 지킨다.
+    const severe = techniques.some((t: any) => ["dehumanization", "conspiracy", "moral_outrage"].includes(t.id));
+    if (score >= 80 && !(techniques.length >= 4 && severe)) score = 79;
+    if (score >= 60 && techniques.length < 3) score = 59;
+    if (score >= 40 && techniques.length < 1) score = 39;
+    const level = score >= 80 ? "extreme" : score >= 60 ? "high" : score >= 40 ? "mid" : score >= 20 ? "low" : "clean";
 
     const result = {
       score,
