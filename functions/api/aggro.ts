@@ -62,27 +62,33 @@ Technique taxonomy — use ONLY these ids:
 - ragebait_hook: clickbait phrasing designed to provoke replies/quote-dunks
 - distortion: quotes/statistics stripped of context or twisted
 
-Scoring calibration (0-100) — the single most important question is: WHAT DOES THIS CONTENT WANT THE READER TO DO?
-- Content that mobilizes rage/hatred against a group, or demands immediate hostile action → high.
-- Content that ultimately urges calm, verification, media literacy, or de-escalation → LOW, even if it uses dramatic hooks. A scary opening on an awareness/PSA/news piece is an engagement device, not incitement. Judge the destination, not the doorway.
-Anchors:
-- 0-19 (clean): factual, calm, or ordinary opinion. Strong criticism with reasons is NOT incitement.
-- 20-45 (low~mid): dramatic-hook journalism, awareness/PSA content with fear-flavored framing, clickbait, emotionally charged but good-faith argument.
-- 46-59 (mid): opinion dressed as fact with 1-2 real manipulation devices central to the message.
-- 60-79 (high): multiple devices AND the content's purpose is to inflame against a target, not to inform.
-- 80-100 (extreme): saturated manipulation — division/mobilization is the point (the pattern the KAIST study found).
-Bias check before you output: LLMs over-detect. Most real-world content belongs in 10-45. When torn between two bands, pick the LOWER one. Reserve 60+ for content you could defend calling incitement in front of its author.
-unfounded_claim requires a claim with NO attribution. A claim citing a named institution, study, date, or outlet (e.g. "KAIST research found...") is attributed — do not tag it unfounded, and citing big numbers from a named source is not distortion.
-Only include a technique when it serves manipulation of the reader. A device serving an educational or narrative point (suspense hook on a literacy PSA) belongs in the summary as an observation, NOT in techniques.
-Satire/jokes/aggro-for-fun lower the score; note it in the summary. Political stance itself NEVER affects the score — measure technique, not opinion. Apply the same bar to content you agree or disagree with.
+You do NOT output a numeric score — the score is computed deterministically from your structured detections. Your job is accurate classification.
+
+"intent" — the single most important field: WHAT DOES THIS CONTENT WANT THE READER TO DO? Judge the destination, not the doorway (a scary opening on a news/PSA piece is an engagement device, not incitement).
+- "inform": report facts, explain, raise awareness. News, research summaries, PSAs — even with dramatic hooks.
+- "opinion": argue a position with reasons. Strong or angry criticism with evidence still belongs here.
+- "engage_bait": primarily farming clicks/replies/shares (clickbait, provocation for engagement), not pushing hatred at a target.
+- "inflame": make the reader angry AT a person/group; contempt and vilification are the payload.
+- "mobilize": demand hostile collective action, silence dissent, or brand non-participants as enemies.
+When torn between two, pick the LOWER one in this list order. Most real-world content is inform/opinion/engage_bait.
+
+"deescalating": true if the content's own conclusion urges calm, verification, media literacy, or not feeding outrage.
+"satire": true if clearly joking/ironic/self-aware aggro-for-fun.
+
+Each technique gets "strength":
+- "weak": present but incidental to the message.
+- "clear": deliberately used, carries part of the message.
+- "severe": central to the message; the text would collapse without it.
+Rules: unfounded_claim requires a claim with NO attribution — a claim citing a named institution, study, date, or outlet is attributed; do not tag it, and citing big numbers from a named source is not distortion. Only include a technique when it serves manipulation of the reader; a device serving an educational or narrative point belongs in the summary as an observation, NOT in techniques. LLMs over-detect — when unsure whether a technique is present, leave it out; when unsure of strength, pick lower. Political stance NEVER affects detection — measure technique, not opinion, with the same bar for views you agree or disagree with.
 
 Output STRICT JSON only, no markdown fence, with EXACTLY this shape:
 {
-  "score": <int 0-100>,
-  "level": "clean"|"low"|"mid"|"high"|"extreme",
+  "intent": "inform"|"opinion"|"engage_bait"|"inflame"|"mobilize",
+  "deescalating": <bool>,
+  "satire": <bool>,
   "headline": "<one punchy shareable verdict line>",
   "summary": "<2-3 sentences: what the content does rhetorically>",
-  "techniques": [{ "id": "<taxonomy id>", "quote": "<verbatim excerpt from the content, ≤100 chars, in its original language>", "why": "<1-2 sentences>" }],
+  "techniques": [{ "id": "<taxonomy id>", "strength": "weak"|"clear"|"severe", "quote": "<verbatim excerpt from the content, ≤100 chars, in its original language>", "why": "<1-2 sentences>" }],
   "advice": "<1-2 sentences: how a reader should process this before reacting>",
   "confidence": "low"|"mid"|"high",
   "input_gist": "<≤80 chars neutral description of what the content is about>"
@@ -236,25 +242,38 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
       return json({ error: "parse" }, 502);
     }
 
-    // 서버측 정규화 — 클라를 신뢰 가능한 형태로만 내보냄
-    let score = Math.max(0, Math.min(100, Math.round(Number(parsed.score) || 0)));
+    // 서버측 결정론적 채점 — 모델은 분류만, 점수는 고정 공식.
+    // gpt-5.x는 temperature 미지원이라 모델이 뽑는 스칼라 점수는 런마다 28↔66 출렁였다(2026-08-21 실측).
+    // 같은 검출 결과 → 항상 같은 점수가 신뢰의 최소 조건.
     const techniques = Array.isArray(parsed.techniques)
       ? parsed.techniques
           .filter((t: any) => t && TECH_IDS.includes(t.id))
           .slice(0, 6)
           .map((t: any) => ({
             id: String(t.id),
+            strength: ["weak", "clear", "severe"].includes(t.strength) ? t.strength : "weak",
             quote: String(t.quote || "").slice(0, 160),
             why: String(t.why || "").slice(0, 400),
           }))
       : [];
 
-    // 증거 가드 — 스탬프("확정"/"극단")는 검출 증거량이 받쳐줄 때만.
-    // 모델의 과검출 편향을 서버에서 눌러 신뢰도를 지킨다.
-    const severe = techniques.some((t: any) => ["dehumanization", "conspiracy", "moral_outrage"].includes(t.id));
-    if (score >= 80 && !(techniques.length >= 4 && severe)) score = 79;
+    const BASE: Record<string, number> = { inform: 6, opinion: 22, engage_bait: 35, inflame: 58, mobilize: 72 };
+    const STRENGTH_PTS: Record<string, number> = { weak: 2, clear: 6, severe: 11 };
+    const HEAVY = ["dehumanization", "conspiracy", "moral_outrage", "urgency_fear"];
+    const intent = Object.prototype.hasOwnProperty.call(BASE, parsed.intent) ? parsed.intent : "opinion";
+
+    let score = BASE[intent];
+    for (const t of techniques) {
+      score += STRENGTH_PTS[t.strength];
+      if (HEAVY.includes(t.id) && t.strength !== "weak") score += 3;
+    }
+    if (parsed.deescalating === true) score = Math.min(score, 39); // 결론이 진정·검증 권유면 "확정" 도장 불가
+    if (parsed.satire === true) score = Math.min(score, 45);
+    // 증거 가드 — 스탬프("확정"/"극단")는 검출 증거량이 받쳐줄 때만
+    const severeTrio = techniques.some((t: any) => ["dehumanization", "conspiracy", "moral_outrage"].includes(t.id) && t.strength !== "weak");
+    if (score >= 80 && !(techniques.length >= 4 && severeTrio)) score = 79;
     if (score >= 60 && techniques.length < 3) score = 59;
-    if (score >= 40 && techniques.length < 1) score = 39;
+    score = Math.max(0, Math.min(100, Math.round(score)));
     const level = score >= 80 ? "extreme" : score >= 60 ? "high" : score >= 40 ? "mid" : score >= 20 ? "low" : "clean";
 
     const result = {
