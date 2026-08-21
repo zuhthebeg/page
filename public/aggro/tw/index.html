@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script>
+<!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>帶風向偵測器 — 這則留言在帶風向嗎？AI 煽動話術分析</title>
+<meta name="description" content="貼上留言、貼文、新聞連結或截圖，AI 立刻偵測 12 種帶風向話術 — 對立操作、情緒放大、釣魚引戰。靈感來自 KAIST 揪出 2.4 萬個境外網軍帳號的研究，免費的數位免疫力工具。">
+<meta name="keywords" content="帶風向, 網軍, 認知作戰, 煽動分析, 留言分析, 假訊息, 媒體識讀, KAIST 網軍研究">
+<link rel="canonical" href="https://page.cocy.io/aggro/tw/">
+<link rel="alternate" hreflang="ko" href="https://page.cocy.io/aggro/">
+<link rel="alternate" hreflang="en" href="https://page.cocy.io/aggro/en/">
+<link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/aggro/tw/">
+<link rel="alternate" hreflang="x-default" href="https://page.cocy.io/aggro/en/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="帶風向偵測器 — 這則留言在帶風向嗎？">
+<meta property="og:description" content="留言、連結、截圖丟進來，AI 偵測 12 種帶風向話術並打出風向指數。">
+<meta property="og:url" content="https://page.cocy.io/aggro/tw/">
+<meta property="og:image" content="https://page.cocy.io/aggro/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="帶風向偵測器 — 這則留言在帶風向嗎？">
+<meta name="twitter:description" content="AI 偵測 12 種帶風向話術並打出風向指數。">
+<link rel="icon" type="image/svg+xml" href="/aggro/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/aggro/aggro.css?v=1">
+<style>:root{--body-font:"Noto Sans TC"}</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "帶風向偵測器 (AggroMeter)",
+  "url": "https://page.cocy.io/aggro/tw/",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" },
+  "description": "用 AI 分析留言、貼文、連結與截圖中的煽動話術的媒體識讀工具",
+  "inLanguage": ["ko", "en", "zh-Hant"]
+}
+</script>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="wrap">
+  <header class="top">
+    <img class="logo" src="/aggro/icon.svg" alt="">
+    <div class="brand"><b>帶風向偵測器</b><span>Aggro-Meter</span></div>
+    <nav class="langs">
+      <a href="/aggro/">KO</a>
+      <a href="/aggro/en/">EN</a>
+      <a href="/aggro/tw/" class="on">中</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="tape"><span class="dot"></span>Rhetoric Signal Analysis</div>
+    <h1>這則貼文是想讓你<br>理智斷線嗎？<span class="hl">測一下。</span></h1>
+    <p class="sub">把留言、貼文、新聞連結或截圖丟進來，AI 會掃描 <b>12 種帶風向話術</b> — 對立操作、情緒放大、釣魚引戰 — 並打出風向指數。動怒之前，先讓子彈飛三秒。</p>
+  </section>
+
+  <section class="panel" id="analyzer">
+    <div class="tabs">
+      <button data-mode="text" class="on">✍️ 文字</button>
+      <button data-mode="link">🔗 連結</button>
+      <button data-mode="image">🖼️ 截圖</button>
+    </div>
+    <div class="pane on" data-mode="text">
+      <textarea id="txt" maxlength="4000" placeholder="貼上想分析的留言或貼文內容&#10;（最多 4,000 字）"></textarea>
+      <div class="hint">你貼上的內容只用於本次分析，不會被儲存。</div>
+    </div>
+    <div class="pane" data-mode="link">
+      <input type="url" id="url" placeholder="https:// 文章或貼文網址">
+      <div class="hint">需要登入的頁面（社群 App）可能讀不到內文，這種情況請改用截圖。</div>
+    </div>
+    <div class="pane" data-mode="image">
+      <div class="drop" id="drop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        <div>點擊、拖曳或貼上（Ctrl+V）截圖</div>
+      </div>
+      <input type="file" id="file" accept="image/*" hidden>
+      <div class="hint">AI 會讀取圖片中的文字進行分析。上傳前會在你的裝置上自動壓縮。</div>
+    </div>
+    <div class="err" id="err"></div>
+    <div class="go-row"><button class="go" id="go">測量風向指數</button></div>
+
+    <div class="scan" id="scan">
+      <div class="radar"><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="sweep"></div></div>
+      <div class="st">Scanning rhetoric…</div>
+      <div class="card"><div class="t"></div><div class="b"></div></div>
+    </div>
+
+    <div class="result" id="result">
+      <div class="gaugebox">
+        <svg class="gauge" viewBox="0 0 300 160">
+          <path d="M 22 140 A 128 128 0 0 1 278 140" fill="none" stroke="#1e2c47" stroke-width="14" stroke-linecap="round"/>
+          <path id="arcval" d="M 22 140 A 128 128 0 0 1 278 140" fill="none" stroke="#3ef08c" stroke-width="14" stroke-linecap="round"/>
+          <g id="needle"><line x1="150" y1="140" x2="150" y2="34" stroke="#dce6f5" stroke-width="3" stroke-linecap="round"/><circle cx="150" cy="140" r="7" fill="#dce6f5"/></g>
+        </svg>
+        <div class="score-line"><span class="score-num" id="scorenum">0</span><span class="score-unit"> / 100</span></div>
+        <div class="level-tag" id="leveltag"></div>
+        <div class="headline" id="headline"></div>
+        <div class="summary" id="summary"></div>
+        <div class="conf" id="conf"></div>
+      </div>
+      <div class="no-tech" id="notech" style="display:none">沒有偵測到明顯的帶風向話術。這比較像在傳達內容，而不是在點燃情緒。</div>
+      <div class="techs" id="techs"></div>
+      <div class="advice"><b>REACT LATER — 先停三秒</b><span id="advicebody"></span></div>
+      <div class="act-row">
+        <button class="share-btn" id="share">分享結果</button>
+        <button class="again-btn" id="again">再測一篇</button>
+      </div>
+      <div class="disclaimer">⚠️ 本工具分析的是文字的<b>話術（修辭手法）</b>，無法也不會判斷作者身分或帳號是否為網軍。結果僅為 AI 的參考意見，不構成對任何人的事實指控。</div>
+    </div>
+  </section>
+
+  <section class="sect">
+    <h2><span class="num">01</span>為什麼需要這個工具</h2>
+    <div class="kaist">
+      <div class="src">KAIST × Max Planck Institute · 2026.08 發表</div>
+      <div class="big">「目的不是幫哪一邊獲勝，而是永遠的內耗。」</div>
+      <p>韓國科學技術院（KAIST）與德國馬克斯普朗克研究所用 AI 分析了韓國最大入口網站 20 年（2006–2025）的新聞留言，揪出約 2.4 萬個境外連結的疑似網軍帳號。最震撼的發現：他們不挺任何一方，而是<b>兩邊都罵</b>，故意放大社會內部的對立與極化 — 這正是美國、台灣、歐洲都在面對的認知作戰標準劇本。</p>
+      <div class="stats">
+        <div><b>1.1億</b><span>分析留言數</span></div>
+        <div><b>24,000</b><span>揪出疑似帳號</span></div>
+        <div><b>20年</b><span>資料期間</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sect">
+    <h2><span class="num">02</span>這個工具做什麼（不做什麼）</h2>
+    <p>研究團隊靠的是<b>網路行為訊號</b>抓帳號 — 選舉期活動暴增、同秒出沒、圖形網絡連結。單看一則貼文，原理上不可能判斷作者是不是網軍，所以本工具不假裝做得到。</p>
+    <p>它偵測的是該研究記錄下來的<b>語言指紋</b> — 極端道德譴責、盲目崇拜、對立操作、情緒引爆 — 直接分析文字本身。不是「誰寫的」，而是<b>「這段文字想怎麼操縱我」</b>。</p>
+  </section>
+
+  <section class="sect">
+    <h2><span class="num">03</span>數位免疫力四道防線</h2>
+    <div class="cardgrid">
+      <div class="icard"><b>👁️ 觀點覺察</b><span>網路上的極端聲音不代表現實多數。沉默的大多數不留言。</span></div>
+      <div class="icard"><b>⏸️ 情緒防線</b><span>看到讓你秒氣炸的內容，先讓子彈飛一會。那股怒氣可能正是對方要的。</span></div>
+      <div class="icard"><b>🔍 多源查證</b><span>只發攻擊文、24 小時不休息、用罐頭照片的帳號 — 都是異常訊號。</span></div>
+      <div class="icard"><b>🚫 停止擴散</b><span>憤怒的回覆也是流量。不按讚、不回罵，直接切斷網軍的養分。</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <a href="https://page.cocy.io/">← page.cocy.io</a> · 帶風向偵測器是 <a href="https://cocy.io">cocy.io</a> 的免費媒體識讀實驗。你的輸入只用於分析，不會被儲存。
+  </footer>
+</div>
+
+<script>
+window.AGGRO = {
+  ui: "tw",
+  str: {
+    levels: { clean: "乾淨", low: "輕微", mid: "注意", high: "偏高", extreme: "極端" },
+    confLevels: { low: "低", mid: "中", high: "高" },
+    confidence: "分析信心：{c} · 內容越短，信心越低",
+    shareTitle: "帶風向偵測器",
+    shareText: "這則內容的風向指數 {score}/100（{level}）— 你也丟一篇來測：",
+    shareUrl: "https://page.cocy.io/aggro/tw/",
+    copied: "已複製！貼到任何地方分享",
+    errors: {
+      empty: "請先輸入要分析的內容。",
+      too_short: "太短了，請至少貼上完整的句子。",
+      rate: "請求太頻繁，請一分鐘後再試。",
+      bad_url: "網址格式不正確。",
+      fetch_fail: "無法載入該頁面。請把內文複製到文字分頁。",
+      not_html: "這個連結不是網頁文件。",
+      empty_page: "讀不到該頁面的內文。請改用文字或截圖。",
+      bad_image: "不支援的圖片格式。",
+      too_large: "圖片太大了。",
+      parse: "結果處理失敗，請重試。",
+      upstream: "分析伺服器暫時沒有回應，請稍後再試。"
+    }
+  },
+  tech: {
+    us_vs_them: { name: "對立操作（我們 vs 他們）", icon: "⚔️" },
+    moral_outrage: { name: "極端道德譴責", icon: "🔥" },
+    emotion_amp: { name: "情緒放大", icon: "📢" },
+    dehumanization: { name: "去人性化・蔑稱", icon: "🚷" },
+    urgency_fear: { name: "製造危機與恐懼", icon: "⏰" },
+    false_dichotomy: { name: "假二選一", icon: "↔️" },
+    unfounded_claim: { name: "無根據斷言", icon: "❗" },
+    conspiracy: { name: "陰謀論框架", icon: "🕳️" },
+    generalization: { name: "以偏概全", icon: "🧺" },
+    blind_praise: { name: "盲目吹捧", icon: "🙇" },
+    ragebait_hook: { name: "釣魚引戰", icon: "🎣" },
+    distortion: { name: "斷章取義", icon: "✂️" }
+  },
+  cards: [
+    { t: "對立操作", b: "當一段文字把世界分成「我們」和「他們」，邏輯就下線了，換部落忠誠上場。這是最古老的煽動技術。" },
+    { t: "情緒放大", b: "資訊量一樣，但憤怒與恐懼的詞彙特別濃？目的可能是點火，不是傳達。" },
+    { t: "兩邊都罵", b: "KAIST 研究揪出的境外帳號不挺任何一方。他們的產品就是對立本身。" },
+    { t: "釣魚引戰", b: "「你們就這樣算了嗎？」— 為了騙回覆而設計的句子是演算法燃料。憤怒的反駁也在幫它擴散。" },
+    { t: "假二選一", b: "把選項逼到只剩兩個極端的貼文。現實的問題幾乎都有第三、第四條路。" },
+    { t: "去人性化", b: "開始把人比喻成蟲、畜生、病毒時，暴力的心理門檻就降低了。歷史反覆驗證過的危險訊號。" },
+    { t: "選舉期幽靈", b: "研究中的可疑帳號平時潛伏，一到選舉或國家大事活動量暴增 51%。時機也是指紋。" },
+    { t: "無根據斷言", b: "「大家都知道」「聽說」開頭的十足把握。被問出處就惱羞的內容，多半屬於這類。" },
+    { t: "盲目吹捧", b: "禁止批評的造神也是操縱。研究團隊鎖定的訊號之一，就是「非理性崇拜」詞彙。" },
+    { t: "切斷擴散", b: "對帶風向貼文留下憤怒回覆，也在幫它衝觸及。已讀不回，才是演算法上最痛的反擊。" },
+    { t: "斷章取義", b: "把一句話的前後文剪掉，意思可以完全顛倒。有引號不代表是事實。" },
+    { t: "觀點覺察", b: "留言區過度放大極端聲音。沉默的大多數不留言 — 記得他們存在。" }
+  ]
+};
+</script>
+<script src="/aggro/aggro.js?v=1"></script>
+</body>
+</html>

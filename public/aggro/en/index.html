@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script>
+<!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>RageBait Meter — Is This Post Trying to Manipulate You? Free AI Rhetoric Analyzer</title>
+<meta name="description" content="Paste any comment, post, news link, or screenshot and AI detects 12 manipulation techniques — us-vs-them framing, outrage farming, ragebait hooks. A free media-literacy tool inspired by the KAIST influence-operation study.">
+<meta name="keywords" content="ragebait detector, propaganda analysis, rage farming, media literacy, cognitive warfare, troll comment analyzer, misinformation">
+<link rel="canonical" href="https://page.cocy.io/aggro/en/">
+<link rel="alternate" hreflang="ko" href="https://page.cocy.io/aggro/">
+<link rel="alternate" hreflang="en" href="https://page.cocy.io/aggro/en/">
+<link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/aggro/tw/">
+<link rel="alternate" hreflang="x-default" href="https://page.cocy.io/aggro/en/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RageBait Meter — Is This Post Trying to Manipulate You?">
+<meta property="og:description" content="Throw in a comment, link, or screenshot. AI detects 12 manipulation techniques and scores the ragebait.">
+<meta property="og:url" content="https://page.cocy.io/aggro/en/">
+<meta property="og:image" content="https://page.cocy.io/aggro/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="RageBait Meter — Is This Post Trying to Manipulate You?">
+<meta name="twitter:description" content="AI detects 12 manipulation techniques and scores the ragebait.">
+<link rel="icon" type="image/svg+xml" href="/aggro/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/aggro/aggro.css?v=1">
+<style>:root{--body-font:"IBM Plex Sans"}</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "RageBait Meter (AggroMeter)",
+  "url": "https://page.cocy.io/aggro/en/",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "AI-powered media-literacy tool that detects manipulative rhetoric in comments, posts, links and screenshots",
+  "inLanguage": ["ko", "en", "zh-Hant"]
+}
+</script>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="wrap">
+  <header class="top">
+    <img class="logo" src="/aggro/icon.svg" alt="">
+    <div class="brand"><b>RageBait Meter</b><span>Aggro-Meter</span></div>
+    <nav class="langs">
+      <a href="/aggro/">KO</a>
+      <a href="/aggro/en/" class="on">EN</a>
+      <a href="/aggro/tw/">中</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="tape"><span class="dot"></span>Rhetoric Signal Analysis</div>
+    <h1>Is this post trying to<br>make you angry? <span class="hl">Measure it.</span></h1>
+    <p class="sub">Drop in a comment, post, news link, or screenshot. AI scans it for <b>12 manipulation techniques</b> — us-vs-them framing, outrage farming, ragebait hooks — and scores how hard it's trying to play you. Three seconds of scanning before you react.</p>
+  </section>
+
+  <section class="panel" id="analyzer">
+    <div class="tabs">
+      <button data-mode="text" class="on">✍️ Text</button>
+      <button data-mode="link">🔗 Link</button>
+      <button data-mode="image">🖼️ Screenshot</button>
+    </div>
+    <div class="pane on" data-mode="text">
+      <textarea id="txt" maxlength="4000" placeholder="Paste the comment or post you want analyzed&#10;(up to 4,000 characters)"></textarea>
+      <div class="hint">Your input is only used for this analysis and never stored.</div>
+    </div>
+    <div class="pane" data-mode="link">
+      <input type="url" id="url" placeholder="https:// article or post URL">
+      <div class="hint">Pages behind a login (social apps) may not be readable — use the screenshot tab for those.</div>
+    </div>
+    <div class="pane" data-mode="image">
+      <div class="drop" id="drop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        <div>Click, drag, or paste (Ctrl+V) a screenshot</div>
+      </div>
+      <input type="file" id="file" accept="image/*" hidden>
+      <div class="hint">The AI reads the text in your image. Compressed on-device before upload.</div>
+    </div>
+    <div class="err" id="err"></div>
+    <div class="go-row"><button class="go" id="go">Measure the RageBait</button></div>
+
+    <div class="scan" id="scan">
+      <div class="radar"><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="sweep"></div></div>
+      <div class="st">Scanning rhetoric…</div>
+      <div class="card"><div class="t"></div><div class="b"></div></div>
+    </div>
+
+    <div class="result" id="result">
+      <div class="gaugebox">
+        <svg class="gauge" viewBox="0 0 300 160">
+          <path d="M 22 140 A 128 128 0 0 1 278 140" fill="none" stroke="#1e2c47" stroke-width="14" stroke-linecap="round"/>
+          <path id="arcval" d="M 22 140 A 128 128 0 0 1 278 140" fill="none" stroke="#3ef08c" stroke-width="14" stroke-linecap="round"/>
+          <g id="needle"><line x1="150" y1="140" x2="150" y2="34" stroke="#dce6f5" stroke-width="3" stroke-linecap="round"/><circle cx="150" cy="140" r="7" fill="#dce6f5"/></g>
+        </svg>
+        <div class="score-line"><span class="score-num" id="scorenum">0</span><span class="score-unit"> / 100</span></div>
+        <div class="level-tag" id="leveltag"></div>
+        <div class="headline" id="headline"></div>
+        <div class="summary" id="summary"></div>
+        <div class="conf" id="conf"></div>
+      </div>
+      <div class="no-tech" id="notech" style="display:none">No clear manipulation techniques detected. This reads more like content meant to inform than to inflame.</div>
+      <div class="techs" id="techs"></div>
+      <div class="advice"><b>REACT LATER — 3 seconds first</b><span id="advicebody"></span></div>
+      <div class="act-row">
+        <button class="share-btn" id="share">Share result</button>
+        <button class="again-btn" id="again">Analyze another</button>
+      </div>
+      <div class="disclaimer">⚠️ RageBait Meter analyzes <b>rhetoric</b> — how a piece of text is written. It cannot and does not determine who wrote it or whether the account is part of a coordinated operation. Results are an AI opinion, not a factual claim about any person.</div>
+    </div>
+  </section>
+
+  <section class="sect">
+    <h2><span class="num">01</span>Why this tool exists</h2>
+    <div class="kaist">
+      <div class="src">KAIST × Max Planck Institute · Aug 2026</div>
+      <div class="big">"The goal wasn't to help either side win — it was permanent internal division."</div>
+      <p>Researchers at KAIST and the Max Planck Institute analyzed 20 years (2006–2025) of comments on Korea's largest news portal with AI and identified ~24,000 suspected foreign-linked manipulation accounts. The striking finding: they didn't back one political side. They attacked <b>both sides at once</b> to amplify polarization — the textbook pattern of cognitive warfare seen in the US, Taiwan, and Europe.</p>
+      <div class="stats">
+        <div><b>110M</b><span>comments analyzed</span></div>
+        <div><b>24,000</b><span>suspect accounts found</span></div>
+        <div><b>20 yrs</b><span>of data</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sect">
+    <h2><span class="num">02</span>What this tool does (and doesn't)</h2>
+    <p>The researchers caught those accounts through <b>network behavior</b> — election-time activity spikes, coordinated timing, graph connections. No tool can look at a single post and tell you whether its author is a paid operative. So this one doesn't pretend to.</p>
+    <p>Instead it detects the <b>linguistic fingerprint</b> that study documented — extreme moral condemnation, blind glorification, us-vs-them splitting, engineered outrage — in the text itself. Not "who wrote this," but <b>"how is this trying to steer me."</b></p>
+  </section>
+
+  <section class="sect">
+    <h2><span class="num">03</span>Four layers of digital immunity</h2>
+    <div class="cardgrid">
+      <div class="icard"><b>👁️ Perspective check</b><span>The loudest extremes online are not the real-world majority. The quiet majority doesn't post.</span></div>
+      <div class="icard"><b>⏸️ Emotional firewall</b><span>The angrier a post makes you instantly, the more that anger might be the point. Let the bullet fly a while.</span></div>
+      <div class="icard"><b>🔍 Source hygiene</b><span>Accounts that only post attacks, never sleep, or use stolen profile photos — those are the tells.</span></div>
+      <div class="icard"><b>🚫 Starve the spread</b><span>An angry reply is still engagement. Not feeding the algorithm is the strongest counterattack.</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <a href="https://page.cocy.io/">← page.cocy.io</a> · RageBait Meter is a free media-literacy experiment by <a href="https://cocy.io">cocy.io</a>. Your input is used only for analysis and never stored.
+  </footer>
+</div>
+
+<script>
+window.AGGRO = {
+  ui: "en",
+  str: {
+    levels: { clean: "Clean", low: "Low", mid: "Caution", high: "High", extreme: "Extreme" },
+    confLevels: { low: "low", mid: "medium", high: "high" },
+    confidence: "Analysis confidence: {c} · shorter inputs mean lower confidence",
+    shareTitle: "RageBait Meter",
+    shareText: "This post scored {score}/100 ({level}) on the RageBait Meter — test one yourself:",
+    shareUrl: "https://page.cocy.io/aggro/en/",
+    copied: "Copied! Paste anywhere",
+    errors: {
+      empty: "Enter something to analyze first.",
+      too_short: "Too short — paste at least a full sentence.",
+      rate: "Too many requests. Try again in a minute.",
+      bad_url: "That URL doesn't look right.",
+      fetch_fail: "Couldn't load that page. Copy its text into the Text tab instead.",
+      not_html: "That link isn't a web document.",
+      empty_page: "Couldn't read that page's content. Try text or a screenshot.",
+      bad_image: "Unsupported image format.",
+      too_large: "Image is too large.",
+      parse: "Failed to process the result. Please retry.",
+      upstream: "The analysis server isn't responding. Try again shortly."
+    }
+  },
+  tech: {
+    us_vs_them: { name: "Us-vs-them framing", icon: "⚔️" },
+    moral_outrage: { name: "Extreme moral condemnation", icon: "🔥" },
+    emotion_amp: { name: "Emotional amplification", icon: "📢" },
+    dehumanization: { name: "Dehumanization", icon: "🚷" },
+    urgency_fear: { name: "Manufactured urgency & fear", icon: "⏰" },
+    false_dichotomy: { name: "False dichotomy", icon: "↔️" },
+    unfounded_claim: { name: "Unfounded assertion", icon: "❗" },
+    conspiracy: { name: "Conspiracy framing", icon: "🕳️" },
+    generalization: { name: "Sweeping generalization", icon: "🧺" },
+    blind_praise: { name: "Blind glorification", icon: "🙇" },
+    ragebait_hook: { name: "Ragebait hook", icon: "🎣" },
+    distortion: { name: "Quote distortion", icon: "✂️" }
+  },
+  cards: [
+    { t: "Us vs Them", b: "The moment a post splits the world into \"us\" and \"them\", logic yields to tribal loyalty. The oldest trick in propaganda." },
+    { t: "Emotional amplification", b: "Same information, but soaked in fury and fear vocabulary? The goal may be ignition, not communication." },
+    { t: "Attacking both sides", b: "The KAIST study's foreign-linked accounts didn't back a side. Their product was division itself." },
+    { t: "Ragebait hooks", b: "\"And you're just going to let this happen?\" — sentences engineered to farm replies are algorithm fuel. Angry rebuttals spread them further." },
+    { t: "False dichotomy", b: "When a post allows only two options, remember: real problems almost always have a third and fourth path." },
+    { t: "Dehumanization", b: "Calling people vermin or disease lowers the psychological barrier to cruelty. History has proven this signal repeatedly." },
+    { t: "Election-time ghosts", b: "The flagged accounts stayed dormant, then spiked 51% during elections and national crises. Timing is a fingerprint too." },
+    { t: "Unfounded certainty", b: "\"Everyone knows…\", \"I heard that…\" — confident claims that get angry when asked for a source usually belong here." },
+    { t: "Blind glorification", b: "Worship that forbids criticism is also manipulation. 'Irrational adoration' vocabulary was one of the study's tell-tale signals." },
+    { t: "Starving the spread", b: "Even a furious reply boosts a manipulative post's reach. Silence is the algorithm's harshest punishment." },
+    { t: "Quote surgery", b: "Cut the sentences before and after any quote and you can reverse its meaning. Quotation marks don't make it true." },
+    { t: "Perspective check", b: "Comment sections over-represent extremes. The quiet majority doesn't post — remember they exist." }
+  ]
+};
+</script>
+<script src="/aggro/aggro.js?v=1"></script>
+</body>
+</html>
