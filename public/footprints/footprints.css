@@ -1,0 +1,108 @@
+/* ── 발자국 Footprints — dark map room ── */
+:root {
+  --bg: #070b14; --bg2: #0a1120; --panel: #0e1626; --panel2: #121c30;
+  --line: #1e2c47; --ink: #dce6f5; --ink-dim: #8fa2c0; --ink-faint: #5a6b88;
+  --green: #3ef08c; --cyan: #39c0ff; --violet: #b48cff; --amber: #ffb224;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --radius: 14px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: radial-gradient(1200px 600px at 50% -200px, #10203c 0%, transparent 60%), var(--bg);
+  color: var(--ink);
+  font-family: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.65; min-height: 100vh; padding-top: env(safe-area-inset-top);
+}
+.wrap { max-width: 860px; margin: 0 auto; padding: 0 18px 80px; }
+
+.top { display: flex; align-items: center; gap: 10px; padding: 22px 0 6px; }
+.top .logo { width: 34px; height: 34px; }
+.top .brand b { font-size: 1.12rem; }
+.top .brand span { font-family: var(--mono); font-size: .62rem; color: var(--ink-faint); letter-spacing: .22em; text-transform: uppercase; display: block; }
+
+.hero { padding: 26px 0 12px; }
+.hero .tape {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: .66rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--cyan); border: 1px solid var(--line); border-radius: 999px;
+  padding: 5px 12px; margin-bottom: 14px; background: rgba(57,192,255,.05);
+}
+.hero .tape .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); }
+.hero h1 { font-size: clamp(1.6rem, 5.4vw, 2.3rem); line-height: 1.25; }
+.hero h1 .hl { color: var(--green); }
+.hero p.sub { color: var(--ink-dim); margin-top: 10px; font-size: .96rem; max-width: 60ch; }
+.privacy-pill {
+  margin-top: 14px; display: inline-block; font-size: .8rem; color: #9ef0c4;
+  background: rgba(62,240,140,.07); border: 1px solid rgba(62,240,140,.25);
+  border-radius: 10px; padding: 8px 14px;
+}
+
+.panel {
+  background: linear-gradient(180deg, var(--panel2), var(--panel));
+  border: 1px solid var(--line); border-radius: var(--radius);
+  margin-top: 18px; padding: 18px; box-shadow: 0 18px 50px -28px rgba(0,0,0,.9);
+}
+.drop {
+  border: 1.5px dashed var(--line); border-radius: 12px; background: var(--bg2);
+  min-height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; cursor: pointer; text-align: center; padding: 22px; color: var(--ink-dim);
+  transition: border-color .15s;
+}
+.drop:hover, .drop.over { border-color: var(--cyan); }
+.drop .big { font-size: 1.02rem; font-weight: 700; color: var(--ink); }
+.drop .small { font-size: .8rem; color: var(--ink-faint); }
+.demo-row { text-align: center; margin-top: 12px; }
+.demo-row button {
+  background: none; border: 1px solid var(--line); color: var(--ink-dim);
+  border-radius: 10px; padding: 9px 18px; font: inherit; font-size: .86rem; cursor: pointer;
+}
+.demo-row button:hover { color: var(--ink); border-color: var(--ink-faint); }
+.err {
+  display: none; margin-top: 14px; padding: 10px 14px; border-radius: 10px;
+  background: rgba(255,77,94,.08); border: 1px solid rgba(255,77,94,.3);
+  color: #ff8f9a; font-size: .84rem;
+}
+
+#viewer { display: none; }
+#map { width: 100%; display: block; border-radius: 10px; background: var(--bg2); }
+.controls { display: flex; gap: 10px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+.controls button, .controls select {
+  background: var(--bg2); border: 1px solid var(--line); color: var(--ink);
+  border-radius: 10px; padding: 9px 14px; font: inherit; font-size: .86rem; cursor: pointer;
+}
+.controls button:hover { border-color: var(--ink-faint); }
+.controls #play { min-width: 110px; background: linear-gradient(135deg, #2fe07f, #1db4e8); color: #04121f; font-weight: 800; border: none; }
+#scrub { flex: 1; min-width: 140px; accent-color: var(--green); }
+.range-label { font-family: var(--mono); font-size: .72rem; color: var(--ink-faint); width: 100%; }
+
+.statgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 14px; }
+.stat { background: var(--bg2); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.stat b { font-family: var(--mono); font-size: 1.35rem; color: var(--green); display: block; }
+.stat span { font-size: .76rem; color: var(--ink-faint); }
+.export-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.export-row button {
+  flex: 1; min-width: 150px; border-radius: 10px; padding: 12px; font: inherit; font-size: .9rem;
+  font-weight: 700; cursor: pointer; background: var(--ink); color: #0a0f1c; border: none;
+}
+.export-row button:hover { filter: brightness(1.08); }
+.export-row button:disabled { filter: grayscale(.6) brightness(.7); cursor: wait; }
+.travly {
+  margin-top: 14px; padding: 14px 16px; border-radius: 10px; font-size: .88rem;
+  background: rgba(180,140,255,.07); border: 1px solid rgba(180,140,255,.25); color: #d4c2f5;
+}
+.travly a { color: var(--violet); font-weight: 700; text-decoration: none; }
+
+.sect { margin-top: 44px; }
+.sect h2 { font-size: 1.15rem; margin-bottom: 12px; }
+.sect h2 .num { font-family: var(--mono); color: var(--green); font-size: .8rem; margin-right: 8px; }
+.sect p { color: var(--ink-dim); font-size: .92rem; margin-bottom: 10px; }
+.sect ol { color: var(--ink-dim); font-size: .92rem; padding-left: 22px; }
+.sect ol li { margin-bottom: 8px; }
+.sect .cardgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 14px; }
+.sect .icard { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.sect .icard b { display: block; font-size: .88rem; margin-bottom: 4px; }
+.sect .icard span { font-size: .82rem; color: var(--ink-dim); }
+
+footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line); font-size: .76rem; color: var(--ink-faint); }
+footer a { color: var(--ink-dim); text-decoration: none; }
+footer a:hover { color: var(--ink); }
