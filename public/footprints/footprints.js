@@ -20,6 +20,7 @@
     pageUrl: "https://page.cocy.io/footprints/",
     copied: "링크 복사됨! 붙여넣어 공유하세요",
     camFollow: "📷 따라가기", camOverview: "🗺 전체 보기",
+    trailOff: "〰 선 유지", trailOn: "✨ 꼬리 모드",
     posterTitle: "나의 발자국",
     stTotal: "총 이동거리", stDays: "기록된 날", stVisits: "방문 장소", stMaxDay: "최장 하루",
     brandUrl: "page.cocy.io/footprints",
@@ -227,6 +228,7 @@
   var state = {
     data: null, progress: 0, playing: false, lastFrame: 0, duration: 20000, baseDuration: 20000, speedMul: 1,
     cam: null,            // {lat,lng,z(float)} 현재 카메라
+    trail: false,         // ✨ 꼬리 모드 — 지나간 선을 페이드아웃
     follow: true,         // 팔로우 캠 vs 전체 보기
     fitZ: 3, overviewCam: null, onFinish: null,
   };
@@ -351,9 +353,9 @@
 
     drawPath(ctx, px, pts, state.data.jumps, head, w, h, DPR);
 
-    // 방문 지점
+    // 방문 지점 (꼬리 모드에선 숨김 — 점+잔상만 남는 클린 룩)
     ctx.fillStyle = "rgba(180,140,255,.85)";
-    state.data.visits.forEach(function (v) {
+    if (!state.trail) state.data.visits.forEach(function (v) {
       if (v.t > tCur) return;
       var q = px(v);
       if (q.x < -20 || q.x > w + 20 || q.y < -20 || q.y > h + 20) return;
@@ -380,62 +382,100 @@
     $("#scrub").value = Math.round(state.progress * 1000);
   }
 
-  // 경로 그리기 — 실선(일반)·점선 아크(점프) 각각 1회 stroke로 일괄 처리 (세그먼트별 stroke는 프레임 드랍 원인)
-  function drawPath(x, px, pts, jumps, head, w, h, dpr) {
-    var end = head.idx, frac = head.frac;
+  // 경로 그리기 — 전체 선 모드 / ✨꼬리 모드(지나간 선 페이드아웃). 각 스타일당 소수 stroke로 일괄 처리
+  function drawPath(x, px, pts, jumps, head, w, h, dpr, forceFull) {
     var margin = 60 * dpr;
     function offscreen(a, b) {
       return (a.x < -margin && b.x < -margin) || (a.x > w + margin && b.x > w + margin) ||
              (a.y < -margin && b.y < -margin) || (a.y > h + margin && b.y > h + margin);
     }
-    // 1) 일반 세그먼트 — 단일 패스
-    x.beginPath();
-    var pen = -1;
-    function solid(i, f) {
-      var a = px(pts[i]), b = px(pts[i + 1]);
-      if (Math.abs(b.x - a.x) > w * 1.5 || offscreen(a, b)) { pen = -1; return; }
-      if (pen !== i) x.moveTo(a.x, a.y);
-      x.lineTo(a.x + (b.x - a.x) * f, a.y + (b.y - a.y) * f);
-      pen = i + 1;
-    }
-    for (var i = 0; i < end; i++) { if (!jumps[i]) solid(i, 1); else pen = -1; }
-    if (end < pts.length - 1 && frac > 0 && !jumps[end]) solid(end, frac);
     var grad = x.createLinearGradient(0, 0, w, h);
     grad.addColorStop(0, "hsl(190,95%,62%)");
     grad.addColorStop(1, "hsl(140,90%,58%)");
-    x.strokeStyle = grad;
-    x.lineWidth = 2.2 * dpr;
     x.lineJoin = x.lineCap = "round";
-    x.shadowColor = "rgba(57,192,255,.7)"; x.shadowBlur = 5 * dpr;
-    x.stroke();
-    x.shadowBlur = 0;
-    // 2) 점프(비행) 아크 — 점선 단일 패스
-    x.save();
-    x.setLineDash([5 * dpr, 7 * dpr]);
-    x.beginPath();
-    function arc(i, f) {
-      var a = px(pts[i]), b = px(pts[i + 1]);
-      if (Math.abs(b.x - a.x) > w * 1.5 || offscreen(a, b)) return;
-      var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
-      var dx = b.x - a.x, dy = b.y - a.y;
-      var len = Math.sqrt(dx * dx + dy * dy) || 1;
-      var off = Math.min(len * 0.22, 90 * dpr);
-      var cx2 = mx - dy / len * off, cy2 = my + dx / len * off;
-      x.moveTo(a.x, a.y);
-      var steps = 22, lim = Math.max(1, Math.round(steps * f));
-      for (var s2 = 1; s2 <= lim; s2++) {
-        var t2 = (s2 / lim) * f;
-        x.lineTo((1 - t2) * (1 - t2) * a.x + 2 * (1 - t2) * t2 * cx2 + t2 * t2 * b.x,
-                 (1 - t2) * (1 - t2) * a.y + 2 * (1 - t2) * t2 * cy2 + t2 * t2 * b.y);
+
+    function strokeSolids(list) { // list: [i, frac]
+      if (!list.length) return;
+      x.beginPath();
+      var pen = -1;
+      for (var n = 0; n < list.length; n++) {
+        var i = list[n][0], f = list[n][1];
+        var a = px(pts[i]), b = px(pts[i + 1]);
+        if (Math.abs(b.x - a.x) > w * 1.5 || offscreen(a, b)) { pen = -1; continue; }
+        if (pen !== i) x.moveTo(a.x, a.y);
+        x.lineTo(a.x + (b.x - a.x) * f, a.y + (b.y - a.y) * f);
+        pen = i + 1;
       }
+      x.strokeStyle = grad;
+      x.lineWidth = 2.2 * dpr;
+      x.shadowColor = "rgba(57,192,255,.7)"; x.shadowBlur = 5 * dpr;
+      x.stroke();
+      x.shadowBlur = 0;
     }
-    for (var j = 0; j < end; j++) if (jumps[j]) arc(j, 1);
-    if (end < pts.length - 1 && frac > 0 && jumps[end]) arc(end, frac);
-    x.strokeStyle = "rgba(180,140,255,.9)";
-    x.lineWidth = 1.8 * dpr;
-    x.shadowColor = "rgba(180,140,255,.5)"; x.shadowBlur = 4 * dpr;
-    x.stroke();
-    x.restore();
+    function strokeArcs(list) {
+      if (!list.length) return;
+      x.save();
+      x.setLineDash([5 * dpr, 7 * dpr]);
+      x.beginPath();
+      for (var n = 0; n < list.length; n++) {
+        var i = list[n][0], f = list[n][1];
+        var a = px(pts[i]), b = px(pts[i + 1]);
+        if (Math.abs(b.x - a.x) > w * 1.5 || offscreen(a, b)) continue;
+        var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+        var dx = b.x - a.x, dy = b.y - a.y;
+        var len = Math.sqrt(dx * dx + dy * dy) || 1;
+        var off = Math.min(len * 0.22, 90 * dpr);
+        var cx2 = mx - dy / len * off, cy2 = my + dx / len * off;
+        x.moveTo(a.x, a.y);
+        var steps = 22, lim = Math.max(1, Math.round(steps * f));
+        for (var s2 = 1; s2 <= lim; s2++) {
+          var t2 = (s2 / lim) * f;
+          x.lineTo((1 - t2) * (1 - t2) * a.x + 2 * (1 - t2) * t2 * cx2 + t2 * t2 * b.x,
+                   (1 - t2) * (1 - t2) * a.y + 2 * (1 - t2) * t2 * cy2 + t2 * t2 * b.y);
+        }
+      }
+      x.strokeStyle = "rgba(180,140,255,.9)";
+      x.lineWidth = 1.8 * dpr;
+      x.shadowColor = "rgba(180,140,255,.5)"; x.shadowBlur = 4 * dpr;
+      x.stroke();
+      x.restore();
+    }
+
+    var end = head.idx, frac = head.frac;
+    if (!state.trail || forceFull) {
+      var solids = [], arcs = [];
+      for (var i = 0; i < end; i++) (jumps[i] ? arcs : solids).push([i, 1]);
+      if (end < pts.length - 1 && frac > 0) (jumps[end] ? arcs : solids).push([end, frac]);
+      strokeSolids(solids);
+      strokeArcs(arcs);
+      return;
+    }
+    // ✨ 꼬리 모드: 헤드 뒤 일정 거리만 알파 버킷으로 페이드
+    var cum = state.data.cumKm;
+    var total = cum[cum.length - 1] || 1;
+    var trailKm = Math.max(20, Math.min(600, total * 0.07));
+    var headKm = head.km != null ? head.km : cum[end];
+    var minKm = headKm - trailKm;
+    var start = end;
+    while (start > 0 && cum[start] > minKm) start--;
+    var BUCKETS = 6;
+    var solidB = [], arcB = [];
+    for (var b0 = 0; b0 < BUCKETS; b0++) { solidB.push([]); arcB.push([]); }
+    for (var j = start; j <= end && j < pts.length - 1; j++) {
+      var f2 = (j === end) ? frac : 1;
+      if (f2 <= 0) continue;
+      var segEndKm = cum[j] + (cum[j + 1] - cum[j]) * f2;
+      var alpha = 1 - (headKm - segEndKm) / trailKm;
+      if (alpha <= 0) continue;
+      var bi = Math.min(BUCKETS - 1, Math.floor(alpha * BUCKETS));
+      (jumps[j] ? arcB : solidB)[bi].push([j, f2]);
+    }
+    for (var b1 = 0; b1 < BUCKETS; b1++) {
+      x.globalAlpha = (b1 + 1) / BUCKETS;
+      strokeSolids(solidB[b1]);
+      strokeArcs(arcB[b1]);
+    }
+    x.globalAlpha = 1;
   }
 
   function fmtDate(d) {
@@ -492,6 +532,13 @@
     state.follow = !state.follow;
     this.textContent = state.follow ? S.camFollow : S.camOverview;
     if (!state.playing) { snapCamera(); render(); }
+  });
+  var trailBtn = $("#trail");
+  if (trailBtn) trailBtn.addEventListener("click", function () {
+    state.trail = !state.trail;
+    this.textContent = state.trail ? S.trailOn : S.trailOff;
+    if (!state.playing) render();
+    if (window.dataLayer) window.dataLayer.push({ event: "fp_trail", fp_on: state.trail });
   });
 
   // ── 데이터 로드 ──
@@ -654,7 +701,7 @@
       }
       x.fillStyle = "rgba(7,11,20,0.4)"; x.fillRect(0, topPad, W, mh);
       var lastIdx = state.data.points.length - 1;
-      drawPath(x, pj, state.data.points, state.data.jumps, { idx: lastIdx, frac: 1, p: state.data.points[lastIdx] }, W, H, 1.4);
+      drawPath(x, pj, state.data.points, state.data.jumps, { idx: lastIdx, frac: 1, p: state.data.points[lastIdx] }, W, H, 1.4, true);
       x.fillStyle = "rgba(180,140,255,.85)";
       state.data.visits.forEach(function (v) { var q = pj(v); x.beginPath(); x.arc(q.x, q.y, 3, 0, 7); x.fill(); });
       x.fillStyle = "#dce6f5"; x.font = "700 44px 'IBM Plex Sans KR', sans-serif";
