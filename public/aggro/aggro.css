@@ -153,6 +153,14 @@ body::before {
 .score-line { margin-top: -8px; }
 .score-num { font-family: var(--mono); font-size: 3rem; font-weight: 700; line-height: 1; }
 .score-unit { font-family: var(--mono); font-size: .8rem; color: var(--ink-faint); }
+.stamp {
+  display: inline-block; margin-top: 12px; padding: 8px 18px;
+  border: 2.5px solid; border-radius: 8px;
+  font-weight: 800; font-size: 1.02rem; letter-spacing: .02em;
+  transform: rotate(-2deg);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.2) inset;
+}
+.stamp-sub { margin-top: 8px; font-size: .84rem; color: var(--ink-dim); }
 .level-tag {
   display: inline-block; margin-top: 8px; font-family: var(--mono); font-size: .72rem;
   letter-spacing: .18em; text-transform: uppercase; padding: 5px 14px; border-radius: 999px; border: 1px solid;

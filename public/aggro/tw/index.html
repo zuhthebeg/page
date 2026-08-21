@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/aggro/aggro.css?v=1">
+<link rel="stylesheet" href="/aggro/aggro.css?v=2">
 <style>:root{--body-font:"Noto Sans TC"}</style>
 <script type="application/ld+json">
 {
@@ -109,6 +109,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <g id="needle"><line x1="150" y1="140" x2="150" y2="34" stroke="#dce6f5" stroke-width="3" stroke-linecap="round"/><circle cx="150" cy="140" r="7" fill="#dce6f5"/></g>
         </svg>
         <div class="score-line"><span class="score-num" id="scorenum">0</span><span class="score-unit"> / 100</span></div>
+        <div class="stamp" id="stamp"></div>
+        <div class="stamp-sub" id="stampsub"></div>
         <div class="level-tag" id="leveltag"></div>
         <div class="headline" id="headline"></div>
         <div class="summary" id="summary"></div>
@@ -164,11 +166,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 window.AGGRO = {
   ui: "tw",
   str: {
+    verdicts: {
+      clean: { stamp: "✅ 乾淨認證", sub: "可以安心閱讀的內容" },
+      low: { stamp: "🌶️ 微辣", sub: "口味偏重，但還能吃" },
+      mid: { stamp: "⚠️ 帶風向注意", sub: "回應之前先多想一秒" },
+      high: { stamp: "🚫 確定帶風向 — 禁止餵食", sub: "你的回覆就是飼料，別餵" },
+      extreme: { stamp: "☣️ 認知作戰等級 — 絕對禁止餵食", sub: "以激怒為目的的內容，無視就是反擊" }
+    },
     levels: { clean: "乾淨", low: "輕微", mid: "注意", high: "偏高", extreme: "極端" },
     confLevels: { low: "低", mid: "中", high: "高" },
     confidence: "分析信心：{c} · 內容越短，信心越低",
     shareTitle: "帶風向偵測器",
-    shareText: "這則內容的風向指數 {score}/100（{level}）— 你也丟一篇來測：",
+    shareText: "帶風向偵測器判定：{level} · 指數 {score}/100 — 看結果：",
     shareUrl: "https://page.cocy.io/aggro/tw/",
     copied: "已複製！貼到任何地方分享",
     errors: {
@@ -215,6 +224,6 @@ window.AGGRO = {
   ]
 };
 </script>
-<script src="/aggro/aggro.js?v=1"></script>
+<script src="/aggro/aggro.js?v=2"></script>
 </body>
 </html>

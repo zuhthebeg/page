@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/aggro/aggro.css?v=1">
+<link rel="stylesheet" href="/aggro/aggro.css?v=2">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -108,6 +108,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <g id="needle"><line x1="150" y1="140" x2="150" y2="34" stroke="#dce6f5" stroke-width="3" stroke-linecap="round"/><circle cx="150" cy="140" r="7" fill="#dce6f5"/></g>
         </svg>
         <div class="score-line"><span class="score-num" id="scorenum">0</span><span class="score-unit"> / 100</span></div>
+        <div class="stamp" id="stamp"></div>
+        <div class="stamp-sub" id="stampsub"></div>
         <div class="level-tag" id="leveltag"></div>
         <div class="headline" id="headline"></div>
         <div class="summary" id="summary"></div>
@@ -163,11 +165,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 window.AGGRO = {
   ui: "ko",
   str: {
+    verdicts: {
+      clean: { stamp: "✅ 청정 인증", sub: "안심하고 읽어도 되는 글" },
+      low: { stamp: "🌶️ 약간 매콤", sub: "간은 세지만 먹을 만함" },
+      mid: { stamp: "⚠️ 어그로 주의", sub: "반응하기 전에 한 번 더 생각" },
+      high: { stamp: "🚫 어그로 확정 — 먹이 금지", sub: "답글이 곧 먹이입니다. 주지 마세요" },
+      extreme: { stamp: "☣️ 선동 등급 — 절대 먹이 금지", sub: "분노 유발이 목적인 글. 무시가 최선의 반격" }
+    },
     levels: { clean: "청정", low: "낮음", mid: "주의", high: "높음", extreme: "극단" },
     confLevels: { low: "낮음", mid: "보통", high: "높음" },
     confidence: "분석 신뢰도: {c} · 짧은 글일수록 신뢰도가 낮아집니다",
     shareTitle: "어그로미터",
-    shareText: "이 글의 어그로 지수 {score}/100 ({level}) — 너도 궁금한 글 있으면 재봐",
+    shareText: "어그로미터 판정: {level} · 지수 {score}/100 — 결과 보기:",
     shareUrl: "https://page.cocy.io/aggro/",
     copied: "복사됨! 붙여넣어 공유하세요",
     errors: {
@@ -214,6 +223,6 @@ window.AGGRO = {
   ]
 };
 </script>
-<script src="/aggro/aggro.js?v=1"></script>
+<script src="/aggro/aggro.js?v=2"></script>
 </body>
 </html>

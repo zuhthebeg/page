@@ -127,11 +127,20 @@
 
   // ── result render ──
   var lastResult = null;
+  var lastShare = null;
   function render(r) {
     lastResult = r;
     var color = levelColor(r.level);
     $("#result").style.display = "block";
     renderGauge(r.score, color);
+    var verdict = (A.str.verdicts || {})[r.level];
+    var stamp = $("#stamp");
+    if (stamp && verdict) {
+      stamp.textContent = verdict.stamp;
+      stamp.style.color = color;
+      stamp.style.borderColor = color;
+      $("#stampsub").textContent = verdict.sub;
+    }
     var tag = $("#leveltag");
     tag.textContent = A.str.levels[r.level] || r.level;
     tag.style.color = color;
@@ -195,6 +204,7 @@
       .then(function (o) {
         stopScan();
         if (!o.ok || !o.j.result) { showErr(o.j && o.j.error ? o.j.error : "upstream"); return; }
+        lastShare = o.j.share || null;
         render(o.j.result);
         if (window.dataLayer) window.dataLayer.push({ event: "aggro_analyze", aggro_mode: mode, aggro_score: o.j.result.score });
       })
@@ -204,10 +214,12 @@
   // ── share / again ──
   $("#share").addEventListener("click", function () {
     if (!lastResult) return;
+    var verdict = (A.str.verdicts || {})[lastResult.level];
     var text = A.str.shareText
       .replace("{score}", lastResult.score)
-      .replace("{level}", A.str.levels[lastResult.level] || lastResult.level);
-    var url = A.str.shareUrl;
+      .replace("{level}", verdict ? verdict.stamp : (A.str.levels[lastResult.level] || lastResult.level));
+    var url = lastShare ? location.origin + lastShare : A.str.shareUrl;
+    if (window.dataLayer) window.dataLayer.push({ event: "aggro_share", aggro_score: lastResult.score });
     if (navigator.share) {
       navigator.share({ title: A.str.shareTitle, text: text, url: url }).catch(function () {});
     } else {

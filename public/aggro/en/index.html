@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/aggro/aggro.css?v=1">
+<link rel="stylesheet" href="/aggro/aggro.css?v=2">
 <style>:root{--body-font:"IBM Plex Sans"}</style>
 <script type="application/ld+json">
 {
@@ -109,6 +109,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <g id="needle"><line x1="150" y1="140" x2="150" y2="34" stroke="#dce6f5" stroke-width="3" stroke-linecap="round"/><circle cx="150" cy="140" r="7" fill="#dce6f5"/></g>
         </svg>
         <div class="score-line"><span class="score-num" id="scorenum">0</span><span class="score-unit"> / 100</span></div>
+        <div class="stamp" id="stamp"></div>
+        <div class="stamp-sub" id="stampsub"></div>
         <div class="level-tag" id="leveltag"></div>
         <div class="headline" id="headline"></div>
         <div class="summary" id="summary"></div>
@@ -164,11 +166,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 window.AGGRO = {
   ui: "en",
   str: {
+    verdicts: {
+      clean: { stamp: "✅ Certified Clean", sub: "Safe to read and engage" },
+      low: { stamp: "🌶️ Mildly Spicy", sub: "Strong seasoning, still edible" },
+      mid: { stamp: "⚠️ Ragebait Warning", sub: "Think twice before reacting" },
+      high: { stamp: "🚫 Confirmed Ragebait — DO NOT FEED", sub: "Your reply is the food. Don't serve it" },
+      extreme: { stamp: "☣️ Weapons-Grade — DO NOT FEED", sub: "Built to enrage. Silence is the counterattack" }
+    },
     levels: { clean: "Clean", low: "Low", mid: "Caution", high: "High", extreme: "Extreme" },
     confLevels: { low: "low", mid: "medium", high: "high" },
     confidence: "Analysis confidence: {c} · shorter inputs mean lower confidence",
     shareTitle: "RageBait Meter",
-    shareText: "This post scored {score}/100 ({level}) on the RageBait Meter — test one yourself:",
+    shareText: "RageBait Meter verdict: {level} · score {score}/100 — see the result:",
     shareUrl: "https://page.cocy.io/aggro/en/",
     copied: "Copied! Paste anywhere",
     errors: {
@@ -215,6 +224,6 @@ window.AGGRO = {
   ]
 };
 </script>
-<script src="/aggro/aggro.js?v=1"></script>
+<script src="/aggro/aggro.js?v=2"></script>
 </body>
 </html>

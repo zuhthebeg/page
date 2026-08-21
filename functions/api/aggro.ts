@@ -246,18 +246,28 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
           }))
       : [];
 
-    return json({
-      result: {
-        score,
-        level,
-        headline: String(parsed.headline || "").slice(0, 200),
-        summary: String(parsed.summary || "").slice(0, 800),
-        techniques,
-        advice: String(parsed.advice || "").slice(0, 400),
-        confidence: ["low", "mid", "high"].includes(parsed.confidence) ? parsed.confidence : "mid",
-        gist: String(parsed.input_gist || "").slice(0, 120),
-      },
-    });
+    const result = {
+      score,
+      level,
+      headline: String(parsed.headline || "").slice(0, 200),
+      summary: String(parsed.summary || "").slice(0, 800),
+      techniques,
+      advice: String(parsed.advice || "").slice(0, 400),
+      confidence: ["low", "mid", "high"].includes(parsed.confidence) ? parsed.confidence : "mid",
+      gist: String(parsed.input_gist || "").slice(0, 120),
+    };
+
+    // 공유용 영구링크 — 결과를 KV에 저장 (원문은 저장하지 않는다: "입력은 저장 안 함" 약속 유지)
+    const id = crypto.randomUUID().replace(/-/g, "").slice(0, 10);
+    ctx.waitUntil(
+      ctx.env.page_cache.put(
+        `aggro:r:${id}`,
+        JSON.stringify({ r: result, ui, ts: Date.now() }),
+        { expirationTtl: 60 * 86400 },
+      ),
+    );
+
+    return json({ result, share: `/aggro/r/${id}` });
   } catch {
     return json({ error: "upstream" }, 502);
   }
