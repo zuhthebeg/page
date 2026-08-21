@@ -14,7 +14,11 @@
     errPng: "이미지 생성에 실패했어요.",
     errPngCors: "지도 타일 보안 정책 때문에 이미지 저장이 막혔어요. 새로고침 후 다시 시도해주세요.",
     play: "▶ 재생", pause: "⏸ 일시정지",
-    recIdle: "🎬 영상 저장", recBusy: "● 녹화 중…",
+    recIdle: "🎞 GIF 만들기", recBusy: "● GIF 녹화 중… (최대 10초)",
+    shareTitle: "발자국 Footprints",
+    shareText: "구글 타임라인으로 내 1년 이동 지도를 만들었다 — 너도 30초면 됨 (업로드 없음):",
+    pageUrl: "https://page.cocy.io/footprints/",
+    copied: "링크 복사됨! 붙여넣어 공유하세요",
     camFollow: "📷 따라가기", camOverview: "🗺 전체 보기",
     posterTitle: "나의 발자국",
     stTotal: "총 이동거리", stDays: "기록된 날", stVisits: "방문 장소", stMaxDay: "최장 하루",
@@ -334,7 +338,7 @@
     var pts = state.data.points;
     if (!pts.length) return;
     var head = headAtProgress(state.progress);
-    var tCur = head.t;
+    var tCur = state.data.points[Math.min(head.idx, state.data.points.length - 1)].t; // 이동 중 날짜 스핀 방지 — 세그먼트 시작일 고정
 
     drawPath(ctx, px, pts, state.data.jumps, head, w, h, DPR);
 
@@ -437,6 +441,7 @@
     state.progress = Math.min(1, state.progress + dt / state.duration);
     lerpCamera(headAtProgress(state.progress));
     render();
+    if (state.captureHook) state.captureHook(now);
     if (state.progress >= 1) {
       state.playing = false;
       $("#play").textContent = S.play;
@@ -546,27 +551,27 @@
   // ── 데모 (해외 점프 포함 — 비행 아크 확인용) ──
   $("#demo").addEventListener("click", function () {
     var cities = [
-      [37.5665, 126.9780], [37.4563, 126.7052], [36.3504, 127.3845], [35.8714, 128.6014],
-      [35.1796, 129.0756], [33.4996, 126.5312], [33.2541, 126.5601], [37.5665, 126.9780],
+      [37.5665, 126.9780], [37.4563, 126.7052], [36.3504, 127.3845], [35.1796, 129.0756],
+      [33.4996, 126.5312], [33.2541, 126.5601], [37.5665, 126.9780],
       [35.6762, 139.6503], [34.6937, 135.5023], [37.5665, 126.9780],
       [25.0330, 121.5654], [37.5665, 126.9780],
-      [34.0522, -118.2437], [37.7749, -122.4194], [37.5665, 126.9780],
-      [37.7519, 128.8761], [37.5665, 126.9780],
     ];
     var out = { points: [], visits: [] };
-    var t = Date.UTC(2026, 0, 5);
+    // 총 기간을 계산해 오늘에서 끝나도록 시작일을 역산 (미래 날짜 방지)
+    var gaps = [], total = 0;
+    for (var g = 0; g < cities.length - 1; g++) { var d = 86400000 * (10 + (g % 4) * 5); gaps.push(d); total += d; }
+    var t = Date.now() - total - 86400000;
     for (var i = 0; i < cities.length - 1; i++) {
       var a = cities[i], b = cities[i + 1];
       out.visits.push({ t: t, lat: a[0], lng: a[1] });
       var far = hav({ lat: a[0], lng: a[1] }, { lat: b[0], lng: b[1] }) > JUMP_KM;
       if (far) {
-        // 비행: 양 끝점만 (점프 세그먼트)
         out.points.push({ t: t, lat: a[0], lng: a[1] });
         out.points.push({ t: t + 36e5 * 2.5, lat: b[0], lng: b[1] });
       } else {
         var steps = 14;
-        for (var s = 0; s <= steps; s++) {
-          var f = s / steps, curve = Math.sin(f * Math.PI) * 0.15;
+        for (var sp = 0; sp <= steps; sp++) {
+          var f = sp / steps, curve = Math.sin(f * Math.PI) * 0.15;
           out.points.push({
             t: t + f * 36e5 * 4,
             lat: a[0] + (b[0] - a[0]) * f + curve * (b[1] - a[1]) * 0.12,
@@ -574,7 +579,7 @@
           });
         }
       }
-      t += 86400000 * (10 + (i % 5) * 6);
+      t += gaps[i];
     }
     loadData(refine(out));
   });
@@ -637,27 +642,71 @@
     }
   });
 
-  // ── 영상(webm) — 팔로우 캠 재생을 그대로 녹화 ──
+  // ── GIF 내보내기 — 팔로우 캠 재생을 캡처해 GIF 인코딩 (gifenc, CDN 동적 로드) ──
   var recBtn = $("#rec");
-  if (!window.MediaRecorder || !canvas.captureStream) recBtn.style.display = "none";
   recBtn.addEventListener("click", function () {
     if (!state.data || recBtn.disabled) return;
     recBtn.disabled = true; recBtn.textContent = S.recBusy;
-    var stream = canvas.captureStream(30);
-    var mime = MediaRecorder.isTypeSupported("video/webm;codecs=vp9") ? "video/webm;codecs=vp9" : "video/webm";
-    var rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 6000000 });
-    var chunks = [];
-    rec.ondataavailable = function (e) { if (e.data.size) chunks.push(e.data); };
-    rec.onstop = function () {
-      var a = document.createElement("a");
-      a.href = URL.createObjectURL(new Blob(chunks, { type: "video/webm" }));
-      a.download = "footprints.webm";
-      a.click();
+    import("https://cdn.jsdelivr.net/npm/gifenc@1.0.3/+esm").then(function (G) {
+      var W2 = 420, H2 = Math.max(2, Math.round(canvas.height / canvas.width * 420));
+      var oc = document.createElement("canvas"); oc.width = W2; oc.height = H2;
+      var octx = oc.getContext("2d", { willReadFrequently: true });
+      var frames = [], lastCap = 0;
+      var savedDur = state.duration;
+      state.duration = Math.min(state.duration, 10000); // GIF는 최대 10초 분량
+      state.captureHook = function (now) {
+        if (now - lastCap < 80) return; // ~12fps
+        lastCap = now;
+        octx.drawImage(canvas, 0, 0, W2, H2);
+        frames.push(new Uint8Array(octx.getImageData(0, 0, W2, H2).data.buffer.slice(0)));
+      };
+      state.onFinish = function () {
+        state.captureHook = null;
+        state.duration = savedDur;
+        try {
+          if (!frames.length) throw new Error("no frames");
+          var gif = G.GIFEncoder();
+          var palette = G.quantize(frames[Math.floor(frames.length / 2)], 256);
+          for (var i = 0; i < frames.length; i++) {
+            gif.writeFrame(G.applyPalette(frames[i], palette), W2, H2, { palette: palette, delay: 80 });
+          }
+          gif.finish();
+          var blob = new Blob([gif.bytes()], { type: "image/gif" });
+          var file = new File([blob], "footprints.gif", { type: "image/gif" });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], title: S.shareTitle, text: S.shareText + " " + S.pageUrl }).catch(function () {});
+          } else {
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "footprints.gif";
+            a.click();
+          }
+          if (window.dataLayer) window.dataLayer.push({ event: "fp_export", fp_type: "gif", fp_frames: frames.length });
+        } catch (e) {
+          showErr(S.errPng);
+        }
+        frames = null;
+        recBtn.disabled = false; recBtn.textContent = S.recIdle;
+      };
+      play(true);
+    }).catch(function () {
       recBtn.disabled = false; recBtn.textContent = S.recIdle;
-      if (window.dataLayer) window.dataLayer.push({ event: "fp_export", fp_type: "webm" });
-    };
-    state.onFinish = function () { setTimeout(function () { rec.stop(); }, 600); };
-    rec.start();
-    play(true);
+      showErr(S.errPng);
+    });
+  });
+
+  // ── 공유 버튼 ──
+  var shareBtn = $("#share");
+  if (shareBtn) shareBtn.addEventListener("click", function () {
+    if (window.dataLayer) window.dataLayer.push({ event: "fp_share" });
+    if (navigator.share) {
+      navigator.share({ title: S.shareTitle, text: S.shareText, url: S.pageUrl }).catch(function () {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(S.shareText + " " + S.pageUrl).then(function () {
+        var orig = shareBtn.textContent;
+        shareBtn.textContent = S.copied;
+        setTimeout(function () { shareBtn.textContent = orig; }, 1800);
+      });
+    }
   });
 })();

@@ -106,3 +106,16 @@ body {
 footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line); font-size: .76rem; color: var(--ink-faint); }
 footer a { color: var(--ink-dim); text-decoration: none; }
 footer a:hover { color: var(--ink); }
+
+/* 다른 서비스 크로스 프로모 */
+.promo-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.promo-row a {
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+  background: var(--bg2); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px;
+  transition: border-color .15s;
+}
+.promo-row a:hover { border-color: var(--ink-faint); }
+.promo-row .pi { font-size: 1.4rem; }
+.promo-row b { display: block; font-size: .86rem; color: var(--ink); }
+.promo-row span { font-size: .74rem; color: var(--ink-faint); }
+@media (max-width: 480px) { .promo-row { grid-template-columns: 1fr; } }

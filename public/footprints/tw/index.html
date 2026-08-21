@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/footprints/footprints.css?v=1">
+<link rel="stylesheet" href="/footprints/footprints.css?v=2">
 <style>body{font-family:"Noto Sans TC",-apple-system,sans-serif}</style>
 <script type="application/ld+json">
 {
@@ -102,9 +102,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="export-row">
       <button id="png">🖼 儲存海報 (PNG)</button>
-      <button id="rec">🎬 儲存影片</button>
+      <button id="rec">🎞 製作 GIF</button>
+      <button id="share">🔗 分享</button>
     </div>
     <div class="travly">✈️ 正在計畫下一趟旅行？試試我們的 AI 旅行規劃 <a href="https://travel-mvp.pages.dev/" target="_blank" rel="noopener">Travly</a>。</div>
+    <div class="promo-row">
+      <a href="https://game.cocy.io/voicematch/" target="_blank" rel="noopener"><span class="pi">🎤</span><span><b>聲音雙胞胎</b><span>唱 10 秒，找出和你聲音最像的歌手</span></span></a>
+      <a href="https://game.cocy.io/animalface/" target="_blank" rel="noopener"><span class="pi">🦊</span><span><b>動物臉測驗</b><span>你長得像哪種動物？照片同樣只在裝置內處理</span></span></a>
+    </div>
   </section>
 
   <section class="sect">
@@ -134,6 +139,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script>
 window.FP_STR = {
+  recIdle: "🎞 製作 GIF", recBusy: "● GIF 錄製中…（最長 10 秒）",
+  shareTitle: "足跡 Footprints",
+  shareText: "我用 Google 時間軸做出了一年的旅行地圖動畫 — 30 秒就能做，不上傳任何資料：",
+  pageUrl: "https://page.cocy.io/footprints/tw/",
+  copied: "已複製連結！貼到任何地方分享",
   errTooBig: "：超過 300MB 的檔案瀏覽器難以處理。",
   errSettings: "這是時間軸的『設定』檔（Settings.json），不是位置資料。2024 年起移動紀錄存在手機裡，不在 Takeout。Android：手機設定 → 位置 → 定位服務 → 時間軸 → 『匯出時間軸資料』取得 Timeline.json。",
   errFormat: "不支援的格式。請使用 手機設定 → 位置 → 定位服務 → 時間軸 → 『匯出時間軸資料』 的 Timeline.json。",
@@ -141,13 +151,12 @@ window.FP_STR = {
   errPng: "圖片生成失敗。",
   errPngCors: "地圖圖磚的安全政策擋住了匯出。請重新整理後再試。",
   play: "▶ 播放", pause: "⏸ 暫停",
-  recIdle: "🎬 儲存影片", recBusy: "● 錄製中…",
   camFollow: "📷 跟隨", camOverview: "🗺 全覽",
   posterTitle: "我的足跡",
   stTotal: "總移動距離", stDays: "有紀錄的日子", stVisits: "造訪地點", stMaxDay: "單日最長",
   brandUrl: "page.cocy.io/footprints"
 };
 </script>
-<script src="/footprints/footprints.js?v=6"></script>
+<script src="/footprints/footprints.js?v=7"></script>
 </body>
 </html>

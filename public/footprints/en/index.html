@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/footprints/footprints.css?v=1">
+<link rel="stylesheet" href="/footprints/footprints.css?v=2">
 <style>body{font-family:"IBM Plex Sans",-apple-system,sans-serif}</style>
 <script type="application/ld+json">
 {
@@ -102,9 +102,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="export-row">
       <button id="png">🖼 Save poster (PNG)</button>
-      <button id="rec">🎬 Save video</button>
+      <button id="rec">🎞 Make a GIF</button>
+      <button id="share">🔗 Share</button>
     </div>
     <div class="travly">✈️ Planning your next trip? Try <a href="https://travel-mvp.pages.dev/" target="_blank" rel="noopener">Travly</a>, our AI travel planner.</div>
+    <div class="promo-row">
+      <a href="https://game.cocy.io/voicematch/" target="_blank" rel="noopener"><span class="pi">🎤</span><span><b>Voice Twin</b><span>Sing 10 seconds, find the singer who shares your voice</span></span></a>
+      <a href="https://game.cocy.io/animalface/" target="_blank" rel="noopener"><span class="pi">🦊</span><span><b>Animal Face Test</b><span>Which animal do you look like? Photos stay on-device too</span></span></a>
+    </div>
   </section>
 
   <section class="sect">
@@ -134,6 +139,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script>
 window.FP_STR = {
+  recIdle: "🎞 Make a GIF", recBusy: "● Recording GIF… (up to 10s)",
+  shareTitle: "Footprints",
+  shareText: "I turned my Google Timeline into an animated travel map — takes 30 seconds, nothing uploaded:",
+  pageUrl: "https://page.cocy.io/footprints/en/",
+  copied: "Link copied! Paste anywhere",
   errTooBig: ": files over 300MB are too large for the browser.",
   errSettings: "This is your Timeline *settings* file (Settings.json), not location data. Since 2024 your movement history lives on your phone, not in Takeout. Android: Phone Settings → Location → Location Services → Timeline → 'Export Timeline data' to get Timeline.json.",
   errFormat: "Unsupported format. Use Timeline.json from Phone Settings → Location → Location Services → Timeline → 'Export Timeline data'.",
@@ -141,13 +151,12 @@ window.FP_STR = {
   errPng: "Failed to generate the image.",
   errPngCors: "Map tile security policy blocked the export. Refresh and try again.",
   play: "▶ Play", pause: "⏸ Pause",
-  recIdle: "🎬 Save video", recBusy: "● Recording…",
   camFollow: "📷 Follow", camOverview: "🗺 Overview",
   posterTitle: "My Footprints",
   stTotal: "Total distance", stDays: "Days recorded", stVisits: "Places visited", stMaxDay: "Longest day",
   brandUrl: "page.cocy.io/footprints"
 };
 </script>
-<script src="/footprints/footprints.js?v=6"></script>
+<script src="/footprints/footprints.js?v=7"></script>
 </body>
 </html>
