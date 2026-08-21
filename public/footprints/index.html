@@ -15,6 +15,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="description" content="구글지도 타임라인 내보내기 파일을 브라우저에 놓으면 1년의 이동 경로가 지도 위에 애니메이션으로 그려집니다. 총 이동거리·방문 장소 통계와 공유용 포스터·영상까지, 파일 업로드 없이 전부 기기 안에서 처리.">
 <meta name="keywords" content="구글 타임라인, 타임라인 시각화, 위치기록 지도, 여행 지도 만들기, 이동경로 시각화, Timeline.json">
 <link rel="canonical" href="https://page.cocy.io/footprints/">
+<link rel="alternate" hreflang="ko" href="https://page.cocy.io/footprints/">
+<link rel="alternate" hreflang="en" href="https://page.cocy.io/footprints/en/">
+<link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/footprints/tw/">
+<link rel="alternate" hreflang="x-default" href="https://page.cocy.io/footprints/en/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="발자국 — 내 1년의 이동 경로를 한 장의 지도로">
 <meta property="og:description" content="구글 타임라인 파일을 놓으면 여행 경로 애니메이션 + 통계 포스터가 나옵니다. 업로드 없음, 전부 브라우저 안에서.">
@@ -51,6 +55,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <header class="top">
     <img class="logo" src="/footprints/icon.svg" alt="">
     <div class="brand"><b>발자국</b><span>Footprints</span></div>
+    <nav class="langs" style="margin-left:auto;display:flex;gap:4px">
+      <a href="/footprints/" style="font-family:var(--mono);font-size:.7rem;color:#39c0ff;text-decoration:none;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--panel)">KO</a>
+      <a href="/footprints/en/" style="font-family:var(--mono);font-size:.7rem;color:#5a6b88;text-decoration:none;padding:4px 8px">EN</a>
+      <a href="/footprints/tw/" style="font-family:var(--mono);font-size:.7rem;color:#5a6b88;text-decoration:none;padding:4px 8px">中</a>
+    </nav>
   </header>
 
   <section class="hero">
@@ -75,6 +84,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <canvas id="map"></canvas>
     <div class="controls">
       <button id="play">▶ 재생</button>
+      <button id="cam">📷 따라가기</button>
       <select id="speed">
         <option value="12000">빠르게 (12초)</option>
         <option value="20000" selected>보통 (20초)</option>
@@ -121,6 +131,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </footer>
 </div>
 
-<script src="/footprints/footprints.js?v=2"></script>
+<script src="/footprints/footprints.js?v=3"></script>
 </body>
 </html>

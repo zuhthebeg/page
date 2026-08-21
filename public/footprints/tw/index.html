@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script>
+<!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>足跡 — 把 Google 時間軸變成你的旅行地圖（不上傳）</title>
+<meta name="description" content="把 Google 地圖時間軸匯出檔拖進來，一年的移動軌跡就會在暗色地圖上動起來 — 飛行弧線、跟隨鏡頭、距離統計、可分享的海報與影片。全部在瀏覽器內完成，不上傳任何資料。">
+<meta name="keywords" content="Google 時間軸, 位置紀錄地圖, 旅行地圖製作, Timeline.json, 一年旅行回顧">
+<link rel="canonical" href="https://page.cocy.io/footprints/tw/">
+<link rel="alternate" hreflang="ko" href="https://page.cocy.io/footprints/">
+<link rel="alternate" hreflang="en" href="https://page.cocy.io/footprints/en/">
+<link rel="alternate" hreflang="zh-Hant" href="https://page.cocy.io/footprints/tw/">
+<link rel="alternate" hreflang="x-default" href="https://page.cocy.io/footprints/en/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="足跡 — 一年的旅程，一張地圖">
+<meta property="og:description" content="拖入 Google 時間軸檔案：路線動畫、飛行弧線、統計、可分享海報與影片。不上傳任何資料。">
+<meta property="og:url" content="https://page.cocy.io/footprints/tw/">
+<meta property="og:image" content="https://page.cocy.io/footprints/og-tw.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="足跡 — 一年的旅程，一張地圖">
+<meta name="twitter:description" content="Google 時間軸旅行地圖動畫。不上傳任何資料。">
+<link rel="icon" type="image/svg+xml" href="/footprints/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/footprints/footprints.css?v=1">
+<style>body{font-family:"Noto Sans TC",-apple-system,sans-serif}</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "足跡 (Footprints)",
+  "url": "https://page.cocy.io/footprints/tw/",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" },
+  "description": "把 Google 時間軸匯出檔在瀏覽器內視覺化成旅行地圖動畫 — 不上傳任何資料"
+}
+</script>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="wrap">
+  <header class="top">
+    <img class="logo" src="/footprints/icon.svg" alt="">
+    <div class="brand"><b>足跡</b><span>Footprints</span></div>
+    <nav class="langs" style="margin-left:auto;display:flex;gap:4px">
+      <a href="/footprints/" style="font-family:var(--mono);font-size:.7rem;color:#5a6b88;text-decoration:none;padding:4px 8px">KO</a>
+      <a href="/footprints/en/" style="font-family:var(--mono);font-size:.7rem;color:#5a6b88;text-decoration:none;padding:4px 8px">EN</a>
+      <a href="/footprints/tw/" style="font-family:var(--mono);font-size:.7rem;color:#39c0ff;text-decoration:none;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--panel)">中</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="tape"><span class="dot"></span>On-device Travel Map</div>
+    <h1>這一年去過的每個地方，<br><span class="hl">畫成一張地圖。</span></h1>
+    <p class="sub">把 Google 地圖時間軸匯出檔（Timeline.json）拖進來，你的移動軌跡就會在暗色地圖上動起來 — 長途以飛行弧線呈現、鏡頭跟著旅程移動，還有距離統計與可分享的海報、影片。</p>
+    <div class="privacy-pill">🔒 檔案不會離開瀏覽器 — 不上傳、不需帳號、全部在你的裝置內處理</div>
+  </section>
+
+  <section class="panel" id="loader">
+    <div class="drop" id="drop">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#39c0ff" stroke-width="1.6"><path d="M12 22s7-5.1 7-11.2A7 7 0 0 0 5 10.8C5 16.9 12 22 12 22Z"/><circle cx="12" cy="10.5" r="2.6"/></svg>
+      <div class="big">點擊或拖曳 Timeline.json 到這裡</div>
+      <div class="small">可多檔選取 · 支援 Android/iPhone 匯出與 Takeout（Semantic · Records）</div>
+    </div>
+    <input type="file" id="file" accept=".json,application/json" multiple hidden>
+    <div class="demo-row"><button id="demo">先用範例試試 — 不需要檔案</button></div>
+    <div class="err" id="err"></div>
+  </section>
+
+  <section class="panel" id="viewer">
+    <canvas id="map"></canvas>
+    <div class="controls">
+      <button id="play">▶ 播放</button>
+      <button id="cam">📷 跟隨</button>
+      <select id="speed">
+        <option value="12000">快 (12秒)</option>
+        <option value="20000" selected>普通 (20秒)</option>
+        <option value="40000">慢 (40秒)</option>
+      </select>
+      <input type="range" id="scrub" min="0" max="1000" value="0">
+      <div class="range-label" id="range"></div>
+    </div>
+    <div class="statgrid">
+      <div class="stat"><b id="s-km">0</b><span>總移動距離 (km)</span></div>
+      <div class="stat"><b id="s-days">0</b><span>有紀錄的日子</span></div>
+      <div class="stat"><b id="s-visits">0</b><span>造訪地點</span></div>
+      <div class="stat"><b id="s-maxday">0</b><span>單日最長 (km)</span></div>
+    </div>
+    <div class="export-row">
+      <button id="png">🖼 儲存海報 (PNG)</button>
+      <button id="rec">🎬 儲存影片</button>
+    </div>
+    <div class="travly">✈️ 正在計畫下一趟旅行？試試我們的 AI 旅行規劃 <a href="https://travel-mvp.pages.dev/" target="_blank" rel="noopener">Travly</a>。</div>
+  </section>
+
+  <section class="sect">
+    <h2><span class="num">01</span>如何取得時間軸檔案</h2>
+    <ol>
+      <li><b>Android（推薦）</b> — <b>手機設定 → 位置 → 定位服務 → 時間軸 → 匯出時間軸資料</b>。把存下的 <b>Timeline.json</b> 拖進來即可。</li>
+      <li><b>iPhone</b> — Google 地圖 App → 個人頭像 → <b>設定 → 個人內容 → 匯出時間軸資料</b>。</li>
+      <li><b>Google Takeout（舊紀錄用）</b> — <a href="https://takeout.google.com" target="_blank" rel="noopener" style="color:#39c0ff">takeout.google.com</a> 的「位置紀錄（時間軸）」。請使用 Records.json 或按月的 Semantic Location History JSON — <b>不是 Settings.json</b>。</li>
+    </ol>
+    <p>⚠️ 2024 年起 Google 把時間軸<b>只存在你的手機裡</b>。所以「用 Google 登入自動匯入」在設計上就不可能（沒有官方 API）— 也正因如此，這個頁面才能在完全沒有伺服器的情況下處理你的檔案。</p>
+  </section>
+
+  <section class="sect">
+    <h2><span class="num">02</span>隱私 — 由架構保證</h2>
+    <div class="cardgrid">
+      <div class="icard"><b>📵 不上傳</b><span>這個頁面根本沒有能接收位置資料的伺服器。解析、繪製、影片生成全部在瀏覽器內完成。</span></div>
+      <div class="icard"><b>🗺️ 唯一的網路請求：地圖圖磚</b><span>底圖來自 CARTO，只會請求畫面可見區域的圖磚編號 — 僅此而已。</span></div>
+      <div class="icard"><b>🗑️ 不留痕跡</b><span>關掉分頁就結束。不用 Cookie，也不儲存你的位置資料。</span></div>
+      <div class="icard"><b>🔍 可驗證</b><span>一個未壓縮的純 JS 檔案，打開開發者工具就能自己確認。</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <a href="https://page.cocy.io/">← page.cocy.io</a> · 足跡是 <a href="https://cocy.io">cocy.io</a> 的免費實驗 · 地圖：© CARTO © OpenStreetMap contributors
+  </footer>
+</div>
+
+<script>
+window.FP_STR = {
+  errTooBig: "：超過 300MB 的檔案瀏覽器難以處理。",
+  errSettings: "這是時間軸的『設定』檔（Settings.json），不是位置資料。2024 年起移動紀錄存在手機裡，不在 Takeout。Android：手機設定 → 位置 → 定位服務 → 時間軸 → 『匯出時間軸資料』取得 Timeline.json。",
+  errFormat: "不支援的格式。請使用 手機設定 → 位置 → 定位服務 → 時間軸 → 『匯出時間軸資料』 的 Timeline.json。",
+  errNoPoints: "在這個檔案裡找不到移動紀錄。請確認是時間軸匯出檔（Timeline.json）。",
+  errPng: "圖片生成失敗。",
+  errPngCors: "地圖圖磚的安全政策擋住了匯出。請重新整理後再試。",
+  play: "▶ 播放", pause: "⏸ 暫停",
+  recIdle: "🎬 儲存影片", recBusy: "● 錄製中…",
+  camFollow: "📷 跟隨", camOverview: "🗺 全覽",
+  posterTitle: "我的足跡",
+  stTotal: "總移動距離", stDays: "有紀錄的日子", stVisits: "造訪地點", stMaxDay: "單日最長",
+  brandUrl: "page.cocy.io/footprints"
+};
+</script>
+<script src="/footprints/footprints.js?v=3"></script>
+</body>
+</html>

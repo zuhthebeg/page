@@ -1,10 +1,27 @@
 /* 발자국 Footprints — 구글 타임라인 내보내기를 브라우저 안에서만 파싱·렌더.
-   네트워크 요청은 CARTO 지도 타일뿐. 타임라인 데이터는 어디로도 전송되지 않는다. */
+   네트워크 요청은 CARTO 지도 타일뿐. 타임라인 데이터는 어디로도 전송되지 않는다.
+   v3: 팔로우 카메라(부동소수 줌) + 비행 아크(150km+ 점프) + i18n 문자열 주입 */
 (function () {
   "use strict";
   var $ = function (s) { return document.querySelector(s); };
 
-  // ── 좌표 파싱 유틸 ──
+  // ── i18n — 각 로케일 HTML이 window.FP_STR 주입, 없으면 ko 기본값 ──
+  var S = Object.assign({
+    errTooBig: ": 300MB 초과 파일은 브라우저에서 처리하기 어려워요.",
+    errSettings: "이건 위치 데이터가 아니라 타임라인 '설정' 파일이에요 (Settings.json). 2024년부터 이동 기록은 Takeout이 아니라 휴대폰 안에 저장됩니다. 안드로이드: 폰 설정 → 위치 → 위치 서비스 → 타임라인 → '타임라인 데이터 내보내기'로 Timeline.json을 만들어 넣어주세요.",
+    errFormat: "지원하는 형식이 아니에요. 폰 설정 → 위치 → 위치 서비스 → 타임라인 → '타임라인 데이터 내보내기'의 Timeline.json을 넣어주세요.",
+    errNoPoints: "이 파일에서 이동 기록을 찾지 못했어요. Timeline.json(타임라인 내보내기)인지 확인해주세요.",
+    errPng: "이미지 생성에 실패했어요.",
+    errPngCors: "지도 타일 보안 정책 때문에 이미지 저장이 막혔어요. 새로고침 후 다시 시도해주세요.",
+    play: "▶ 재생", pause: "⏸ 일시정지",
+    recIdle: "🎬 영상 저장", recBusy: "● 녹화 중…",
+    camFollow: "📷 따라가기", camOverview: "🗺 전체 보기",
+    posterTitle: "나의 발자국",
+    stTotal: "총 이동거리", stDays: "기록된 날", stVisits: "방문 장소", stMaxDay: "최장 하루",
+    brandUrl: "page.cocy.io/footprints",
+  }, window.FP_STR || {});
+
+  // ── 좌표/시간 파싱 ──
   function parsePoint(v) {
     if (!v) return null;
     if (typeof v === "object") {
@@ -20,7 +37,7 @@
   }
   function ts(v) { var t = Date.parse(v); return isNaN(t) ? null : t; }
 
-  // ── 포맷별 파서 → {points:[{t,lat,lng}], visits:[{t,lat,lng}]} ──
+  // ── 포맷별 파서 ──
   function parseSegments(segs, out) {
     for (var i = 0; i < segs.length; i++) {
       var seg = segs[i];
@@ -103,7 +120,7 @@
   }
 
   // ── 정제 + 통계 ──
-  var R = 6371;
+  var R = 6371, JUMP_KM = 150;
   function hav(a, b) {
     var dLat = (b.lat - a.lat) * Math.PI / 180, dLng = (b.lng - a.lng) * Math.PI / 180;
     var s = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -121,7 +138,7 @@
       if (prev) {
         if (pts[i].t === prev.t && pts[i].lat === prev.lat) continue;
         var dt = (pts[i].t - prev.t) / 3600000;
-        if (dt > 0 && hav(prev, pts[i]) / dt > 1200) continue; // GPS 글리치 (>1200km/h)
+        if (dt > 0 && hav(prev, pts[i]) / dt > 1200) continue; // GPS 글리치
       }
       clean.push(pts[i]);
     }
@@ -130,7 +147,9 @@
       for (var j = 0; j < clean.length; j += stride) ds.push(clean[j]);
       clean = ds;
     }
-    // 통계
+    // 점프(비행) 세그먼트 표시: i → i+1 거리가 JUMP_KM 초과
+    var jumps = [];
+    for (var k2 = 1; k2 < clean.length; k2++) jumps.push(hav(clean[k2 - 1], clean[k2]) > JUMP_KM);
     var totalKm = 0, dayKm = {}, days = {};
     for (var k = 1; k < clean.length; k++) {
       var d = hav(clean[k - 1], clean[k]);
@@ -141,23 +160,19 @@
     clean.forEach(function (p) { days[new Date(p.t).toISOString().slice(0, 10)] = 1; });
     var maxDay = Object.keys(dayKm).sort(function (a, b) { return dayKm[b] - dayKm[a]; })[0];
     return {
-      points: clean,
+      points: clean, jumps: jumps,
       visits: data.visits.filter(function (v) { return isFinite(v.lat); }),
       stats: {
-        totalKm: totalKm,
-        days: Object.keys(days).length,
-        visits: data.visits.length,
+        totalKm: totalKm, days: Object.keys(days).length, visits: data.visits.length,
         maxDayKm: maxDay ? dayKm[maxDay] : 0,
-        maxDay: maxDay || null,
-        from: clean.length ? clean[0].t : null,
-        to: clean.length ? clean[clean.length - 1].t : null,
+        from: clean.length ? clean[0].t : null, to: clean.length ? clean[clean.length - 1].t : null,
       },
     };
   }
 
-  // ── 지도 (웹 메르카토르 + CARTO dark 타일) ──
+  // ── 메르카토르 + CARTO dark 타일 ──
   var TILE = 256, SUBS = ["a", "b", "c", "d"];
-  var tileCache = {}, tileFail = {};
+  var tileCache = {}, tileFail = {}, tileCount = 0;
   function merc(lat, lng, z) {
     var n = TILE * Math.pow(2, z);
     var x = (lng + 180) / 360 * n;
@@ -165,43 +180,32 @@
     var y = (1 - Math.log(Math.tan(rad) + 1 / Math.cos(rad)) / Math.PI) / 2 * n;
     return { x: x, y: y };
   }
-  function fitView(bbox, w, h) {
-    var pad = 0.14;
-    for (var z = 13; z >= 2; z--) {
-      var a = merc(bbox.maxLat, bbox.minLng, z), b = merc(bbox.minLat, bbox.maxLng, z);
-      if ((b.x - a.x) <= w * (1 - pad) && (b.y - a.y) <= h * (1 - pad)) {
-        return { z: z, cx: (a.x + b.x) / 2, cy: (a.y + b.y) / 2 };
-      }
-    }
-    return { z: 2, cx: merc(0, 0, 2).x, cy: merc(0, 0, 2).y };
+  function invMerc(x, y, z) {
+    var n = TILE * Math.pow(2, z);
+    var lng = x / n * 360 - 180;
+    var lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * y / n))) * 180 / Math.PI;
+    return { lat: lat, lng: lng };
   }
-  function drawTiles(ctx, view, w, h, onload) {
-    var z = view.z, n = Math.pow(2, z);
-    var x0 = Math.floor((view.cx - w / 2) / TILE), x1 = Math.floor((view.cx + w / 2) / TILE);
-    var y0 = Math.floor((view.cy - h / 2) / TILE), y1 = Math.floor((view.cy + h / 2) / TILE);
-    for (var tx = x0; tx <= x1; tx++) {
-      for (var ty = Math.max(0, y0); ty <= Math.min(n - 1, y1); ty++) {
-        var wx = ((tx % n) + n) % n;
-        var key = z + "/" + wx + "/" + ty;
-        var img = tileCache[key];
-        if (!img) {
-          if (tileFail[key]) continue;
-          img = new Image();
-          img.crossOrigin = "anonymous";
-          img.onload = onload;
-          img.onerror = (function (k) { return function () { tileFail[k] = 1; }; })(key);
-          img.src = "https://" + SUBS[(wx + ty) % 4] + ".basemaps.cartocdn.com/dark_all/" + key + ".png";
-          tileCache[key] = img;
-        }
-        if (img.complete && img.naturalWidth) {
-          ctx.drawImage(img, Math.round(tx * TILE - view.cx + w / 2), Math.round(ty * TILE - view.cy + h / 2));
-        }
-      }
+  function zoomToFit(bbox, w, h, maxZ) {
+    var pad = 0.14;
+    for (var z = maxZ; z >= 2; z--) {
+      var a = merc(bbox.maxLat, bbox.minLng, z), b = merc(bbox.minLat, bbox.maxLng, z);
+      if ((b.x - a.x) <= w * (1 - pad) && (b.y - a.y) <= h * (1 - pad)) return z;
     }
+    return 2;
+  }
+  function bboxCenter(bbox, z) {
+    var a = merc(bbox.maxLat, bbox.minLng, z), b = merc(bbox.minLat, bbox.maxLng, z);
+    return invMerc((a.x + b.x) / 2, (a.y + b.y) / 2, z);
   }
 
-  // ── 렌더러 ──
-  var state = { data: null, view: null, progress: 1, playing: false, lastFrame: 0, duration: 20000 };
+  // ── 상태 ──
+  var state = {
+    data: null, progress: 0, playing: false, lastFrame: 0, duration: 20000,
+    cam: null,            // {lat,lng,z(float)} 현재 카메라
+    follow: true,         // 팔로우 캠 vs 전체 보기
+    fitZ: 3, overviewCam: null, onFinish: null,
+  };
   var canvas = $("#map"), ctx = canvas.getContext("2d");
   var DPR = Math.min(2, window.devicePixelRatio || 1);
 
@@ -211,119 +215,251 @@
     canvas.width = w * DPR; canvas.height = h * DPR;
     canvas.style.height = h + "px";
     if (state.data) {
-      state.view = fitView(state.data.bbox, w * DPR, h * DPR);
-      render();
+      computeOverview();
+      if (!state.playing) { snapCamera(); render(); }
     }
   }
   window.addEventListener("resize", resize);
 
-  function project(p) {
-    var m = merc(p.lat, p.lng, state.view.z);
-    return { x: m.x - state.view.cx + canvas.width / 2, y: m.y - state.view.cy + canvas.height / 2 };
+  function computeOverview() {
+    var b = state.data.bbox;
+    state.fitZ = zoomToFit(b, canvas.width, canvas.height, 13);
+    var c = bboxCenter(b, state.fitZ);
+    state.overviewCam = { lat: c.lat, lng: c.lng, z: state.fitZ };
   }
 
+  // ── 시간→현재 위치/세그먼트 ──
+  function headAt(tCur) {
+    var pts = state.data.points;
+    if (tCur <= pts[0].t) return { p: pts[0], idx: 0, frac: 0 };
+    for (var i = 0; i < pts.length - 1; i++) {
+      if (pts[i + 1].t > tCur) {
+        var f = (tCur - pts[i].t) / Math.max(1, pts[i + 1].t - pts[i].t);
+        return {
+          idx: i, frac: f,
+          p: { lat: pts[i].lat + (pts[i + 1].lat - pts[i].lat) * f, lng: pts[i].lng + (pts[i + 1].lng - pts[i].lng) * f },
+        };
+      }
+    }
+    return { p: pts[pts.length - 1], idx: pts.length - 1, frac: 1 };
+  }
+
+  // ── 카메라 ──
+  function desiredCam(head) {
+    if (!state.follow) return state.overviewCam;
+    var followZ = Math.min(10.5, Math.max(7.5, state.fitZ + 3));
+    // 비행(점프) 구간: 양 끝점이 다 보이게 줌아웃. jumps[i] = 세그먼트 i→i+1
+    var i = head.idx;
+    if (state.data.jumps[i] && i < state.data.points.length - 1) {
+      var a = state.data.points[i], b = state.data.points[i + 1];
+      var jb = {
+        minLat: Math.min(a.lat, b.lat), maxLat: Math.max(a.lat, b.lat),
+        minLng: Math.min(a.lng, b.lng), maxLng: Math.max(a.lng, b.lng),
+      };
+      var jz = zoomToFit(jb, canvas.width, canvas.height, 10) - 0.3;
+      return { lat: head.p.lat, lng: head.p.lng, z: Math.min(followZ, Math.max(3, jz)) };
+    }
+    return { lat: head.p.lat, lng: head.p.lng, z: followZ };
+  }
+  function snapCamera() {
+    var t0 = state.data.stats.from, t1 = state.data.stats.to;
+    state.cam = Object.assign({}, desiredCam(headAt(t0 + (t1 - t0) * state.progress)));
+  }
+  function lerpCamera(head) {
+    var d = desiredCam(head);
+    var kP = 0.14, kZ = 0.07;
+    state.cam.lat += (d.lat - state.cam.lat) * kP;
+    state.cam.lng += (d.lng - state.cam.lng) * kP;
+    state.cam.z += (d.z - state.cam.z) * kZ;
+  }
+
+  // ── 렌더 ──
   function render() {
-    if (!state.data) return;
+    if (!state.data || !state.cam) return;
     var w = canvas.width, h = canvas.height;
+    var cam = state.cam;
+    var zi = Math.max(2, Math.min(12, Math.round(cam.z)));
+    var scale = Math.pow(2, cam.z - zi);
+    var c = merc(cam.lat, cam.lng, zi);
+    function px(p) {
+      var m = merc(p.lat, p.lng, zi);
+      return { x: (m.x - c.x) * scale + w / 2, y: (m.y - c.y) * scale + h / 2 };
+    }
+
     ctx.fillStyle = "#0a0f1a";
     ctx.fillRect(0, 0, w, h);
-    drawTiles(ctx, state.view, w, h, function () { if (!state.playing) render(); });
-    ctx.fillStyle = "rgba(7,11,20,0.35)"; // 톤 통일용 오버레이
+
+    // 타일
+    var n = Math.pow(2, zi);
+    var x0 = Math.floor((c.x - w / 2 / scale) / TILE), x1 = Math.floor((c.x + w / 2 / scale) / TILE);
+    var y0 = Math.max(0, Math.floor((c.y - h / 2 / scale) / TILE)), y1 = Math.min(n / TILE * TILE - 1, Math.floor((c.y + h / 2 / scale) / TILE));
+    for (var tx = x0; tx <= x1; tx++) {
+      for (var ty = y0; ty <= y1; ty++) {
+        if (ty < 0 || ty >= n / TILE) continue;
+        var wx = ((tx % (n / TILE)) + n / TILE) % (n / TILE);
+        var key = zi + "/" + wx + "/" + ty;
+        var img = tileCache[key];
+        if (!img) {
+          if (tileFail[key]) continue;
+          if (tileCount > 600) { tileCache = {}; tileCount = 0; } // 캐시 폭주 가드
+          img = new Image();
+          img.crossOrigin = "anonymous";
+          img.onload = function () { if (!state.playing) render(); };
+          img.onerror = (function (k) { return function () { tileFail[k] = 1; }; })(key);
+          img.src = "https://" + SUBS[(wx + ty) % 4] + ".basemaps.cartocdn.com/dark_all/" + key + ".png";
+          tileCache[key] = img; tileCount++;
+        }
+        if (img.complete && img.naturalWidth) {
+          ctx.drawImage(img, (tx * TILE - c.x) * scale + w / 2, (ty * TILE - c.y) * scale + h / 2, TILE * scale + 0.6, TILE * scale + 0.6);
+        }
+      }
+    }
+    ctx.fillStyle = "rgba(7,11,20,0.35)";
     ctx.fillRect(0, 0, w, h);
 
     var pts = state.data.points;
     if (!pts.length) return;
     var t0 = state.data.stats.from, t1 = state.data.stats.to;
     var tCur = t0 + (t1 - t0) * state.progress;
+    var head = headAt(tCur);
 
-    // 경로
-    ctx.lineWidth = 2.2 * DPR;
-    ctx.lineJoin = ctx.lineCap = "round";
-    ctx.shadowColor = "rgba(57,192,255,.8)";
-    ctx.shadowBlur = 6 * DPR;
-    var last = null, hue0 = 190, hue1 = 140;
-    ctx.beginPath();
-    var head = null, count = 0;
-    for (var i = 0; i < pts.length && pts[i].t <= tCur; i++) {
-      var q = project(pts[i]);
-      if (last === null) ctx.moveTo(q.x, q.y);
-      else {
-        // 대륙 점프(랩어라운드) 방지
-        if (Math.abs(q.x - last.x) > canvas.width * 0.8) ctx.moveTo(q.x, q.y);
-        else ctx.lineTo(q.x, q.y);
-      }
-      last = q; head = pts[i]; count = i;
-    }
-    var grad = ctx.createLinearGradient(0, 0, w, h);
-    grad.addColorStop(0, "hsl(" + hue0 + ",95%,62%)");
-    grad.addColorStop(1, "hsl(" + hue1 + ",90%,58%)");
-    ctx.strokeStyle = grad;
-    ctx.stroke();
-    ctx.shadowBlur = 0;
+    drawPath(ctx, px, pts, state.data.jumps, head, w, h, DPR);
 
     // 방문 지점
     ctx.fillStyle = "rgba(180,140,255,.85)";
     state.data.visits.forEach(function (v) {
       if (v.t > tCur) return;
-      var q = project(v);
+      var q = px(v);
+      if (q.x < -20 || q.x > w + 20 || q.y < -20 || q.y > h + 20) return;
       ctx.beginPath(); ctx.arc(q.x, q.y, 2.2 * DPR, 0, 7); ctx.fill();
     });
 
     // 헤드
-    if (last) {
-      ctx.fillStyle = "#3ef08c";
-      ctx.shadowColor = "#3ef08c"; ctx.shadowBlur = 10 * DPR;
-      ctx.beginPath(); ctx.arc(last.x, last.y, 4 * DPR, 0, 7); ctx.fill();
-      ctx.shadowBlur = 0;
-    }
+    var hq = px(head.p);
+    ctx.fillStyle = "#3ef08c";
+    ctx.shadowColor = "#3ef08c"; ctx.shadowBlur = 10 * DPR;
+    ctx.beginPath(); ctx.arc(hq.x, hq.y, 4 * DPR, 0, 7); ctx.fill();
+    ctx.shadowBlur = 0;
 
     // HUD
     var km = 0;
-    for (var j = 1; j <= count; j++) km += hav(pts[j - 1], pts[j]);
-    ctx.font = 600 * 0 + (13 * DPR) + "px 'IBM Plex Mono', monospace";
+    for (var j2 = 1; j2 <= head.idx; j2++) km += hav(pts[j2 - 1], pts[j2]);
+    ctx.font = (13 * DPR) + "px 'IBM Plex Mono', monospace";
     ctx.fillStyle = "rgba(220,230,245,.92)";
-    ctx.fillText(head ? fmtDate(new Date(head.t)) : "", 14 * DPR, 24 * DPR);
+    ctx.fillText(fmtDate(new Date(tCur)), 14 * DPR, 24 * DPR);
     ctx.fillStyle = "#3ef08c";
     ctx.fillText(Math.round(km).toLocaleString() + " km", 14 * DPR, 44 * DPR);
     ctx.fillStyle = "rgba(90,107,136,.9)";
     ctx.font = (10 * DPR) + "px 'IBM Plex Mono', monospace";
-    ctx.fillText("page.cocy.io/footprints · © CARTO © OSM", 14 * DPR, h - 12 * DPR);
+    ctx.fillText(S.brandUrl + " · © CARTO © OSM", 14 * DPR, h - 12 * DPR);
     $("#scrub").value = Math.round(state.progress * 1000);
+  }
+
+  // 경로 그리기 — 일반=실선 그라데이션, 점프=점선 비행 아크. head.idx까지 + 현재 세그먼트 부분 진행
+  function drawPath(x, px, pts, jumps, head, w, h, dpr) {
+    var grad = x.createLinearGradient(0, 0, w, h);
+    grad.addColorStop(0, "hsl(190,95%,62%)");
+    grad.addColorStop(1, "hsl(140,90%,58%)");
+    x.lineJoin = x.lineCap = "round";
+
+    function seg(i, frac) { // i → i+1 세그먼트를 frac(0..1)까지. jumps[i] = 이 세그먼트가 점프인지
+      var a = px(pts[i]), b = px(pts[i + 1]);
+      if (Math.abs(b.x - a.x) > w * 1.5) return; // 랩어라운드 방지
+      var isJump = jumps[i];
+      var end = frac == null ? 1 : frac;
+      if (isJump) {
+        // 비행 아크: 수직 오프셋 곡선 + 점선
+        var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+        var dx = b.x - a.x, dy = b.y - a.y;
+        var len = Math.sqrt(dx * dx + dy * dy) || 1;
+        var off = Math.min(len * 0.22, 90 * dpr);
+        var cx2 = mx - dy / len * off, cy2 = my + dx / len * off;
+        x.save();
+        x.setLineDash([5 * dpr, 7 * dpr]);
+        x.strokeStyle = "rgba(180,140,255,.9)";
+        x.lineWidth = 1.8 * dpr;
+        x.shadowColor = "rgba(180,140,255,.6)"; x.shadowBlur = 5 * dpr;
+        x.beginPath();
+        var steps = 26, lim = Math.max(1, Math.round(steps * end));
+        x.moveTo(a.x, a.y);
+        for (var s2 = 1; s2 <= lim; s2++) {
+          var t2 = (s2 / lim) * end;
+          var xx = (1 - t2) * (1 - t2) * a.x + 2 * (1 - t2) * t2 * cx2 + t2 * t2 * b.x;
+          var yy = (1 - t2) * (1 - t2) * a.y + 2 * (1 - t2) * t2 * cy2 + t2 * t2 * b.y;
+          x.lineTo(xx, yy);
+        }
+        x.stroke();
+        x.restore();
+      } else {
+        x.strokeStyle = grad;
+        x.lineWidth = 2.2 * dpr;
+        x.shadowColor = "rgba(57,192,255,.8)"; x.shadowBlur = 6 * dpr;
+        x.beginPath();
+        x.moveTo(a.x, a.y);
+        x.lineTo(a.x + (b.x - a.x) * end, a.y + (b.y - a.y) * end);
+        x.stroke();
+        x.shadowBlur = 0;
+      }
+    }
+    for (var i = 0; i < head.idx; i++) seg(i, 1);
+    if (head.idx < pts.length - 1 && head.frac > 0) seg(head.idx, head.frac);
   }
 
   function fmtDate(d) {
     return d.getFullYear() + "." + String(d.getMonth() + 1).padStart(2, "0") + "." + String(d.getDate()).padStart(2, "0");
   }
 
-  // ── 재생 ──
+  // ── 재생 루프 ──
   function tick(now) {
     if (!state.playing) return;
     var dt = now - (state.lastFrame || now);
     state.lastFrame = now;
     state.progress = Math.min(1, state.progress + dt / state.duration);
+    var t0 = state.data.stats.from, t1 = state.data.stats.to;
+    lerpCamera(headAt(t0 + (t1 - t0) * state.progress));
     render();
-    if (state.progress >= 1) { state.playing = false; $("#play").textContent = "▶ 재생"; if (state.onFinish) { var f = state.onFinish; state.onFinish = null; f(); } return; }
+    if (state.progress >= 1) {
+      state.playing = false;
+      $("#play").textContent = S.play;
+      // 끝나면 전체 보기로 부드럽게 전환
+      var settle = 0;
+      (function settleLoop() {
+        if (state.playing || settle++ > 90) { if (state.onFinish) { var f = state.onFinish; state.onFinish = null; f(); } return; }
+        var d = state.overviewCam;
+        state.cam.lat += (d.lat - state.cam.lat) * 0.08;
+        state.cam.lng += (d.lng - state.cam.lng) * 0.08;
+        state.cam.z += (d.z - state.cam.z) * 0.06;
+        render();
+        requestAnimationFrame(settleLoop);
+      })();
+      return;
+    }
     requestAnimationFrame(tick);
   }
   function play(fromStart) {
-    if (fromStart || state.progress >= 1) state.progress = 0;
+    if (fromStart || state.progress >= 1) { state.progress = 0; snapCamera(); }
     state.playing = true; state.lastFrame = 0;
-    $("#play").textContent = "⏸ 일시정지";
+    $("#play").textContent = S.pause;
     requestAnimationFrame(tick);
   }
-  function pause() { state.playing = false; $("#play").textContent = "▶ 재생"; }
+  function pause() { state.playing = false; $("#play").textContent = S.play; }
 
   $("#play").addEventListener("click", function () { state.playing ? pause() : play(false); });
   $("#scrub").addEventListener("input", function () {
     pause();
     state.progress = Number(this.value) / 1000;
-    render();
+    snapCamera(); render();
   });
   $("#speed").addEventListener("change", function () { state.duration = Number(this.value); });
+  $("#cam").addEventListener("click", function () {
+    state.follow = !state.follow;
+    this.textContent = state.follow ? S.camFollow : S.camOverview;
+    if (!state.playing) { snapCamera(); render(); }
+  });
 
   // ── 데이터 로드 ──
   function loadData(refined) {
-    if (!refined.points.length) { showErr("이 파일에서 이동 기록을 찾지 못했어요. Timeline.json(타임라인 내보내기)인지 확인해주세요."); return; }
+    if (!refined.points.length) { showErr(S.errNoPoints); return; }
     var bbox = { minLat: 90, maxLat: -90, minLng: 180, maxLng: -180 };
     refined.points.forEach(function (p) {
       bbox.minLat = Math.min(bbox.minLat, p.lat); bbox.maxLat = Math.max(bbox.maxLat, p.lat);
@@ -340,7 +476,9 @@
     $("#s-maxday").textContent = Math.round(s.maxDayKm).toLocaleString();
     $("#range").textContent = s.from ? fmtDate(new Date(s.from)) + " – " + fmtDate(new Date(s.to)) : "";
     resize();
+    computeOverview();
     state.progress = 0;
+    snapCamera();
     play(true);
     if (window.dataLayer) window.dataLayer.push({ event: "fp_load", fp_points: refined.points.length });
     $("#viewer").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -355,7 +493,7 @@
     var pending = files.length, okAny = false, sawSettings = false;
     if (!pending) return;
     Array.prototype.forEach.call(files, function (f) {
-      if (f.size > 300 * 1024 * 1024) { pending--; showErr(f.name + ": 300MB 초과 파일은 브라우저에서 처리하기 어려워요."); return; }
+      if (f.size > 300 * 1024 * 1024) { pending--; showErr(f.name + S.errTooBig); return; }
       var reader = new FileReader();
       reader.onload = function () {
         try {
@@ -365,8 +503,8 @@
         } catch (e) { /* skip */ }
         if (--pending === 0) {
           if (okAny) loadData(refine(out));
-          else if (sawSettings) showErr("이건 위치 데이터가 아니라 타임라인 '설정' 파일이에요 (Settings.json). 2024년부터 이동 기록은 Takeout이 아니라 휴대폰 안에 저장됩니다. 안드로이드: 폰 설정 → 위치 → 위치 서비스 → 타임라인 → '타임라인 데이터 내보내기'로 Timeline.json을 만들어 넣어주세요.");
-          else showErr("지원하는 형식이 아니에요. 폰 설정 → 위치 → 위치 서비스 → 타임라인 → '타임라인 데이터 내보내기'의 Timeline.json을 넣어주세요.");
+          else if (sawSettings) showErr(S.errSettings);
+          else showErr(S.errFormat);
         }
       };
       reader.readAsText(f);
@@ -380,83 +518,74 @@
   ["dragleave", "drop"].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove("over"); }); });
   drop.addEventListener("drop", function (e) { handleFiles(e.dataTransfer.files); });
 
-  // ── 데모 ──
+  // ── 데모 (해외 점프 포함 — 비행 아크 확인용) ──
   $("#demo").addEventListener("click", function () {
     var cities = [
       [37.5665, 126.9780], [37.4563, 126.7052], [36.3504, 127.3845], [35.8714, 128.6014],
-      [35.1796, 129.0756], [35.1595, 126.8526], [33.4996, 126.5312], [33.2541, 126.5601],
-      [33.5104, 126.4914], [37.5665, 126.9780], [37.7519, 128.8761], [38.2070, 128.5918],
-      [37.5665, 126.9780], [34.7604, 127.6622], [34.8118, 126.3922], [37.5665, 126.9780],
+      [35.1796, 129.0756], [33.4996, 126.5312], [33.2541, 126.5601], [37.5665, 126.9780],
+      [35.6762, 139.6503], [34.6937, 135.5023], [37.5665, 126.9780],
+      [25.0330, 121.5654], [37.5665, 126.9780], [37.7519, 128.8761], [37.5665, 126.9780],
     ];
     var out = { points: [], visits: [] };
     var t = Date.UTC(2026, 0, 5);
     for (var i = 0; i < cities.length - 1; i++) {
       var a = cities[i], b = cities[i + 1];
       out.visits.push({ t: t, lat: a[0], lng: a[1] });
-      var steps = 14;
-      for (var s = 0; s <= steps; s++) {
-        var f = s / steps;
-        // 살짝 휘어진 경로
-        var curve = Math.sin(f * Math.PI) * 0.15;
-        out.points.push({
-          t: t + f * 36e5 * 4,
-          lat: a[0] + (b[0] - a[0]) * f + curve * (b[1] - a[1]) * 0.12,
-          lng: a[1] + (b[1] - a[1]) * f - curve * (b[0] - a[0]) * 0.12,
-        });
+      var far = hav({ lat: a[0], lng: a[1] }, { lat: b[0], lng: b[1] }) > JUMP_KM;
+      if (far) {
+        // 비행: 양 끝점만 (점프 세그먼트)
+        out.points.push({ t: t, lat: a[0], lng: a[1] });
+        out.points.push({ t: t + 36e5 * 2.5, lat: b[0], lng: b[1] });
+      } else {
+        var steps = 14;
+        for (var s = 0; s <= steps; s++) {
+          var f = s / steps, curve = Math.sin(f * Math.PI) * 0.15;
+          out.points.push({
+            t: t + f * 36e5 * 4,
+            lat: a[0] + (b[0] - a[0]) * f + curve * (b[1] - a[1]) * 0.12,
+            lng: a[1] + (b[1] - a[1]) * f - curve * (b[0] - a[0]) * 0.12,
+          });
+        }
       }
-      t += 86400000 * (14 + (i % 5) * 7);
+      t += 86400000 * (10 + (i % 5) * 6);
     }
     loadData(refine(out));
   });
 
-  // ── PNG 포스터 ──
+  // ── PNG 포스터 (전체 뷰 고정) ──
   $("#png").addEventListener("click", function () {
     if (!state.data) return;
     try {
-      var W = 1080, H = 1350;
+      var W = 1080, H = 1350, mh = 940, topPad = 120;
       var c = document.createElement("canvas"); c.width = W; c.height = H;
       var x = c.getContext("2d");
       x.fillStyle = "#070b14"; x.fillRect(0, 0, W, H);
-      // 지도 영역
-      var mw = W, mh = 940;
-      var view = fitView(state.data.bbox, mw, mh);
-      var save = { view: state.view, canvas: { w: canvas.width, h: canvas.height } };
-      // 타일
-      var z = view.z, n = Math.pow(2, z);
-      var x0 = Math.floor((view.cx - mw / 2) / TILE), x1 = Math.floor((view.cx + mw / 2) / TILE);
-      var y0 = Math.max(0, Math.floor((view.cy - mh / 2) / TILE)), y1 = Math.min(n - 1, Math.floor((view.cy + mh / 2) / TILE));
+      var z = zoomToFit(state.data.bbox, W, mh, 13);
+      var cc = bboxCenter(state.data.bbox, z);
+      var cm = merc(cc.lat, cc.lng, z);
+      var pj = function (p) { var m = merc(p.lat, p.lng, z); return { x: m.x - cm.x + W / 2, y: m.y - cm.y + mh / 2 + topPad }; };
+      var n = Math.pow(2, z);
+      var x0 = Math.floor((cm.x - W / 2) / TILE), x1 = Math.floor((cm.x + W / 2) / TILE);
+      var y0 = Math.max(0, Math.floor((cm.y - mh / 2) / TILE)), y1 = Math.min(n - 1, Math.floor((cm.y + mh / 2) / TILE));
       for (var tx = x0; tx <= x1; tx++) for (var ty = y0; ty <= y1; ty++) {
         var wx = ((tx % n) + n) % n, key = z + "/" + wx + "/" + ty, img = tileCache[key];
-        if (img && img.complete && img.naturalWidth) x.drawImage(img, Math.round(tx * TILE - view.cx + mw / 2), Math.round(ty * TILE - view.cy + mh / 2 + 120));
+        if (img && img.complete && img.naturalWidth) x.drawImage(img, Math.round(tx * TILE - cm.x + W / 2), Math.round(ty * TILE - cm.y + mh / 2 + topPad));
       }
-      x.fillStyle = "rgba(7,11,20,0.4)"; x.fillRect(0, 120, mw, mh);
-      var pj = function (p) { var m = merc(p.lat, p.lng, view.z); return { x: m.x - view.cx + mw / 2, y: m.y - view.cy + mh / 2 + 120 }; };
-      x.lineWidth = 3; x.lineJoin = x.lineCap = "round";
-      x.shadowColor = "rgba(57,192,255,.9)"; x.shadowBlur = 8;
-      var grad = x.createLinearGradient(0, 120, W, mh);
-      grad.addColorStop(0, "hsl(190,95%,62%)"); grad.addColorStop(1, "hsl(140,90%,58%)");
-      x.strokeStyle = grad;
-      x.beginPath();
-      var lastq = null;
-      state.data.points.forEach(function (p) {
-        var q = pj(p);
-        if (!lastq || Math.abs(q.x - lastq.x) > W * 0.8) x.moveTo(q.x, q.y); else x.lineTo(q.x, q.y);
-        lastq = q;
-      });
-      x.stroke(); x.shadowBlur = 0;
+      x.fillStyle = "rgba(7,11,20,0.4)"; x.fillRect(0, topPad, W, mh);
+      var lastIdx = state.data.points.length - 1;
+      drawPath(x, pj, state.data.points, state.data.jumps, { idx: lastIdx, frac: 1, p: state.data.points[lastIdx] }, W, H, 1.4);
       x.fillStyle = "rgba(180,140,255,.85)";
       state.data.visits.forEach(function (v) { var q = pj(v); x.beginPath(); x.arc(q.x, q.y, 3, 0, 7); x.fill(); });
-      // 텍스트
       x.fillStyle = "#dce6f5"; x.font = "700 44px 'IBM Plex Sans KR', sans-serif";
-      x.fillText("나의 발자국", 48, 76);
+      x.fillText(S.posterTitle, 48, 76);
       x.fillStyle = "#5a6b88"; x.font = "22px 'IBM Plex Mono', monospace";
       x.fillText($("#range").textContent, 48, 106);
       var s = state.data.stats;
       var items = [
-        [Math.round(s.totalKm).toLocaleString() + " km", "총 이동거리"],
-        [s.days.toLocaleString() + "일", "기록된 날"],
-        [s.visits.toLocaleString() + "곳", "방문 장소"],
-        [Math.round(s.maxDayKm).toLocaleString() + " km", "최장 하루"],
+        [Math.round(s.totalKm).toLocaleString() + " km", S.stTotal],
+        [s.days.toLocaleString(), S.stDays],
+        [s.visits.toLocaleString(), S.stVisits],
+        [Math.round(s.maxDayKm).toLocaleString() + " km", S.stMaxDay],
       ];
       for (var i2 = 0; i2 < 4; i2++) {
         var bx = 48 + i2 * 252;
@@ -466,31 +595,30 @@
         x.fillText(items[i2][1], bx, 1212);
       }
       x.fillStyle = "#5a6b88"; x.font = "20px 'IBM Plex Mono', monospace";
-      x.fillText("page.cocy.io/footprints", 48, 1300);
+      x.fillText(S.brandUrl, 48, 1300);
       x.fillText("© CARTO © OpenStreetMap", W - 330, 1300);
       c.toBlob(function (blob) {
-        if (!blob) { showErr("이미지 생성에 실패했어요."); return; }
+        if (!blob) { showErr(S.errPng); return; }
         var a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
         a.download = "footprints.png";
         a.click();
         if (window.dataLayer) window.dataLayer.push({ event: "fp_export", fp_type: "png" });
       });
-      void save;
     } catch (e) {
-      showErr("지도 타일 보안 정책 때문에 이미지 저장이 막혔어요. 새로고침 후 다시 시도해주세요.");
+      showErr(S.errPngCors);
     }
   });
 
-  // ── 영상(webm) — 재생을 그대로 녹화 ──
+  // ── 영상(webm) — 팔로우 캠 재생을 그대로 녹화 ──
   var recBtn = $("#rec");
   if (!window.MediaRecorder || !canvas.captureStream) recBtn.style.display = "none";
   recBtn.addEventListener("click", function () {
     if (!state.data || recBtn.disabled) return;
-    recBtn.disabled = true; recBtn.textContent = "● 녹화 중…";
+    recBtn.disabled = true; recBtn.textContent = S.recBusy;
     var stream = canvas.captureStream(30);
     var mime = MediaRecorder.isTypeSupported("video/webm;codecs=vp9") ? "video/webm;codecs=vp9" : "video/webm";
-    var rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 6_000_000 });
+    var rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 6000000 });
     var chunks = [];
     rec.ondataavailable = function (e) { if (e.data.size) chunks.push(e.data); };
     rec.onstop = function () {
@@ -498,10 +626,10 @@
       a.href = URL.createObjectURL(new Blob(chunks, { type: "video/webm" }));
       a.download = "footprints.webm";
       a.click();
-      recBtn.disabled = false; recBtn.textContent = "🎬 영상 저장";
+      recBtn.disabled = false; recBtn.textContent = S.recIdle;
       if (window.dataLayer) window.dataLayer.push({ event: "fp_export", fp_type: "webm" });
     };
-    state.onFinish = function () { setTimeout(function () { rec.stop(); }, 400); };
+    state.onFinish = function () { setTimeout(function () { rec.stop(); }, 600); };
     rec.start();
     play(true);
   });
