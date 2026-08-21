@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/footprints/footprints.css?v=2">
+<link rel="stylesheet" href="/footprints/footprints.css?v=3">
 <style>body{font-family:"Noto Sans TC",-apple-system,sans-serif}</style>
 <script type="application/ld+json">
 {
@@ -94,6 +94,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <input type="range" id="scrub" min="0" max="1000" value="0">
       <div class="range-label" id="range"></div>
     </div>
+    <div class="rangebar">
+      <span class="rb-label">📅 期間</span>
+      <div class="rb-sliders">
+        <input type="range" id="rgA" min="0" max="1000" value="0">
+        <input type="range" id="rgB" min="0" max="1000" value="1000">
+      </div>
+      <span class="rb-val" id="rgval"></span>
+    </div>
     <div class="statgrid">
       <div class="stat"><b id="s-km">0</b><span>總移動距離 (km)</span></div>
       <div class="stat"><b id="s-days">0</b><span>有紀錄的日子</span></div>
@@ -103,7 +111,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="export-row">
       <button id="png">🖼 儲存海報 (PNG)</button>
       <button id="rec">🎞 製作 GIF</button>
-      <button id="share">🔗 分享</button>
+      <button id="share">📤 分享 GIF</button>
+    </div>
+    <div class="gif-result" id="gifresult">
+      <div class="gr-head">🎞 GIF 完成<span id="gifsize"></span></div>
+      <img id="gifpreview" alt="GIF preview">
+      <div class="gr-actions"><button id="gifdl">⬇ 下載</button><button id="gifshare">📤 分享</button></div>
     </div>
     <div class="travly">✈️ 正在計畫下一趟旅行？試試我們的 AI 旅行規劃 <a href="https://travel-mvp.pages.dev/" target="_blank" rel="noopener">Travly</a>。</div>
     <div class="promo-row">
@@ -157,6 +170,6 @@ window.FP_STR = {
   brandUrl: "page.cocy.io/footprints"
 };
 </script>
-<script src="/footprints/footprints.js?v=9"></script>
+<script src="/footprints/footprints.js?v=10"></script>
 </body>
 </html>

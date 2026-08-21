@@ -161,7 +161,12 @@
     var uCenter = (uMin + uMax) / 2;
     data.visits.forEach(function (v) { v.lng -= 360 * Math.round((v.lng - uCenter) / 360); });
 
-    // 점프(비행) 세그먼트 표시: i → i+1 거리가 JUMP_KM 초과
+    return assemble(clean, data.visits.filter(function (v) { return isFinite(v.lat); }));
+  }
+
+  // 정제 완료된 포인트/방문 배열 → 렌더 가능한 데이터 뷰(점프·누적거리·통계·bbox)
+  // 기간 선택(applyRange)이 부분 배열로 재호출한다
+  function assemble(clean, visits) {
     var jumps = [];
     for (var k2 = 1; k2 < clean.length; k2++) jumps.push(hav(clean[k2 - 1], clean[k2]) > JUMP_KM);
     var totalKm = 0, dayKm = {}, days = {}, cumKm = [0];
@@ -174,11 +179,15 @@
     }
     clean.forEach(function (p) { days[new Date(p.t).toISOString().slice(0, 10)] = 1; });
     var maxDay = Object.keys(dayKm).sort(function (a, b) { return dayKm[b] - dayKm[a]; })[0];
+    var bbox = { minLat: 90, maxLat: -90, minLng: Infinity, maxLng: -Infinity };
+    clean.forEach(function (p) {
+      bbox.minLat = Math.min(bbox.minLat, p.lat); bbox.maxLat = Math.max(bbox.maxLat, p.lat);
+      bbox.minLng = Math.min(bbox.minLng, p.lng); bbox.maxLng = Math.max(bbox.maxLng, p.lng);
+    });
     return {
-      points: clean, jumps: jumps, cumKm: cumKm,
-      visits: data.visits.filter(function (v) { return isFinite(v.lat); }),
+      points: clean, jumps: jumps, cumKm: cumKm, visits: visits, bbox: bbox,
       stats: {
-        totalKm: totalKm, days: Object.keys(days).length, visits: data.visits.length,
+        totalKm: totalKm, days: Object.keys(days).length, visits: visits.length,
         maxDayKm: maxDay ? dayKm[maxDay] : 0,
         from: clean.length ? clean[0].t : null, to: clean.length ? clean[clean.length - 1].t : null,
       },
@@ -486,26 +495,27 @@
   });
 
   // ── 데이터 로드 ──
+  function updateStatsUI() {
+    var st = state.data.stats;
+    $("#s-km").textContent = Math.round(st.totalKm).toLocaleString();
+    $("#s-days").textContent = st.days.toLocaleString();
+    $("#s-visits").textContent = st.visits.toLocaleString();
+    $("#s-maxday").textContent = Math.round(st.maxDayKm).toLocaleString();
+    $("#range").textContent = st.from ? fmtDate(new Date(st.from)) + " – " + fmtDate(new Date(st.to)) : "";
+    state.baseDuration = Math.max(12000, Math.min(60000, st.days * 200));
+    state.duration = state.baseDuration / state.speedMul;
+  }
+
   function loadData(refined) {
     if (!refined.points.length) { showErr(S.errNoPoints); return; }
-    var bbox = { minLat: 90, maxLat: -90, minLng: 180, maxLng: -180 };
-    refined.points.forEach(function (p) {
-      bbox.minLat = Math.min(bbox.minLat, p.lat); bbox.maxLat = Math.max(bbox.maxLat, p.lat);
-      bbox.minLng = Math.min(bbox.minLng, p.lng); bbox.maxLng = Math.max(bbox.maxLng, p.lng);
-    });
-    refined.bbox = bbox;
+    state.fullData = refined;
     state.data = refined;
     $("#loader").style.display = "none";
     $("#viewer").style.display = "block";
-    var s = refined.stats;
-    $("#s-km").textContent = Math.round(s.totalKm).toLocaleString();
-    $("#s-days").textContent = s.days.toLocaleString();
-    $("#s-visits").textContent = s.visits.toLocaleString();
-    $("#s-maxday").textContent = Math.round(s.maxDayKm).toLocaleString();
-    $("#range").textContent = s.from ? fmtDate(new Date(s.from)) + " – " + fmtDate(new Date(s.to)) : "";
-    // 재생 길이 = 기록된 날 수 비례 (하루당 0.2초, 12초~60초)
-    state.baseDuration = Math.max(12000, Math.min(60000, s.days * 200));
-    state.duration = state.baseDuration / state.speedMul;
+    var ra = $("#rgA"), rb = $("#rgB");
+    if (ra) { ra.value = 0; rb.value = 1000; updateRangeLabel(); }
+    lastGifBlob = null; hideGifResult();
+    updateStatsUI();
     resize();
     computeOverview();
     state.progress = 0;
@@ -516,6 +526,42 @@
     if (window.dataLayer) window.dataLayer.push({ event: "fp_load", fp_points: refined.points.length });
     $("#viewer").scrollIntoView({ behavior: "smooth", block: "start" });
   }
+
+  // ── 기간 선택 — 전체 데이터에서 원하는 구간만 잘라 재생·통계·GIF·포스터에 적용
+  function rangeTimes() {
+    var full = state.fullData;
+    var a = Number($("#rgA").value) / 1000, b = Number($("#rgB").value) / 1000;
+    var lo = Math.min(a, b), hi = Math.max(a, b);
+    var t0 = full.stats.from, t1 = full.stats.to;
+    return { tA: t0 + (t1 - t0) * lo, tB: t0 + (t1 - t0) * hi };
+  }
+  function updateRangeLabel() {
+    if (!state.fullData) return;
+    var r = rangeTimes();
+    $("#rgval").textContent = fmtDate(new Date(r.tA)) + " – " + fmtDate(new Date(r.tB));
+  }
+  function applyRange() {
+    var full = state.fullData;
+    if (!full) return;
+    var r = rangeTimes();
+    var pts = full.points.filter(function (p) { return p.t >= r.tA && p.t <= r.tB; });
+    if (pts.length < 2) { updateRangeLabel(); return; }
+    var vis = full.visits.filter(function (v) { return v.t >= r.tA && v.t <= r.tB; });
+    state.data = assemble(pts, vis);
+    lastGifBlob = null; hideGifResult();
+    updateStatsUI();
+    computeOverview();
+    state.progress = 0;
+    snapCamera();
+    render();
+    if (window.dataLayer) window.dataLayer.push({ event: "fp_range" });
+  }
+  ["rgA", "rgB"].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener("input", updateRangeLabel);
+    el.addEventListener("change", applyRange);
+  });
 
   function showErr(msg) { var e = $("#err"); e.textContent = msg; e.style.display = "block"; }
   function hideErr() { $("#err").style.display = "none"; }
@@ -645,20 +691,37 @@
     }
   });
 
-  // ── GIF 생성 + 공유 — 공유의 본체는 결과물(GIF). 없으면 만들어서 공유한다 ──
+  // ── GIF 생성 → 결과 카드(미리보기+저장+공유). 공유의 본체는 결과물(GIF) ──
   var recBtn = $("#rec"), shareBtn = $("#share");
   var lastGifBlob = null;
 
-  function shareOrSaveGif(blob) {
+  function hideGifResult() {
+    var b = $("#gifresult");
+    if (b) b.style.display = "none";
+  }
+  function showGifResult(blob) {
+    lastGifBlob = blob;
+    var box = $("#gifresult"), img = $("#gifpreview");
+    if (!box) return;
+    if (img.src) URL.revokeObjectURL(img.src);
+    img.src = URL.createObjectURL(blob);
+    $("#gifsize").textContent = (blob.size / 1048576).toFixed(1) + " MB";
+    box.style.display = "block";
+    box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+  function downloadGif(blob) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "footprints.gif";
+    a.click();
+  }
+  function shareGif(blob) {
     var file = new File([blob], "footprints.gif", { type: "image/gif" });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       navigator.share({ files: [file], title: S.shareTitle, text: S.shareText + " " + S.pageUrl }).catch(function () {});
     } else {
-      var a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "footprints.gif";
-      a.click();
-      if (navigator.clipboard && shareBtn) {
+      downloadGif(blob);
+      if (navigator.clipboard) {
         navigator.clipboard.writeText(S.shareText + " " + S.pageUrl).then(function () {
           var orig = shareBtn.textContent;
           shareBtn.textContent = S.copied;
@@ -699,7 +762,7 @@
           }
           gif.finish();
           blob = new Blob([gif.bytes()], { type: "image/gif" });
-          lastGifBlob = blob;
+          showGifResult(blob);
           if (window.dataLayer) window.dataLayer.push({ event: "fp_export", fp_type: "gif", fp_frames: frames.length });
         } catch (e) {
           showErr(S.errPng);
@@ -717,9 +780,12 @@
     });
   }
 
-  recBtn.addEventListener("click", function () { makeGif(shareOrSaveGif); });
+  recBtn.addEventListener("click", function () { makeGif(null); });
   if (shareBtn) shareBtn.addEventListener("click", function () {
-    if (lastGifBlob) shareOrSaveGif(lastGifBlob);
-    else makeGif(shareOrSaveGif);
+    if (lastGifBlob) shareGif(lastGifBlob);
+    else makeGif(shareGif);
   });
+  var gifDlBtn = $("#gifdl"), gifShareBtn = $("#gifshare");
+  if (gifDlBtn) gifDlBtn.addEventListener("click", function () { if (lastGifBlob) downloadGif(lastGifBlob); });
+  if (gifShareBtn) gifShareBtn.addEventListener("click", function () { if (lastGifBlob) shareGif(lastGifBlob); });
 })();

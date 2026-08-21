@@ -119,3 +119,25 @@ footer a:hover { color: var(--ink); }
 .promo-row b { display: block; font-size: .86rem; color: var(--ink); }
 .promo-row span { font-size: .74rem; color: var(--ink-faint); }
 @media (max-width: 480px) { .promo-row { grid-template-columns: 1fr; } }
+
+/* 기간 선택 */
+.rangebar { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.rangebar .rb-label { font-family: var(--mono); font-size: .72rem; color: var(--ink-faint); }
+.rangebar .rb-sliders { flex: 1; min-width: 160px; display: flex; flex-direction: column; gap: 2px; }
+.rangebar input[type="range"] { width: 100%; accent-color: var(--violet); height: 14px; }
+.rangebar .rb-val { font-family: var(--mono); font-size: .74rem; color: var(--violet); }
+
+/* GIF 결과 카드 */
+.gif-result {
+  display: none; margin-top: 12px; padding: 14px; border-radius: 10px;
+  background: var(--bg2); border: 1px solid rgba(62,240,140,.35); text-align: center;
+}
+.gif-result .gr-head { font-size: .86rem; font-weight: 700; color: #9ef0c4; margin-bottom: 10px; }
+.gif-result .gr-head span { font-family: var(--mono); font-size: .72rem; color: var(--ink-faint); margin-left: 6px; }
+.gif-result img { max-width: min(360px, 100%); border-radius: 8px; border: 1px solid var(--line); }
+.gif-result .gr-actions { display: flex; gap: 10px; margin-top: 12px; justify-content: center; }
+.gif-result .gr-actions button {
+  border-radius: 10px; padding: 10px 22px; font: inherit; font-size: .88rem; font-weight: 700;
+  cursor: pointer; border: none; background: var(--ink); color: #0a0f1c;
+}
+.gif-result .gr-actions button:hover { filter: brightness(1.08); }
