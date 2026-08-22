@@ -193,10 +193,15 @@
     var jumps = [];
     for (var k2 = 1; k2 < clean.length; k2++) jumps.push(hav(clean[k2 - 1], clean[k2]) > JUMP_KM);
     var totalKm = 0, dayKm = {}, days = {}, cumKm = [0];
+    // 재생 도메인(cumPlay): 비행(점프) 구간은 로그 압축 — 등속 재생에서 장거리 비행이
+    // 전체 재생 시간을 다 먹는 것 방지 (미국행 9000km ≈ 417 재생km, 약 21배속)
+    var playKm = 0, cumPlay = [0];
     for (var k = 1; k < clean.length; k++) {
       var d = hav(clean[k - 1], clean[k]);
       totalKm += d;
       cumKm.push(totalKm);
+      playKm += d > JUMP_KM ? JUMP_KM * (1 + Math.log(d / JUMP_KM) / Math.LN10) : d;
+      cumPlay.push(playKm);
       var day = new Date(clean[k].t).toISOString().slice(0, 10);
       dayKm[day] = (dayKm[day] || 0) + d;
     }
@@ -208,7 +213,7 @@
       bbox.minLng = Math.min(bbox.minLng, p.lng); bbox.maxLng = Math.max(bbox.maxLng, p.lng);
     });
     return {
-      points: clean, jumps: jumps, cumKm: cumKm, visits: visits, bbox: bbox,
+      points: clean, jumps: jumps, cumKm: cumKm, cumPlay: cumPlay, visits: visits, bbox: bbox,
       stats: {
         totalKm: totalKm, days: Object.keys(days).length, visits: visits.length,
         maxDayKm: maxDay ? dayKm[maxDay] : 0,
@@ -279,11 +284,12 @@
 
   // ── 진행률→현재 위치 (거리 도메인: 정지 기간은 건너뛰고 이동은 등속 — 뚝뚝 끊김 방지) ──
   function headAtProgress(p) {
-    var pts = state.data.points, cum = state.data.cumKm;
+    // 진행률은 cumPlay(비행 압축) 도메인, HUD/꼬리용 km는 cumKm(실거리) 유지
+    var pts = state.data.points, cum = state.data.cumPlay || state.data.cumKm, real = state.data.cumKm;
     var total = cum[cum.length - 1];
     var last = pts.length - 1;
     if (!total || p <= 0) return { p: pts[0], idx: 0, frac: 0, t: pts[0].t, km: 0 };
-    if (p >= 1) return { p: pts[last], idx: Math.max(0, last - 1), frac: 1, t: pts[last].t, km: total };
+    if (p >= 1) return { p: pts[last], idx: Math.max(0, last - 1), frac: 1, t: pts[last].t, km: real[real.length - 1] };
     var km = total * p;
     var lo = 0, hi = cum.length - 1;
     while (lo < hi) { var mid = (lo + hi + 1) >> 1; if (cum[mid] <= km) lo = mid; else hi = mid - 1; }
@@ -291,7 +297,7 @@
     var segKm = cum[i + 1] - cum[i] || 1;
     var f = Math.max(0, Math.min(1, (km - cum[i]) / segKm));
     return {
-      idx: i, frac: f, km: km,
+      idx: i, frac: f, km: real[i] + (real[i + 1] - real[i]) * f,
       t: pts[i].t + (pts[i + 1].t - pts[i].t) * f,
       p: { lat: pts[i].lat + (pts[i + 1].lat - pts[i].lat) * f, lng: pts[i].lng + (pts[i + 1].lng - pts[i].lng) * f },
     };
