@@ -80,3 +80,23 @@ body {
 
 footer { margin-top: 50px; padding: 20px 0; border-top: 1px solid var(--line); font-family: var(--mono); font-size: .72rem; color: var(--ink-faint); text-align: center; }
 footer a { color: var(--ink-faint); }
+
+/* 코스·팁 펼침 패널 */
+.mitem { display: flex; flex-direction: column; }
+.mrow .caret { font-size: .6rem; color: var(--ink-faint); flex-shrink: 0; margin-left: 2px; }
+.mrow.open { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom-color: transparent; }
+.mdetail {
+  background: var(--bg2); border: 1px solid var(--line); border-top: 0;
+  border-radius: 0 0 9px 9px; padding: 4px 14px 13px; margin-bottom: 2px;
+}
+.mdetail .course { padding: 10px 0; border-top: 1px dashed var(--line); }
+.mdetail .course:first-child { border-top: 0; }
+.mdetail .chead { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.mdetail .chead b { font-size: .88rem; }
+.mdetail .clevel { font-family: var(--mono); font-size: .64rem; padding: 2px 7px; border-radius: 999px; background: var(--panel2); color: var(--ink-dim); flex-shrink: 0; }
+.mdetail .cmeta { font-family: var(--mono); font-size: .7rem; color: var(--cyan); margin-top: 3px; }
+.mdetail .course p { margin: 5px 0 0; font-size: .82rem; color: var(--ink-dim); line-height: 1.6; }
+.mdetail .tips { margin: 10px 0 0; padding: 10px 0 0 17px; border-top: 1px dashed var(--line); }
+.mdetail .tips li { font-size: .8rem; color: var(--ink-dim); line-height: 1.65; margin-bottom: 4px; }
+.mdetail .tips li::marker { color: var(--amber); }
+.mdetail .best { margin-top: 9px; font-size: .78rem; color: var(--amber); font-family: var(--mono); }

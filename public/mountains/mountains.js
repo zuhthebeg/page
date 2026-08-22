@@ -50,6 +50,7 @@
   function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(checked)); } catch (e) {} }
 
   var state = { filter: "all" };
+  var expanded = {}; // 코스 정보 펼침 상태 — 저장하지 않는다(세션 한정)
 
   // ── 메르카토르(footprints와 동일 공식, 애니메이션 없는 정적 오버뷰) ──
   var TILE = 256, SUBS = ["a", "b", "c", "d"];
@@ -219,16 +220,55 @@
     });
     wrap.innerHTML = list.map(function (m) {
       var on = !!checked[m.id];
-      return '<div class="mrow' + (on ? ' checked' : '') + '" data-id="' + m.id + '">' +
-        '<span class="chk">' + (on ? "✓" : "") + '</span>' +
-        '<span class="minfo"><span class="mname">' + m.name + '</span>' +
-        '<span class="mmeta">' + m.region + ' · ' + m.elev + 'm</span></span>' +
+      var info = (window.MT_INFO || {})[m.id];
+      var open = !!expanded[m.id];
+      return '<div class="mitem">' +
+        '<div class="mrow' + (on ? ' checked' : '') + (open ? ' open' : '') + '" data-id="' + m.id + '">' +
+        '<span class="chk" data-act="toggle" title="다녀옴 체크">' + (on ? "✓" : "") + '</span>' +
+        '<span class="minfo"><span class="mname">' + esc(m.name) + '</span>' +
+        '<span class="mmeta">' + esc(m.region) + ' · ' + m.elev + 'm</span></span>' +
         '<span class="tier tier-' + m.tier + '">' + TIER_LABEL[m.tier] + '</span>' +
+        (info ? '<span class="caret">' + (open ? "▲" : "▼") + '</span>' : '') +
+        '</div>' +
+        (open && info ? detailHtml(info) : '') +
         '</div>';
     }).join("");
     Array.prototype.forEach.call(wrap.querySelectorAll(".mrow"), function (row) {
-      row.addEventListener("click", function () { toggle(row.getAttribute("data-id")); });
+      row.addEventListener("click", function (e) {
+        var id = row.getAttribute("data-id");
+        // 체크박스는 완등 토글, 나머지 영역은 코스 정보 펼치기
+        if (e.target.getAttribute("data-act") === "toggle") { toggle(id); return; }
+        if (!(window.MT_INFO || {})[id]) { toggle(id); return; }
+        expanded[id] = !expanded[id];
+        renderList();
+      });
     });
+  }
+
+  function esc(v) {
+    return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function detailHtml(info) {
+    var h = '<div class="mdetail">';
+    (info.courses || []).forEach(function (c) {
+      if (!c.name) return;
+      var meta = [c.distance, c.time].filter(Boolean).join(" · ");
+      h += '<div class="course">' +
+        '<div class="chead"><b>' + esc(c.name) + '</b>' +
+        (c.level ? '<span class="clevel">' + esc(c.level) + '</span>' : '') + '</div>' +
+        (meta ? '<div class="cmeta">' + esc(meta) + '</div>' : '') +
+        (c.desc ? '<p>' + esc(c.desc) + '</p>' : '') +
+        '</div>';
+    });
+    if (info.tips && info.tips.length) {
+      h += '<ul class="tips">' + info.tips.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul>';
+    }
+    if (info.best) h += '<div class="best">🍁 ' + esc(info.best) + '</div>';
+    h += '</div>';
+    return h;
   }
 
   Array.prototype.forEach.call(document.querySelectorAll("#filters button"), function (btn) {
