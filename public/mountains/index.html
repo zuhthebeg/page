@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script>
+<!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>산 체크리스트 — 한국 명산 지도로 보고 다녀온 산 기록하기</title>
+<meta name="description" content="한국 명산 35곳을 난이도별(초급·중급·고급)로 지도에서 보고, 다녀온 산을 체크해서 나만의 등반 기록을 쌓아보세요. 로그인 없이 이 브라우저에만 저장됩니다.">
+<meta name="keywords" content="한국 명산, 등산 난이도, 산 체크리스트, 100대 명산, 등산 지도, 다녀온 산 기록">
+<link rel="canonical" href="https://page.cocy.io/mountains/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="산 체크리스트 — 한국 명산, 다녀온 곳 체크하기">
+<meta property="og:description" content="난이도별 한국 명산 지도 + 체크리스트. 로그인 없이 브라우저에만 기록됩니다.">
+<meta property="og:url" content="https://page.cocy.io/mountains/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="산 체크리스트 — 한국 명산, 다녀온 곳 체크하기">
+<link rel="icon" type="image/svg+xml" href="/mountains/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/mountains/mountains.css?v=1">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "산 체크리스트",
+  "url": "https://page.cocy.io/mountains/",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "description": "한국 명산을 난이도별로 지도에서 보고 다녀온 산을 체크하는 도구 — 브라우저에만 저장, 로그인 불필요"
+}
+</script>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="wrap">
+  <header class="top">
+    <img class="logo" src="/mountains/icon.svg" alt="">
+    <div class="brand"><b>산 체크리스트</b><span>Korea Peaks Tracker</span></div>
+  </header>
+
+  <section class="hero">
+    <div class="tape"><span class="dot"></span>Local-only Checklist</div>
+    <h1>한국 명산 35곳,<br><span class="hl">몇 개나 다녀왔을까?</span></h1>
+    <p class="sub">난이도별(초급·중급·고급)로 정리한 한국 명산을 지도와 목록에서 확인하고, 다녀온 산을 체크해보세요. 좌표는 개략치이며 계속 늘려갈 예정입니다.</p>
+    <div class="privacy-pill">🔒 체크 기록은 이 브라우저에만 저장됩니다 — 로그인·업로드 없음</div>
+  </section>
+
+  <section class="panel">
+    <div class="progress-row">
+      <div class="progress-num" id="p-num">0 / 35</div>
+      <div class="progress-bar"><b id="p-bar" style="width:0%"></b></div>
+      <div class="progress-label" id="p-label">완등 0%</div>
+    </div>
+    <div class="filters" id="filters">
+      <button data-tier="all" class="active">전체</button>
+      <button data-tier="easy">🟦 초급</button>
+      <button data-tier="mid">🟧 중급</button>
+      <button data-tier="hard">🟥 고급</button>
+    </div>
+    <canvas id="map" width="860" height="640"></canvas>
+    <div class="map-hint">지도의 점을 클릭해도 체크됩니다 (겹친 지점은 목록에서 체크하는 게 정확해요)</div>
+    <div class="mlist" id="mlist"></div>
+  </section>
+
+  <section class="sect">
+    <h2><span class="num">01</span>난이도는 어떻게 나눴나요</h2>
+    <p>공식 인증 등급이 아니라, 표고·구간 난이도에 대해 일반적으로 알려진 평판을 참고해 셋으로 나눈 자체 분류입니다. 🟦 초급은 접근이 쉬운 근교산, 🟧 중급은 반나절~하루가 걸리는 국립공원급 산, 🟥 고급은 한라산·지리산·설악산처럼 장거리·고지대 코스입니다.</p>
+  </section>
+
+  <footer>
+    <a href="https://page.cocy.io/">← page.cocy.io</a> · 산 체크리스트는 <a href="https://cocy.io">cocy.io</a>의 무료 실험입니다 · 지도: © CARTO © OpenStreetMap contributors
+  </footer>
+</div>
+
+<script src="/mountains/mountains.js?v=1"></script>
+</body>
+</html>
