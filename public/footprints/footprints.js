@@ -37,6 +37,9 @@
     rankErr: "랭킹 등록에 실패했어요. 잠시 후 다시 시도해주세요.",
     rankBoardTitle: "명예의 전당", rankEmpty: "아직 아무도 등록 안 했어요 — 첫 주자가 되어보세요!",
     rankAnon: "익명",
+    regionOff: "🖊 영역 선택", regionOn: "🖊 지도를 드래그하세요…",
+    regionLabel: "🗺 선택 영역만 표시 중 · {n}개 지점", regionClear: "✕ 해제",
+    regionTooSmall: "선택 영역이 너무 작아요. 더 크게 드래그해주세요.",
   }, window.FP_STR || {});
 
   // ── 좌표/시간 파싱 ──
@@ -244,6 +247,7 @@
     trail: false,         // ✨ 꼬리 모드 — 지나간 선을 페이드아웃
     follow: true,         // 팔로우 캠 vs 전체 보기
     fitZ: 3, overviewCam: null, onFinish: null,
+    regionMode: false, regionBBox: null, dragStart: null, dragCur: null,
   };
   var canvas = $("#map"), ctx = canvas.getContext("2d");
   var DPR = Math.min(2, window.devicePixelRatio || 1);
@@ -554,6 +558,77 @@
     if (window.dataLayer) window.dataLayer.push({ event: "fp_trail", fp_on: state.trail });
   });
 
+  // ── 영역 선택 — 지도 위 드래그 박스 → lat/lng bbox 필터. 서버 호출 없이 기존 merc/invMerc 투영만 재사용 ──
+  function screenToLatLng(sx, sy) {
+    var cam = state.cam;
+    if (!cam) return null;
+    var w = canvas.width, h = canvas.height;
+    var zi = Math.max(2, Math.min(12, Math.round(cam.z)));
+    var scale = Math.pow(2, cam.z - zi);
+    var c = merc(cam.lat, cam.lng, zi);
+    return invMerc((sx - w / 2) / scale + c.x, (sy - h / 2) / scale + c.y, zi);
+  }
+  function drawDragOverlay() {
+    if (!state.dragStart || !state.dragCur) return;
+    var x0 = Math.min(state.dragStart.x, state.dragCur.x), x1 = Math.max(state.dragStart.x, state.dragCur.x);
+    var y0 = Math.min(state.dragStart.y, state.dragCur.y), y1 = Math.max(state.dragStart.y, state.dragCur.y);
+    ctx.save();
+    ctx.fillStyle = "rgba(139,92,246,.18)";
+    ctx.strokeStyle = "rgba(139,92,246,.9)";
+    ctx.lineWidth = 2 * DPR;
+    ctx.setLineDash([6 * DPR, 5 * DPR]);
+    ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+    ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+    ctx.restore();
+  }
+
+  var regionBtn = $("#region"), regionClearBtn = $("#regionclear");
+  if (regionBtn) regionBtn.addEventListener("click", function () {
+    state.regionMode = !state.regionMode;
+    canvas.classList.toggle("region-mode", state.regionMode);
+    regionBtn.classList.toggle("active", state.regionMode);
+    regionBtn.textContent = state.regionMode ? S.regionOn : S.regionOff;
+    if (state.regionMode) pause();
+  });
+  if (regionClearBtn) regionClearBtn.addEventListener("click", function () {
+    state.regionBBox = null;
+    applyRange();
+  });
+  canvas.addEventListener("pointerdown", function (e) {
+    if (!state.regionMode || !state.data) return;
+    var rect = canvas.getBoundingClientRect();
+    var p = { x: (e.clientX - rect.left) * (canvas.width / rect.width), y: (e.clientY - rect.top) * (canvas.height / rect.height) };
+    state.dragStart = p; state.dragCur = p;
+    canvas.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  canvas.addEventListener("pointermove", function (e) {
+    if (!state.regionMode || !state.dragStart) return;
+    var rect = canvas.getBoundingClientRect();
+    state.dragCur = { x: (e.clientX - rect.left) * (canvas.width / rect.width), y: (e.clientY - rect.top) * (canvas.height / rect.height) };
+    render();
+    drawDragOverlay();
+  });
+  canvas.addEventListener("pointerup", function () {
+    if (!state.regionMode || !state.dragStart) return;
+    var a = screenToLatLng(state.dragStart.x, state.dragStart.y);
+    var b = screenToLatLng(state.dragCur.x, state.dragCur.y);
+    var dx = Math.abs(state.dragStart.x - state.dragCur.x), dy = Math.abs(state.dragStart.y - state.dragCur.y);
+    state.dragStart = null; state.dragCur = null;
+    state.regionMode = false;
+    canvas.classList.remove("region-mode");
+    regionBtn.classList.remove("active");
+    regionBtn.textContent = S.regionOff;
+    if (dx < 12 * DPR || dy < 12 * DPR || !a || !b) {
+      render();
+      if (dx > 2 || dy > 2) { showErr(S.regionTooSmall); setTimeout(hideErr, 2200); }
+      return;
+    }
+    state.regionBBox = { minLat: Math.min(a.lat, b.lat), maxLat: Math.max(a.lat, b.lat), minLng: Math.min(a.lng, b.lng), maxLng: Math.max(a.lng, b.lng) };
+    applyRange();
+    if (window.dataLayer) window.dataLayer.push({ event: "fp_region" });
+  });
+
   // ── 데이터 로드 ──
   function updateStatsUI() {
     var st = state.data.stats;
@@ -574,6 +649,8 @@
     $("#viewer").style.display = "block";
     var ra = $("#rgA"), rb = $("#rgB");
     if (ra) { ra.value = 0; rb.value = 1000; updateRangeLabel(); }
+    state.regionBBox = null; state.regionMode = false;
+    renderRegionUI();
     lastGifBlob = null; hideGifResult();
     updateStatsUI();
     renderTraits(computeTraits(state.data));
@@ -610,13 +687,17 @@
     fill.style.left = (lo / 10) + "%";
     fill.style.width = ((hi - lo) / 10) + "%";
   }
+  function inRegion(p) {
+    var b = state.regionBBox;
+    return !b || (p.lat >= b.minLat && p.lat <= b.maxLat && p.lng >= b.minLng && p.lng <= b.maxLng);
+  }
   function applyRange() {
     var full = state.fullData;
     if (!full) return;
     var r = rangeTimes();
-    var pts = full.points.filter(function (p) { return p.t >= r.tA && p.t <= r.tB; });
-    if (pts.length < 2) { updateRangeLabel(); return; }
-    var vis = full.visits.filter(function (v) { return v.t >= r.tA && v.t <= r.tB; });
+    var pts = full.points.filter(function (p) { return p.t >= r.tA && p.t <= r.tB && inRegion(p); });
+    if (pts.length < 2) { updateRangeLabel(); renderRegionUI(); return; }
+    var vis = full.visits.filter(function (v) { return v.t >= r.tA && v.t <= r.tB && inRegion(v); });
     state.data = assemble(pts, vis);
     lastGifBlob = null; hideGifResult();
     updateStatsUI();
@@ -625,7 +706,15 @@
     state.progress = 0;
     snapCamera();
     render();
+    renderRegionUI();
     if (window.dataLayer) window.dataLayer.push({ event: "fp_range" });
+  }
+  function renderRegionUI() {
+    var bar = $("#regionbar"), txt = $("#regiontxt");
+    if (!bar || !txt) return;
+    if (!state.regionBBox) { bar.style.display = "none"; return; }
+    bar.style.display = "flex";
+    txt.textContent = S.regionLabel.replace("{n}", state.data ? state.data.points.length.toLocaleString() : "0");
   }
   ["rgA", "rgB"].forEach(function (id) {
     var el = document.getElementById(id);

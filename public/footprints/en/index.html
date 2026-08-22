@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/footprints/footprints.css?v=4">
+<link rel="stylesheet" href="/footprints/footprints.css?v=5">
 <style>body{font-family:"IBM Plex Sans",-apple-system,sans-serif}</style>
 <script type="application/ld+json">
 {
@@ -87,6 +87,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button id="play">▶ Play</button>
       <button id="cam">📷 Follow</button>
       <button id="trail">〰 Full line</button>
+      <button id="region">🖊 Select region</button>
       <select id="speed">
         <option value="2">Fast (2x)</option>
         <option value="1" selected>Normal (1x)</option>
@@ -104,6 +105,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <input type="range" id="rgB" min="0" max="1000" value="1000">
       </div>
       <span class="rb-val" id="rgval"></span>
+    </div>
+    <div class="regionbar" id="regionbar">
+      <span id="regiontxt"></span>
+      <button id="regionclear">✕ Clear</button>
     </div>
     <div class="statgrid">
       <div class="stat"><b id="s-km">0</b><span>Total distance (km)</span></div>
@@ -196,9 +201,12 @@ window.FP_STR = {
   rankKept: "You already have a higher title registered: {title}",
   rankErr: "Couldn't register right now. Please try again shortly.",
   rankBoardTitle: "Hall of Fame", rankEmpty: "No one's registered yet — be the first!",
-  rankAnon: "Anonymous"
+  rankAnon: "Anonymous",
+  regionOff: "🖊 Select region", regionOn: "🖊 Drag on the map…",
+  regionLabel: "🗺 Showing selected region only · {n} points", regionClear: "✕ Clear",
+  regionTooSmall: "That selection is too small. Try dragging a bigger box."
 };
 </script>
-<script src="/footprints/footprints.js?v=12"></script>
+<script src="/footprints/footprints.js?v=13"></script>
 </body>
 </html>

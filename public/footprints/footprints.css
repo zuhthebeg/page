@@ -65,6 +65,8 @@ body {
 
 #viewer { display: none; }
 #map { width: 100%; display: block; border-radius: 10px; background: var(--bg2); }
+#map.region-mode { cursor: crosshair; touch-action: none; }
+.controls #region.active { border-color: var(--violet); color: var(--violet); }
 .controls { display: flex; gap: 10px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
 .controls button, .controls select {
   background: var(--bg2); border: 1px solid var(--line); color: var(--ink);
@@ -142,6 +144,18 @@ footer a:hover { color: var(--ink); }
   background: var(--violet); border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.4);
 }
 .rangebar .rb-val { font-family: var(--mono); font-size: .74rem; color: var(--violet); }
+
+/* 지역 선택 */
+.regionbar {
+  display: none; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px;
+  padding: 7px 12px; border-radius: 8px; background: rgba(139,92,246,.1); border: 1px solid rgba(139,92,246,.3);
+}
+.regionbar span { font-family: var(--mono); font-size: .74rem; color: var(--ink); }
+.regionbar button {
+  border-radius: 7px; padding: 4px 10px; font: inherit; font-size: .72rem; cursor: pointer;
+  background: transparent; border: 1px solid rgba(255,255,255,.2); color: var(--ink-faint);
+}
+.regionbar button:hover { border-color: var(--ink-faint); color: var(--ink); }
 
 /* GIF 결과 카드 */
 .gif-result {
