@@ -120,11 +120,27 @@ footer a:hover { color: var(--ink); }
 .promo-row span { font-size: .74rem; color: var(--ink-faint); }
 @media (max-width: 480px) { .promo-row { grid-template-columns: 1fr; } }
 
-/* 기간 선택 */
+/* 기간 선택 — 트랙 하나 + 핸들 두 개 (겹친 native range 트릭: 썸만 pointer-events 허용) */
 .rangebar { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
 .rangebar .rb-label { font-family: var(--mono); font-size: .72rem; color: var(--ink-faint); }
-.rangebar .rb-sliders { flex: 1; min-width: 160px; display: flex; flex-direction: column; gap: 2px; }
-.rangebar input[type="range"] { width: 100%; accent-color: var(--violet); height: 14px; }
+.rangebar .rb-sliders { flex: 1; min-width: 160px; position: relative; height: 24px; }
+.rangebar .rb-track { position: absolute; left: 0; right: 0; top: 50%; height: 4px; margin-top: -2px; border-radius: 2px; background: rgba(255,255,255,.15); pointer-events: none; }
+.rangebar .rb-fill { position: absolute; top: 50%; height: 4px; margin-top: -2px; border-radius: 2px; background: var(--violet); pointer-events: none; }
+.rangebar input[type="range"] {
+  position: absolute; left: 0; top: 0; width: 100%; height: 24px; margin: 0;
+  -webkit-appearance: none; appearance: none; background: transparent; pointer-events: none;
+}
+.rangebar input[type="range"]::-webkit-slider-runnable-track { background: transparent; height: 24px; }
+.rangebar input[type="range"]::-moz-range-track { background: transparent; height: 24px; border: none; }
+.rangebar input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; pointer-events: auto; cursor: pointer;
+  width: 16px; height: 16px; margin-top: 4px; border-radius: 50%;
+  background: var(--violet); border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.4);
+}
+.rangebar input[type="range"]::-moz-range-thumb {
+  pointer-events: auto; cursor: pointer; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--violet); border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.4);
+}
 .rangebar .rb-val { font-family: var(--mono); font-size: .74rem; color: var(--violet); }
 
 /* GIF 결과 카드 */

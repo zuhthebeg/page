@@ -458,7 +458,7 @@
     var minKm = headKm - trailKm;
     var start = end;
     while (start > 0 && cum[start] > minKm) start--;
-    var BUCKETS = 6;
+    var BUCKETS = 24;
     var solidB = [], arcB = [];
     for (var b0 = 0; b0 < BUCKETS; b0++) { solidB.push([]); arcB.push([]); }
     for (var j = start; j <= end && j < pts.length - 1; j++) {
@@ -586,6 +586,15 @@
     if (!state.fullData) return;
     var r = rangeTimes();
     $("#rgval").textContent = fmtDate(new Date(r.tA)) + " – " + fmtDate(new Date(r.tB));
+    updateRangeFill();
+  }
+  function updateRangeFill() {
+    var fill = $("#rbfill");
+    if (!fill) return;
+    var a = Number($("#rgA").value), b = Number($("#rgB").value);
+    var lo = Math.min(a, b), hi = Math.max(a, b);
+    fill.style.left = (lo / 10) + "%";
+    fill.style.width = ((hi - lo) / 10) + "%";
   }
   function applyRange() {
     var full = state.fullData;
