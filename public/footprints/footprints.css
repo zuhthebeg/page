@@ -212,3 +212,14 @@ footer a:hover { color: var(--ink); }
 }
 .rank-board .rb-row.mine { background: rgba(139,92,246,.14); color: var(--ink); }
 .rank-board .rb-empty { text-align: center; font-size: .76rem; color: var(--ink-faint); padding: 8px; }
+
+/* 여행 DNA 카드 (기존 .travly 박스 안에 렌더) */
+.dna-head { font-weight: 800; font-size: .95rem; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dna-sub { font-weight: 400; font-size: .74rem; opacity: .6; }
+.dna-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 12px; }
+.dna-chip { font-size: .76rem; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); }
+.dna-chip i { font-style: normal; opacity: .55; font-size: .68rem; margin-left: 2px; }
+.dna-chip.dna-home { background: rgba(124,158,255,.16); border-color: rgba(124,158,255,.4); }
+.dna-btn { display: block; text-align: center; padding: 11px 14px; border-radius: 10px; background: #5b7cfa; color: #fff !important; font-weight: 700; font-size: .88rem; text-decoration: none; transition: background .15s; }
+.dna-btn:hover { background: #4a68e8; }
+.dna-note { margin-top: 8px; font-size: .68rem; opacity: .5; line-height: 1.5; }

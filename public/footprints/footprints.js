@@ -40,6 +40,12 @@
     regionOff: "🖊 영역 선택", regionOn: "🖊 지도를 드래그하세요…",
     regionLabel: "🗺 선택 영역만 표시 중 · {n}개 지점", regionClear: "✕ 해제",
     regionTooSmall: "선택 영역이 너무 작아요. 더 크게 드래그해주세요.",
+    dnaTitle: "🧬 여행 DNA",
+    dnaHome: "베이스캠프", dnaTripsLabel: "다녀온 곳", dnaAbroadLabel: "해외",
+    dnaDays: "일", dnaCount: "곳",
+    dnaBtn: "✈️ 이 기록으로 Travly에서 다음 여행 추천받기",
+    dnaNote: "도시 판별은 이 기기 안에서만 · Travly에는 도시 이름 요약만 전달되고 좌표 원본은 전송되지 않습니다",
+    dnaFallback: "✈️ 다음 여행을 계획 중이라면 — AI 여행 플래너 Travly에서 일정을 짜보세요.",
   }, window.FP_STR || {});
 
   // ── 좌표/시간 파싱 ──
@@ -654,6 +660,7 @@
     lastGifBlob = null; hideGifResult();
     updateStatsUI();
     renderTraits(computeTraits(state.data));
+    renderDNA(computeDNA(state.data));
     resize();
     computeOverview();
     state.progress = 0;
@@ -702,6 +709,7 @@
     lastGifBlob = null; hideGifResult();
     updateStatsUI();
     renderTraits(computeTraits(state.data));
+    renderDNA(computeDNA(state.data));
     computeOverview();
     state.progress = 0;
     snapCamera();
@@ -1046,6 +1054,89 @@
     if (rankConfirm) rankConfirm.textContent = S.rankConfirm;
     if (rankCancel) rankCancel.textContent = S.rankCancel;
     hideRankUI();
+  }
+
+  // ── 여행 DNA — 방문 좌표를 온디바이스 도시 테이블(cities.js)에 근사 매칭 ──
+  // Travly 핸드오프: 도시 이름 요약만 URL fragment로 전달(서버 전송 없음). 좌표 원본은 절대 안 나감.
+  var CITY_MATCH_KM = 35;
+  function computeDNA(data) {
+    var cities = window.FP_CITIES;
+    if (!cities || !cities.length || !data.points.length) return null;
+
+    // 방문이 적으면 날짜별 첫 포인트로 보강 (Records.json류는 visit이 없을 수 있음)
+    var samples = data.visits.slice();
+    if (samples.length < 5) {
+      var seen = {};
+      data.points.forEach(function (p) {
+        var day = new Date(p.t).toISOString().slice(0, 10);
+        if (!seen[day]) { seen[day] = 1; samples.push(p); }
+      });
+    }
+
+    var cityDays = {}; // name → {cc, days:{}}
+    samples.forEach(function (v) {
+      var best = null, bestD = CITY_MATCH_KM;
+      for (var i = 0; i < cities.length; i++) {
+        // 하버사인 전에 싼 위도차 컷 (35km ≈ 0.32°)
+        if (Math.abs(cities[i][1] - v.lat) > 0.35) continue;
+        var d = hav({ lat: cities[i][1], lng: cities[i][2] }, v);
+        if (d < bestD) { bestD = d; best = cities[i]; }
+      }
+      if (!best) return;
+      var e = cityDays[best[0]] || (cityDays[best[0]] = { cc: best[3], days: {} });
+      e.days[new Date(v.t).toISOString().slice(0, 10)] = 1;
+    });
+
+    var list = Object.keys(cityDays).map(function (n) {
+      return { name: n, cc: cityDays[n].cc, days: Object.keys(cityDays[n].days).length };
+    }).sort(function (a, b) { return b.days - a.days; });
+    if (!list.length) return null;
+
+    var home = list[0];
+    var trips = list.slice(1, 9);
+    var countries = {};
+    list.forEach(function (c) { if (c.cc !== home.cc) countries[c.cc] = 1; });
+
+    var st = data.stats;
+    return {
+      v: 1,
+      home: [home.name, home.cc],
+      trips: trips.map(function (c) { return [c.name, c.cc, c.days]; }),
+      km: Math.round(st.totalKm), days: st.days,
+      from: st.from ? new Date(st.from).toISOString().slice(0, 7) : null,
+      to: st.to ? new Date(st.to).toISOString().slice(0, 7) : null,
+      abroad: Object.keys(countries).length,
+      style: state.traits ? state.traits.typeName + " · " + state.traits.typeTag : "",
+    };
+  }
+
+  function encodeDNA(dna) {
+    return btoa(unescape(encodeURIComponent(JSON.stringify(dna))))
+      .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+
+  function renderDNA(dna) {
+    var box = document.querySelector(".travly");
+    if (!box) return;
+    if (!dna || (!dna.trips.length && !dna.home)) {
+      box.innerHTML = escHtml(S.dnaFallback).replace("Travly", '<a href="https://travel-mvp.pages.dev/" target="_blank" rel="noopener">Travly</a>');
+      return;
+    }
+    var chips = '<span class="dna-chip dna-home">🏠 ' + escHtml(S.dnaHome) + ' · ' + escHtml(dna.home[0]) + '</span>';
+    dna.trips.forEach(function (t) {
+      chips += '<span class="dna-chip">' + escHtml(t[0]) + ' <i>' + t[2] + escHtml(S.dnaDays) + '</i></span>';
+    });
+    var abroad = dna.abroad ? ' · ' + escHtml(S.dnaAbroadLabel) + ' ' + dna.abroad + escHtml(S.dnaCount) : '';
+    box.innerHTML =
+      '<div class="dna-head">' + escHtml(S.dnaTitle) +
+      '<span class="dna-sub">' + escHtml(S.dnaTripsLabel) + ' ' + dna.trips.length + escHtml(S.dnaCount) + abroad + '</span></div>' +
+      '<div class="dna-chips">' + chips + '</div>' +
+      '<a class="dna-btn" href="https://travel-mvp.pages.dev/#fp=' + encodeDNA(dna) + '" target="_blank" rel="noopener">' + escHtml(S.dnaBtn) + '</a>' +
+      '<div class="dna-note">' + escHtml(S.dnaNote) + '</div>';
+    var btn = box.querySelector(".dna-btn");
+    if (btn) btn.addEventListener("click", function () {
+      if (window.dataLayer) window.dataLayer.push({ event: "fp_travly_dna", fp_trips: dna.trips.length });
+    });
   }
 
   function fpUserId() {
