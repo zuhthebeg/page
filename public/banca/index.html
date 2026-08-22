@@ -11,22 +11,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>방카 AI 비서 — 판매 시점과 청구 시점을 하나의 약관 엔진으로</title>
-<meta name="description" content="은행 창구에서 방카슈랑스를 팔 때 무엇을 설명해야 하는지, 보험금이 거절됐을 때 무엇을 다퉈야 하는지. 같은 약관 조항을 두 시점에서 대조하는 AI 비서 데모.">
-<meta name="keywords" content="방카슈랑스, 불완전판매, 보험금 부지급, 이의제기, 기왕증 기여도, 금융분쟁조정, 완전판매 체크리스트, ELS 사태">
+<title>방카 AI 비서 — 판매와 청구, 하나의 약관 엔진</title>
+<meta name="description" content="은행 창구에는 고객별 설명 스크립트를, 보험금이 거절된 고객에게는 다툴 쟁점과 이의제기 초안을. 판매 시점과 청구 시점을 하나의 약관 엔진으로 연결하는 방카슈랑스 AI 비서 — 작동하는 컨셉 데모.">
+<meta name="keywords" content="방카슈랑스, 불완전판매, 보험금 부지급, 이의제기, 기왕증 기여도, 금융분쟁조정, 완전판매, ELS 사태, 은행 창구">
 <link rel="canonical" href="https://page.cocy.io/banca/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="방카 AI 비서 — 하나의 약관 엔진, 두 시점">
-<meta property="og:description" content="판매 때 무엇을 설명할지, 청구가 거절되면 무엇을 다툴지. 같은 조항을 양쪽에서 대조하는 데모.">
+<meta property="og:title" content="방카 AI 비서 — 판매와 청구, 하나의 약관 엔진">
+<meta property="og:description" content="창구 직원에게는 무엇을 설명할지, 거절된 고객에게는 무엇을 다툴지. 두 화면이 같은 조항으로 연결되는 작동 데모.">
 <meta property="og:url" content="https://page.cocy.io/banca/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="방카 AI 비서 — 하나의 약관 엔진, 두 시점">
-<meta name="twitter:description" content="판매 때 무엇을 설명할지, 청구가 거절되면 무엇을 다툴지 알려주는 AI 데모.">
+<meta name="twitter:title" content="방카 AI 비서 — 판매와 청구, 하나의 약관 엔진">
+<meta name="twitter:description" content="창구 직원에게는 무엇을 설명할지, 거절된 고객에게는 무엇을 다툴지 알려주는 작동 데모.">
 <link rel="icon" type="image/svg+xml" href="/banca/icon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/banca/banca.css?v=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="/banca/banca.css?v=2">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -47,168 +45,196 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<div class="wrap">
-  <header class="top">
-    <img class="logo" src="/banca/icon.svg" alt="">
-    <div class="brand"><b>방카 AI 비서</b><span>Banca Copilot</span></div>
-    <span class="demo-badge">컨셉 데모</span>
-  </header>
+<nav class="nav">
+  <div class="nav-in">
+    <a class="nav-brand" href="#top"><img src="/banca/icon.svg" alt=""><b>방카 AI 비서</b></a>
+    <div class="nav-links">
+      <a href="#problem">문제</a>
+      <a href="#demo">데모</a>
+      <a href="#engine">구조</a>
+    </div>
+    <a class="nav-cta" href="#demo">데모 체험</a>
+  </div>
+</nav>
 
-  <section class="hero">
-    <h1>파는 사람과 심사하는 사람이 다르면,<br><em>분쟁은 구조적으로 생긴다.</em></h1>
-    <p class="lead">방카슈랑스는 은행 창구에서 팔고 보험사가 심사한다. 그런데 판매 시점 기록과 청구 시점 기록을 둘 다 가진 곳은 은행뿐이다. 두 시점을 같은 약관 엔진에 물리면, 판매 때 설명한 내용과 청구 때 거절 사유가 서로 대조된다.</p>
+<header class="hero" id="top">
+  <div class="hero-in">
+    <p class="hero-kicker">BANCASSURANCE COPILOT · 작동하는 컨셉 데모</p>
+    <h1>파는 순간과 받는 순간,<br><em>하나의 약관 엔진</em>으로 잇는다</h1>
+    <p class="hero-sub">방카슈랑스는 은행이 팔고 보험사가 심사한다. 분쟁은 그 틈에서 태어난다.<br class="pcbr">판매 시점과 청구 시점의 기록을 둘 다 가진 곳은 은행뿐이다 — 그 기록을 같은 조항 위에서 대조한다.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="#demo" data-goto="sale">🏦 창구 콘솔 열기</a>
+      <a class="btn-ghost" href="#demo" data-goto="claim">📱 고객 앱 열기</a>
+    </div>
+    <div class="hero-strip">
+      <span>고객별 설명 스크립트</span><i>·</i>
+      <span>서술형 이해도 확인</span><i>·</i>
+      <span>부지급 통보서 해석</span><i>·</i>
+      <span>이의제기 초안 생성</span><i>·</i>
+      <span>판매 기록 자동 대조</span>
+    </div>
+  </div>
+</header>
 
-    <div class="engine">
-      <div class="moment s">
-        <b>판매 시점 — 창구 직원</b>
-        <span>이 고객에게 무엇을 설명해야 하는지 모른다. 체크리스트는 "이해하셨죠?" → "네"만 남긴다.</span>
+<section class="problem" id="problem">
+  <div class="sec-in">
+    <p class="sec-kicker">WHY</p>
+    <h2>분쟁은 사람 잘못이 아니라 구조에서 나온다</h2>
+    <div class="prob-grid">
+      <div class="prob-card">
+        <span class="prob-n">01</span>
+        <h3>창구 직원은 보험 전문가가 아니다</h3>
+        <p>취급 상품이 수십 종. 이 고객의 나이·병력·목적에서 어느 조항이 터질지 판단할 수단이 없다. 완전판매 체크리스트는 "이해하셨죠?" → "네"라는 기록만 남긴다.</p>
       </div>
-      <div class="core">
-        <i>약관 엔진</i>
-        <b>↕</b>
-        <i>동일 조항</i>
+      <div class="prob-card">
+        <span class="prob-n">02</span>
+        <h3>거절당한 고객은 그냥 포기한다</h3>
+        <p>"기왕증이 직접적 원인으로 판단되어 부지급" — 이 문장을 해석해줄 사람이 없다. 손해사정사는 소액 청구를 맡지 않고, 방카 청구는 대부분 소액이다.</p>
       </div>
-      <div class="moment c">
-        <b>청구 시점 — 고객</b>
-        <span>거절 통보서를 이해하지 못한다. 소액이라 손해사정사도 안 맡는다. 그래서 포기한다.</span>
+      <div class="prob-card">
+        <span class="prob-n">03</span>
+        <h3>판단 근거는 이미 전부 공개돼 있다</h3>
+        <p>약관 전문은 보험협회 공시실에, 분쟁조정 결정례는 금융감독원에 있다. 어떤 거절 논리가 인정되고 뒤집혔는지 다 기록돼 있는데, 아무도 쓰지 않는다.</p>
       </div>
     </div>
-  </section>
-
-  <div class="tabs" role="tablist">
-    <button role="tab" data-tab="sale" aria-selected="true">창구 직원 화면<small>판매 시점</small></button>
-    <button role="tab" data-tab="claim" aria-selected="false">고객 앱 화면<small>청구 시점</small></button>
   </div>
+</section>
 
-  <!-- ═══ 판매 시점 ═══ -->
-  <section class="panel panel-sale on" data-panel="sale">
-    <p class="scene">예금 만기 상담 중, 창구에 고객이 앉아 있다. 직원에게 남은 시간은 <b>3분</b>이다. 체크리스트를 채우게 하지 않고, <b>무엇을 말할지</b> 알려준다.</p>
+<section class="demo" id="demo">
+  <div class="sec-in">
+    <p class="sec-kicker">LIVE DEMO</p>
+    <h2>두 화면을 직접 써보세요</h2>
+    <p class="sec-sub">아래는 목업이 아니라 실제로 AI가 응답하는 데모입니다. 창구 콘솔에서 저장한 설명 기록을 고객 앱이 읽어 대조합니다.</p>
 
-    <div class="presets">
-      <span>예시</span>
-      <button data-preset="elderly">68세 · 예금만기 · 저축성보험</button>
-      <button data-preset="health">54세 · 고지사항 있음 · 건강보험</button>
-      <button data-preset="young">33세 · 목돈마련 · 변액보험</button>
+    <div class="seg" role="tablist">
+      <button class="seg-btn on" data-view="sale" role="tab" aria-selected="true">🏦 창구 콘솔 <small>은행 직원용</small></button>
+      <button class="seg-btn" data-view="claim" role="tab" aria-selected="false">📱 모바일 앱 <small>고객용</small></button>
     </div>
 
-    <form class="form" id="saleForm">
-      <div class="grid">
-        <div class="field">
-          <label for="s-age">연령</label>
-          <input type="number" id="s-age" min="19" max="99" value="68" required>
+    <!-- ═══ 창구 콘솔 ═══ -->
+    <div class="stage stage-sale on" data-stage="sale">
+      <div class="console">
+        <div class="con-titlebar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="con-title">방카 어시스트 — 창구 콘솔</span>
+          <span class="con-user">서초중앙지점 · 김대리</span>
         </div>
-        <div class="field">
-          <label for="s-product">권유 상품</label>
-          <select id="s-product">
-            <option>저축성 보험 (10년 만기)</option>
-            <option>변액연금보험</option>
-            <option>종신보험</option>
-            <option>건강보험 (질병·상해 특약 포함)</option>
-            <option>연금저축보험</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="s-purpose">가입 목적</label>
-          <select id="s-purpose">
-            <option>노후 자금</option>
-            <option>목돈 마련</option>
-            <option>상속·증여 준비</option>
-            <option>질병 대비</option>
-            <option>세제 혜택</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="s-source">자금 출처</label>
-          <select id="s-source">
-            <option>예금 만기 자금</option>
-            <option>퇴직금</option>
-            <option>매월 소득 중 일부</option>
-            <option>기타</option>
-          </select>
-        </div>
-        <div class="field full">
-          <label for="s-health">고지사항 <u>— 계약 전 알릴 의무 관련. 없으면 비워도 된다</u></label>
-          <textarea id="s-health" rows="2" placeholder="예: 고혈압 투약 5년차, 3년 전 담낭 절제술">고혈압 투약 5년차</textarea>
-        </div>
-        <div class="field full">
-          <label for="s-note">직원 메모 <u>— 상담 중 느낀 점</u></label>
-          <input type="text" id="s-note" placeholder="예: 원금 보장되는 상품으로 알고 계심" value="예금이랑 비슷한 걸로 알고 계심">
+        <div class="con-body">
+          <aside class="con-side">
+            <div class="con-cust">
+              <div class="avatar">고</div>
+              <div><b>고객 상담 #2841</b><span>예금 만기 D-3 · 창구 방문</span></div>
+            </div>
+            <div class="presets">
+              <button data-preset="elderly">68세 예금만기</button>
+              <button data-preset="health">54세 병력고지</button>
+              <button data-preset="young">33세 변액</button>
+            </div>
+            <form id="saleForm">
+              <div class="f2">
+                <div class="field"><label>연령</label><input type="number" id="s-age" min="19" max="99" value="68" required></div>
+                <div class="field"><label>자금 출처</label><select id="s-source">
+                  <option>예금 만기 자금</option><option>퇴직금</option><option>매월 소득 중 일부</option><option>기타</option>
+                </select></div>
+              </div>
+              <div class="field"><label>권유 상품</label><select id="s-product">
+                <option>저축성 보험 (10년 만기)</option><option>변액연금보험</option><option>종신보험</option><option>건강보험 (질병·상해 특약 포함)</option><option>연금저축보험</option>
+              </select></div>
+              <div class="field"><label>가입 목적</label><select id="s-purpose">
+                <option>노후 자금</option><option>목돈 마련</option><option>상속·증여 준비</option><option>질병 대비</option><option>세제 혜택</option>
+              </select></div>
+              <div class="field"><label>고지사항 <u>계약 전 알릴 의무</u></label>
+                <textarea id="s-health" rows="2" placeholder="예: 고혈압 투약 5년차">고혈압 투약 5년차</textarea></div>
+              <div class="field"><label>상담 메모</label>
+                <input type="text" id="s-note" value="예금이랑 비슷한 걸로 알고 계심" placeholder="상담 중 느낀 점"></div>
+              <button type="submit" class="go">분석 실행</button>
+              <div class="err" id="saleErr"></div>
+            </form>
+          </aside>
+          <main class="con-out" id="saleOut">
+            <div class="con-empty">
+              <div class="con-empty-ico">⌘</div>
+              <b>고객 정보를 입력하고 분석을 실행하세요</b>
+              <p>이 고객에게 반드시 설명할 조항, 그대로 읽을 스크립트,<br>서술형 이해도 확인 질문이 생성됩니다.</p>
+            </div>
+          </main>
         </div>
       </div>
-      <button type="submit" class="go">이 고객에게 설명할 것 뽑기</button>
-      <div class="err" id="saleErr"></div>
-    </form>
-
-    <div class="out" id="saleOut"></div>
-  </section>
-
-  <!-- ═══ 청구 시점 ═══ -->
-  <section class="panel panel-claim" data-panel="claim">
-    <p class="scene">보험금이 거절됐다. 고객은 통보서 문장을 이해하지 못하고, 소액이라 아무도 대리해주지 않는다. <b>거절이 정당한지</b>가 아니라 <b>어떻게 하면 받는지</b>를 알려준다.</p>
-
-    <div id="recordHint"></div>
-
-    <div class="presets">
-      <span>예시</span>
-      <button data-preset="disc">기왕증 부지급</button>
-      <button data-preset="disclose">고지의무 위반 해지</button>
-      <button data-preset="surrender">해지환급금 원금 손실</button>
     </div>
 
-    <form class="form" id="claimForm">
-      <div class="grid">
-        <div class="field full">
-          <label for="c-denial">부지급 통보서 문구 <u>— 은행 앱 청구 이력에서 자동 연동되는 자리</u></label>
-          <textarea id="c-denial" rows="4" required placeholder="통보서에 적힌 문장을 그대로 붙여넣으세요">피보험자의 이번 입원은 기왕증인 요추 추간판탈출증이 직접적인 원인으로 판단되어 약관상 보상하지 않는 손해에 해당하므로 부지급 처리되었음을 안내드립니다.</textarea>
+    <!-- ═══ 모바일 앱 ═══ -->
+    <div class="stage stage-claim" data-stage="claim">
+      <div class="claim-wrap">
+        <div class="claim-side">
+          <h3>시나리오 선택</h3>
+          <p>부지급 통보를 받은 상황을 고르거나, 실제 통보서 문구를 직접 넣어보세요.</p>
+          <div class="scenario-list">
+            <button class="scen on" data-scen="disc"><b>기왕증 부지급</b><span>허리디스크 입원 — "기왕증이 직접적 원인"</span></button>
+            <button class="scen" data-scen="disclose"><b>고지의무 위반 해지</b><span>진단비 청구 — "계약 전 알릴 의무 위반"</span></button>
+            <button class="scen" data-scen="surrender"><b>중도해지 원금 손실</b><span>5년 해지 — "납입원금에 미치지 못함"</span></button>
+            <button class="scen" data-scen="custom"><b>직접 입력</b><span>받은 통보서 문구 붙여넣기</span></button>
+          </div>
+          <div id="recordHint"></div>
+          <div class="err" id="claimErr"></div>
         </div>
-        <div class="field full">
-          <label for="c-reason">무슨 일로 청구했나요</label>
-          <input type="text" id="c-reason" placeholder="예: 허리 통증으로 12일 입원" value="허리 통증이 심해져 12일 입원">
-        </div>
-        <div class="field">
-          <label for="c-amount">청구 금액대</label>
-          <select id="c-amount">
-            <option>100만원 미만</option>
-            <option>100~500만원</option>
-            <option>500~1000만원</option>
-            <option>1000만원 이상</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="c-joined">가입 시기</label>
-          <select id="c-joined">
-            <option>1년 미만</option>
-            <option>1~3년</option>
-            <option>3~5년</option>
-            <option>5년 이상</option>
-          </select>
+
+        <div class="phone">
+          <div class="ph-screen">
+            <div class="ph-status"><span id="phClock">9:41</span><span class="ph-icons">📶 🔋</span></div>
+            <div class="ph-appbar"><span class="ph-back">‹</span><b>보험금 청구 내역</b><span class="ph-menu">⋯</span></div>
+            <div class="ph-content" id="phContent">
+              <!-- JS 렌더 -->
+            </div>
+          </div>
         </div>
       </div>
-      <button type="submit" class="go">거절 사유 뜯어보기</button>
-      <div class="err" id="claimErr"></div>
-    </form>
-
-    <div class="out" id="claimOut"></div>
-  </section>
-
-  <div class="disclaimer">
-    <b>이 페이지에 대해</b> — 서비스 컨셉을 검증하려고 만든 작동하는 데모다. 실제 상용 서비스가 아니다.
-    <ul>
-      <li>약관 전문 DB와 금융감독원 분쟁조정 결정례 DB는 <b>연동돼 있지 않다.</b> 출력은 AI 모델의 일반 지식으로 만든 것이고, "비슷한 사례"는 실제 결정례 인용이 아니라 <b>유형을 재구성한 예시</b>다. 사건번호·조항 번호는 지어내지 않도록 막아 두었다.</li>
-      <li>실제 서비스라면 이 자리에 생명·손해보험협회 공시실의 약관 전문과 금감원 결정례가 들어간다. 두 자료 모두 이미 전부 공개돼 있는데 아무도 쓰지 않는다는 게 이 아이디어의 출발점이다.</li>
-      <li>법률 자문도 보험 자문도 아니다. 실제 분쟁은 금융감독원 <b>1332</b> 또는 e-금융민원센터로.</li>
-      <li>입력한 내용은 저장하지 않는다. 판매 기록 대조 기능은 <b>이 브라우저 안에서만</b> 동작한다(localStorage).</li>
-    </ul>
+    </div>
   </div>
+</section>
 
-  <div class="foot">
-    <a href="https://page.cocy.io/">page.cocy.io</a>
-    <a href="https://www.fss.or.kr/" target="_blank" rel="noopener">금융감독원</a>
-    <a href="https://pub.insure.or.kr/" target="_blank" rel="noopener">생명보험협회 공시실</a>
-    <a href="https://kpub.knia.or.kr/" target="_blank" rel="noopener">손해보험협회 공시실</a>
+<section class="engine-sec" id="engine">
+  <div class="sec-in">
+    <p class="sec-kicker">HOW IT CONNECTS</p>
+    <h2>하나의 엔진, 두 시점</h2>
+    <div class="flow">
+      <div class="flow-node sale-n">
+        <b>판매 시점</b>
+        <p>고객 조건 → 위험 조항 3개<br>설명 스크립트 · 이해도 질문</p>
+        <span class="flow-tag">설명 이행 기록 저장</span>
+      </div>
+      <div class="flow-core">
+        <div class="flow-ring"><span>약관<br>엔진</span></div>
+        <p>같은 조항 유형으로 판단</p>
+      </div>
+      <div class="flow-node claim-n">
+        <b>청구 시점</b>
+        <p>부지급 통보 → 쟁점 재프레이밍<br>증거 목록 · 이의제기 초안</p>
+        <span class="flow-tag">판매 기록과 자동 대조</span>
+      </div>
+    </div>
+    <p class="flow-punch">거절 근거가 된 조항이 판매 기록에 없다면 —<br><b>설명 누락 그 자체가 이의제기 논거가 된다.</b></p>
   </div>
-</div>
+</section>
 
-<script src="/banca/banca.js?v=1"></script>
+<footer class="foot">
+  <div class="sec-in">
+    <div class="disclaimer">
+      <b>이 페이지에 대해</b> — 서비스 컨셉을 검증하려고 만든 작동하는 데모이며, 실제 상용 서비스가 아닙니다.
+      <ul>
+        <li>약관 전문 DB·금융감독원 분쟁조정 결정례 DB는 연동돼 있지 않습니다. 출력은 AI의 일반 지식 기반이고, "비슷한 사례"는 유형을 재구성한 예시입니다. 사건번호·조항 번호는 생성하지 않도록 막아 두었습니다.</li>
+        <li>법률 자문·보험 자문이 아닙니다. 실제 분쟁은 금융감독원 <b>1332</b> 또는 e-금융민원센터로 문의하세요.</li>
+        <li>입력 내용은 저장하지 않으며, 판매 기록 대조는 이 브라우저(localStorage) 안에서만 동작합니다.</li>
+      </ul>
+    </div>
+    <div class="foot-links">
+      <a href="https://page.cocy.io/">page.cocy.io</a>
+      <a href="https://www.fss.or.kr/" target="_blank" rel="noopener">금융감독원</a>
+      <a href="https://pub.insure.or.kr/" target="_blank" rel="noopener">생명보험협회 공시실</a>
+      <a href="https://kpub.knia.or.kr/" target="_blank" rel="noopener">손해보험협회 공시실</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/banca/banca.js?v=2"></script>
 </body>
 </html>
