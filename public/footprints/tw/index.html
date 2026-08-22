@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/footprints/footprints.css?v=3">
+<link rel="stylesheet" href="/footprints/footprints.css?v=4">
 <style>body{font-family:"Noto Sans TC",-apple-system,sans-serif}</style>
 <script type="application/ld+json">
 {
@@ -98,6 +98,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="rangebar">
       <span class="rb-label">📅 期間</span>
       <div class="rb-sliders">
+        <div class="rb-track"></div>
+        <div class="rb-fill" id="rbfill"></div>
         <input type="range" id="rgA" min="0" max="1000" value="0">
         <input type="range" id="rgB" min="0" max="1000" value="1000">
       </div>
@@ -108,6 +110,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="stat"><b id="s-days">0</b><span>有紀錄的日子</span></div>
       <div class="stat"><b id="s-visits">0</b><span>造訪地點</span></div>
       <div class="stat"><b id="s-maxday">0</b><span>單日最長 (km)</span></div>
+    </div>
+    <div class="traits-card" id="traits">
+      <div class="tr-badge"><span class="tr-emoji" id="tr-emoji">🌍</span><span class="tr-name" id="tr-name"></span></div>
+      <div class="tr-type" id="tr-type"></div>
+      <div class="tr-chips" id="tr-chips"></div>
+      <button id="rankbtn">🏆 加入排行榜</button>
+      <div class="rank-preview" id="rankpreview">
+        <p id="rankpayload"></p>
+        <div class="rp-actions"><button id="rankconfirm">送出</button><button id="rankcancel">取消</button></div>
+      </div>
+      <div class="rank-result" id="rankresult"></div>
+      <div class="rank-board" id="rankboard"></div>
     </div>
     <div class="export-row">
       <button id="png">🖼 儲存海報 (PNG)</button>
@@ -169,9 +183,22 @@ window.FP_STR = {
   camFollow: "📷 跟隨", camOverview: "🗺 全覽",
   posterTitle: "我的足跡",
   stTotal: "總移動距離", stDays: "有紀錄的日子", stVisits: "造訪地點", stMaxDay: "單日最長",
-  brandUrl: "page.cocy.io/footprints"
+  brandUrl: "page.cocy.io/footprints",
+  trBadgeEarth: "地球征服者", trBadgeNomad: "遊牧魂爆表", trBadgeSprint: "極速本能",
+  trBadgeWanderer: "流浪者", trBadgeNight: "深夜漫遊者", trBadgeHomebody: "宅家大師",
+  trBadgeLogger: "紀錄之神", trBadgeNormal: "平凡的每一天",
+  trAxisExplorer: "探險家", trAxisRegular: "常客型", trAxisLong: "長途型", trAxisLocal: "在地型",
+  trAxisWeekend: "週末型", trAxisWeekday: "平日型", trAxisNight: "🦉 夜貓型", trAxisDay: "☀️ 日行型",
+  rankBtn: "🏆 加入排行榜",
+  rankPayload: '傳送到伺服器的只有這 2 個值 — 稱號「{title}」（第 {tier}/8 級）。不會傳送座標或路線資料。',
+  rankConfirm: "送出", rankCancel: "取消",
+  rankOk: "✅ 登錄完成！目前稱號：{title}",
+  rankKept: "你已經登錄過更高的稱號了：{title}",
+  rankErr: "登錄失敗，請稍後再試一次。",
+  rankBoardTitle: "名人堂", rankEmpty: "還沒有人登錄 — 當第一位吧！",
+  rankAnon: "匿名"
 };
 </script>
-<script src="/footprints/footprints.js?v=11"></script>
+<script src="/footprints/footprints.js?v=12"></script>
 </body>
 </html>

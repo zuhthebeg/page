@@ -157,3 +157,44 @@ footer a:hover { color: var(--ink); }
   cursor: pointer; border: none; background: var(--ink); color: #0a0f1c;
 }
 .gif-result .gr-actions button:hover { filter: brightness(1.08); }
+
+/* 칭호/유형 + 랭킹 카드 */
+.traits-card {
+  display: none; margin-top: 12px; padding: 14px 16px; border-radius: 10px;
+  background: var(--bg2); border: 1px solid rgba(139,92,246,.35); text-align: center;
+}
+.traits-card .tr-badge { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.traits-card .tr-emoji { font-size: 1.6rem; }
+.traits-card .tr-name { font-size: 1.02rem; font-weight: 800; color: var(--ink); }
+.traits-card .tr-type { margin-top: 4px; font-size: .8rem; color: var(--ink-faint); }
+.traits-card .tr-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 10px; }
+.traits-card .tr-chip {
+  font-size: .72rem; padding: 4px 9px; border-radius: 999px;
+  background: rgba(139,92,246,.14); border: 1px solid rgba(139,92,246,.35); color: var(--ink);
+}
+.traits-card #rankbtn {
+  margin-top: 12px; border-radius: 10px; padding: 9px 20px; font: inherit; font-size: .86rem; font-weight: 700;
+  cursor: pointer; border: 1px solid var(--violet); background: transparent; color: var(--violet);
+}
+.traits-card #rankbtn:hover { background: rgba(139,92,246,.12); }
+.rank-preview {
+  display: none; margin-top: 12px; padding: 12px; border-radius: 8px;
+  background: rgba(255,255,255,.04); border: 1px dashed rgba(255,255,255,.2);
+}
+.rank-preview p { font-size: .78rem; color: var(--ink-faint); margin: 0 0 10px; line-height: 1.5; }
+.rank-preview .rp-actions { display: flex; gap: 8px; justify-content: center; }
+.rank-preview button {
+  border-radius: 8px; padding: 8px 18px; font: inherit; font-size: .84rem; font-weight: 700;
+  cursor: pointer; border: none;
+}
+.rank-preview #rankconfirm { background: var(--violet); color: #fff; }
+.rank-preview #rankcancel { background: transparent; color: var(--ink-faint); border: 1px solid rgba(255,255,255,.2); }
+.rank-result { display: none; margin-top: 10px; font-size: .8rem; color: #9ef0c4; }
+.rank-board { display: none; margin-top: 12px; text-align: left; }
+.rank-board .rb-head { font-size: .8rem; font-weight: 700; color: var(--ink); margin-bottom: 6px; text-align: center; }
+.rank-board .rb-row {
+  display: grid; grid-template-columns: 24px 1fr auto; gap: 8px; padding: 5px 8px; font-size: .78rem;
+  color: var(--ink-faint); border-radius: 6px;
+}
+.rank-board .rb-row.mine { background: rgba(139,92,246,.14); color: var(--ink); }
+.rank-board .rb-empty { text-align: center; font-size: .76rem; color: var(--ink-faint); padding: 8px; }

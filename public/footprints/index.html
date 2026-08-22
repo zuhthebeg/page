@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/footprints/footprints.css?v=3">
+<link rel="stylesheet" href="/footprints/footprints.css?v=4">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -110,6 +110,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="stat"><b id="s-visits">0</b><span>방문 장소</span></div>
       <div class="stat"><b id="s-maxday">0</b><span>최장 하루 (km)</span></div>
     </div>
+    <div class="traits-card" id="traits">
+      <div class="tr-badge"><span class="tr-emoji" id="tr-emoji">🌍</span><span class="tr-name" id="tr-name"></span></div>
+      <div class="tr-type" id="tr-type"></div>
+      <div class="tr-chips" id="tr-chips"></div>
+      <button id="rankbtn">🏆 랭킹 등록하기</button>
+      <div class="rank-preview" id="rankpreview">
+        <p id="rankpayload"></p>
+        <div class="rp-actions"><button id="rankconfirm">등록하기</button><button id="rankcancel">취소</button></div>
+      </div>
+      <div class="rank-result" id="rankresult"></div>
+      <div class="rank-board" id="rankboard"></div>
+    </div>
     <div class="export-row">
       <button id="png">🖼 포스터 저장 (PNG)</button>
       <button id="rec">🎞 GIF 만들기</button>
@@ -152,6 +164,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </footer>
 </div>
 
-<script src="/footprints/footprints.js?v=11"></script>
+<script src="/footprints/footprints.js?v=12"></script>
 </body>
 </html>

@@ -24,6 +24,19 @@
     posterTitle: "나의 발자국",
     stTotal: "총 이동거리", stDays: "기록된 날", stVisits: "방문 장소", stMaxDay: "최장 하루",
     brandUrl: "page.cocy.io/footprints",
+    trBadgeEarth: "지구 정복자", trBadgeNomad: "역마살 만렙", trBadgeSprint: "질주 본능",
+    trBadgeWanderer: "방랑자", trBadgeNight: "심야 유랑자", trBadgeHomebody: "집돌이 마스터",
+    trBadgeLogger: "기록의 신", trBadgeNormal: "평범한 하루하루",
+    trAxisExplorer: "탐험가", trAxisRegular: "단골러", trAxisLong: "장거리", trAxisLocal: "동네",
+    trAxisWeekend: "주말형", trAxisWeekday: "평일형", trAxisNight: "🦉 심야형", trAxisDay: "☀️ 주행성",
+    rankBtn: "🏆 랭킹 등록하기",
+    rankPayload: '서버로 전송되는 값은 이 2개뿐입니다 — 칭호 "{title}" (티어 {tier}/8). 좌표·경로 데이터는 전송되지 않습니다.',
+    rankConfirm: "등록하기", rankCancel: "취소",
+    rankOk: "✅ 등록 완료! 대표 칭호: {title}",
+    rankKept: "이미 더 높은 칭호가 등록돼 있어요: {title}",
+    rankErr: "랭킹 등록에 실패했어요. 잠시 후 다시 시도해주세요.",
+    rankBoardTitle: "명예의 전당", rankEmpty: "아직 아무도 등록 안 했어요 — 첫 주자가 되어보세요!",
+    rankAnon: "익명",
   }, window.FP_STR || {});
 
   // ── 좌표/시간 파싱 ──
@@ -563,6 +576,7 @@
     if (ra) { ra.value = 0; rb.value = 1000; updateRangeLabel(); }
     lastGifBlob = null; hideGifResult();
     updateStatsUI();
+    renderTraits(computeTraits(state.data));
     resize();
     computeOverview();
     state.progress = 0;
@@ -606,6 +620,7 @@
     state.data = assemble(pts, vis);
     lastGifBlob = null; hideGifResult();
     updateStatsUI();
+    renderTraits(computeTraits(state.data));
     computeOverview();
     state.progress = 0;
     snapCamera();
@@ -844,4 +859,163 @@
   var gifDlBtn = $("#gifdl"), gifShareBtn = $("#gifshare");
   if (gifDlBtn) gifDlBtn.addEventListener("click", function () { if (lastGifBlob) downloadGif(lastGifBlob); });
   if (gifShareBtn) gifShareBtn.addEventListener("click", function () { if (lastGifBlob) shareGif(lastGifBlob); });
+
+  // ── 재미요소: 온디바이스 칭호/이동유형 계산 + opt-in 랭킹 ──
+  // 칭호는 항상 브라우저에서만 계산된다. 서버로 보내는 건(opt-in 클릭 시) 칭호 텍스트+티어 숫자 둘뿐 — 좌표/경로는 전송 안 함.
+  var BADGES = [
+    { key: "earth", tier: 8, emoji: "🌍", get name() { return S.trBadgeEarth; }, test: function (m) { return m.totalKm >= 40075; } },
+    { key: "nomad", tier: 7, emoji: "✈️", get name() { return S.trBadgeNomad; }, test: function (m) { return m.totalKm >= 30000; } },
+    { key: "sprint", tier: 6, emoji: "🚀", get name() { return S.trBadgeSprint; }, test: function (m) { return m.maxDayKm >= 500; } },
+    { key: "wanderer", tier: 5, emoji: "📍", get name() { return S.trBadgeWanderer; }, test: function (m) { return m.visits >= 150; } },
+    { key: "night", tier: 4, emoji: "🦉", get name() { return S.trBadgeNight; }, test: function (m) { return m.nightRatio >= 0.15; } },
+    { key: "homebody", tier: 3, emoji: "🏠", get name() { return S.trBadgeHomebody; }, test: function (m) { return m.homeRatio >= 0.7; } },
+    { key: "logger", tier: 2, emoji: "📝", get name() { return S.trBadgeLogger; }, test: function (m) { return m.days >= 300; } },
+    { key: "normal", tier: 1, emoji: "🌱", get name() { return S.trBadgeNormal; }, test: function () { return true; } },
+  ];
+
+  function computeTraits(data) {
+    var pts = data.points, st = data.stats;
+    var n = pts.length;
+    if (!n) return null;
+
+    var night = 0;
+    for (var i = 0; i < n; i++) { if (new Date(pts[i].t).getHours() < 5) night++; }
+    var nightRatio = night / n;
+
+    // 집돌이 판정 — 전체 평균 중심점 기준 5km를 못 벗어난 날 비율
+    var cLat = 0, cLng = 0;
+    for (var j = 0; j < n; j++) { cLat += pts[j].lat; cLng += pts[j].lng; }
+    var center = { lat: cLat / n, lng: cLng / n };
+    var dayMax = {};
+    for (var k = 0; k < n; k++) {
+      var day = new Date(pts[k].t).toISOString().slice(0, 10);
+      var d = hav(center, pts[k]);
+      if (!dayMax[day] || d > dayMax[day]) dayMax[day] = d;
+    }
+    var dayKeys = Object.keys(dayMax);
+    var homeDays = dayKeys.filter(function (d) { return dayMax[d] <= 5; }).length;
+    var homeRatio = dayKeys.length ? homeDays / dayKeys.length : 0;
+
+    // 요일별 하루 평균 이동거리(주말형/평일형), 방문 격자 다양성(탐험가/단골러)
+    var wkKm = 0, wdKm = 0, wkDays = {}, wdDays = {};
+    for (var s = 1; s < n; s++) {
+      var seg = hav(pts[s - 1], pts[s]);
+      var dow = new Date(pts[s].t).getDay();
+      var dkey = new Date(pts[s].t).toISOString().slice(0, 10);
+      if (dow === 0 || dow === 6) { wkKm += seg; wkDays[dkey] = 1; } else { wdKm += seg; wdDays[dkey] = 1; }
+    }
+    var wkAvg = Object.keys(wkDays).length ? wkKm / Object.keys(wkDays).length : 0;
+    var wdAvg = Object.keys(wdDays).length ? wdKm / Object.keys(wdDays).length : 0;
+
+    var cellSet = {};
+    data.visits.forEach(function (v) { cellSet[Math.round(v.lat / 0.05) + "_" + Math.round(v.lng / 0.05)] = 1; });
+    var diversity = data.visits.length ? Object.keys(cellSet).length / data.visits.length : 0;
+
+    var metrics = { totalKm: st.totalKm, days: st.days, visits: st.visits, maxDayKm: st.maxDayKm, nightRatio: nightRatio, homeRatio: homeRatio };
+    var earned = BADGES.filter(function (b) { return b.key === "normal" || b.test(metrics); });
+    var main = earned.reduce(function (a, b) { return b.tier > a.tier ? b : a; }, earned[0]);
+
+    var avgKmPerDay = st.days ? st.totalKm / st.days : 0;
+    var typeName = (wkAvg >= wdAvg ? S.trAxisWeekend : S.trAxisWeekday) + " " +
+      (avgKmPerDay >= 15 ? S.trAxisLong : S.trAxisLocal) + " " +
+      (diversity >= 0.5 ? S.trAxisExplorer : S.trAxisRegular);
+    var typeTag = nightRatio >= 0.12 ? S.trAxisNight : S.trAxisDay;
+
+    return { badges: earned, main: main, typeName: typeName, typeTag: typeTag };
+  }
+
+  function escHtml(str) {
+    return String(str).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function hideRankUI() {
+    if (rankPreview) rankPreview.style.display = "none";
+    if (rankResult) rankResult.style.display = "none";
+    if (rankBoard) rankBoard.style.display = "none";
+  }
+
+  function renderTraits(traits) {
+    var card = $("#traits");
+    if (!card) return;
+    if (!traits) { card.style.display = "none"; return; }
+    state.traits = traits;
+    card.style.display = "block";
+    $("#tr-emoji").textContent = traits.main.emoji;
+    $("#tr-name").textContent = traits.main.name;
+    $("#tr-type").textContent = "🧭 " + traits.typeName + " · " + traits.typeTag;
+    var chips = $("#tr-chips");
+    chips.innerHTML = "";
+    traits.badges.forEach(function (b) {
+      var span = document.createElement("span");
+      span.className = "tr-chip";
+      span.textContent = b.emoji + " " + b.name;
+      chips.appendChild(span);
+    });
+    if (rankBtn) rankBtn.textContent = S.rankBtn;
+    if (rankConfirm) rankConfirm.textContent = S.rankConfirm;
+    if (rankCancel) rankCancel.textContent = S.rankCancel;
+    hideRankUI();
+  }
+
+  function fpUserId() {
+    var k = "fp_uid", v = localStorage.getItem(k);
+    if (!v) { v = "fp_" + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem(k, v); }
+    return v;
+  }
+
+  function loadRankBoard() {
+    if (!rankBoard) return;
+    fetch("https://relay.cocy.io/api/rankings/footprints?limit=10").then(function (r) { return r.json(); }).then(function (res) {
+      if (!res.success) return;
+      var uid = fpUserId();
+      var rows = (res.rankings || []).map(function (row, i) {
+        var mine = row.user_id === uid;
+        return '<div class="rb-row' + (mine ? ' mine' : '') + '"><span>' + (i + 1) + '.</span><span>' +
+          escHtml(row.nickname || S.rankAnon) + '</span><span>' + escHtml(row.title || "") + '</span></div>';
+      }).join("");
+      rankBoard.innerHTML = '<div class="rb-head">🏆 ' + escHtml(S.rankBoardTitle) + '</div>' +
+        (rows || '<div class="rb-empty">' + escHtml(S.rankEmpty) + '</div>');
+      rankBoard.style.display = "block";
+    }).catch(function () {});
+  }
+
+  var rankBtn = $("#rankbtn"), rankPreview = $("#rankpreview"), rankPayload = $("#rankpayload"),
+    rankConfirm = $("#rankconfirm"), rankCancel = $("#rankcancel"), rankResult = $("#rankresult"), rankBoard = $("#rankboard");
+
+  if (rankBtn) rankBtn.addEventListener("click", function () {
+    if (!state.traits) return;
+    var t = state.traits.main;
+    rankPayload.textContent = S.rankPayload.replace("{title}", t.name).replace("{tier}", t.tier);
+    rankPreview.style.display = "block";
+    rankResult.style.display = "none";
+    if (window.dataLayer) window.dataLayer.push({ event: "fp_rank_preview" });
+  });
+  if (rankCancel) rankCancel.addEventListener("click", function () { rankPreview.style.display = "none"; });
+  if (rankConfirm) rankConfirm.addEventListener("click", function () {
+    if (!state.traits) return;
+    var t = state.traits.main;
+    rankConfirm.disabled = true;
+    fetch("https://relay.cocy.io/api/rankings/footprints", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: fpUserId(), tier: t.tier, title: t.name }),
+    }).then(function (r) { return r.json(); }).then(function (res) {
+      rankConfirm.disabled = false;
+      rankPreview.style.display = "none";
+      rankResult.style.display = "block";
+      if (res.success) {
+        rankResult.textContent = (res.updated ? S.rankOk : S.rankKept).replace("{title}", res.bestTitle);
+        loadRankBoard();
+        if (window.dataLayer) window.dataLayer.push({ event: "fp_rank_submit", fp_tier: t.tier });
+      } else {
+        rankResult.textContent = S.rankErr;
+      }
+    }).catch(function () {
+      rankConfirm.disabled = false;
+      rankPreview.style.display = "none";
+      rankResult.style.display = "block";
+      rankResult.textContent = S.rankErr;
+    });
+  });
 })();
