@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/footprints/footprints.css?v=6">
+<link rel="stylesheet" href="/footprints/footprints.css?v=7">
 <style>body{font-family:"Noto Sans TC",-apple-system,sans-serif}</style>
 <script type="application/ld+json">
 {
@@ -123,6 +123,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="tr-chips" id="tr-chips"></div>
       <button id="rankbtn">🏆 加入排行榜</button>
       <div class="rank-preview" id="rankpreview">
+        <input type="text" id="ranknick" maxlength="16" class="rank-nick">
         <p id="rankpayload"></p>
         <div class="rp-actions"><button id="rankconfirm">送出</button><button id="rankcancel">取消</button></div>
       </div>
@@ -206,6 +207,9 @@ window.FP_STR = {
   regionOff: "🖊 選取範圍", regionOn: "🖊 在地圖上拖曳選取…",
   regionLabel: "🗺 僅顯示選取範圍 · {n} 個地點", regionClear: "✕ 清除",
   regionTooSmall: "選取範圍太小，請拖曳更大的框。",
+  rankPayload: '\u50b3\u9001\u5230\u4f3a\u670d\u5668\u7684\u503c\uff1a\u66b1\u7a31 \u00b7 \u7a31\u865f\u300c{title}\u300d\uff08\u7b49\u7d1a {tier}/8\uff09\u00b7 \u5927\u7d04\u8ddd\u96e2 {km} \u00b7 \u7d00\u9304 {days} \u5929\u3002\u7d55\u4e0d\u4e0a\u50b3\u5ea7\u6a19\u8207\u8def\u7dda\u3002',
+  rankNickPh: "\u66b1\u7a31\uff08\u9078\u586b\uff0c\u7559\u7a7a\u5247\u533f\u540d\uff09",
+  rankKmFmt: "\u7d04 {v}km", kmMan: "\u842c",
   dnaTitle: "\ud83e\uddec \u65c5\u884c DNA",
   dnaHome: "\u5927\u672c\u71df", dnaTripsLabel: "\u53bb\u904e\u7684\u5730\u65b9", dnaAbroadLabel: "\u6d77\u5916",
   dnaDays: "\u5929", dnaCount: "\u8655",
@@ -215,6 +219,6 @@ window.FP_STR = {
 };
 </script>
 <script src="/footprints/cities.js?v=1"></script>
-<script src="/footprints/footprints.js?v=15"></script>
+<script src="/footprints/footprints.js?v=16"></script>
 </body>
 </html>

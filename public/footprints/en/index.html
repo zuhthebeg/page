@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/footprints/footprints.css?v=6">
+<link rel="stylesheet" href="/footprints/footprints.css?v=7">
 <style>body{font-family:"IBM Plex Sans",-apple-system,sans-serif}</style>
 <script type="application/ld+json">
 {
@@ -123,6 +123,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="tr-chips" id="tr-chips"></div>
       <button id="rankbtn">🏆 Join the leaderboard</button>
       <div class="rank-preview" id="rankpreview">
+        <input type="text" id="ranknick" maxlength="16" class="rank-nick">
         <p id="rankpayload"></p>
         <div class="rp-actions"><button id="rankconfirm">Submit</button><button id="rankcancel">Cancel</button></div>
       </div>
@@ -206,6 +207,9 @@ window.FP_STR = {
   regionOff: "🖊 Select region", regionOn: "🖊 Drag on the map…",
   regionLabel: "🗺 Showing selected region only · {n} points", regionClear: "✕ Clear",
   regionTooSmall: "That selection is too small. Try dragging a bigger box.",
+  rankPayload: 'Sent to server: nickname \u00b7 title "{title}" (tier {tier}/8) \u00b7 approx. distance {km} \u00b7 {days} logged days. Coordinates and routes are never uploaded.',
+  rankNickPh: "Nickname (optional \u2014 blank = anonymous)",
+  rankKmFmt: "~{v} km", kmMan: "",
   dnaTitle: "\ud83e\uddec Travel DNA",
   dnaHome: "Base camp", dnaTripsLabel: "Places visited", dnaAbroadLabel: "abroad",
   dnaDays: "d", dnaCount: "",
@@ -215,6 +219,6 @@ window.FP_STR = {
 };
 </script>
 <script src="/footprints/cities.js?v=1"></script>
-<script src="/footprints/footprints.js?v=15"></script>
+<script src="/footprints/footprints.js?v=16"></script>
 </body>
 </html>

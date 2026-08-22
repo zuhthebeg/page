@@ -30,7 +30,9 @@
     trAxisExplorer: "탐험가", trAxisRegular: "단골러", trAxisLong: "장거리", trAxisLocal: "동네",
     trAxisWeekend: "주말형", trAxisWeekday: "평일형", trAxisNight: "🦉 심야형", trAxisDay: "☀️ 주행성",
     rankBtn: "🏆 랭킹 등록하기",
-    rankPayload: '서버로 전송되는 값은 이 2개뿐입니다 — 칭호 "{title}" (티어 {tier}/8). 좌표·경로 데이터는 전송되지 않습니다.',
+    rankPayload: '서버로 전송되는 값: 닉네임 · 칭호 "{title}" (티어 {tier}/8) · 대략 거리 {km} · 기록 {days}일. 좌표·경로 데이터는 전송되지 않습니다.',
+    rankNickPh: "닉네임 (선택, 비우면 익명)",
+    rankKmFmt: "약 {v}km", kmMan: "만",
     rankConfirm: "등록하기", rankCancel: "취소",
     rankOk: "✅ 등록 완료! 대표 칭호: {title}",
     rankKept: "이미 더 높은 칭호가 등록돼 있어요: {title}",
@@ -1151,6 +1153,19 @@
     return v;
   }
 
+  // 근사치 반올림 — "정확하지 않아도" 원칙: 유효숫자 2자리로 뭉개서 전송·표시
+  function approxKm(km) {
+    if (km < 100) return Math.round(km);
+    var mag = Math.pow(10, Math.floor(Math.log(km) / Math.LN10) - 1);
+    return Math.round(km / mag) * mag;
+  }
+  function fmtApproxKm(km) {
+    if (!km) return "";
+    // ko/tw는 만 단위 축약(9.8만), en은 kmMan=""라 전체 숫자(98,000)
+    var v = (S.kmMan && km >= 10000) ? (Math.round(km / 1000) / 10).toLocaleString() + S.kmMan : km.toLocaleString();
+    return S.rankKmFmt.replace("{v}", v);
+  }
+
   function loadRankBoard() {
     if (!rankBoard) return;
     fetch("https://relay.cocy.io/api/rankings/footprints?limit=10").then(function (r) { return r.json(); }).then(function (res) {
@@ -1158,8 +1173,9 @@
       var uid = fpUserId();
       var rows = (res.rankings || []).map(function (row, i) {
         var mine = row.user_id === uid;
+        var kmTxt = row.km ? '<i class="rb-km">' + escHtml(fmtApproxKm(row.km)) + '</i>' : '';
         return '<div class="rb-row' + (mine ? ' mine' : '') + '"><span>' + (i + 1) + '.</span><span>' +
-          escHtml(row.nickname || S.rankAnon) + '</span><span>' + escHtml(row.title || "") + '</span></div>';
+          escHtml(row.nickname || S.rankAnon) + '</span><span>' + escHtml(row.title || "") + kmTxt + '</span></div>';
       }).join("");
       rankBoard.innerHTML = '<div class="rb-head">🏆 ' + escHtml(S.rankBoardTitle) + '</div>' +
         (rows || '<div class="rb-empty">' + escHtml(S.rankEmpty) + '</div>');
@@ -1173,7 +1189,12 @@
   if (rankBtn) rankBtn.addEventListener("click", function () {
     if (!state.traits) return;
     var t = state.traits.main;
-    rankPayload.textContent = S.rankPayload.replace("{title}", t.name).replace("{tier}", t.tier);
+    var aKm = approxKm(state.data.stats.totalKm);
+    var aDays = Math.max(10, Math.round(state.data.stats.days / 10) * 10);
+    rankPayload.textContent = S.rankPayload.replace("{title}", t.name).replace("{tier}", t.tier)
+      .replace("{km}", fmtApproxKm(aKm) || "0km").replace("{days}", aDays);
+    var nickEl = document.getElementById("ranknick");
+    if (nickEl) { nickEl.placeholder = S.rankNickPh; nickEl.value = localStorage.getItem("fp_nick") || ""; }
     rankPreview.style.display = "block";
     rankResult.style.display = "none";
     if (window.dataLayer) window.dataLayer.push({ event: "fp_rank_preview" });
@@ -1182,10 +1203,18 @@
   if (rankConfirm) rankConfirm.addEventListener("click", function () {
     if (!state.traits) return;
     var t = state.traits.main;
+    var nickEl = document.getElementById("ranknick");
+    var nick = nickEl ? nickEl.value.trim().slice(0, 16) : "";
+    if (nick) localStorage.setItem("fp_nick", nick); else localStorage.removeItem("fp_nick");
     rankConfirm.disabled = true;
     fetch("https://relay.cocy.io/api/rankings/footprints", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: fpUserId(), tier: t.tier, title: t.name }),
+      body: JSON.stringify({
+        userId: fpUserId(), tier: t.tier, title: t.name,
+        nickname: nick || undefined,
+        km: approxKm(state.data.stats.totalKm),
+        days: Math.max(10, Math.round(state.data.stats.days / 10) * 10),
+      }),
     }).then(function (r) { return r.json(); }).then(function (res) {
       rankConfirm.disabled = false;
       rankPreview.style.display = "none";
