@@ -968,9 +968,10 @@
   // ── 재미요소: 온디바이스 칭호/이동유형 계산 + opt-in 랭킹 ──
   // 칭호는 항상 브라우저에서만 계산된다. 서버로 보내는 건(opt-in 클릭 시) 칭호 텍스트+티어 숫자 둘뿐 — 좌표/경로는 전송 안 함.
   var BADGES = [
-    { key: "earth", tier: 8, emoji: "🌍", get name() { return S.trBadgeEarth; }, test: function (m) { return m.totalKm >= 40075; } },
-    { key: "nomad", tier: 7, emoji: "✈️", get name() { return S.trBadgeNomad; }, test: function (m) { return m.totalKm >= 30000; } },
-    { key: "sprint", tier: 6, emoji: "🚀", get name() { return S.trBadgeSprint; }, test: function (m) { return m.maxDayKm >= 500; } },
+    // 거리 티어(T7/T8)는 다년치 타임라인 기준 — 40,075km(지구 한 바퀴)는 통근만으로도 넘어서 T8이 56%였다(2026-08 리밸런싱)
+    { key: "earth", tier: 8, emoji: "🌍", get name() { return S.trBadgeEarth; }, test: function (m) { return m.totalKm >= 300000; } },
+    { key: "nomad", tier: 7, emoji: "✈️", get name() { return S.trBadgeNomad; }, test: function (m) { return m.totalKm >= 100000; } },
+    { key: "sprint", tier: 6, emoji: "🚀", get name() { return S.trBadgeSprint; }, test: function (m) { return m.maxDayKm >= 500 || m.totalKm >= 30000; } },
     { key: "wanderer", tier: 5, emoji: "📍", get name() { return S.trBadgeWanderer; }, test: function (m) { return m.visits >= 150; } },
     { key: "night", tier: 4, emoji: "🦉", get name() { return S.trBadgeNight; }, test: function (m) { return m.nightRatio >= 0.15; } },
     { key: "homebody", tier: 3, emoji: "🏠", get name() { return S.trBadgeHomebody; }, test: function (m) { return m.homeRatio >= 0.7; } },
@@ -1166,25 +1167,37 @@
     return S.rankKmFmt.replace("{v}", v);
   }
 
-  function loadRankBoard() {
-    if (!rankBoard) return;
+  function badgeByTier(tier) {
+    for (var i = 0; i < BADGES.length; i++) if (BADGES[i].tier === tier) return BADGES[i];
+    return null;
+  }
+
+  function loadRankBoard(target) {
+    var el = target || rankBoard;
+    if (!el) return;
     fetch("https://relay.cocy.io/api/rankings/footprints?limit=10").then(function (r) { return r.json(); }).then(function (res) {
       if (!res.success) return;
       var uid = fpUserId();
       var rows = (res.rankings || []).map(function (row, i) {
         var mine = row.user_id === uid;
         var kmTxt = row.km ? '<i class="rb-km">' + escHtml(fmtApproxKm(row.km)) + '</i>' : '';
+        // 칭호는 저장된 텍스트가 아니라 티어 번호로 현재 로케일에서 렌더 — 리밸런싱/다국어에도 항상 최신 명칭
+        var b = badgeByTier(row.tier);
+        var titleTxt = b ? (b.emoji + " " + b.name) : (row.title || "");
         return '<div class="rb-row' + (mine ? ' mine' : '') + '"><span>' + (i + 1) + '.</span><span>' +
-          escHtml(row.nickname || S.rankAnon) + '</span><span>' + escHtml(row.title || "") + kmTxt + '</span></div>';
+          escHtml(row.nickname || S.rankAnon) + '</span><span>' + escHtml(titleTxt) + kmTxt + '</span></div>';
       }).join("");
-      rankBoard.innerHTML = '<div class="rb-head">🏆 ' + escHtml(S.rankBoardTitle) + '</div>' +
+      el.innerHTML = '<div class="rb-head">🏆 ' + escHtml(S.rankBoardTitle) + '</div>' +
         (rows || '<div class="rb-empty">' + escHtml(S.rankEmpty) + '</div>');
-      rankBoard.style.display = "block";
+      el.style.display = "block";
     }).catch(function () {});
   }
 
   var rankBtn = $("#rankbtn"), rankPreview = $("#rankpreview"), rankPayload = $("#rankpayload"),
     rankConfirm = $("#rankconfirm"), rankCancel = $("#rankcancel"), rankResult = $("#rankresult"), rankBoard = $("#rankboard");
+
+  // 파일 올리기 전에도 랜딩에서 명예의 전당을 볼 수 있게 즉시 로드
+  loadRankBoard($("#rankboard-landing"));
 
   if (rankBtn) rankBtn.addEventListener("click", function () {
     if (!state.traits) return;
@@ -1220,8 +1233,10 @@
       rankPreview.style.display = "none";
       rankResult.style.display = "block";
       if (res.success) {
-        rankResult.textContent = (res.updated ? S.rankOk : S.rankKept).replace("{title}", res.bestTitle);
+        var bestB = badgeByTier(res.bestTier);
+        rankResult.textContent = (res.updated ? S.rankOk : S.rankKept).replace("{title}", bestB ? bestB.name : res.bestTitle);
         loadRankBoard();
+        loadRankBoard($("#rankboard-landing"));
         if (window.dataLayer) window.dataLayer.push({ event: "fp_rank_submit", fp_tier: t.tier });
       } else {
         rankResult.textContent = S.rankErr;

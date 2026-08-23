@@ -80,6 +80,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <input type="file" id="file" accept=".json,application/json" multiple hidden>
     <div class="demo-row"><button id="demo">先用範例試試 — 不需要檔案</button></div>
     <div class="err" id="err"></div>
+    <div class="rank-board" id="rankboard-landing"></div>
   </section>
 
   <section class="panel" id="viewer">
@@ -197,7 +198,6 @@ window.FP_STR = {
   trAxisExplorer: "探險家", trAxisRegular: "常客型", trAxisLong: "長途型", trAxisLocal: "在地型",
   trAxisWeekend: "週末型", trAxisWeekday: "平日型", trAxisNight: "🦉 夜貓型", trAxisDay: "☀️ 日行型",
   rankBtn: "🏆 加入排行榜",
-  rankPayload: '傳送到伺服器的只有這 2 個值 — 稱號「{title}」（第 {tier}/8 級）。不會傳送座標或路線資料。',
   rankConfirm: "送出", rankCancel: "取消",
   rankOk: "✅ 登錄完成！目前稱號：{title}",
   rankKept: "你已經登錄過更高的稱號了：{title}",
@@ -219,6 +219,6 @@ window.FP_STR = {
 };
 </script>
 <script src="/footprints/cities.js?v=1"></script>
-<script src="/footprints/footprints.js?v=16"></script>
+<script src="/footprints/footprints.js?v=17"></script>
 </body>
 </html>
