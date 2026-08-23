@@ -44,6 +44,45 @@
   var TIER_LABEL = { easy: "초급", mid: "중급", hard: "고급" };
   var TIER_COLOR = { easy: "#39c0ff", mid: "#ffb224", hard: "#ff6b81" };
 
+  // 산별 제철(월) — 널리 알려진 시즌 명물 기준. 날짜·날씨 추천에 사용
+  var SEASONAL = {
+    halla: [{ m: [12, 1, 2], why: "겨울 설경·상고대" }, { m: [5, 6], why: "영실 철쭉" }],
+    jiri: [{ m: [10], why: "단풍" }, { m: [12, 1, 2], why: "천왕봉 상고대" }, { m: [7, 8], why: "고지대 피서 산행" }],
+    seorak: [{ m: [9, 10], why: "단풍 (9월 말 고지대부터)" }, { m: [12, 1], why: "설경" }],
+    deogyu: [{ m: [12, 1, 2], why: "곤돌라 눈꽃" }, { m: [5, 6], why: "철쭉" }],
+    gyebang: [{ m: [12, 1, 2], why: "눈꽃 명산" }, { m: [7, 8], why: "고지대라 여름에도 서늘" }],
+    taebaek: [{ m: [1, 2], why: "눈꽃축제·주목 설경" }],
+    odae: [{ m: [10], why: "선재길 단풍" }, { m: [7, 8], why: "전나무숲·계곡 피서" }],
+    hambaek: [{ m: [7, 8], why: "만항재 야생화·고도 1,573m 피서" }, { m: [12, 1, 2], why: "눈꽃·일출" }],
+    sobaek: [{ m: [5, 6], why: "철쭉 능선" }, { m: [12, 1, 2], why: "칼바람 눈꽃" }],
+    chiak: [{ m: [10], why: "단풍" }, { m: [7, 8], why: "구룡계곡" }],
+    worak: [{ m: [10], why: "암릉 단풍 조망" }],
+    sokri: [{ m: [10], why: "법주사 단풍길" }],
+    juwang: [{ m: [10, 11], why: "주산지·절골 단풍" }, { m: [7, 8], why: "용추협곡 계곡" }],
+    palgong: [{ m: [10, 11], why: "단풍" }, { m: [4], why: "벚꽃" }],
+    gaya: [{ m: [10], why: "홍류동 계곡 단풍" }],
+    mudeung: [{ m: [10, 11], why: "억새·단풍" }, { m: [12, 1], why: "서석대 눈꽃" }],
+    naejang: [{ m: [10, 11], why: "단풍 최고 명소 (10월 말~11월 초)" }],
+    wolchul: [{ m: [4], why: "진달래·영산홍" }, { m: [10], why: "암릉 단풍" }],
+    jogye: [{ m: [3], why: "선암사 매화" }, { m: [11], why: "늦가을 남도 단풍" }],
+    bukhan: [{ m: [4], why: "진달래능선" }, { m: [10, 11], why: "단풍" }],
+    dobong: [{ m: [10, 11], why: "암릉 단풍" }, { m: [4, 5], why: "봄꽃" }],
+    gwanak: [{ m: [4, 5], why: "봄꽃 능선" }, { m: [10, 11], why: "단풍" }],
+    cheonggye: [{ m: [4, 5], why: "봄 숲길" }, { m: [10, 11], why: "단풍" }],
+    suraksan: [{ m: [4, 5], why: "봄꽃 암릉" }, { m: [10], why: "단풍" }],
+    bulam: [{ m: [4], why: "철쭉동산" }, { m: [10, 11], why: "가을 조망" }],
+    acha: [{ m: [3, 4, 10, 11], why: "가벼운 능선 산책·한강 조망" }],
+    mani: [{ m: [4], why: "진달래" }, { m: [10], why: "참성단·서해 조망" }],
+    yumyeong: [{ m: [7, 8], why: "유명계곡 물놀이 피서" }, { m: [5, 6], why: "신록" }],
+    myeongseong: [{ m: [9, 10], why: "억새 평원 (9월 말~10월)" }],
+    hwaak: [{ m: [10], why: "경기 최고봉 단풍 조망" }],
+    mindung: [{ m: [9, 10], why: "억새 물결 (9월 말~10월)" }],
+    gyeryong: [{ m: [4], why: "동학사 벚꽃" }, { m: [10, 11], why: "단풍" }],
+    daedun: [{ m: [10, 11], why: "구름다리 단풍" }],
+    cheonma: [{ m: [4, 5], why: "야생화·봄 숲" }],
+    geomdan: [{ m: [3, 4, 10, 11], why: "한강·팔당 조망 근교 산행" }],
+  };
+
   var STORE_KEY = "kr_mountains_v1";
   var checked = {};
   try { checked = JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); } catch (e) { checked = {}; }
@@ -280,7 +319,90 @@
     });
   });
 
+  // ── 날짜·날씨 기반 오늘의 추천 — Open-Meteo(무키), 35개 좌표 일괄 1콜 ──
+  // 기온은 산 지형 고도 기준이라(한라산 17°C vs 서울 33°C) 여름 고산 우대가 자동으로 반영된다
+  function wxLabel(code) {
+    if (code <= 1) return "☀️ 맑음";
+    if (code === 2) return "⛅ 구름 조금";
+    if (code === 3) return "☁️ 흐림";
+    if (code <= 48) return "🌫 안개";
+    if (code <= 67 || (code >= 80 && code <= 82)) return "🌧 비";
+    if (code <= 77 || code === 85 || code === 86) return "🌨 눈";
+    return "⛈ 뇌우";
+  }
+
+  function loadReco() {
+    var box = $("#reco");
+    if (!box) return;
+    var now = new Date();
+    var dayIdx = now.getHours() >= 15 ? 1 : 0; // 오후 3시 이후엔 내일 기준
+    var target = new Date(now.getTime() + dayIdx * 86400000);
+    var month = target.getMonth() + 1;
+    var lats = MOUNTAINS.map(function (m) { return m.lat; }).join(",");
+    var lngs = MOUNTAINS.map(function (m) { return m.lng; }).join(",");
+    var url = "https://api.open-meteo.com/v1/forecast?latitude=" + lats + "&longitude=" + lngs +
+      "&daily=weather_code,temperature_2m_max,precipitation_sum,precipitation_probability_max,snowfall_sum" +
+      "&timezone=Asia%2FSeoul&forecast_days=" + (dayIdx + 1);
+    fetch(url).then(function (r) { return r.json(); }).then(function (res) {
+      if (!Array.isArray(res) || res.length !== MOUNTAINS.length) return;
+      var scored = MOUNTAINS.map(function (m, i) {
+        var d = res[i].daily;
+        var code = d.weather_code[dayIdx], tmax = d.temperature_2m_max[dayIdx];
+        var rain = d.precipitation_sum[dayIdx] || 0, snow = d.snowfall_sum[dayIdx] || 0;
+        var prob = d.precipitation_probability_max[dayIdx] || 0;
+        var season = (SEASONAL[m.id] || []).filter(function (s) { return s.m.indexOf(month) >= 0; })[0];
+        var winter = (SEASONAL[m.id] || []).some(function (s) { return s.m.indexOf(1) >= 0 || s.m.indexOf(12) >= 0; });
+        var score = 0, why = [];
+        if (season) { score += 3; why.push(season.why); }
+        if (rain >= 10) score -= 99;                       // 폭우 — 제외
+        else if (rain >= 3) { score -= 4; why.push("비 소식"); }
+        else if (prob >= 70 && rain >= 1) score -= 2;
+        if (code <= 1 && rain < 1) score += 2;
+        else if (code === 2) score += 1;
+        if (tmax >= 15 && tmax <= 26) score += 1;          // 쾌적
+        else if (tmax >= 31) score -= 2;                   // 산 위도 더움
+        else if (tmax <= -10) score -= 1;                  // 혹한
+        if (snow >= 1) { if (winter) { score += 2; why.push("눈꽃 기대 (아이젠 필수)"); } else score -= 2; }
+        if (!checked[m.id]) score += 1;                    // 안 가본 산 우대
+        return { m: m, score: score, tmax: tmax, code: code, why: why };
+      }).filter(function (s) { return s.score > -10; });
+      scored.sort(function (a, b) { return b.score - a.score || b.m.elev - a.m.elev; });
+      var picks = scored.slice(0, 3);
+      var head = "🎯 " + (dayIdx ? "내일" : "오늘") + "의 추천 — " + (target.getMonth() + 1) + "월 " + target.getDate() + "일 " +
+        ["일", "월", "화", "수", "목", "금", "토"][target.getDay()] + "요일";
+      if (!picks.length) {
+        box.innerHTML = '<div class="reco-head">' + esc(head) + '</div><div class="reco-empty">전국이 비 예보 ☔ — 오늘은 코스 공부하기 좋은 날입니다.</div>';
+        box.style.display = "block";
+        return;
+      }
+      box.innerHTML = '<div class="reco-head">' + esc(head) + '</div>' + picks.map(function (p) {
+        var reason = p.why.slice();
+        reason.push(wxLabel(p.code) + " " + Math.round(p.tmax) + "°C");
+        return '<div class="reco-row" data-id="' + p.m.id + '">' +
+          '<span class="reco-name">' + esc(p.m.name) + '</span>' +
+          '<span class="reco-meta">' + esc(p.m.region) + ' · ' + p.m.elev + 'm</span>' +
+          '<span class="reco-why">' + esc(reason.join(" · ")) + '</span></div>';
+      }).join("");
+      box.style.display = "block";
+      Array.prototype.forEach.call(box.querySelectorAll(".reco-row"), function (row) {
+        row.addEventListener("click", function () {
+          var id = row.getAttribute("data-id");
+          state.filter = "all";
+          Array.prototype.forEach.call(document.querySelectorAll("#filters button"), function (b) {
+            b.classList.toggle("active", b.getAttribute("data-tier") === "all");
+          });
+          expanded[id] = true;
+          render(); renderList();
+          var el = document.querySelector('.mrow[data-id="' + id + '"]');
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+          if (window.dataLayer) window.dataLayer.push({ event: "mt_reco_click", mt_id: id });
+        });
+      });
+    }).catch(function () {}); // 날씨 실패 시 카드 없이 조용히 진행
+  }
+
   resize();
   renderList();
   renderProgress();
+  loadReco();
 })();

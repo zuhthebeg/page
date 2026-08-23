@@ -100,3 +100,13 @@ footer a { color: var(--ink-faint); }
 .mdetail .tips li { font-size: .8rem; color: var(--ink-dim); line-height: 1.65; margin-bottom: 4px; }
 .mdetail .tips li::marker { color: var(--amber); }
 .mdetail .best { margin-top: 9px; font-size: .78rem; color: var(--amber); font-family: var(--mono); }
+
+/* 오늘의 추천 — 날짜(제철)+산별 날씨(Open-Meteo) 기반 */
+.reco { display: none; margin-bottom: 16px; border: 1px solid var(--line); border-radius: 11px; background: var(--bg2); padding: 12px 14px; }
+.reco-head { font-family: var(--mono); font-size: .72rem; color: var(--amber); margin-bottom: 8px; }
+.reco-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; padding: 8px 10px; border-radius: 8px; cursor: pointer; }
+.reco-row:hover { background: var(--panel2); }
+.reco-name { font-weight: 700; font-size: .95rem; }
+.reco-meta { font-family: var(--mono); font-size: .66rem; color: var(--ink-faint); }
+.reco-why { flex-basis: 100%; font-size: .78rem; color: var(--ink-dim); margin-top: 1px; }
+.reco-empty { font-size: .82rem; color: var(--ink-dim); }
