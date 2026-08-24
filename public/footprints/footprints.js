@@ -11,6 +11,8 @@
     errSettings: "이건 위치 데이터가 아니라 타임라인 '설정' 파일이에요 (Settings.json). 2024년부터 이동 기록은 Takeout이 아니라 휴대폰 안에 저장됩니다. 안드로이드: 폰 설정 → 위치 → 위치 서비스 → 타임라인 → '타임라인 데이터 내보내기'로 Timeline.json을 만들어 넣어주세요.",
     errFormat: "지원하는 형식이 아니에요. 폰 설정 → 위치 → 위치 서비스 → 타임라인 → '타임라인 데이터 내보내기'의 Timeline.json을 넣어주세요.",
     errNoPoints: "이 파일에서 이동 기록을 찾지 못했어요. Timeline.json(타임라인 내보내기)인지 확인해주세요.",
+    errMemory: "파일이 너무 커서 이 기기의 메모리로는 처리하지 못했어요. PC 브라우저에서 다시 시도해보세요.",
+    parsing: "🥾 발자국을 읽는 중… 파일이 크면 몇십 초 걸릴 수 있어요",
     errPng: "이미지 생성에 실패했어요.",
     errPngCors: "지도 타일 보안 정책 때문에 이미지 저장이 막혔어요. 새로고침 후 다시 시도해주세요.",
     play: "▶ 재생", pause: "⏸ 일시정지",
@@ -739,31 +741,85 @@
     el.addEventListener("change", applyRange);
   });
 
-  function showErr(msg) { var e = $("#err"); e.textContent = msg; e.style.display = "block"; }
-  function hideErr() { $("#err").style.display = "none"; }
+  function showErr(msg) { var e = $("#err"); e.classList.remove("busy"); e.textContent = msg; e.style.display = "block"; }
+  function hideErr() { var e = $("#err"); e.classList.remove("busy"); e.style.display = "none"; }
+  function showParsing(mb) {
+    var e = $("#err"); e.textContent = S.parsing + " (" + mb + "MB)";
+    e.classList.add("busy"); e.style.display = "block";
+  }
 
-  function handleFiles(files) {
-    hideErr();
+  // ── 파일 파싱 — Web Worker에서 수행(대용량 파일이 메인 스레드를 얼려 "응답 없음"으로
+  //    죽는 것 방지). 파서 함수 소스를 그대로 워커에 주입하므로 로직은 한 벌만 유지된다.
+  //    결과는 Float64Array(t,lat,lng)로 transfer — 수십만 포인트도 클론 비용 없음.
+  var PARSER_FNS = [parsePoint, ts, parseSegments, parseLegacyObjects, parseRecords, parseJson];
+  function buildParserWorker() {
+    try {
+      var src = PARSER_FNS.map(function (f) { return f.toString(); }).join("\n") +
+        "\nself.onmessage=function(ev){" +
+        "var files=ev.data,out={points:[],visits:[]},okAny=false,sawSettings=false,errName=null;" +
+        "for(var i=0;i<files.length;i++){" +
+        "try{var r=parseJson(JSON.parse(new FileReaderSync().readAsText(files[i])),out);" +
+        "if(r==='settings')sawSettings=true;else if(r)okAny=true;}" +
+        "catch(e){errName=(e&&e.name)||'Error';}}" +
+        "var n=out.points.length,pb=new Float64Array(n*3),j;" +
+        "for(j=0;j<n;j++){pb[j*3]=out.points[j].t;pb[j*3+1]=out.points[j].lat;pb[j*3+2]=out.points[j].lng;}" +
+        "var m=out.visits.length,vb=new Float64Array(m*3),k;" +
+        "for(k=0;k<m;k++){vb[k*3]=out.visits[k].t;vb[k*3+1]=out.visits[k].lat;vb[k*3+2]=out.visits[k].lng;}" +
+        "self.postMessage({okAny:okAny,sawSettings:sawSettings,errName:errName,pts:pb.buffer,vis:vb.buffer},[pb.buffer,vb.buffer]);};";
+      return new Worker(URL.createObjectURL(new Blob([src], { type: "text/javascript" })));
+    } catch (e) { return null; }
+  }
+  function reportParseFail(sawSettings, errName) {
+    if (sawSettings) showErr(S.errSettings);
+    else if (errName === "RangeError" || errName === "QuotaExceededError" || errName === "NS_ERROR_OUT_OF_MEMORY") showErr(S.errMemory);
+    else showErr(S.errFormat + (errName ? " [" + errName + "]" : ""));
+  }
+  function finishParse(res) {
     var out = { points: [], visits: [] };
-    var pending = files.length, okAny = false, sawSettings = false;
-    if (!pending) return;
-    Array.prototype.forEach.call(files, function (f) {
-      if (f.size > 300 * 1024 * 1024) { pending--; showErr(f.name + S.errTooBig); return; }
+    var pb = new Float64Array(res.pts), vb = new Float64Array(res.vis);
+    for (var j = 0; j < pb.length; j += 3) out.points.push({ t: pb[j], lat: pb[j + 1], lng: pb[j + 2] });
+    for (var k = 0; k < vb.length; k += 3) out.visits.push({ t: vb[k], lat: vb[k + 1], lng: vb[k + 2] });
+    hideErr();
+    if (res.okAny && out.points.length) loadData(refine(out));
+    else reportParseFail(res.sawSettings, res.errName);
+  }
+  function parseSync(list) { // Worker 불가 환경(구형 브라우저·CSP) 폴백 — 종전 동기 경로
+    var out = { points: [], visits: [] };
+    var pending = list.length, okAny = false, sawSettings = false, errName = null;
+    list.forEach(function (f) {
       var reader = new FileReader();
       reader.onload = function () {
         try {
           var r = parseJson(JSON.parse(reader.result), out);
           if (r === "settings") sawSettings = true;
           else if (r) okAny = true;
-        } catch (e) { /* skip */ }
+        } catch (e) { errName = (e && e.name) || "Error"; }
         if (--pending === 0) {
-          if (okAny) loadData(refine(out));
-          else if (sawSettings) showErr(S.errSettings);
-          else showErr(S.errFormat);
+          hideErr();
+          if (okAny && out.points.length) loadData(refine(out));
+          else reportParseFail(sawSettings, errName);
         }
       };
       reader.readAsText(f);
     });
+  }
+
+  function handleFiles(files) {
+    hideErr();
+    if (!files.length) return;
+    var list = [], totalMB = 0, tooBig = null;
+    Array.prototype.forEach.call(files, function (f) {
+      if (f.size > 300 * 1024 * 1024) { tooBig = f.name; return; }
+      list.push(f); totalMB += f.size / 1048576;
+    });
+    if (tooBig) { showErr(tooBig + S.errTooBig); if (!list.length) return; }
+    showParsing(Math.max(1, Math.round(totalMB)));
+    var w = buildParserWorker();
+    if (w) {
+      w.onmessage = function (ev) { w.terminate(); finishParse(ev.data); };
+      w.onerror = function () { w.terminate(); parseSync(list); };
+      w.postMessage(list);
+    } else parseSync(list);
   }
 
   var drop = $("#drop"), fileIn = $("#file");

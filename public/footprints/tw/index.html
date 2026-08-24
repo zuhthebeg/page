@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/footprints/footprints.css?v=7">
+<link rel="stylesheet" href="/footprints/footprints.css?v=8">
 <style>body{font-family:"Noto Sans TC",-apple-system,sans-serif}</style>
 <script type="application/ld+json">
 {
@@ -185,6 +185,8 @@ window.FP_STR = {
   errSettings: "這是時間軸的『設定』檔（Settings.json），不是位置資料。2024 年起移動紀錄存在手機裡，不在 Takeout。Android：手機設定 → 位置 → 定位服務 → 時間軸 → 『匯出時間軸資料』取得 Timeline.json。",
   errFormat: "不支援的格式。請使用 手機設定 → 位置 → 定位服務 → 時間軸 → 『匯出時間軸資料』 的 Timeline.json。",
   errNoPoints: "在這個檔案裡找不到移動紀錄。請確認是時間軸匯出檔（Timeline.json）。",
+  errMemory: "檔案太大，此裝置的記憶體無法處理。請改用電腦瀏覽器再試一次。",
+  parsing: "🥾 正在讀取你的足跡…檔案較大時可能需要一分鐘",
   errPng: "圖片生成失敗。",
   errPngCors: "地圖圖磚的安全政策擋住了匯出。請重新整理後再試。",
   play: "▶ 播放", pause: "⏸ 暫停",
@@ -219,6 +221,6 @@ window.FP_STR = {
 };
 </script>
 <script src="/footprints/cities.js?v=1"></script>
-<script src="/footprints/footprints.js?v=17"></script>
+<script src="/footprints/footprints.js?v=18"></script>
 </body>
 </html>

@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/footprints/footprints.css?v=7">
+<link rel="stylesheet" href="/footprints/footprints.css?v=8">
 <style>body{font-family:"IBM Plex Sans",-apple-system,sans-serif}</style>
 <script type="application/ld+json">
 {
@@ -185,6 +185,8 @@ window.FP_STR = {
   errSettings: "This is your Timeline *settings* file (Settings.json), not location data. Since 2024 your movement history lives on your phone, not in Takeout. Android: Phone Settings → Location → Location Services → Timeline → 'Export Timeline data' to get Timeline.json.",
   errFormat: "Unsupported format. Use Timeline.json from Phone Settings → Location → Location Services → Timeline → 'Export Timeline data'.",
   errNoPoints: "No movement records found in this file. Make sure it's a Timeline export (Timeline.json).",
+  errMemory: "This file is too large for this device's memory. Please try again on a desktop browser.",
+  parsing: "🥾 Reading your footprints… large files can take a minute",
   errPng: "Failed to generate the image.",
   errPngCors: "Map tile security policy blocked the export. Refresh and try again.",
   play: "▶ Play", pause: "⏸ Pause",
@@ -219,6 +221,6 @@ window.FP_STR = {
 };
 </script>
 <script src="/footprints/cities.js?v=1"></script>
-<script src="/footprints/footprints.js?v=17"></script>
+<script src="/footprints/footprints.js?v=18"></script>
 </body>
 </html>
