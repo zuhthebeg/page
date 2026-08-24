@@ -57,6 +57,30 @@ body {
   border-radius: 10px; padding: 9px 18px; font: inherit; font-size: .86rem; cursor: pointer;
 }
 .demo-row button:hover { color: var(--ink); border-color: var(--ink-faint); }
+.trips-card {
+  display: none; margin-top: 14px; padding: 14px 16px; border-radius: 14px;
+  background: linear-gradient(180deg, var(--panel2), var(--panel)); border: 1px solid var(--line);
+}
+.tp-head { font-size: .92rem; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+.tp-head b { color: #39c0ff; }
+.tp-head .tp-sub { display: block; font-size: .72rem; font-weight: 400; color: var(--ink-faint); margin-top: 2px; }
+.tp-list { display: flex; flex-direction: column; gap: 6px; max-height: 300px; overflow-y: auto; }
+.tp-item {
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+  padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line);
+  background: rgba(255,255,255,.02); color: var(--ink); font: inherit; font-size: .82rem; cursor: pointer;
+}
+.tp-item:hover { border-color: #2a3f63; background: rgba(57,192,255,.05); }
+.tp-item.on { border-color: rgba(57,192,255,.55); background: rgba(57,192,255,.1); }
+.tp-date { font-family: var(--mono); font-size: .7rem; color: var(--ink-dim); white-space: nowrap; }
+.tp-city { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tp-meta { font-family: var(--mono); font-size: .7rem; color: var(--ink-faint); white-space: nowrap; }
+.tp-all {
+  margin-top: 10px; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line);
+  background: none; color: var(--ink-dim); font: inherit; font-size: .74rem; cursor: pointer;
+}
+.tp-all:hover { color: var(--ink); border-color: #2a3f63; }
+
 .err {
   display: none; margin-top: 14px; padding: 10px 14px; border-radius: 10px;
   background: rgba(255,77,94,.08); border: 1px solid rgba(255,77,94,.3);

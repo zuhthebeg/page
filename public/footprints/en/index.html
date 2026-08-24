@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/footprints/footprints.css?v=8">
+<link rel="stylesheet" href="/footprints/footprints.css?v=9">
 <style>body{font-family:"IBM Plex Sans",-apple-system,sans-serif}</style>
 <script type="application/ld+json">
 {
@@ -118,6 +118,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="stat"><b id="s-visits">0</b><span>Places visited</span></div>
       <div class="stat"><b id="s-maxday">0</b><span>Longest day (km)</span></div>
     </div>
+    <div class="trips-card" id="trips"></div>
     <div class="traits-card" id="traits">
       <div class="tr-badge"><span class="tr-emoji" id="tr-emoji">🌍</span><span class="tr-name" id="tr-name"></span></div>
       <div class="tr-type" id="tr-type"></div>
@@ -186,6 +187,13 @@ window.FP_STR = {
   errFormat: "Unsupported format. Use Timeline.json from Phone Settings → Location → Location Services → Timeline → 'Export Timeline data'.",
   errNoPoints: "No movement records found in this file. Make sure it's a Timeline export (Timeline.json).",
   errMemory: "This file is too large for this device's memory. Please try again on a desktop browser.",
+  tripsTitle: "🧳 Detected trips",
+  tripsSub: "Home-to-home segments · tap one to replay just that trip",
+  tripsAll: "↺ Show full range",
+  tripsNights: " nights",
+  tripsEtc: "+{n} more",
+  tripsNoCity: "off the map",
+  tripsOngoing: "ongoing",
   parsing: "🥾 Reading your footprints… large files can take a minute",
   errPng: "Failed to generate the image.",
   errPngCors: "Map tile security policy blocked the export. Refresh and try again.",
@@ -221,6 +229,6 @@ window.FP_STR = {
 };
 </script>
 <script src="/footprints/cities.js?v=1"></script>
-<script src="/footprints/footprints.js?v=18"></script>
+<script src="/footprints/footprints.js?v=19"></script>
 </body>
 </html>

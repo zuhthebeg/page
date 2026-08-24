@@ -12,6 +12,13 @@
     errFormat: "지원하는 형식이 아니에요. 폰 설정 → 위치 → 위치 서비스 → 타임라인 → '타임라인 데이터 내보내기'의 Timeline.json을 넣어주세요.",
     errNoPoints: "이 파일에서 이동 기록을 찾지 못했어요. Timeline.json(타임라인 내보내기)인지 확인해주세요.",
     errMemory: "파일이 너무 커서 이 기기의 메모리로는 처리하지 못했어요. PC 브라우저에서 다시 시도해보세요.",
+    tripsTitle: "🧳 자동 감지된 여행",
+    tripsSub: "집→집 구간 · 누르면 그 여행만 재생",
+    tripsAll: "↺ 전체 기간 보기",
+    tripsNights: "박",
+    tripsEtc: "외 {n}곳",
+    tripsNoCity: "미등록 지역",
+    tripsOngoing: "진행 중",
     parsing: "🥾 발자국을 읽는 중… 파일이 크면 몇십 초 걸릴 수 있어요",
     errPng: "이미지 생성에 실패했어요.",
     errPngCors: "지도 타일 보안 정책 때문에 이미지 저장이 막혔어요. 새로고침 후 다시 시도해주세요.",
@@ -173,6 +180,8 @@
       }
       clean.push(pts[i]);
     }
+    var trips = detectTrips(clean); // 여행 자동 감지 — 다운샘플 전 풀해상도 기준
+
     if (clean.length > 20000) {
       var stride = Math.ceil(clean.length / 20000), ds = [];
       for (var j = 0; j < clean.length; j += stride) ds.push(clean[j]);
@@ -188,7 +197,93 @@
     var uCenter = (uMin + uMax) / 2;
     data.visits.forEach(function (v) { v.lng -= 360 * Math.round((v.lng - uCenter) / 360); });
 
-    return assemble(clean, data.visits.filter(function (v) { return isFinite(v.lat); }));
+    var out = assemble(clean, data.visits.filter(function (v) { return isFinite(v.lat); }));
+    out.trips = trips;
+    return out;
+  }
+
+  // ── 여행 자동 감지 — 야간 최빈 클러스터를 '집'으로 보고 집→집 이탈 구간을 여행으로 분리.
+  //    전부 온디바이스 계산. 월별로 집을 따로 잡아 이사·장기 체류 변화에 대응한다.
+  var TRIP_HOME_KM = 4, TRIP_MIN_KM = 50;
+  function localDay(t) { var d = new Date(t); return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
+  function detectTrips(pts) {
+    if (pts.length < 20) return [];
+    // 1) 월별 야간(22~06시) 포인트를 ~2km 그리드로 집계 → 최빈 셀 = 그 달의 집
+    var monthCells = {}, i, d;
+    for (i = 0; i < pts.length; i++) {
+      d = new Date(pts[i].t);
+      var h = d.getHours();
+      if (h >= 7 && h < 22) continue;
+      var ym = d.getFullYear() + "-" + d.getMonth();
+      var ck = Math.round(pts[i].lat / 0.02) + "," + Math.round(pts[i].lng / 0.02);
+      var mc = monthCells[ym] || (monthCells[ym] = {});
+      var c = mc[ck] || (mc[ck] = { n: 0, lat: 0, lng: 0 });
+      c.n++; c.lat += pts[i].lat; c.lng += pts[i].lng;
+    }
+    var homes = {}, globalBest = null;
+    Object.keys(monthCells).forEach(function (ym) {
+      var best = null, mc = monthCells[ym];
+      Object.keys(mc).forEach(function (k) { if (!best || mc[k].n > best.n) best = mc[k]; });
+      if (best && best.n >= 3) {
+        homes[ym] = { lat: best.lat / best.n, lng: best.lng / best.n };
+        if (!globalBest || best.n > globalBest.n) globalBest = best;
+      }
+    });
+    if (!globalBest) return [];
+    var globalHome = { lat: globalBest.lat / globalBest.n, lng: globalBest.lng / globalBest.n };
+
+    // 2) 상태머신: 집 반경(4km) 밖 체류가 1박 이상 + 최대 이탈 50km 이상이면 여행으로 확정
+    var trips = [], cur = null, lastHomeIdx = -1;
+    for (i = 0; i < pts.length; i++) {
+      d = new Date(pts[i].t);
+      var home = homes[d.getFullYear() + "-" + d.getMonth()] || globalHome;
+      var dh = hav(pts[i], home);
+      if (dh < TRIP_HOME_KM) {
+        if (cur) { finishTrip(trips, pts, cur, i); cur = null; }
+        lastHomeIdx = i;
+      } else if (!cur) {
+        cur = { s: lastHomeIdx >= 0 ? lastHomeIdx : i, maxKm: dh, home: home };
+      } else if (dh > cur.maxKm) cur.maxKm = dh;
+    }
+    if (cur) { var last = trips.length; finishTrip(trips, pts, cur, pts.length - 1); if (trips.length > last) trips[trips.length - 1].open = true; }
+    return trips;
+  }
+  function matchCity(p) {
+    var cities = window.FP_CITIES || [], best = null, bestD = CITY_MATCH_KM;
+    for (var j = 0; j < cities.length; j++) {
+      if (Math.abs(cities[j][1] - p.lat) > 0.35) continue;
+      var dd = hav({ lat: cities[j][1], lng: cities[j][2] }, p);
+      if (dd < bestD) { bestD = dd; best = cities[j]; }
+    }
+    return best;
+  }
+  function finishTrip(trips, pts, cur, endIdx) {
+    if (cur.maxKm < TRIP_MIN_KM) return;
+    var s = cur.s, days = {}, km = 0, i;
+    for (i = s; i <= endIdx; i++) {
+      days[localDay(pts[i].t)] = 1;
+      if (i > s) km += hav(pts[i - 1], pts[i]);
+    }
+    var nDays = Object.keys(days).length;
+    if (nDays < 2) return; // 당일치기 제외 — 1박 이상만 여행으로
+    // 도시 매칭 — 날짜별 첫 원거리(집 15km+) 포인트 샘플, 등장 순서 유지
+    var homeCity = matchCity(cur.home), seen = {}, cityOrder = [], cityIdx = {};
+    for (i = s; i <= endIdx; i++) {
+      var dk = localDay(pts[i].t);
+      if (seen[dk]) continue;
+      if (hav(pts[i], cur.home) < 15) continue;
+      seen[dk] = 1;
+      var cty = matchCity(pts[i]);
+      if (!cty || (homeCity && cty[0] === homeCity[0])) continue;
+      if (cityIdx[cty[0]] === undefined) { cityIdx[cty[0]] = 1; cityOrder.push([cty[0], cty[3]]); }
+    }
+    var homeCc = homeCity ? homeCity[3] : null;
+    trips.push({
+      t0: pts[s].t, t1: pts[endIdx].t, nights: nDays - 1,
+      km: Math.round(km), maxKm: Math.round(cur.maxKm),
+      cities: cityOrder,
+      abroad: !!(homeCc && cityOrder.some(function (c) { return c[1] !== homeCc; })),
+    });
   }
 
   // 정제 완료된 포인트/방문 배열 → 렌더 가능한 데이터 뷰(점프·누적거리·통계·bbox)
@@ -671,6 +766,7 @@
     updateStatsUI();
     renderTraits(computeTraits(state.data));
     renderDNA(computeDNA(state.data));
+    renderTrips(refined.trips || []);
     resize();
     computeOverview();
     state.progress = 0;
@@ -1173,6 +1269,52 @@
       abroad: Object.keys(countries).length,
       style: state.traits ? state.traits.typeName + " · " + state.traits.typeTag : "",
     };
+  }
+
+  // ── 여행 목록 UI — 클릭하면 기간 슬라이더를 그 여행 구간으로 맞추고 재생
+  function renderTrips(trips) {
+    var box = $("#trips");
+    if (!box) return;
+    state.trips = trips || [];
+    if (!state.trips.length) { box.style.display = "none"; return; }
+    box.style.display = "block";
+    var html = '<div class="tp-head">' + escHtml(S.tripsTitle) + ' <b>' + state.trips.length + '</b><span class="tp-sub">' + escHtml(S.tripsSub) + '</span></div><div class="tp-list">';
+    for (var i = state.trips.length - 1; i >= 0; i--) { // 최신 여행부터
+      var tr = state.trips[i];
+      var names = tr.cities.map(function (c) { return c[0]; });
+      var label = names.slice(0, 3).join(" · ") || S.tripsNoCity;
+      if (names.length > 3) label += " " + S.tripsEtc.replace("{n}", names.length - 3);
+      var meta = tr.open ? S.tripsOngoing : tr.nights + S.tripsNights;
+      html += '<button class="tp-item" data-i="' + i + '">' +
+        '<span class="tp-date">' + fmtDate(new Date(tr.t0)) + '</span>' +
+        '<span class="tp-city">' + (tr.abroad ? "✈️ " : "") + escHtml(label) + '</span>' +
+        '<span class="tp-meta">' + escHtml(meta) + ' · ' + tr.km.toLocaleString() + 'km</span></button>';
+    }
+    html += '</div><button class="tp-all" id="tpall">' + escHtml(S.tripsAll) + '</button>';
+    box.innerHTML = html;
+    box.querySelectorAll(".tp-item").forEach(function (el) {
+      el.addEventListener("click", function () { selectTrip(Number(el.dataset.i), el); });
+    });
+    $("#tpall").addEventListener("click", function () {
+      $("#rgA").value = 0; $("#rgB").value = 1000;
+      updateRangeLabel(); applyRange();
+      box.querySelectorAll(".tp-item.on").forEach(function (e2) { e2.classList.remove("on"); });
+    });
+  }
+  function selectTrip(i, el) {
+    var full = state.fullData, tr = state.trips[i];
+    if (!full || !tr) return;
+    var t0 = full.stats.from, span = (full.stats.to - t0) || 1;
+    var pad = 3 * 36e5; // 여행 전후 3시간 여유 — 출발·귀가 경로 포함
+    $("#rgA").value = Math.max(0, Math.floor((tr.t0 - pad - t0) / span * 1000));
+    $("#rgB").value = Math.min(1000, Math.ceil((tr.t1 + pad - t0) / span * 1000));
+    state.regionBBox = null; state.regionMode = false;
+    updateRangeLabel(); applyRange();
+    document.querySelectorAll(".tp-item.on").forEach(function (e2) { e2.classList.remove("on"); });
+    if (el) el.classList.add("on");
+    $("#map").scrollIntoView({ behavior: "smooth", block: "start" });
+    play(true);
+    if (window.dataLayer) window.dataLayer.push({ event: "fp_trip", fp_trip_km: tr.km });
   }
 
   function encodeDNA(dna) {

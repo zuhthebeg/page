@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/footprints/footprints.css?v=8">
+<link rel="stylesheet" href="/footprints/footprints.css?v=9">
 <style>body{font-family:"Noto Sans TC",-apple-system,sans-serif}</style>
 <script type="application/ld+json">
 {
@@ -118,6 +118,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="stat"><b id="s-visits">0</b><span>造訪地點</span></div>
       <div class="stat"><b id="s-maxday">0</b><span>單日最長 (km)</span></div>
     </div>
+    <div class="trips-card" id="trips"></div>
     <div class="traits-card" id="traits">
       <div class="tr-badge"><span class="tr-emoji" id="tr-emoji">🌍</span><span class="tr-name" id="tr-name"></span></div>
       <div class="tr-type" id="tr-type"></div>
@@ -186,6 +187,13 @@ window.FP_STR = {
   errFormat: "不支援的格式。請使用 手機設定 → 位置 → 定位服務 → 時間軸 → 『匯出時間軸資料』 的 Timeline.json。",
   errNoPoints: "在這個檔案裡找不到移動紀錄。請確認是時間軸匯出檔（Timeline.json）。",
   errMemory: "檔案太大，此裝置的記憶體無法處理。請改用電腦瀏覽器再試一次。",
+  tripsTitle: "🧳 自動偵測的旅程",
+  tripsSub: "家→家區間 · 點一下即可重播該趟旅程",
+  tripsAll: "↺ 顯示全部期間",
+  tripsNights: "晚",
+  tripsEtc: "另 {n} 地",
+  tripsNoCity: "地圖之外",
+  tripsOngoing: "進行中",
   parsing: "🥾 正在讀取你的足跡…檔案較大時可能需要一分鐘",
   errPng: "圖片生成失敗。",
   errPngCors: "地圖圖磚的安全政策擋住了匯出。請重新整理後再試。",
@@ -221,6 +229,6 @@ window.FP_STR = {
 };
 </script>
 <script src="/footprints/cities.js?v=1"></script>
-<script src="/footprints/footprints.js?v=18"></script>
+<script src="/footprints/footprints.js?v=19"></script>
 </body>
 </html>
