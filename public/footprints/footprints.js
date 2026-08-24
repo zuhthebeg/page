@@ -1313,7 +1313,7 @@
         ev.stopPropagation();
         var tr = state.trips[Number(el.dataset.i)];
         if (!tr) return;
-        window.open("https://travel-mvp.pages.dev/import#fptrips=" + encodeFpTrips([tr]), "_blank", "noopener");
+        window.open("https://travly.cocy.io/import#fptrips=" + encodeFpTrips([tr]), "_blank", "noopener");
         if (window.dataLayer) window.dataLayer.push({ event: "fp_travly_trips", fp_trip_count: 1 });
       });
     });
@@ -1363,7 +1363,7 @@
     var box = document.querySelector(".travly");
     if (!box) return;
     if (!dna || (!dna.trips.length && !dna.home)) {
-      box.innerHTML = escHtml(S.dnaFallback).replace("Travly", '<a href="https://travel-mvp.pages.dev/" target="_blank" rel="noopener">Travly</a>');
+      box.innerHTML = escHtml(S.dnaFallback).replace("Travly", '<a href="https://travly.cocy.io/" target="_blank" rel="noopener">Travly</a>');
       return;
     }
     var chips = '<span class="dna-chip dna-home">🏠 ' + escHtml(S.dnaHome) + ' · ' + escHtml(dna.home[0]) + '</span>';
@@ -1379,7 +1379,7 @@
       // (과거 기록에 "추천받기"는 의도 불일치). 여행 감지가 0건일 때만 종전 추천 CTA 유지
       (state.trips && state.trips.length
         ? ''
-        : '<a class="dna-btn" href="https://travel-mvp.pages.dev/#fp=' + encodeDNA(dna) + '" target="_blank" rel="noopener">' + escHtml(S.dnaBtn) + '</a>') +
+        : '<a class="dna-btn" href="https://travly.cocy.io/#fp=' + encodeDNA(dna) + '" target="_blank" rel="noopener">' + escHtml(S.dnaBtn) + '</a>') +
       '<div class="dna-note">' + escHtml(S.dnaNote) + '</div>';
     var btn = box.querySelector(".dna-btn");
     if (btn) btn.addEventListener("click", function () {
