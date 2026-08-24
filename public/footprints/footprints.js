@@ -775,8 +775,8 @@
     lastGifBlob = null; hideGifResult();
     updateStatsUI();
     renderTraits(computeTraits(state.data));
+    renderTrips(refined.trips || []); // renderDNA보다 먼저 — DNA 카드 CTA가 state.trips를 본다
     renderDNA(computeDNA(state.data));
-    renderTrips(refined.trips || []);
     resize();
     computeOverview();
     state.progress = 0;
@@ -1369,7 +1369,11 @@
       '<div class="dna-head">' + escHtml(S.dnaTitle) +
       '<span class="dna-sub">' + escHtml(S.dnaTripsLabel) + ' ' + dna.trips.length + escHtml(S.dnaCount) + abroad + '</span></div>' +
       '<div class="dna-chips">' + chips + '</div>' +
-      '<a class="dna-btn" href="https://travel-mvp.pages.dev/#fp=' + encodeDNA(dna) + '" target="_blank" rel="noopener">' + escHtml(S.dnaBtn) + '</a>' +
+      // 여행이 감지됐으면 CTA는 임포트(내 여행 등록)로 — 과거 기록에 "추천받기"는 의도 불일치.
+      // 여행 감지가 없을 때만 종전 추천 CTA 유지
+      (state.trips && state.trips.length
+        ? '<a class="dna-btn" href="https://travel-mvp.pages.dev/import#fptrips=' + encodeFpTrips(state.trips) + '" target="_blank" rel="noopener">🧭 ' + escHtml(S.tripsTravly) + '</a>'
+        : '<a class="dna-btn" href="https://travel-mvp.pages.dev/#fp=' + encodeDNA(dna) + '" target="_blank" rel="noopener">' + escHtml(S.dnaBtn) + '</a>') +
       '<div class="dna-note">' + escHtml(S.dnaNote) + '</div>';
     var btn = box.querySelector(".dna-btn");
     if (btn) btn.addEventListener("click", function () {
