@@ -182,7 +182,7 @@
       }
       clean.push(pts[i]);
     }
-    var trips = detectTrips(clean); // 여행 자동 감지 — 다운샘플 전 풀해상도 기준
+    var trips = detectTrips(clean, data.visits); // 여행 자동 감지 — 다운샘플 전 풀해상도 기준
 
     if (clean.length > 20000) {
       var stride = Math.ceil(clean.length / 20000), ds = [];
@@ -208,8 +208,10 @@
   //    전부 온디바이스 계산. 월별로 집을 따로 잡아 이사·장기 체류 변화에 대응한다.
   var TRIP_HOME_KM = 4, TRIP_MIN_KM = 50;
   function localDay(t) { var d = new Date(t); return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
-  function detectTrips(pts) {
+  function detectTrips(pts, visits) {
     if (pts.length < 20) return [];
+    var vs = (visits || []).filter(function (v) { return isFinite(v.lat) && isFinite(v.lng) && v.t != null; })
+      .sort(function (a, b) { return a.t - b.t; });
     // 1) 월별 야간(22~06시) 포인트를 ~2km 그리드로 집계 → 최빈 셀 = 그 달의 집
     var monthCells = {}, i, d;
     for (i = 0; i < pts.length; i++) {
@@ -241,13 +243,13 @@
       var home = homes[d.getFullYear() + "-" + d.getMonth()] || globalHome;
       var dh = hav(pts[i], home);
       if (dh < TRIP_HOME_KM) {
-        if (cur) { finishTrip(trips, pts, cur, i); cur = null; }
+        if (cur) { finishTrip(trips, pts, cur, i, vs); cur = null; }
         lastHomeIdx = i;
       } else if (!cur) {
         cur = { s: lastHomeIdx >= 0 ? lastHomeIdx : i, maxKm: dh, home: home };
       } else if (dh > cur.maxKm) cur.maxKm = dh;
     }
-    if (cur) { var last = trips.length; finishTrip(trips, pts, cur, pts.length - 1); if (trips.length > last) trips[trips.length - 1].open = true; }
+    if (cur) { var last = trips.length; finishTrip(trips, pts, cur, pts.length - 1, vs); if (trips.length > last) trips[trips.length - 1].open = true; }
     return trips;
   }
   function matchCity(p) {
@@ -260,7 +262,52 @@
     return best;
   }
   function dayStartMs(t) { var d = new Date(t); return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime(); }
-  function finishTrip(trips, pts, cur, endIdx) {
+  // 애니메이션·일정용 리치 데이터 — 좌표는 소수 3자리(~110m)로 러프화, 집 근처는 제외
+  function r3(n) { return Math.round(n * 1000) / 1000; }
+  function tripPath(pts, s, endIdx, home) {
+    var away = [];
+    for (var i = s; i <= endIdx; i++) if (hav(pts[i], home) > 3) away.push(pts[i]);
+    if (away.length < 2) return [];
+    var stride = Math.max(1, Math.ceil(away.length / 240)), out = [], t0 = away[0].t;
+    for (var j = 0; j < away.length; j += stride) {
+      out.push([Math.round((away[j].t - t0) / 60000), r3(away[j].lat), r3(away[j].lng)]);
+    }
+    return out;
+  }
+  function tripPoi(pts, s, endIdx, home, vs, day0) {
+    var poi = [], lastStay = null, seenMeal = {};
+    var pad2 = function (n) { return (n < 10 ? "0" : "") + n; };
+    // 숙소: 심야(00~06시) 체류 지점 — 직전 숙소에서 800m 이상 떨어졌을 때만 새 숙소로
+    // (GPS 지터로 같은 호텔이 중복 등록되는 것 방지). 연박은 체크인 저녁 1건으로
+    for (var i = s; i <= endIdx; i++) {
+      var d = new Date(pts[i].t), h = d.getHours();
+      if (h >= 6) continue;
+      if (hav(pts[i], home) < 4) continue;
+      if (lastStay && hav(pts[i], lastStay) < 0.8) continue;
+      lastStay = { lat: pts[i].lat, lng: pts[i].lng };
+      var off = Math.round((dayStartMs(pts[i].t) - day0) / 86400000);
+      poi.push({ o: Math.max(0, off - 1), k: "stay", h: "21:00", lat: r3(pts[i].lat), lng: r3(pts[i].lng) });
+      if (poi.length >= 20) break;
+    }
+    // 식당: 방문(visit) 중 점심(11~14시)·저녁(17~21시) 시간대, 날짜·슬롯당 1건
+    var t0 = pts[s].t, t1 = pts[endIdx].t;
+    for (var v = 0; v < vs.length && poi.length < 44; v++) {
+      var vt = vs[v];
+      if (vt.t < t0 || vt.t > t1) continue;
+      if (hav(vt, home) < 4) continue;
+      var vd = new Date(vt.t), vh = vd.getHours();
+      var slot = vh >= 11 && vh < 15 ? "lunch" : vh >= 17 && vh < 22 ? "dinner" : null;
+      if (!slot) continue;
+      var voff = Math.round((dayStartMs(vt.t) - day0) / 86400000);
+      var mk = voff + slot;
+      if (seenMeal[mk]) continue;
+      seenMeal[mk] = 1;
+      poi.push({ o: voff, k: slot, h: pad2(vh) + ":" + pad2(vd.getMinutes()), lat: r3(vt.lat), lng: r3(vt.lng) });
+    }
+    poi.sort(function (a, b) { return a.o - b.o; });
+    return poi;
+  }
+  function finishTrip(trips, pts, cur, endIdx, vs) {
     if (cur.maxKm < TRIP_MIN_KM) return;
     var s = cur.s, days = {}, km = 0, i;
     for (i = s; i <= endIdx; i++) {
@@ -292,6 +339,8 @@
       t0: pts[s].t, t1: pts[endIdx].t, nights: nDays - 1,
       km: Math.round(km), maxKm: Math.round(cur.maxKm),
       cities: cityOrder, days: dayCity,
+      path: tripPath(pts, s, endIdx, cur.home),
+      poi: tripPoi(pts, s, endIdx, cur.home, vs || [], day0),
       abroad: !!(homeCc && cityOrder.some(function (c) { return c[1] !== homeCc; })),
     });
   }
@@ -1332,7 +1381,7 @@
     var payload = {
       v: 1,
       trips: trips.slice(-40).map(function (tr) { // 최근 40개까지 — fragment 크기 상한
-        return { s: isoDate(tr.t0), e: isoDate(tr.t1), km: tr.km, ab: tr.abroad ? 1 : 0, c: tr.cities, d: tr.days };
+        return { s: isoDate(tr.t0), e: isoDate(tr.t1), km: tr.km, ab: tr.abroad ? 1 : 0, c: tr.cities, d: tr.days, p: tr.path || [], poi: tr.poi || [] };
       }),
     };
     return btoa(unescape(encodeURIComponent(JSON.stringify(payload))))
