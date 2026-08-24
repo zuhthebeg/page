@@ -22,6 +22,50 @@ const ERR_MSG = {
 let lastSale = null;
 let lastClaim = null;
 
+// ─── KB 인용 칩 — 클릭하면 원문이 펼쳐진다 ───
+// 서버가 응답에 첨부한 kb 엔트리(조항·결정례)를 모아두고, 칩 클릭 시 바로 아래 패널 토글
+const kbStore = {};
+function absorbKb(kb) { Object.assign(kbStore, kb || {}); }
+function kbChips(ids, label) {
+  const valid = (ids || []).filter((id) => kbStore[id]);
+  if (!valid.length) return '';
+  return `<div class="kbrow">${label ? `<span class="kblabel">${esc(label)}</span>` : ''}${valid
+    .map((id) => `<button type="button" class="kbchip" data-kb="${esc(id)}">${esc(kbStore[id].ref || kbStore[id].no || id)} ▾</button>`)
+    .join('')}</div><div class="kbx" hidden></div>`;
+}
+function kbPanelHtml(e) {
+  if (e.no) { // 결정례
+    return `<b>${esc(e.no)} — ${esc(e.title)}</b>
+      <p><i>사실관계</i> ${esc(e.facts)}</p><p><i>결정</i> ${esc(e.decision)}</p>
+      <p class="kbsrc">공개 분쟁조정 사례 유형 기반 재구성 (데모 KB)</p>`;
+  }
+  const st = e.stat;
+  return `<b>${esc(e.ref)} — ${esc(e.title)}</b><p>${esc(e.text)}</p>
+    ${st ? `<p class="kbstat">이 조항 관련 부지급 ${st.denials}건 · 이의제기 성공률 ${Math.round(st.success_rate * 100)}% · 판매 시 설명누락률 ${Math.round(st.missing_rate * 100)}%</p>` : ''}
+    <p class="kbsrc">표준약관 구조 기반 재구성 발췌 (데모 KB)</p>`;
+}
+document.addEventListener('click', (ev) => {
+  const chip = ev.target.closest('.kbchip');
+  if (!chip) return;
+  const e = kbStore[chip.dataset.kb];
+  const panel = chip.closest('.kbrow')?.nextElementSibling;
+  if (!e || !panel || !panel.classList.contains('kbx')) return;
+  const already = !panel.hidden && panel.dataset.kbId === chip.dataset.kb;
+  panel.hidden = already;
+  if (!already) { panel.dataset.kbId = chip.dataset.kb; panel.innerHTML = kbPanelHtml(e); }
+});
+
+// ─── 고령층 접근성: 큰 글씨 토글 ───
+const BIG_KEY = 'banca:bigtype';
+function setBigType(on) {
+  document.documentElement.classList.toggle('bigtype', on);
+  const b = $('#bigType');
+  if (b) { b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); }
+  try { localStorage.setItem(BIG_KEY, on ? '1' : ''); } catch {}
+}
+$('#bigType')?.addEventListener('click', () => setBigType(!document.documentElement.classList.contains('bigtype')));
+try { if (localStorage.getItem(BIG_KEY)) setBigType(true); } catch {}
+
 // ─── 폰 시계 ───
 (function tick() {
   const d = new Date();
@@ -39,6 +83,7 @@ function switchView(v) {
   });
   $$('.stage').forEach((s) => s.classList.toggle('on', s.dataset.stage === v));
   if (v === 'claim') renderRecordHint();
+  if (v === 'admin') loadAdmin();
 }
 $$('.seg-btn').forEach((b) => b.addEventListener('click', () => switchView(b.dataset.view)));
 $$('[data-goto]').forEach((a) => a.addEventListener('click', () => switchView(a.dataset.goto)));
@@ -71,6 +116,45 @@ function showErr(el, e) {
   el.textContent = ERR_MSG[e.message] || ERR_MSG.upstream;
   el.classList.add('on');
   setTimeout(() => el.classList.remove('on'), 6000);
+}
+
+// ═══════════════ 관리자: 약관 리스크 보드 ═══════════════
+// 과거 부지급 사유(자유 텍스트→조항 ID 구조화가 끝난 집계)를 조항별로 보여주는 피드백 루프 화면.
+let adminLoaded = false;
+async function loadAdmin() {
+  if (adminLoaded) return;
+  const out = $('#adminOut');
+  try {
+    const r = await api({ mode: 'admin' });
+    adminLoaded = true;
+    const max = Math.max(...r.stats.map((x) => x.risk_score));
+    out.innerHTML = `
+      <div class="admin-head">
+        <div class="admin-kpis">
+          <div class="kpi"><b>${r.total_denials.toLocaleString()}</b><span>누적 부지급 건 (구조화 완료)</span></div>
+          <div class="kpi"><b>${r.stats.length}</b><span>부지급 근거 조항</span></div>
+          <div class="kpi"><b>${r.stats.filter((x) => x.promoted).length}</b><span>판매 필수 설명 승격</span></div>
+        </div>
+        <p class="admin-flow">부지급 사유(자유 텍스트) → <b>조항 ID 추출·구조화</b> → 조항별 거절 건수·설명누락률 집계 → <b>위험점수 = 건수 × (1+누락률)</b> → 상위 조항을 창구 콘솔의 판매 필수 설명으로 자동 승격</p>
+      </div>
+      <table class="admin-table">
+        <thead><tr><th>조항</th><th>부지급</th><th>설명누락률</th><th>이의제기 성공률</th><th>위험점수</th><th></th></tr></thead>
+        <tbody>
+        ${r.stats.map((x) => `
+          <tr class="${x.promoted ? 'promoted' : ''}">
+            <td><b>${esc(x.ref)}</b><span class="sub2">${esc(x.title)} · ${esc(x.product)}</span></td>
+            <td class="num">${x.denials}</td>
+            <td class="num">${Math.round(x.missing_rate * 100)}%</td>
+            <td class="num">${Math.round(x.success_rate * 100)}%</td>
+            <td class="risk"><div class="riskbar"><i style="width:${Math.round((x.risk_score / max) * 100)}%"></i></div><em>${x.risk_score}</em></td>
+            <td>${x.promoted ? '<span class="pro-badge">📈 필수 설명 승격</span>' : ''}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      <p class="admin-note">설명누락률이 높은 조항일수록 "설명 없이 팔리고 나중에 터지는" 조항입니다. 승격된 조항은 🏦 창구 콘솔 분석에서 해당 상품군일 때 반드시 설명 항목에 포함됩니다. (집계 데이터는 데모용 합성 이력)</p>`;
+  } catch (e) {
+    out.innerHTML = `<div class="con-empty"><div class="con-empty-ico">📊</div><b>불러오지 못했습니다</b><p>잠시 후 다시 시도해 주세요.</p></div>`;
+  }
 }
 
 // ═══════════════ 판매: 창구 콘솔 ═══════════════
@@ -110,6 +194,7 @@ $('#saleForm').addEventListener('submit', async (e) => {
 });
 
 function renderSale(r, payload) {
+  absorbKb(r.kb);
   const out = $('#saleOut');
   out.innerHTML = `
     <div class="res-head">
@@ -123,9 +208,10 @@ function renderSale(r, payload) {
       <h5>① 이 고객에게 반드시 설명할 3가지</h5>
       ${r.must_explain.map((m) => `
         <div class="xcard">
-          <h6>${esc(m.title)} <span class="pill ${esc(m.severity)}">${esc(LEVEL_KO[m.severity] || '')}</span> <span class="clause">${esc(m.clause_type)}</span></h6>
+          <h6>${esc(m.title)} <span class="pill ${esc(m.severity)}">${esc(LEVEL_KO[m.severity] || '')}</span> <span class="clause">${esc(m.clause_type)}</span>${m.promoted ? ' <span class="pro-badge">📈 부지급 다발 — 필수 설명 승격</span>' : ''}</h6>
           <p>${esc(m.why_this_customer)}</p>
           <div class="script">${esc(m.script)}</div>
+          ${m.ref ? kbChips([m.ref], '근거 조항') : ''}
         </div>`).join('')}
     </div>
 
@@ -249,6 +335,7 @@ function renderPhoneIdle() {
         <select id="c-joined">
           ${['1년 미만', '1~3년', '3~5년', '5년 이상'].map((v) => `<option${v === p.joined ? ' selected' : ''}>${v}</option>`).join('')}
         </select>
+        <input type="number" id="c-age" min="19" max="99" placeholder="나이(선택)" title="65세 이상이면 더 쉬운 말로 설명해 드립니다">
       </div>
     </div>
     <button class="ai-cta" id="claimGo"><span class="spark">✦</span> AI 비서가 뜯어봐 드릴게요</button>
@@ -260,13 +347,16 @@ function renderPhoneIdle() {
 async function runClaim() {
   const p = CLAIM_PRESETS[scen];
   const custom = scen === 'custom';
+  const age = Number($('#c-age')?.value) || undefined;
   const payload = {
     denial: custom ? ($('#c-denial')?.value || '').trim() : p.denial,
     reason: custom ? ($('#c-reason')?.value || '').trim() : p.reason,
     amount: $('#c-amount')?.value || p.amount,
     joined: $('#c-joined')?.value || p.joined,
+    age,
   };
   if (payload.denial.length < 10) { showErr($('#claimErr'), new Error('too_short')); return; }
+  if (age >= 65) setBigType(true); // 고령 입력 시 큰 글씨 자동 적용 (토글로 다시 끌 수 있음)
 
   const btn = $('#claimGo'); btn.disabled = true;
   const ph = $('#phContent');
@@ -285,6 +375,20 @@ async function runClaim() {
 }
 
 function renderClaim(r, payload) {
+  absorbKb(r.kb);
+  // 매칭 조항의 과거 청구 통계 — 조항별 거절 건수·설명누락률·이의제기 성공률
+  const statsCard = (r.stats && r.stats.length)
+    ? `<div class="psec-label"><i>📊</i>기존 청구 사례 데이터</div>
+       <div class="pcard">
+         ${r.stats.map((st2) => `
+           <div class="stat-row">
+             <div class="stat-top"><b>${esc(st2.ref)}</b><span>${esc(st2.title)}</span></div>
+             <div class="stat-bar"><i style="width:${Math.round(st2.success_rate * 100)}%"></i></div>
+             <div class="stat-meta">같은 조항으로 부지급된 ${st2.denials}건 중 <b>${Math.round(st2.success_rate * 100)}%</b>가 이의제기·분쟁조정으로 일부지급 이상을 받아냈습니다 · 판매 시 설명누락률 ${Math.round(st2.missing_rate * 100)}%</div>
+           </div>`).join('')}
+         <p class="stat-note">과거 청구 이력 집계(데모용 합성 데이터) — 결과를 보장하지 않습니다</p>
+       </div>`
+    : '';
   const cross = r.sale_crosscheck
     ? `<div class="pcard crosscheck"><span class="cc-tag">🔗 가입 당시 기록과 대조</span><p>${esc(r.sale_crosscheck)}</p></div>`
     : `<div class="pcard crosscheck none"><span class="cc-tag">가입 기록 없음</span><p>이 브라우저에 저장된 판매 기록이 없어 대조하지 못했습니다. 실제 서비스에서는 은행이 보관한 설명 이행 기록을 자동으로 불러와, 거절 근거 조항을 설명받았는지 확인합니다.</p></div>`;
@@ -299,7 +403,7 @@ function renderClaim(r, payload) {
     </div>
 
     <div class="psec-label"><i>1</i>이게 무슨 뜻인가요</div>
-    <div class="pcard"><p>${esc(r.meaning_plain)}</p></div>
+    <div class="pcard"><p>${esc(r.meaning_plain)}</p>${kbChips(r.matched_clauses, '거절 근거 조항')}</div>
 
     <div class="psec-label"><i>2</i>다툴 쟁점</div>
     <div class="pcard">
@@ -309,7 +413,10 @@ function renderClaim(r, payload) {
         <div class="frame o"><b>여기서 싸워야 합니다</b>${esc(r.issue.right_frame)}</div>
       </div>
       <p style="margin-top:9px">${esc(r.issue.detail)}</p>
+      ${kbChips(r.issue.refs, '근거 조항')}
     </div>
+
+    ${statsCard}
 
     <div class="psec-label"><i>3</i>준비할 서류</div>
     <div class="pcard">
@@ -320,10 +427,13 @@ function renderClaim(r, payload) {
         </div>`).join('')}
     </div>
 
-    <div class="psec-label"><i>4</i>비슷한 사례 유형</div>
-    <p class="note" style="font-size:11.5px;margin:0 4px 8px">실제 결정례 인용이 아니라 유형을 재구성한 예시입니다. 실제 결정례는 금융감독원에서 확인하세요.</p>
+    <div class="psec-label"><i>4</i>비슷한 분쟁조정 결정례</div>
+    <p class="note" style="font-size:11.5px;margin:0 4px 8px">데모 KB 인용 — 공개 분쟁조정 사례 유형 기반 재구성입니다. 실제 결정례 원문은 금융감독원에서 확인하세요.</p>
     ${r.precedents.map((p2) => `
-      <div class="pcard"><h6>${esc(p2.pattern)}</h6><p>${esc(p2.outcome)}</p><p style="color:var(--ink-3)">→ ${esc(p2.takeaway)}</p></div>`).join('')}
+      <div class="pcard"><h6><span class="prec-no">${esc(p2.no)}</span> ${esc(p2.title)}</h6>
+        <p style="color:var(--ink-3)">→ ${esc(p2.takeaway)}</p>
+        ${kbChips([p2.kb_id], '결정례 원문')}
+      </div>`).join('')}
 
     <div class="psec-label"><i>5</i>가입 기록 대조</div>
     ${cross}

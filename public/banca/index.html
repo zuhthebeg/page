@@ -24,7 +24,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="twitter:description" content="창구 직원에게는 무엇을 설명할지, 거절된 고객에게는 무엇을 다툴지 알려주는 작동 데모.">
 <link rel="icon" type="image/svg+xml" href="/banca/icon.svg">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="/banca/banca.css?v=2">
+<link rel="stylesheet" href="/banca/banca.css?v=3">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -109,6 +109,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="seg" role="tablist">
       <button class="seg-btn on" data-view="sale" role="tab" aria-selected="true">🏦 창구 콘솔 <small>은행 직원용</small></button>
       <button class="seg-btn" data-view="claim" role="tab" aria-selected="false">📱 모바일 앱 <small>고객용</small></button>
+      <button class="seg-btn" data-view="admin" role="tab" aria-selected="false">📊 리스크 보드 <small>관리자용</small></button>
+      <button class="a11y-toggle" id="bigType" type="button" aria-pressed="false" title="글씨를 크게 봅니다">가⁺ 큰 글씨</button>
     </div>
 
     <!-- ═══ 창구 콘솔 ═══ -->
@@ -189,6 +191,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
     </div>
+
+    <!-- ═══ 관리자: 약관 리스크 보드 ═══ -->
+    <div class="stage stage-admin" data-stage="admin">
+      <div class="console">
+        <div class="con-titlebar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="con-title">방카 어시스트 — 약관 리스크 보드</span>
+          <span class="con-user">상품관리팀 · 관리자</span>
+        </div>
+        <div class="con-body admin-body" id="adminOut">
+          <div class="con-empty"><div class="con-empty-ico">📊</div><b>불러오는 중…</b></div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -221,7 +237,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="disclaimer">
       <b>이 페이지에 대해</b> — 서비스 컨셉을 검증하려고 만든 작동하는 데모이며, 실제 상용 서비스가 아닙니다.
       <ul>
-        <li>약관 전문 DB·금융감독원 분쟁조정 결정례 DB는 연동돼 있지 않습니다. 출력은 AI의 일반 지식 기반이고, "비슷한 사례"는 유형을 재구성한 예시입니다. 사건번호·조항 번호는 생성하지 않도록 막아 두었습니다.</li>
+        <li>답변이 인용하는 조항·결정례는 이 데모에 탑재된 지식베이스(KB)에서 나옵니다. 조항 텍스트는 생·손보 <b>표준약관 구조를 따른 재구성 발췌</b>이고, 결정례는 금융분쟁조정위원회의 <b>공개 사례 유형을 재구성</b>한 것입니다(번호는 데모 표기, 실제 문서 원문 아님). AI는 KB 밖의 사건번호·조항 번호를 만들 수 없게 막아 두었습니다.</li>
+        <li>"기존 청구 사례 성공률"과 리스크 보드의 집계는 피드백 루프 구조를 보여주기 위한 <b>데모용 합성 데이터</b>입니다.</li>
         <li>법률 자문·보험 자문이 아닙니다. 실제 분쟁은 금융감독원 <b>1332</b> 또는 e-금융민원센터로 문의하세요.</li>
         <li>입력 내용은 저장하지 않으며, 판매 기록 대조는 이 브라우저(localStorage) 안에서만 동작합니다.</li>
       </ul>
@@ -235,6 +252,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
-<script src="/banca/banca.js?v=2"></script>
+<script src="/banca/banca.js?v=3"></script>
 </body>
 </html>

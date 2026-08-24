@@ -432,3 +432,70 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--blue); outl
 .disclaimer li { margin-bottom: 4px; }
 .foot-links { margin-top: 22px; display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: var(--ink-3); }
 .foot-links a:hover { color: var(--blue); }
+
+/* ═══ v3: KB 인용 칩 + 원문 펼침 ═══ */
+.kbrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; }
+.kblabel { font-size: 10.5px; font-weight: 800; letter-spacing: .05em; color: var(--ink-3); }
+.kbchip {
+  font: inherit; font-size: 11.5px; font-weight: 700; cursor: pointer;
+  padding: 4px 10px; border-radius: 999px; border: 1px solid #cfd9ea;
+  background: #f2f6fc; color: #27436e;
+}
+.kbchip:hover { background: #e6eefb; }
+.kbx {
+  margin-top: 8px; padding: 12px 14px; border-radius: 10px;
+  background: #f7f9fd; border: 1px dashed #cfd9ea; font-size: 12.5px; line-height: 1.65;
+}
+.kbx b { display: block; margin-bottom: 6px; font-size: 12.5px; }
+.kbx p { margin: 4px 0; }
+.kbx i { font-style: normal; font-weight: 800; color: #27436e; margin-right: 4px; }
+.kbx .kbstat { color: #8a5a06; font-weight: 600; }
+.kbx .kbsrc { color: var(--ink-3); font-size: 11px; margin-top: 6px; }
+.prec-no { font-family: ui-monospace, monospace; font-size: 11px; background: #eef2f9; border-radius: 6px; padding: 2px 7px; color: #27436e; margin-right: 4px; }
+.pro-badge {
+  font-size: 10.5px; font-weight: 800; color: #b3400c; background: #fdeee2;
+  border: 1px solid #f3cdae; border-radius: 999px; padding: 2px 8px; white-space: nowrap;
+}
+
+/* ═══ v3: 기존 청구 사례 성공률 ═══ */
+.stat-row { padding: 8px 0; border-bottom: 1px solid #eef1f6; }
+.stat-row:last-of-type { border-bottom: 0; }
+.stat-top { display: flex; align-items: baseline; gap: 8px; }
+.stat-top b { font-size: 12.5px; }
+.stat-top span { font-size: 11.5px; color: var(--ink-3); }
+.stat-bar { height: 8px; border-radius: 999px; background: #edf1f7; margin: 7px 0 6px; overflow: hidden; }
+.stat-bar i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #2f6df6, #22a06b); }
+.stat-meta { font-size: 12px; line-height: 1.55; }
+.stat-note { font-size: 10.5px; color: var(--ink-3); margin-top: 8px; }
+
+/* ═══ v3: 관리자 리스크 보드 ═══ */
+.admin-body { display: block; padding: 18px; overflow-x: auto; }
+.admin-kpis { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.kpi { flex: 1; min-width: 130px; background: #f5f8fd; border: 1px solid #e3eaf5; border-radius: 12px; padding: 12px 14px; }
+.kpi b { font-size: 22px; display: block; }
+.kpi span { font-size: 11px; color: var(--ink-3); }
+.admin-flow { font-size: 12px; color: var(--ink-2); background: #fbf6ec; border: 1px solid #f0e2c4; border-radius: 10px; padding: 10px 12px; margin: 0 0 14px; line-height: 1.6; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.admin-table th { text-align: left; font-size: 10.5px; letter-spacing: .05em; color: var(--ink-3); padding: 6px 8px; border-bottom: 2px solid #e6ebf3; }
+.admin-table td { padding: 9px 8px; border-bottom: 1px solid #eef1f6; vertical-align: middle; }
+.admin-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+.admin-table .sub2 { display: block; font-size: 10.5px; color: var(--ink-3); }
+.admin-table tr.promoted { background: #fffaf3; }
+.riskbar { width: 90px; height: 7px; background: #edf1f7; border-radius: 999px; overflow: hidden; display: inline-block; vertical-align: middle; }
+.riskbar i { display: block; height: 100%; background: linear-gradient(90deg, #f6a12f, #e5484d); }
+.risk em { font-style: normal; font-weight: 800; margin-left: 6px; font-variant-numeric: tabular-nums; }
+.admin-note { font-size: 11.5px; color: var(--ink-3); margin-top: 12px; line-height: 1.6; }
+
+/* ═══ v3: 고령층 접근성 — 큰 글씨 ═══ */
+.a11y-toggle {
+  margin-left: auto; font: inherit; font-size: 12.5px; font-weight: 800; cursor: pointer;
+  padding: 8px 14px; border-radius: 999px; border: 1.5px solid #cfd9ea; background: #fff; color: #27436e;
+}
+.a11y-toggle.on { background: #10254a; color: #fff; border-color: #10254a; }
+html.bigtype .ph-content, html.bigtype .con-out, html.bigtype .admin-body { font-size: 117%; }
+html.bigtype .ph-content .pcard p, html.bigtype .ph-content .pcard h6 { font-size: 15px; line-height: 1.75; }
+html.bigtype .psec-label { font-size: 14px; }
+html.bigtype .kbx { font-size: 14px; }
+html.bigtype .stat-meta { font-size: 14px; }
+html.bigtype .ai-cta { font-size: 17px; }
+#c-age { width: 92px; font: inherit; font-size: 12.5px; padding: 7px 9px; border: 1px solid #d6dde9; border-radius: 8px; }
