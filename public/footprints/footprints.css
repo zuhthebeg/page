@@ -75,11 +75,19 @@ body {
 .tp-date { font-family: var(--mono); font-size: .7rem; color: var(--ink-dim); white-space: nowrap; }
 .tp-city { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tp-meta { font-family: var(--mono); font-size: .7rem; color: var(--ink-faint); white-space: nowrap; }
+.tp-foot { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
 .tp-all {
-  margin-top: 10px; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line);
+  padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line);
   background: none; color: var(--ink-dim); font: inherit; font-size: .74rem; cursor: pointer;
 }
 .tp-all:hover { color: var(--ink); border-color: #2a3f63; }
+.tp-travly {
+  margin-left: auto; padding: 7px 16px; border-radius: 999px; text-decoration: none;
+  background: linear-gradient(135deg, #6d5df6, #39c0ff); color: #fff;
+  font-size: .76rem; font-weight: 700;
+}
+.tp-travly:hover { filter: brightness(1.12); }
+.tp-note { margin-top: 8px; font-size: .68rem; color: var(--ink-faint); }
 
 .err {
   display: none; margin-top: 14px; padding: 10px 14px; border-radius: 10px;

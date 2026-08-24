@@ -19,6 +19,8 @@
     tripsEtc: "외 {n}곳",
     tripsNoCity: "미등록 지역",
     tripsOngoing: "진행 중",
+    tripsTravly: "Travly에 내 여행으로 등록",
+    tripsTravlyNote: "도시·날짜 요약만 전달돼요 — GPS 좌표 원본은 브라우저 밖으로 나가지 않아요. 저장은 Travly에서 직접 확인 후 진행됩니다.",
     parsing: "🥾 발자국을 읽는 중… 파일이 크면 몇십 초 걸릴 수 있어요",
     errPng: "이미지 생성에 실패했어요.",
     errPngCors: "지도 타일 보안 정책 때문에 이미지 저장이 막혔어요. 새로고침 후 다시 시도해주세요.",
@@ -257,6 +259,7 @@
     }
     return best;
   }
+  function dayStartMs(t) { var d = new Date(t); return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime(); }
   function finishTrip(trips, pts, cur, endIdx) {
     if (cur.maxKm < TRIP_MIN_KM) return;
     var s = cur.s, days = {}, km = 0, i;
@@ -266,8 +269,13 @@
     }
     var nDays = Object.keys(days).length;
     if (nDays < 2) return; // 당일치기 제외 — 1박 이상만 여행으로
-    // 도시 매칭 — 날짜별 첫 원거리(집 15km+) 포인트 샘플, 등장 순서 유지
+    // 도시 매칭 — 날짜별 첫 원거리(집 15km+) 포인트 샘플, 등장 순서 유지.
+    // dayCity: 여행 시작일 기준 날짜 오프셋별 도시 인덱스(-1=미상) — Travly 스켈레톤 일정용
     var homeCity = matchCity(cur.home), seen = {}, cityOrder = [], cityIdx = {};
+    var day0 = dayStartMs(pts[s].t);
+    var span = Math.min(120, Math.round((dayStartMs(pts[endIdx].t) - day0) / 86400000) + 1);
+    var dayCity = [];
+    for (i = 0; i < span; i++) dayCity.push(-1);
     for (i = s; i <= endIdx; i++) {
       var dk = localDay(pts[i].t);
       if (seen[dk]) continue;
@@ -275,13 +283,15 @@
       seen[dk] = 1;
       var cty = matchCity(pts[i]);
       if (!cty || (homeCity && cty[0] === homeCity[0])) continue;
-      if (cityIdx[cty[0]] === undefined) { cityIdx[cty[0]] = 1; cityOrder.push([cty[0], cty[3]]); }
+      if (cityIdx[cty[0]] === undefined) { cityIdx[cty[0]] = cityOrder.length; cityOrder.push([cty[0], cty[3]]); }
+      var off = Math.round((dayStartMs(pts[i].t) - day0) / 86400000);
+      if (off >= 0 && off < span) dayCity[off] = cityIdx[cty[0]];
     }
     var homeCc = homeCity ? homeCity[3] : null;
     trips.push({
       t0: pts[s].t, t1: pts[endIdx].t, nights: nDays - 1,
       km: Math.round(km), maxKm: Math.round(cur.maxKm),
-      cities: cityOrder,
+      cities: cityOrder, days: dayCity,
       abroad: !!(homeCc && cityOrder.some(function (c) { return c[1] !== homeCc; })),
     });
   }
@@ -1290,7 +1300,9 @@
         '<span class="tp-city">' + (tr.abroad ? "✈️ " : "") + escHtml(label) + '</span>' +
         '<span class="tp-meta">' + escHtml(meta) + ' · ' + tr.km.toLocaleString() + 'km</span></button>';
     }
-    html += '</div><button class="tp-all" id="tpall">' + escHtml(S.tripsAll) + '</button>';
+    html += '</div><div class="tp-foot"><button class="tp-all" id="tpall">' + escHtml(S.tripsAll) + '</button>' +
+      '<a class="tp-travly" id="tptravly" target="_blank" rel="noopener">🧭 ' + escHtml(S.tripsTravly) + '</a></div>' +
+      '<div class="tp-note">' + escHtml(S.tripsTravlyNote) + '</div>';
     box.innerHTML = html;
     box.querySelectorAll(".tp-item").forEach(function (el) {
       el.addEventListener("click", function () { selectTrip(Number(el.dataset.i), el); });
@@ -1300,6 +1312,25 @@
       updateRangeLabel(); applyRange();
       box.querySelectorAll(".tp-item.on").forEach(function (e2) { e2.classList.remove("on"); });
     });
+    $("#tptravly").href = "https://travel-mvp.pages.dev/import#fptrips=" + encodeFpTrips(state.trips);
+    $("#tptravly").addEventListener("click", function () {
+      if (window.dataLayer) window.dataLayer.push({ event: "fp_travly_trips", fp_trip_count: state.trips.length });
+    });
+  }
+  // Travly 임포트 payload — 도시 이름·국가코드·날짜만. 좌표는 포함하지 않는다(러프 요약 원칙).
+  function isoDate(t) {
+    var d = new Date(t), p = function (n) { return (n < 10 ? "0" : "") + n; };
+    return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
+  }
+  function encodeFpTrips(trips) {
+    var payload = {
+      v: 1,
+      trips: trips.slice(-40).map(function (tr) { // 최근 40개까지 — fragment 크기 상한
+        return { s: isoDate(tr.t0), e: isoDate(tr.t1), km: tr.km, ab: tr.abroad ? 1 : 0, c: tr.cities, d: tr.days };
+      }),
+    };
+    return btoa(unescape(encodeURIComponent(JSON.stringify(payload))))
+      .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
   }
   function selectTrip(i, el) {
     var full = state.fullData, tr = state.trips[i];
