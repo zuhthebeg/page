@@ -19,6 +19,7 @@
     tripsEtc: "외 {n}곳",
     tripsNoCity: "미등록 지역",
     tripsOngoing: "진행 중",
+    rankLgYear: "년",
     tripsTravly: "이 여행을 Travly에 등록",
     tripsTravlyNote: "🧭 버튼으로 그 여행 하나만 Travly에 등록해요. 도시·날짜 요약만 전달되고 GPS 좌표 원본은 브라우저 밖으로 나가지 않아요 — 저장은 Travly에서 확인 후 진행됩니다.",
     parsing: "🥾 발자국을 읽는 중… 파일이 크면 몇십 초 걸릴 수 있어요",
@@ -815,6 +816,9 @@
     if (!refined.points.length) { showErr(S.errNoPoints); return; }
     state.fullData = refined;
     state.data = refined;
+    // 리그 배정 — 기록 기간(년) 기준. 보드 기본 탭에 쓰인다
+    var spanY = (refined.stats.to - refined.stats.from) / 31557600000;
+    state.myLeague = spanY <= 1.5 ? 1 : spanY <= 3.5 ? 3 : spanY <= 7 ? 5 : 10;
     $("#loader").style.display = "none";
     $("#viewer").style.display = "block";
     var ra = $("#rgA"), rb = $("#rgB");
@@ -1460,25 +1464,59 @@
     return null;
   }
 
+  // 기록 기간별 리그(1·3·5·10년) — 1년치 기록과 13년치 기록이 같은 판에서 겨루지 않게 분리.
+  // years가 없는 옛 등록 행은 기록일수(days)로 근사 분류
+  var LEAGUES = [1, 3, 5, 10];
+  function leagueOf(row) {
+    var y = Number(row.years) || 0;
+    if (!y) {
+      var d = Number(row.days) || 0;
+      return d <= 370 ? 1 : d <= 1100 ? 3 : d <= 1900 ? 5 : 10;
+    }
+    return y <= 1.5 ? 1 : y <= 3.5 ? 3 : y <= 7 ? 5 : 10;
+  }
   function loadRankBoard(target) {
     var el = target || rankBoard;
     if (!el) return;
-    fetch("https://relay.cocy.io/api/rankings/footprints?limit=10").then(function (r) { return r.json(); }).then(function (res) {
+    fetch("https://relay.cocy.io/api/rankings/footprints?limit=100").then(function (r) { return r.json(); }).then(function (res) {
       if (!res.success) return;
       var uid = fpUserId();
-      var rows = (res.rankings || []).map(function (row, i) {
-        var mine = row.user_id === uid;
-        var kmTxt = row.km ? '<i class="rb-km">' + escHtml(fmtApproxKm(row.km)) + '</i>' : '';
-        // 칭호는 저장된 텍스트가 아니라 티어 번호로 현재 로케일에서 렌더 — 리밸런싱/다국어에도 항상 최신 명칭
-        var b = badgeByTier(row.tier);
-        var titleTxt = b ? (b.emoji + " " + b.name) : (row.title || "");
-        return '<div class="rb-row' + (mine ? ' mine' : '') + '"><span>' + (i + 1) + '.</span><span>' +
-          escHtml(row.nickname || S.rankAnon) + '</span><span>' + escHtml(titleTxt) + kmTxt + '</span></div>';
-      }).join("");
+      var buckets = { 1: [], 3: [], 5: [], 10: [] };
+      (res.rankings || []).forEach(function (row) { buckets[leagueOf(row)].push(row); });
+      function rowsHtml(lg) {
+        var rows = buckets[lg].slice(0, 10).map(function (row, i) {
+          var mine = row.user_id === uid;
+          var kmTxt = row.km ? '<i class="rb-km">' + escHtml(fmtApproxKm(row.km)) + '</i>' : '';
+          // 칭호는 저장된 텍스트가 아니라 티어 번호로 현재 로케일에서 렌더 — 리밸런싱/다국어에도 항상 최신 명칭
+          var b = badgeByTier(row.tier);
+          var titleTxt = b ? (b.emoji + " " + b.name) : (row.title || "");
+          return '<div class="rb-row' + (mine ? ' mine' : '') + '"><span>' + (i + 1) + '.</span><span>' +
+            escHtml(row.nickname || S.rankAnon) + '</span><span>' + escHtml(titleTxt) + kmTxt + '</span></div>';
+        }).join("");
+        return rows || '<div class="rb-empty">' + escHtml(S.rankEmpty) + '</div>';
+      }
+      // 기본 탭: 내 데이터의 리그 → 없으면 인원 최다 리그
+      var def = state.myLeague && buckets[state.myLeague].length ? state.myLeague
+        : LEAGUES.reduce(function (a, b) { return buckets[b].length > buckets[a].length ? b : a; }, 1);
       el.innerHTML = '<div class="rb-head">🏆 ' + escHtml(S.rankBoardTitle) + '</div>' +
-        (rows || '<div class="rb-empty">' + escHtml(S.rankEmpty) + '</div>');
+        '<div class="rb-tabs">' + LEAGUES.map(function (lg) {
+          return '<button class="rb-tab' + (lg === def ? ' on' : '') + '" data-lg="' + lg + '">' + lg + escHtml(S.rankLgYear) +
+            '<em>' + buckets[lg].length + '</em></button>';
+        }).join("") + '</div>' +
+        '<div class="rb-body">' + rowsHtml(def) + '</div>';
+      el.querySelectorAll(".rb-tab").forEach(function (tb) {
+        tb.addEventListener("click", function () {
+          el.querySelectorAll(".rb-tab").forEach(function (x) { x.classList.toggle("on", x === tb); });
+          el.querySelector(".rb-body").innerHTML = rowsHtml(Number(tb.dataset.lg));
+        });
+      });
       el.style.display = "block";
     }).catch(function () {});
+  }
+  function myYears() {
+    var st = state.fullData && state.fullData.stats;
+    if (!st || !st.from || !st.to) return 0;
+    return Math.max(0.1, Math.round(((st.to - st.from) / 31557600000) * 10) / 10);
   }
 
   var rankBtn = $("#rankbtn"), rankPreview = $("#rankpreview"), rankPayload = $("#rankpayload"),
@@ -1515,6 +1553,7 @@
         nickname: nick || undefined,
         km: approxKm(state.data.stats.totalKm),
         days: Math.max(10, Math.round(state.data.stats.days / 10) * 10),
+        years: myYears(), // 기록 기간(년) — 리그 분류용
       }),
     }).then(function (r) { return r.json(); }).then(function (res) {
       rankConfirm.disabled = false;

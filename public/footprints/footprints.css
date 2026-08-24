@@ -266,3 +266,13 @@ footer a:hover { color: var(--ink); }
 .rank-nick { width: 100%; margin-bottom: 8px; font: inherit; font-size: .82rem; color: var(--ink, #dce6f5); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16); border-radius: 8px; padding: 8px 11px; }
 .rank-nick:focus { outline: 1px solid var(--violet, #8b7cf6); }
 .rb-km { font-style: normal; opacity: .55; font-size: .72rem; margin-left: 6px; }
+
+/* 명예의 전당 — 기록 기간별 리그 탭 */
+.rb-tabs { display: flex; gap: 5px; margin: 8px 0 10px; }
+.rb-tab {
+  flex: 1; padding: 6px 4px; border-radius: 8px; border: 1px solid var(--line);
+  background: none; color: var(--ink-dim); font: inherit; font-size: .72rem; font-weight: 700; cursor: pointer;
+}
+.rb-tab em { font-style: normal; font-weight: 400; color: var(--ink-faint); margin-left: 4px; font-size: .66rem; }
+.rb-tab.on { border-color: rgba(57,192,255,.55); background: rgba(57,192,255,.1); color: #7fd4ff; }
+.rb-tab:hover { border-color: #2a3f63; }
