@@ -19,8 +19,8 @@
     tripsEtc: "외 {n}곳",
     tripsNoCity: "미등록 지역",
     tripsOngoing: "진행 중",
-    tripsTravly: "Travly에 내 여행으로 등록",
-    tripsTravlyNote: "도시·날짜 요약만 전달돼요 — GPS 좌표 원본은 브라우저 밖으로 나가지 않아요. 저장은 Travly에서 직접 확인 후 진행됩니다.",
+    tripsTravly: "이 여행을 Travly에 등록",
+    tripsTravlyNote: "🧭 버튼으로 그 여행 하나만 Travly에 등록해요. 도시·날짜 요약만 전달되고 GPS 좌표 원본은 브라우저 밖으로 나가지 않아요 — 저장은 Travly에서 확인 후 진행됩니다.",
     parsing: "🥾 발자국을 읽는 중… 파일이 크면 몇십 초 걸릴 수 있어요",
     errPng: "이미지 생성에 실패했어요.",
     errPngCors: "지도 타일 보안 정책 때문에 이미지 저장이 막혔어요. 새로고침 후 다시 시도해주세요.",
@@ -1298,23 +1298,29 @@
       html += '<button class="tp-item" data-i="' + i + '">' +
         '<span class="tp-date">' + fmtDate(new Date(tr.t0)) + '</span>' +
         '<span class="tp-city">' + (tr.abroad ? "✈️ " : "") + escHtml(label) + '</span>' +
-        '<span class="tp-meta">' + escHtml(meta) + ' · ' + tr.km.toLocaleString() + 'km</span></button>';
+        '<span class="tp-meta">' + escHtml(meta) + ' · ' + tr.km.toLocaleString() + 'km</span>' +
+        '<span class="tp-send" data-i="' + i + '" role="button" title="' + escHtml(S.tripsTravly) + '">🧭</span></button>';
     }
-    html += '</div><div class="tp-foot"><button class="tp-all" id="tpall">' + escHtml(S.tripsAll) + '</button>' +
-      '<a class="tp-travly" id="tptravly" target="_blank" rel="noopener">🧭 ' + escHtml(S.tripsTravly) + '</a></div>' +
+    html += '</div><div class="tp-foot"><button class="tp-all" id="tpall">' + escHtml(S.tripsAll) + '</button></div>' +
       '<div class="tp-note">' + escHtml(S.tripsTravlyNote) + '</div>';
     box.innerHTML = html;
     box.querySelectorAll(".tp-item").forEach(function (el) {
       el.addEventListener("click", function () { selectTrip(Number(el.dataset.i), el); });
     });
+    // 여행 단위 Travly 등록 — 그 여행 하나만 payload로 전달 (전체 일괄 전송 없음)
+    box.querySelectorAll(".tp-send").forEach(function (el) {
+      el.addEventListener("click", function (ev) {
+        ev.stopPropagation();
+        var tr = state.trips[Number(el.dataset.i)];
+        if (!tr) return;
+        window.open("https://travel-mvp.pages.dev/import#fptrips=" + encodeFpTrips([tr]), "_blank", "noopener");
+        if (window.dataLayer) window.dataLayer.push({ event: "fp_travly_trips", fp_trip_count: 1 });
+      });
+    });
     $("#tpall").addEventListener("click", function () {
       $("#rgA").value = 0; $("#rgB").value = 1000;
       updateRangeLabel(); applyRange();
       box.querySelectorAll(".tp-item.on").forEach(function (e2) { e2.classList.remove("on"); });
-    });
-    $("#tptravly").href = "https://travel-mvp.pages.dev/import#fptrips=" + encodeFpTrips(state.trips);
-    $("#tptravly").addEventListener("click", function () {
-      if (window.dataLayer) window.dataLayer.push({ event: "fp_travly_trips", fp_trip_count: state.trips.length });
     });
   }
   // Travly 임포트 payload — 도시 이름·국가코드·날짜만. 좌표는 포함하지 않는다(러프 요약 원칙).
@@ -1369,10 +1375,10 @@
       '<div class="dna-head">' + escHtml(S.dnaTitle) +
       '<span class="dna-sub">' + escHtml(S.dnaTripsLabel) + ' ' + dna.trips.length + escHtml(S.dnaCount) + abroad + '</span></div>' +
       '<div class="dna-chips">' + chips + '</div>' +
-      // 여행이 감지됐으면 CTA는 임포트(내 여행 등록)로 — 과거 기록에 "추천받기"는 의도 불일치.
-      // 여행 감지가 없을 때만 종전 추천 CTA 유지
+      // 여행이 감지됐으면 Travly 등록은 여행 카드의 개별 🧭 버튼이 담당 — 여기선 추천 CTA를 걷어낸다
+      // (과거 기록에 "추천받기"는 의도 불일치). 여행 감지가 0건일 때만 종전 추천 CTA 유지
       (state.trips && state.trips.length
-        ? '<a class="dna-btn" href="https://travel-mvp.pages.dev/import#fptrips=' + encodeFpTrips(state.trips) + '" target="_blank" rel="noopener">🧭 ' + escHtml(S.tripsTravly) + '</a>'
+        ? ''
         : '<a class="dna-btn" href="https://travel-mvp.pages.dev/#fp=' + encodeDNA(dna) + '" target="_blank" rel="noopener">' + escHtml(S.dnaBtn) + '</a>') +
       '<div class="dna-note">' + escHtml(S.dnaNote) + '</div>';
     var btn = box.querySelector(".dna-btn");

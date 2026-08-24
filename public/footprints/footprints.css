@@ -81,12 +81,11 @@ body {
   background: none; color: var(--ink-dim); font: inherit; font-size: .74rem; cursor: pointer;
 }
 .tp-all:hover { color: var(--ink); border-color: #2a3f63; }
-.tp-travly {
-  margin-left: auto; padding: 7px 16px; border-radius: 999px; text-decoration: none;
-  background: linear-gradient(135deg, #6d5df6, #39c0ff); color: #fff;
-  font-size: .76rem; font-weight: 700;
+.tp-send {
+  flex: none; padding: 5px 9px; border-radius: 8px; cursor: pointer;
+  background: linear-gradient(135deg, #6d5df6, #39c0ff); font-size: .8rem; line-height: 1;
 }
-.tp-travly:hover { filter: brightness(1.12); }
+.tp-send:hover { filter: brightness(1.15); }
 .tp-note { margin-top: 8px; font-size: .68rem; color: var(--ink-faint); }
 
 .err {
