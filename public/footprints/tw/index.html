@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/footprints/footprints.css?v=12">
+<link rel="stylesheet" href="/footprints/footprints.css?v=13">
 <style>body{font-family:"Noto Sans TC",-apple-system,sans-serif}</style>
 <script type="application/ld+json">
 {
@@ -137,6 +137,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button id="rec">🎞 製作 GIF</button>
       <button id="share">📤 分享 GIF</button>
     </div>
+    <div class="share-row" id="sharerow"></div>
     <div class="gif-result" id="gifresult">
       <div class="gr-head">🎞 GIF 完成<span id="gifsize"></span></div>
       <img id="gifpreview" alt="GIF preview">
@@ -195,6 +196,9 @@ window.FP_STR = {
   tripsNoCity: "地圖之外",
   tripsOngoing: "進行中",
   rankLgYear: "年",
+  shareRowLabel: "分享",
+  shareLink: "複製連結",
+  shareSys: "分享",
   tripsTravly: "把這趟旅程存到 Travly",
   tripsTravlyNote: "🧭 按鈕只會把那一趟旅程存到 Travly。只傳送城市與日期摘要 — 原始 GPS 座標不會離開瀏覽器，要在 Travly 確認後才會儲存。",
   parsing: "🥾 正在讀取你的足跡…檔案較大時可能需要一分鐘",
@@ -232,6 +236,6 @@ window.FP_STR = {
 };
 </script>
 <script src="/footprints/cities.js?v=1"></script>
-<script src="/footprints/footprints.js?v=25"></script>
+<script src="/footprints/footprints.js?v=26"></script>
 </body>
 </html>

@@ -126,6 +126,14 @@ body {
 }
 .export-row button:hover { filter: brightness(1.08); }
 .export-row button:disabled { filter: grayscale(.6) brightness(.7); cursor: wait; }
+.share-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+.share-row .sh-label { font-size: .78rem; color: var(--ink-faint); margin-right: 2px; }
+.share-row .sh {
+  font: inherit; font-size: .8rem; font-weight: 600; cursor: pointer; text-decoration: none;
+  padding: 7px 13px; border-radius: 999px; background: var(--bg2); color: var(--ink);
+  border: 1px solid var(--line); line-height: 1;
+}
+.share-row .sh:hover { border-color: var(--ink-faint); }
 .travly {
   margin-top: 14px; padding: 14px 16px; border-radius: 10px; font-size: .88rem;
   background: rgba(180,140,255,.07); border: 1px solid rgba(180,140,255,.25); color: #d4c2f5;

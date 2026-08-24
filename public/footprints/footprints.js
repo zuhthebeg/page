@@ -20,6 +20,9 @@
     tripsNoCity: "미등록 지역",
     tripsOngoing: "진행 중",
     rankLgYear: "년",
+    shareRowLabel: "공유",
+    shareLink: "링크 복사",
+    shareSys: "공유하기",
     tripsTravly: "이 여행을 Travly에 등록",
     tripsTravlyNote: "🧭 버튼으로 그 여행 하나만 Travly에 등록해요. 도시·날짜 요약만 전달되고 GPS 좌표 원본은 브라우저 밖으로 나가지 않아요 — 저장은 Travly에서 확인 후 진행됩니다.",
     parsing: "🥾 발자국을 읽는 중… 파일이 크면 몇십 초 걸릴 수 있어요",
@@ -416,7 +419,7 @@
     cam: null,            // {lat,lng,z(float)} 현재 카메라
     trail: false,         // ✨ 꼬리 모드 — 지나간 선을 페이드아웃
     follow: true,         // 팔로우 캠 vs 전체 보기
-    fitZ: 3, overviewCam: null, onFinish: null,
+    fitZ: 3, overviewCam: null, userCam: null, onFinish: null, // userCam = 전체 보기에서 사용자가 줌/팬한 카메라
     regionMode: false, regionBBox: null, dragStart: null, dragCur: null,
   };
   var canvas = $("#map"), ctx = canvas.getContext("2d");
@@ -439,6 +442,7 @@
     state.fitZ = zoomToFit(b, canvas.width, canvas.height, 13);
     var c = bboxCenter(b, state.fitZ);
     state.overviewCam = { lat: c.lat, lng: c.lng, z: state.fitZ };
+    state.userCam = null; // 데이터/구간이 바뀌면 사용자 줌 초기화 → 다시 fit
   }
 
   // ── 진행률→현재 위치 (거리 도메인: 정지 기간은 건너뛰고 이동은 등속 — 뚝뚝 끊김 방지) ──
@@ -464,7 +468,7 @@
 
   // ── 카메라 ──
   function desiredCam(head) {
-    if (!state.follow) return state.overviewCam;
+    if (!state.follow) return state.userCam || state.overviewCam;
     var followZ = Math.min(10.5, Math.max(7.5, state.fitZ + 3));
     // 비행(점프) 구간: 양 끝점이 다 보이게 줌아웃. jumps[i] = 세그먼트 i→i+1
     var i = head.idx;
@@ -719,8 +723,80 @@
   $("#cam").addEventListener("click", function () {
     state.follow = !state.follow;
     this.textContent = state.follow ? S.camFollow : S.camOverview;
+    if (!state.follow) state.userCam = null; // 전체 보기로 전환하면 fit부터 다시
+    canvas.style.touchAction = state.follow ? "" : "none"; // 전체 보기에서만 팬/핀치가 스크롤을 대체
     if (!state.playing) { snapCamera(); render(); }
   });
+
+  // ── 전체 보기 줌/팬 — 휠·더블클릭·드래그·핀치. 팔로우/영역선택 중엔 비활성 ──
+  function ovCam() { return state.userCam || Object.assign({}, state.cam || state.overviewCam); }
+  function ovZoom(cssX, cssY, dz) {
+    var cam = ovCam();
+    var z2 = Math.max(2, Math.min(16, cam.z + dz));
+    if (z2 !== cam.z) {
+      var rect = canvas.getBoundingClientRect();
+      var dx = cssX * (canvas.width / rect.width) - canvas.width / 2;
+      var dy = cssY * (canvas.height / rect.height) - canvas.height / 2;
+      var m = merc(cam.lat, cam.lng, cam.z);
+      var k = Math.pow(2, z2 - cam.z);
+      // 커서 아래 지점이 제자리에 있도록 새 중심 계산
+      var c2 = invMerc((m.x + dx) * k - dx, (m.y + dy) * k - dy, z2);
+      state.userCam = { lat: c2.lat, lng: c2.lng, z: z2 };
+    } else state.userCam = cam;
+    snapCamera();
+    if (!state.playing) render();
+  }
+  function ovPan(dxCss, dyCss) {
+    var cam = ovCam();
+    var rect = canvas.getBoundingClientRect();
+    var m = merc(cam.lat, cam.lng, cam.z);
+    var c2 = invMerc(m.x - dxCss * (canvas.width / rect.width), m.y - dyCss * (canvas.height / rect.height), cam.z);
+    state.userCam = { lat: c2.lat, lng: c2.lng, z: cam.z };
+    snapCamera();
+    if (!state.playing) render();
+  }
+  function ovActive() { return state.data && !state.follow && !state.regionMode; }
+  canvas.addEventListener("wheel", function (e) {
+    if (!ovActive()) return;
+    e.preventDefault();
+    var rect = canvas.getBoundingClientRect();
+    ovZoom(e.clientX - rect.left, e.clientY - rect.top, e.deltaY < 0 ? 0.5 : -0.5);
+  }, { passive: false });
+  canvas.addEventListener("dblclick", function () {
+    if (!ovActive()) return;
+    state.userCam = null; snapCamera(); if (!state.playing) render(); // 더블클릭 = 전체 fit 복귀
+  });
+  var ovPtrs = {}, ovPinchD = 0;
+  canvas.addEventListener("pointerdown", function (e) {
+    if (!ovActive()) return;
+    ovPtrs[e.pointerId] = { x: e.clientX, y: e.clientY };
+    var ids = Object.keys(ovPtrs);
+    if (ids.length === 2) {
+      var a = ovPtrs[ids[0]], b = ovPtrs[ids[1]];
+      ovPinchD = Math.hypot(a.x - b.x, a.y - b.y);
+    }
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener("pointermove", function (e) {
+    if (!ovActive() || !ovPtrs[e.pointerId]) return;
+    var ids = Object.keys(ovPtrs);
+    if (ids.length === 1) {
+      ovPan(e.clientX - ovPtrs[e.pointerId].x, e.clientY - ovPtrs[e.pointerId].y);
+      ovPtrs[e.pointerId] = { x: e.clientX, y: e.clientY };
+    } else if (ids.length === 2) {
+      ovPtrs[e.pointerId] = { x: e.clientX, y: e.clientY };
+      var a = ovPtrs[ids[0]], b = ovPtrs[ids[1]];
+      var d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (ovPinchD > 0 && d > 0) {
+        var rect = canvas.getBoundingClientRect();
+        ovZoom((a.x + b.x) / 2 - rect.left, (a.y + b.y) / 2 - rect.top, Math.log(d / ovPinchD) / Math.LN2);
+      }
+      ovPinchD = d;
+    }
+  });
+  function ovEnd(e) { delete ovPtrs[e.pointerId]; ovPinchD = 0; }
+  canvas.addEventListener("pointerup", ovEnd);
+  canvas.addEventListener("pointercancel", ovEnd);
   var trailBtn = $("#trail");
   if (trailBtn) trailBtn.addEventListener("click", function () {
     state.trail = !state.trail;
@@ -1575,4 +1651,35 @@
       rankResult.textContent = S.rankErr;
     });
   });
+
+  // ─── SNS 공유 줄 — X·Threads·Facebook·링크 복사·시스템 공유 ───
+  (function buildShareRow() {
+    var el = $("#sharerow");
+    if (!el) return;
+    var u = encodeURIComponent(S.pageUrl), t = encodeURIComponent(S.shareText);
+    el.innerHTML =
+      '<span class="sh-label">' + escHtml(S.shareRowLabel) + '</span>' +
+      '<a class="sh" data-net="x" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?text=' + t + '&url=' + u + '">𝕏</a>' +
+      '<a class="sh" data-net="threads" target="_blank" rel="noopener" href="https://www.threads.net/intent/post?text=' + t + '%0A' + u + '">Threads</a>' +
+      '<a class="sh" data-net="facebook" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=' + u + '">Facebook</a>' +
+      '<button class="sh" id="shcopy">🔗 ' + escHtml(S.shareLink) + '</button>' +
+      (navigator.share ? '<button class="sh" id="shsys">📤 ' + escHtml(S.shareSys) + '</button>' : '');
+    el.querySelectorAll("a.sh").forEach(function (a) {
+      a.addEventListener("click", function () {
+        if (window.dataLayer) window.dataLayer.push({ event: "fp_share_ext", fp_net: a.dataset.net });
+      });
+    });
+    document.getElementById("shcopy").addEventListener("click", function (ev) {
+      navigator.clipboard.writeText(S.shareText + "\n" + S.pageUrl).then(function () {
+        ev.target.textContent = "✓ " + S.copied;
+        setTimeout(function () { ev.target.textContent = "🔗 " + S.shareLink; }, 1800);
+      }).catch(function () {});
+      if (window.dataLayer) window.dataLayer.push({ event: "fp_share_ext", fp_net: "copy" });
+    });
+    var sys = document.getElementById("shsys");
+    if (sys) sys.addEventListener("click", function () {
+      navigator.share({ title: S.shareTitle, text: S.shareText, url: S.pageUrl }).catch(function () {});
+      if (window.dataLayer) window.dataLayer.push({ event: "fp_share_ext", fp_net: "system" });
+    });
+  })();
 })();

@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/footprints/footprints.css?v=12">
+<link rel="stylesheet" href="/footprints/footprints.css?v=13">
 <style>body{font-family:"IBM Plex Sans",-apple-system,sans-serif}</style>
 <script type="application/ld+json">
 {
@@ -137,6 +137,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button id="rec">🎞 Make a GIF</button>
       <button id="share">📤 Share GIF</button>
     </div>
+    <div class="share-row" id="sharerow"></div>
     <div class="gif-result" id="gifresult">
       <div class="gr-head">🎞 Your GIF is ready<span id="gifsize"></span></div>
       <img id="gifpreview" alt="GIF preview">
@@ -195,6 +196,9 @@ window.FP_STR = {
   tripsNoCity: "off the map",
   tripsOngoing: "ongoing",
   rankLgYear: "yr",
+  shareRowLabel: "Share",
+  shareLink: "Copy link",
+  shareSys: "Share",
   tripsTravly: "Save this trip to Travly",
   tripsTravlyNote: "The 🧭 button saves that single trip to Travly. Only city & date summaries are handed over — raw GPS coordinates never leave your browser. Nothing is saved until you confirm in Travly.",
   parsing: "🥾 Reading your footprints… large files can take a minute",
@@ -232,6 +236,6 @@ window.FP_STR = {
 };
 </script>
 <script src="/footprints/cities.js?v=1"></script>
-<script src="/footprints/footprints.js?v=25"></script>
+<script src="/footprints/footprints.js?v=26"></script>
 </body>
 </html>
