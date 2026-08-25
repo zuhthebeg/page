@@ -275,7 +275,8 @@
     var away = [];
     for (var i = s; i <= endIdx; i++) if (hav(pts[i], home) > exR) away.push(pts[i]);
     if (away.length < 2) return [];
-    var stride = Math.max(1, Math.ceil(away.length / 240)), out = [], t0 = away[0].t;
+    // 오프셋 기준 = 여행 시작일 자정 — Travly 리플레이가 floor(분/1440)로 Day를 나눌 수 있게
+    var stride = Math.max(1, Math.ceil(away.length / 240)), out = [], t0 = dayStartMs(pts[s].t);
     for (var j = 0; j < away.length; j += stride) {
       out.push([Math.round((away[j].t - t0) / 60000), r3(away[j].lat), r3(away[j].lng)]);
     }
