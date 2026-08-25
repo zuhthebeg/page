@@ -268,9 +268,12 @@
   function dayStartMs(t) { var d = new Date(t); return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime(); }
   // 애니메이션·일정용 리치 데이터 — 좌표는 소수 3자리(~110m)로 러프화, 집 근처는 제외
   function r3(n) { return Math.round(n * 1000) / 1000; }
-  function tripPath(pts, s, endIdx, home) {
+  function tripPath(pts, s, endIdx, home, maxKm) {
+    // 출발지(집) 권역 제외 — 공항 이동 등 출발/복귀 구간이 들어가면 리플레이 bbox가
+    // 집~여행지 전체로 벌어져 여행지 경로가 안 보인다. 여행 반경에 비례해 제외 반경 확대
+    var exR = Math.max(3, Math.min(50, (maxKm || 0) * 0.25));
     var away = [];
-    for (var i = s; i <= endIdx; i++) if (hav(pts[i], home) > 3) away.push(pts[i]);
+    for (var i = s; i <= endIdx; i++) if (hav(pts[i], home) > exR) away.push(pts[i]);
     if (away.length < 2) return [];
     var stride = Math.max(1, Math.ceil(away.length / 240)), out = [], t0 = away[0].t;
     for (var j = 0; j < away.length; j += stride) {
@@ -343,7 +346,7 @@
       t0: pts[s].t, t1: pts[endIdx].t, nights: nDays - 1,
       km: Math.round(km), maxKm: Math.round(cur.maxKm),
       cities: cityOrder, days: dayCity,
-      path: tripPath(pts, s, endIdx, cur.home),
+      path: tripPath(pts, s, endIdx, cur.home, cur.maxKm),
       poi: tripPoi(pts, s, endIdx, cur.home, vs || [], day0),
       abroad: !!(homeCc && cityOrder.some(function (c) { return c[1] !== homeCc; })),
     });
