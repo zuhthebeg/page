@@ -23,6 +23,13 @@
     shareRowLabel: "공유",
     shareLink: "링크 복사",
     shareSys: "공유하기",
+    shareRkX: "📊 구글 타임라인 정산: {y}년간 {km} 이동, 발자국 {lg}년 리그 #{r} {t}. 이길 수 있으면 등록해봐라 — 30초, 업로드 없음:",
+    shareRkThreads: "내 {y}년치 구글 타임라인 돌려봤더니 {km} 움직였더라. 명예의 전당 {lg}년 리그 #{r} ({t}). 다들 얼마나 나오는지 궁금한데:",
+    shareRkFb: "구글 타임라인으로 이동 기록을 정산했습니다. {y}년간 {km}, 발자국 {lg}년 리그 #{r}. 파일은 브라우저 밖으로 나가지 않아요:",
+    shareRkPlain: "구글 타임라인 {y}년 기록: {km} 이동 · 발자국 {lg}년 리그 #{r} {t}",
+    shareCardBtn: "기록 카드",
+    shareCardLeague: "{lg}년 리그",
+    shareImgCopied: "✓ 기록 카드가 클립보드에 복사됐어요 — 글에 붙여넣으면 이미지가 첨부됩니다",
     tripsTravly: "이 여행을 Travly에 등록",
     tripsTravlyNote: "🧭 버튼으로 그 여행 하나만 Travly에 등록해요. 도시·날짜 요약만 전달되고 GPS 좌표 원본은 브라우저 밖으로 나가지 않아요 — 저장은 Travly에서 확인 후 진행됩니다.",
     parsing: "🥾 발자국을 읽는 중… 파일이 크면 몇십 초 걸릴 수 있어요",
@@ -1563,6 +1570,19 @@
       var uid = fpUserId();
       var buckets = { 1: [], 3: [], 5: [], 10: [] };
       (res.rankings || []).forEach(function (row) { buckets[leagueOf(row)].push(row); });
+      // 내 등록 행 → 리그 내 순위. 공유 줄이 기록 멘트+기록 카드로 업그레이드된다
+      LEAGUES.forEach(function (lg) {
+        buckets[lg].forEach(function (row, ri) {
+          if (row.user_id === uid) {
+            state.myRank = {
+              league: lg, pos: ri + 1, total: buckets[lg].length,
+              km: Number(row.km) || 0, days: Number(row.days) || 0,
+              years: Number(row.years) || 0, tier: row.tier, title: row.title,
+            };
+          }
+        });
+      });
+      if (state.myRank) updateShareRow();
       function rowsHtml(lg) {
         var rows = buckets[lg].slice(0, 10).map(function (row, i) {
           var mine = row.user_id === uid;
@@ -1656,34 +1676,158 @@
     });
   });
 
-  // ─── SNS 공유 줄 — X·Threads·Facebook·링크 복사·시스템 공유 ───
+  // ─── SNS 공유 줄 — 랭킹 등록자는 리그 순위 멘트+기록 카드 PNG, 미등록은 기본 멘트 ───
+  var rankCardCache = null; // {blob} — myRank 갱신 시 무효화
+
+  function myShareVars() {
+    var m = state.myRank;
+    if (!m) return null;
+    var b = badgeByTier(m.tier);
+    return {
+      km: fmtApproxKm(m.km) || (m.km + "km"),
+      y: m.years || (m.days ? Math.round((m.days / 365) * 10) / 10 : "?"),
+      lg: m.league, r: m.pos,
+      t: b ? (b.emoji + " " + b.name) : (m.title || ""),
+    };
+  }
+  function shareTextFor(net) {
+    var v = myShareVars();
+    if (!v) return S.shareText;
+    var tpl = net === "x" ? S.shareRkX : net === "threads" ? S.shareRkThreads :
+      net === "facebook" ? S.shareRkFb : S.shareRkPlain;
+    return tpl.replace(/\{km\}/g, v.km).replace(/\{y\}/g, v.y).replace(/\{lg\}/g, v.lg)
+      .replace(/\{r\}/g, v.r).replace(/\{t\}/g, v.t);
+  }
+
+  // 기록 카드 PNG — 지도 트레일(있으면) + 리그/순위/칭호/거리. 타일 오염 시 지도 없이 재시도
+  function buildRankCard(cb) {
+    var v = myShareVars();
+    if (!v) return cb(null);
+    if (rankCardCache) return cb(rankCardCache);
+    function attempt(withMap) {
+      try {
+        var W = 1080, H = 1350, mh = 800, topPad = 120;
+        var c = document.createElement("canvas"); c.width = W; c.height = H;
+        var x = c.getContext("2d");
+        x.fillStyle = "#070b14"; x.fillRect(0, 0, W, H);
+        if (withMap && state.data) {
+          var z = zoomToFit(state.data.bbox, W, mh, 13);
+          var cc = bboxCenter(state.data.bbox, z);
+          var cm = merc(cc.lat, cc.lng, z);
+          var pj = function (p) { var m = merc(p.lat, p.lng, z); return { x: m.x - cm.x + W / 2, y: m.y - cm.y + mh / 2 + topPad }; };
+          var n = Math.pow(2, z);
+          var x0 = Math.floor((cm.x - W / 2) / TILE), x1 = Math.floor((cm.x + W / 2) / TILE);
+          var y0 = Math.max(0, Math.floor((cm.y - mh / 2) / TILE)), y1 = Math.min(n - 1, Math.floor((cm.y + mh / 2) / TILE));
+          for (var tx = x0; tx <= x1; tx++) for (var ty = y0; ty <= y1; ty++) {
+            var wx = ((tx % n) + n) % n, key = z + "/" + wx + "/" + ty, img = tileCache[key];
+            if (img && img.complete && img.naturalWidth) x.drawImage(img, Math.round(tx * TILE - cm.x + W / 2), Math.round(ty * TILE - cm.y + mh / 2 + topPad));
+          }
+          x.fillStyle = "rgba(7,11,20,0.45)"; x.fillRect(0, topPad, W, mh);
+          var lastIdx = state.data.points.length - 1;
+          drawPath(x, pj, state.data.points, state.data.jumps, { idx: lastIdx, frac: 1, p: state.data.points[lastIdx] }, W, H, 1.4, true);
+        }
+        x.fillStyle = "#dce6f5"; x.font = "700 44px 'IBM Plex Sans KR', sans-serif";
+        x.fillText(S.posterTitle, 48, 76);
+        // 하단 기록 블록
+        x.fillStyle = "#ffd76a"; x.font = "800 96px 'IBM Plex Mono', monospace";
+        x.fillText("#" + v.r, 48, 1052);
+        var rw = x.measureText("#" + v.r).width;
+        x.fillStyle = "#dce6f5"; x.font = "700 44px 'IBM Plex Sans KR', sans-serif";
+        x.fillText("🏆 " + S.shareCardLeague.replace("{lg}", v.lg), 48 + rw + 28, 1044);
+        x.fillStyle = "#8fa2c0"; x.font = "34px 'IBM Plex Sans KR', sans-serif";
+        x.fillText(v.t, 48, 1124);
+        x.fillStyle = "#3ef08c"; x.font = "700 56px 'IBM Plex Mono', monospace";
+        x.fillText(v.km, 48, 1216);
+        var kmW = x.measureText(v.km).width; // 폰트 축소 전에 측정 — 안 그러면 겹친다
+        x.fillStyle = "#5a6b88"; x.font = "28px 'IBM Plex Mono', monospace";
+        x.fillText(v.y + S.rankLgYear, 48 + kmW + 36, 1216);
+        x.font = "20px 'IBM Plex Mono', monospace";
+        x.fillText(S.brandUrl, 48, 1300);
+        if (withMap && state.data) x.fillText("© CARTO © OpenStreetMap", W - 330, 1300);
+        c.toBlob(function (blob) { rankCardCache = blob; cb(blob); });
+      } catch (e) {
+        if (withMap) attempt(false); else cb(null);
+      }
+    }
+    attempt(true);
+  }
+
+  function shNote(msg) {
+    var el = document.getElementById("shnote");
+    if (!el) return;
+    el.textContent = msg;
+    el.style.display = "block";
+    clearTimeout(shNote._t);
+    shNote._t = setTimeout(function () { el.style.display = "none"; }, 3200);
+  }
+
+  // 인텐트는 동기로 열고(팝업 차단 회피), 기록 카드는 열고 나서 클립보드에 복사해준다
+  function openShare(net) {
+    var text = shareTextFor(net), u = encodeURIComponent(S.pageUrl), t = encodeURIComponent(text);
+    var url = net === "x" ? "https://twitter.com/intent/tweet?text=" + t + "&url=" + u :
+      net === "threads" ? "https://www.threads.net/intent/post?text=" + t + "%0A" + u :
+      "https://www.facebook.com/sharer/sharer.php?u=" + u + "&quote=" + t;
+    window.open(url, "_blank", "noopener");
+    if (window.dataLayer) window.dataLayer.push({ event: "fp_share_ext", fp_net: net, fp_rank: state.myRank ? 1 : 0 });
+    if (state.myRank && navigator.clipboard && window.ClipboardItem) {
+      buildRankCard(function (blob) {
+        if (!blob) return;
+        navigator.clipboard.write([new ClipboardItem({ "image/png": blob })])
+          .then(function () { shNote(S.shareImgCopied); }).catch(function () {});
+      });
+    }
+  }
+
+  function updateShareRow() {
+    var cardBtn = document.getElementById("shcard");
+    rankCardCache = null;
+    if (cardBtn) cardBtn.style.display = state.myRank ? "" : "none";
+  }
+
   (function buildShareRow() {
     var el = $("#sharerow");
     if (!el) return;
-    var u = encodeURIComponent(S.pageUrl), t = encodeURIComponent(S.shareText);
     el.innerHTML =
       '<span class="sh-label">' + escHtml(S.shareRowLabel) + '</span>' +
-      '<a class="sh" data-net="x" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?text=' + t + '&url=' + u + '">𝕏</a>' +
-      '<a class="sh" data-net="threads" target="_blank" rel="noopener" href="https://www.threads.net/intent/post?text=' + t + '%0A' + u + '">Threads</a>' +
-      '<a class="sh" data-net="facebook" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=' + u + '">Facebook</a>' +
+      '<button class="sh" data-net="x">𝕏</button>' +
+      '<button class="sh" data-net="threads">Threads</button>' +
+      '<button class="sh" data-net="facebook">Facebook</button>' +
+      '<button class="sh" id="shcard" style="display:none">🖼 ' + escHtml(S.shareCardBtn) + '</button>' +
       '<button class="sh" id="shcopy">🔗 ' + escHtml(S.shareLink) + '</button>' +
-      (navigator.share ? '<button class="sh" id="shsys">📤 ' + escHtml(S.shareSys) + '</button>' : '');
-    el.querySelectorAll("a.sh").forEach(function (a) {
-      a.addEventListener("click", function () {
-        if (window.dataLayer) window.dataLayer.push({ event: "fp_share_ext", fp_net: a.dataset.net });
+      (navigator.share ? '<button class="sh" id="shsys">📤 ' + escHtml(S.shareSys) + '</button>' : '') +
+      '<div class="sh-note" id="shnote" style="display:none"></div>';
+    el.querySelectorAll("button.sh[data-net]").forEach(function (b) {
+      b.addEventListener("click", function () { openShare(b.dataset.net); });
+    });
+    document.getElementById("shcard").addEventListener("click", function () {
+      buildRankCard(function (blob) {
+        if (!blob) return;
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "footprints-rank.png";
+        a.click();
+        if (window.dataLayer) window.dataLayer.push({ event: "fp_share_ext", fp_net: "card" });
       });
     });
     document.getElementById("shcopy").addEventListener("click", function (ev) {
-      navigator.clipboard.writeText(S.shareText + "\n" + S.pageUrl).then(function () {
+      navigator.clipboard.writeText(shareTextFor("plain") + "\n" + S.pageUrl).then(function () {
         ev.target.textContent = "✓ " + S.copied;
         setTimeout(function () { ev.target.textContent = "🔗 " + S.shareLink; }, 1800);
       }).catch(function () {});
-      if (window.dataLayer) window.dataLayer.push({ event: "fp_share_ext", fp_net: "copy" });
+      if (window.dataLayer) window.dataLayer.push({ event: "fp_share_ext", fp_net: "copy", fp_rank: state.myRank ? 1 : 0 });
     });
     var sys = document.getElementById("shsys");
     if (sys) sys.addEventListener("click", function () {
-      navigator.share({ title: S.shareTitle, text: S.shareText, url: S.pageUrl }).catch(function () {});
-      if (window.dataLayer) window.dataLayer.push({ event: "fp_share_ext", fp_net: "system" });
+      var text = shareTextFor("plain");
+      buildRankCard(function (blob) {
+        var payload = { title: S.shareTitle, text: text, url: S.pageUrl };
+        if (blob) {
+          var file = new File([blob], "footprints-rank.png", { type: "image/png" });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) payload = { title: S.shareTitle, text: text + "\n" + S.pageUrl, files: [file] };
+        }
+        navigator.share(payload).catch(function () {});
+      });
+      if (window.dataLayer) window.dataLayer.push({ event: "fp_share_ext", fp_net: "system", fp_rank: state.myRank ? 1 : 0 });
     });
   })();
 })();
