@@ -4,10 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="naver-site-verification" content="7e48f3f9d2edcbdc5bd8ea926d97267d4decdbac" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>page.cocy.io — 나만의 특별한 페이지</title>
-<meta name="description" content="청첩장·메뉴판·포트폴리오. 뻔한 템플릿 말고, 당신만을 위해 만들어지는 단 하나의 페이지. Bespoke one-page sites — wedding invitations, menus, portfolios." />
-<meta property="og:title" content="page.cocy.io — 나만의 특별한 페이지" />
-<meta property="og:description" content="청첩장·메뉴판·포트폴리오. 당신만을 위해 만들어지는 단 하나의 페이지." />
+<title>page.cocy.io — 말하면 만들어지는 나만의 페이지 · 전부 무료</title>
+<meta name="description" content="청첩장·메뉴판·포트폴리오·추모관·보고서까지. 만들고 싶은 걸 말하면 AI가 당신만의 페이지를 그려드려요. 템플릿 없음, 결제 없음, 전부 무료." />
+<meta property="og:title" content="page.cocy.io — 말하면 만들어지는 나만의 페이지 · 전부 무료" />
+<meta property="og:description" content="청첩장·메뉴판·포트폴리오·추모관·보고서까지. 만들고 싶은 걸 말하면 AI가 그려드려요. 전부 무료." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="ko_KR" />
 <meta property="og:locale:alternate" content="en_US" />
@@ -34,7 +34,7 @@ a{color:inherit;text-decoration:none}
 .bar .logo{font-family:var(--serif);font-weight:600;font-size:1.15rem}
 .bar .right{display:flex;align-items:center;gap:12px}
 .bar .me{font-size:.8rem;color:var(--ink-soft)}
-.bar a.mk{font-family:var(--label);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--accent-2);border:1px solid var(--accent);border-radius:30px;padding:.5rem 1rem;transition:.3s}
+.bar a.mk{font-family:var(--label);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--accent-2);border:1px solid var(--accent);border-radius:30px;padding:.5rem 1rem;transition:.3s;white-space:nowrap}
 .bar a.mk:hover{background:var(--accent);color:#1a160e}
 .bar button.lang{font-family:var(--label);font-size:.7rem;letter-spacing:.08em;color:var(--ink-soft);background:none;border:1px solid var(--line);border-radius:30px;padding:.45rem .9rem;cursor:pointer;transition:.3s}
 .bar button.lang:hover{border-color:var(--accent);color:var(--accent-2)}
@@ -56,39 +56,42 @@ section.gallery{padding:5rem 0 7rem;border-top:1px solid var(--line)}
 .cats .c{font-family:var(--label);font-size:.78rem;letter-spacing:.05em;color:var(--ink-soft);border:1px solid var(--line);border-radius:30px;padding:.5rem 1rem;cursor:pointer;transition:.2s}
 .cats .c:hover{border-color:var(--accent)}
 .cats .c.on{background:var(--accent);color:#1a160e;border-color:var(--accent);font-weight:500}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.4rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1.2rem}
 .card{position:relative;display:block;background:var(--bg-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;transition:.4s var(--ease)}
 .card:hover{transform:translateY(-4px);border-color:var(--accent)}
-.card .cover{aspect-ratio:16/10;background:#1c1c22 center/cover no-repeat;display:flex;align-items:center;justify-content:center;color:var(--muted);font-family:var(--serif);font-size:1.4rem}
+.card .cover{aspect-ratio:3/4;background:#1c1c22 top/cover no-repeat;display:flex;align-items:center;justify-content:center;color:var(--muted);font-family:var(--serif);font-size:1.4rem}
 .card .meta{padding:1rem 1.1rem}
 .card .tag{font-family:var(--label);text-transform:uppercase;letter-spacing:.2em;font-size:.6rem;color:var(--accent)}
 .card .meta h3{font-family:var(--serif);font-weight:500;font-size:1.25rem;margin:.3rem 0 .2rem}
 .card .meta p{font-size:.82rem;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card .fb{position:absolute;top:10px;left:10px;z-index:2;background:rgba(11,11,13,.82);border:1px solid var(--accent);color:var(--accent-2);font-family:var(--label);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;border-radius:20px;padding:.3rem .7rem;backdrop-filter:blur(4px)}
 .card .edit{position:absolute;top:10px;right:10px;background:rgba(11,11,13,.8);border:1px solid var(--accent);color:var(--accent-2);font-size:.72rem;border-radius:20px;padding:.35rem .8rem;backdrop-filter:blur(4px)}
 .card .edit:hover{background:var(--accent);color:#1a160e}
 .card .mklike{display:block;text-align:center;font-family:var(--label);font-size:.72rem;letter-spacing:.08em;color:var(--accent-2);border-top:1px solid var(--line);padding:.7rem;transition:.25s}
 .card .mklike:hover{background:var(--accent);color:#1a160e}
 .empty{color:var(--muted);font-family:var(--serif);font-size:1.3rem;padding:3rem 0;text-align:center;grid-column:1/-1}
 
-/* pricing */
-section.pricing{padding:5rem 0 6rem;border-top:1px solid var(--line)}
-.pricing h2{font-family:var(--serif);font-size:2rem;font-weight:500;margin:.6rem 0 .4rem}
-.pricing .sub{color:var(--ink-soft);font-size:.92rem;max-width:34rem;margin-bottom:2.2rem}
-.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.4rem}
-.plan{background:var(--bg-2);border:1px solid var(--line);border-radius:6px;padding:1.6rem 1.5rem;display:flex;flex-direction:column;gap:.4rem;transition:.3s var(--ease)}
-.plan:hover{border-color:var(--accent)}
-.plan .tag{font-family:var(--label);text-transform:uppercase;letter-spacing:.2em;font-size:.62rem;color:var(--accent)}
-.plan h3{font-family:var(--serif);font-weight:500;font-size:1.4rem}
-.plan .price{font-family:var(--serif);font-size:1.7rem;color:var(--accent-2);margin:.3rem 0 0}
-.plan .price small{font-size:.85rem;color:var(--muted);font-family:var(--sans)}
-.plan .was{color:var(--muted);font-size:.8rem;text-decoration:line-through}
-.plan ul{list-style:none;margin:.7rem 0 1.1rem;display:grid;gap:.3rem}
-.plan li{font-size:.84rem;color:var(--ink-soft)}
-.plan li::before{content:"— ";color:var(--accent)}
-.plan .act{margin-top:auto;text-align:center;border:1px solid var(--accent);color:var(--accent-2);font-family:var(--label);letter-spacing:.1em;text-transform:uppercase;font-size:.74rem;border-radius:2px;padding:.75rem 1rem;cursor:pointer;background:none;transition:.3s}
-.plan .act:hover{background:var(--accent);color:#1a160e}
-.plan .act[disabled]{border-color:var(--line);color:var(--muted);cursor:default;background:none}
-.plan .note{font-size:.72rem;color:var(--muted);margin-top:.5rem;text-align:center}
+/* free badge + marquee strip */
+.freeb{display:inline-block;font-family:var(--label);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:#9ed49e;border:1px solid rgba(158,212,158,.4);border-radius:30px;padding:.35rem .9rem;margin-bottom:1rem}
+.strip{overflow:hidden;margin-top:3.4rem;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.strip .rowi{display:flex;gap:14px;width:max-content;animation:slide 70s linear infinite}
+.strip a{flex:none}
+.strip img{height:240px;width:auto;border-radius:10px;border:1px solid var(--line);display:block;transition:.3s}
+.strip a:hover img{border-color:var(--accent);transform:translateY(-4px)}
+@keyframes slide{to{transform:translateX(-50%)}}
+/* steps */
+section.steps{padding:5rem 0 4rem;border-top:1px solid var(--line)}
+.steps h2{font-family:var(--serif);font-size:2rem;font-weight:500;margin:.6rem 0 1.8rem}
+.stepgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.4rem}
+.step{background:var(--bg-2);border:1px solid var(--line);border-radius:6px;padding:1.5rem 1.4rem}
+.step .n{font-family:var(--serif);font-size:2rem;color:var(--accent-2);line-height:1}
+.step h3{font-family:var(--serif);font-weight:500;font-size:1.25rem;margin:.6rem 0 .3rem}
+.step p{font-size:.86rem;color:var(--ink-soft)}
+/* free */
+section.freeplan{padding:4rem 0 6rem;border-top:1px solid var(--line)}
+.freeplan h2{font-family:var(--serif);font-size:2rem;font-weight:500;margin:.6rem 0 .4rem}
+.freeplan .sub{color:var(--ink-soft);font-size:.95rem;max-width:36rem;margin-bottom:1.6rem}
+.freeplan .sub b{font-weight:400;color:var(--ink)}
 /* my pages */
 section.mine{padding:4rem 0 1rem;border-top:1px solid var(--line);display:none}
 .mine h2{font-family:var(--serif);font-size:2rem;font-weight:500;margin:.6rem 0 1.2rem}
@@ -126,10 +129,12 @@ footer .donate:hover{border-color:var(--accent);color:var(--accent-2)}
 <header class="hero">
   <div class="wrap">
     <div class="eyebrow">page.cocy.io</div>
+    <div><span class="freeb" id="hero-badge">100% 무료 · 결제 없음</span></div>
     <h1 id="hero-h1">당신만을 위한<br><em>단 하나의</em> 페이지</h1>
-    <p id="hero-p">뻔한 템플릿은 없습니다. 몇 가지 질문에 답하면, 당신의 분위기에 맞춰 매번 새로 그려진 페이지가 만들어집니다.</p>
-    <a class="cta" href="/new" id="hero-cta">내 페이지 만들기 →</a>
+    <p id="hero-p">만들고 싶은 걸 말로 설명하면, AI가 당신만의 페이지를 그려서 링크로 드려요. 템플릿 고르기도, 결제도 없어요.</p>
+    <a class="cta" href="/new" id="hero-cta">무료로 만들기 →</a>
   </div>
+  <div class="strip" id="strip"></div>
 </header>
 
 <section class="mine" id="mine">
@@ -150,37 +155,24 @@ footer .donate:hover{border-color:var(--accent);color:var(--accent-2)}
   </div>
 </section>
 
-<section class="pricing">
+<section class="steps">
   <div class="wrap">
-    <div class="eyebrow">Pricing</div>
-    <h2 id="pr-h2">후불제 — 받아보고, 마음에 들면 입금하세요</h2>
-    <p class="sub" id="pr-sub">신청은 무료, 결제는 페이지를 받아본 뒤에. 완성된 페이지를 <b style="font-weight:400;color:var(--ink)">3일 동안 먼저 써보고</b>, 입금이 확인되면 정식 유지(1년)로 전환돼요. 3일 안에 입금이 없으면 페이지는 내려가요 — 데이터는 보관되니 입금하면 바로 복구돼요. 입금 안내는 신청 계정 이메일로 보내드려요.</p>
-    <div class="plans">
-      <div class="plan">
-        <div class="tag">Wedding</div>
-        <h3 id="p1-h3">모바일 청첩장</h3>
-        <div class="price" id="p1-price">₩4,990 <small>런칭가 · 후불 · 1년 유지</small></div>
-        <div class="was" id="p1-was">정가 ₩9,900</div>
-        <ul id="p1-ul"><li>템플릿 아닌 맞춤 디자인</li><li>수정 10회 + 사진 10장</li><li>1년 유지 · 광고 없음</li></ul>
-        <a class="act" href="/new?vertical=wedding" data-mk="wedding">만들기 →</a>
-        <div class="note" id="p1-note">선결제 없음 · 완성 확인 후 입금</div>
-      </div>
-      <div class="plan">
-        <div class="tag">Menu</div>
-        <h3 id="p2-h3">가게 메뉴판</h3>
-        <div class="price" id="p2-price">₩9,900 <small>후불 · 1년 유지</small></div>
-        <ul id="p2-ul"><li>QR로 바로 여는 모바일 메뉴판</li><li>메뉴·가격 채팅 수정</li><li>1년 호스팅</li></ul>
-        <a class="act" href="/new?vertical=menu" data-mk="menu">만들기 →</a>
-        <div class="note" id="p2-note">선결제 없음 · 완성 확인 후 입금</div>
-      </div>
-      <div class="plan">
-        <div class="tag">Portfolio</div>
-        <h3 id="p3-h3">포트폴리오 · 프로필</h3>
-        <div class="price" id="p3-price">₩4,990 <small>후불 · 1년 유지</small></div>
-        <ul id="p3-ul"><li>나만의 한 장 페이지·명함</li><li>수정 10회 + 사진 10장</li><li>1년 유지 · 광고 없음</li></ul>
-        <a class="act" href="/new?vertical=portfolio" id="p3-act">만들기 →</a>
-      </div>
+    <div class="eyebrow">How</div>
+    <h2 id="s-h2">만드는 법</h2>
+    <div class="stepgrid">
+      <div class="step"><div class="n">1</div><h3 id="s1-h3">말한다</h3><p id="s1-p">"할머니 팔순 초대장 만들어줘. 보라색 좋아하셔." 이 정도면 충분해요.</p></div>
+      <div class="step"><div class="n">2</div><h3 id="s2-h3">AI가 그린다</h3><p id="s2-p">템플릿이 아니라, 당신 이야기에 맞춰 매번 새로 디자인해요.</p></div>
+      <div class="step"><div class="n">3</div><h3 id="s3-h3">링크를 받는다</h3><p id="s3-p">page.cocy.io/내이름 — 링크 받고 바로 공유하면 끝이에요.</p></div>
     </div>
+  </div>
+</section>
+
+<section class="freeplan">
+  <div class="wrap">
+    <div class="eyebrow">Free</div>
+    <h2 id="f-h2">만드는 건 무료예요</h2>
+    <p class="sub" id="f-sub">만들기와 호스팅은 무료. 운영을 위해 무료 페이지에는 광고가 표시돼요. <b>플러스 — 월 990원</b>(연 9,900원)이면 광고가 사라지고, 완성 후 수정도 자유롭게 할 수 있어요.</p>
+    <a class="cta" href="/new" id="f-cta">무료로 만들기 →</a>
   </div>
 </section>
 
@@ -197,20 +189,19 @@ const GCID='315180918727-3d9rfmpa36r365qna9smdsvrod441jhd.apps.googleusercontent
 const I18N={
 ko:{
  barMk:'내 페이지 만들기',
+ heroBadge:'100% 무료 · 결제 없음',
  heroH1:'당신만을 위한<br><em>단 하나의</em> 페이지',
- heroP:'뻔한 템플릿은 없습니다. 몇 가지 질문에 답하면, 당신의 분위기에 맞춰 매번 새로 그려진 페이지가 만들어집니다.',
- heroCta:'내 페이지 만들기 →',
+ heroP:'만들고 싶은 걸 말로 설명하면, AI가 당신만의 페이지를 그려서 링크로 드려요. 템플릿 고르기도, 결제도 없어요.',
+ heroCta:'무료로 만들기 →',
  gH2:'이렇게 만들어졌어요', gLoading:'불러오는 중…',
  gEmpty:'아직 페이지가 없어요. 첫 번째가 되어보세요.', catAll:'전체',
- prH2:'후불제 — 받아보고, 마음에 들면 입금하세요',
- prSub:'신청은 무료, 결제는 페이지를 받아본 뒤에. 완성된 페이지를 <b style="font-weight:400;color:var(--ink)">3일 동안 먼저 써보고</b>, 입금이 확인되면 정식 유지(1년)로 전환돼요. 3일 안에 입금이 없으면 페이지는 내려가요 — 데이터는 보관되니 입금하면 바로 복구돼요. 입금 안내는 신청 계정 이메일로 보내드려요.',
- p1H3:'모바일 청첩장', p1Price:'₩4,990 <small>런칭가 · 후불 · 1년 유지</small>', p1Was:'정가 ₩9,900',
- p1Ul:'<li>템플릿 아닌 맞춤 디자인</li><li>수정 10회 + 사진 10장</li><li>1년 유지 · 광고 없음</li>',
- p2H3:'가게 메뉴판', p2Price:'₩9,900 <small>후불 · 1년 유지</small>',
- p2Ul:'<li>QR로 바로 여는 모바일 메뉴판</li><li>메뉴·가격 채팅 수정</li><li>1년 호스팅</li>',
- p3H3:'포트폴리오 · 프로필', p3Price:'₩4,990 <small>후불 · 1년 유지</small>', p3Ul:'<li>나만의 한 장 페이지·명함</li><li>수정 10회 + 사진 10장</li><li>1년 유지 · 광고 없음</li>', p3Act:'만들기 →',
- pre:'만들기 →', preDone:'등록 완료 ✓', preBusy:'등록 중…', preNote:'선결제 없음 · 완성 확인 후 입금',
- preEmail:'출시 알림 받을 이메일 (선택, 취소해도 등록돼요)',
+ sH2:'만드는 법',
+ s1H3:'말한다', s1P:'"할머니 팔순 초대장 만들어줘. 보라색 좋아하셔." 이 정도면 충분해요.',
+ s2H3:'AI가 그린다', s2P:'템플릿이 아니라, 당신 이야기에 맞춰 매번 새로 디자인해요.',
+ s3H3:'링크를 받는다', s3P:'page.cocy.io/내이름 — 링크 받고 바로 공유하면 끝이에요.',
+ fH2:'만드는 건 무료예요',
+ fSub:'만들기와 호스팅은 무료. 운영을 위해 무료 페이지에는 광고가 표시돼요. <b>플러스 — 월 990원</b>(연 9,900원)이면 광고가 사라지고, 완성 후 수정도 자유롭게 할 수 있어요.',
+ fCta:'무료로 만들기 →', featured:'대표작',
  ftMade:'made with care · page.cocy.io', ftGuide:'📖 가이드: 모바일 청첩장 직접 만들기', donate:'☕ 서버비 후원하기',
  mH2:'내 페이지', mSearch:'제목·주소로 검색', mPriv:'비공개', mPub:'공개', mExp:'중단됨', mPrivHint:'비공개 포함', mEmpty:'검색 결과가 없어요', mEdit:'✎ 편집', mTglPub:'클릭하면 공개로 전환', mTglPriv:'클릭하면 비공개로 전환', mTglFail:'전환에 실패했어요. 다시 시도해주세요.',
  meEdit:' · 내 페이지에 ✎ 편집', loggedIn:'로그인됨', edit:'✎ 편집', mklike:v=>'+ 나도 '+v+' 만들기',
@@ -218,20 +209,19 @@ ko:{
 },
 en:{
  barMk:'Create my page',
+ heroBadge:'100% free · no payment',
  heroH1:'One page, made<br><em>only for you</em>',
- heroP:'No cookie-cutter templates. Answer a few questions and your page is drawn fresh, matched to your mood and story.',
- heroCta:'Create my page →',
+ heroP:'Describe what you want in plain words and AI draws a page just for you — delivered as a link. No templates to pick, nothing to pay.',
+ heroCta:'Create for free →',
  gH2:'Made this way', gLoading:'Loading…',
  gEmpty:'No pages yet. Be the first.', catAll:'All',
- prH2:'Pay after — see it first, pay if you love it',
- prSub:'Requesting is free; you pay only after seeing the finished page. Use it for <b style="font-weight:400;color:var(--ink)">3 days first</b> — once payment is confirmed it switches to full hosting (1 year). No payment within 3 days and the page goes offline (data is kept, so paying restores it instantly). Payment instructions are sent to your account email.',
- p1H3:'Mobile Wedding Invitation', p1Price:'₩4,990 <small>launch · pay-after · 1yr</small>', p1Was:'Regular ₩9,900',
- p1Ul:'<li>Bespoke design, not a template</li><li>10 edits + 10 photos</li><li>1-year hosting · no ads</li>',
- p2H3:'Restaurant Menu', p2Price:'₩9,900 <small>pay-after · 1yr</small>',
- p2Ul:'<li>Mobile menu via QR code</li><li>Edit items &amp; prices by chat</li><li>1-year hosting</li>',
- p3H3:'Portfolio · Profile', p3Price:'₩4,990 <small>pay-after · 1yr</small>', p3Ul:'<li>Your own one-page site / card</li><li>10 edits + 10 photos</li><li>1-year hosting · no ads</li>', p3Act:'Create →',
- pre:'Create →', preDone:'Registered ✓', preBusy:'Registering…', preNote:'No upfront payment · pay after you see it',
- preEmail:'Email for launch notification (optional — cancel still registers)',
+ sH2:'How it works',
+ s1H3:'Say it', s1P:'"Make an invitation for grandma\'s 80th. She loves purple." That\'s enough.',
+ s2H3:'AI draws it', s2P:'Not a template — designed fresh every time, around your story.',
+ s3H3:'Get your link', s3P:'page.cocy.io/yourname — get the link and share it right away.',
+ fH2:'Creating is free',
+ fSub:'Creating and hosting are free. Free pages show ads to keep the lights on. <b>Plus — ₩990/mo</b> (₩9,900/yr) removes ads and unlocks unlimited edits.',
+ fCta:'Create for free →', featured:'Featured',
  ftMade:'made with care · page.cocy.io', ftGuide:'📖 Guide: make your own mobile wedding invitation', donate:'☕ Support server costs',
  mH2:'My Pages', mSearch:'Search by title or slug', mPriv:'Private', mPub:'Public', mExp:'Suspended', mPrivHint:'incl. private', mEmpty:'No results', mEdit:'✎ Edit', mTglPub:'Click to make public', mTglPriv:'Click to make private', mTglFail:'Failed to toggle. Please try again.',
  meEdit:' · ✎ edit on my pages', loggedIn:'Signed in', edit:'✎ Edit', mklike:v=>'+ Make my own '+v,
@@ -254,38 +244,24 @@ function applyLang(){
  document.documentElement.lang=LANG;
  $('langbtn').textContent=LANG==='ko'?'EN':'한국어';
  $('bar-mk').textContent=t('barMk');
+ $('hero-badge').textContent=t('heroBadge');
  $('hero-h1').innerHTML=t('heroH1'); $('hero-p').textContent=t('heroP'); $('hero-cta').textContent=t('heroCta');
  $('g-h2').textContent=t('gH2');
- $('pr-h2').textContent=t('prH2'); $('pr-sub').innerHTML=t('prSub');
- $('p1-h3').textContent=t('p1H3'); $('p1-price').innerHTML=t('p1Price'); $('p1-was').textContent=t('p1Was'); $('p1-ul').innerHTML=t('p1Ul');
- $('p2-h3').textContent=t('p2H3'); $('p2-price').innerHTML=t('p2Price'); $('p2-ul').innerHTML=t('p2Ul');
- $('p3-h3').textContent=t('p3H3'); $('p3-price').innerHTML=t('p3Price'); $('p3-ul').innerHTML=t('p3Ul'); $('p3-act').textContent=t('p3Act');
- $('p1-note').textContent=t('preNote'); $('p2-note').textContent=t('preNote');
+ $('s-h2').textContent=t('sH2');
+ $('s1-h3').textContent=t('s1H3'); $('s1-p').textContent=t('s1P');
+ $('s2-h3').textContent=t('s2H3'); $('s2-p').textContent=t('s2P');
+ $('s3-h3').textContent=t('s3H3'); $('s3-p').textContent=t('s3P');
+ $('f-h2').textContent=t('fH2'); $('f-sub').innerHTML=t('fSub'); $('f-cta').textContent=t('fCta');
  $('ft-made').textContent=t('ftMade'); $('ft-guide').textContent=t('ftGuide'); $('donate').textContent=t('donate');
  if(MY) $('me').textContent=(P.name||P.email||t('loggedIn'))+t('meEdit');
  $('m-h2').textContent=t('mH2'); $('m-search').placeholder=t('mSearch'); $('m-privhint').textContent=t('mPrivHint'); renderMine();
- document.querySelectorAll('[data-mk]').forEach(a=>{ a.textContent=t('pre'); });
  renderCats(); renderGrid();
 }
 $('langbtn').addEventListener('click',()=>{ LANG=LANG==='ko'?'en':'ko'; localStorage.setItem('page_lang',LANG); applyLang(); });
 
-// ── 사전등록(수요 측정) + 후원 ──
+// ── 후원 ──
 const DONATE_URL='';   // 토스 후원 링크(toss.me/..) 생기면 채우기 — 빈 값이면 버튼 숨김
 if(DONATE_URL){ const d=$('donate'); d.href=DONATE_URL; d.style.display='inline-block'; }
-document.querySelectorAll('[data-pre]').forEach(btn=>{
-  const v=btn.dataset.pre, KEY='page_pre_'+v;
-  if(localStorage.getItem(KEY)){ btn.disabled=true; btn.textContent=t('preDone'); }
-  btn.addEventListener('click',async()=>{
-    if(btn.disabled)return;
-    const email=(P&&P.email)||prompt(t('preEmail'))||null;
-    btn.disabled=true; btn.textContent=t('preBusy');
-    try{
-      await fetch('/api/preorder',{method:'POST',headers:Object.assign({'content-type':'application/json'},TOKEN?{authorization:'Bearer '+TOKEN}:{}),body:JSON.stringify({vertical:v,email})});
-      localStorage.setItem(KEY,'1'); btn.textContent=t('preDone');
-      if(window.dataLayer) dataLayer.push({event:'preorder',vertical:v});
-    }catch{ btn.disabled=false; btn.textContent=t('pre'); }
-  });
-});
 
 // ── 내 페이지 (비공개 포함) ──
 let MINE=[], MQ='';
@@ -336,10 +312,20 @@ document.getElementById('m-list').addEventListener('click',async e=>{
 });
 
 let SITES=[], CAT='all';
+const FEATURED=['footprints','marvel','doldol','sunja-hwangap','cafe-onwol','tzuyang-tokyo','diary','juno-dev'];
+const fIdx=s=>{const i=FEATURED.indexOf(s.slug);return i<0?999:i;};
+const ordered=()=>[...SITES].sort((a,b)=>fIdx(a)-fIdx(b));
 (async()=>{
   try{ const r=await fetch('/api/sites'); SITES=(await r.json()).sites||[]; }catch{}
-  renderCats(); renderGrid();
+  renderCats(); renderGrid(); buildStrip();
 })();
+
+function buildStrip(){
+  const picks=ordered().slice(0,14);
+  if(!picks.length) return;
+  const items=picks.map(s=>`<a href="/${s.slug}"><img src="/shots/${encodeURIComponent(s.slug)}.webp" alt="${esc(s.title||'')}" loading="lazy" onerror="this.parentElement.remove()"></a>`).join('');
+  $('strip').innerHTML=`<div class="rowi">${items}${items}</div>`;
+}
 
 function renderCats(){
   const present=[...new Set(SITES.map(s=>s.vertical))].filter(Boolean);
@@ -349,14 +335,15 @@ function renderCats(){
 }
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function renderGrid(){
-  const rows=SITES.filter(s=>CAT==='all'||s.vertical===CAT);
+  const rows=ordered().filter(s=>CAT==='all'||s.vertical===CAT);
   if(!rows.length){ $('grid').innerHTML=`<div class="empty">${SITES.length?t('gEmpty'):t('gLoading')}</div>`; return; }
   $('grid').innerHTML=rows.map(s=>{
     const mine=MY&&s.owner_id===MY;
     const edit=mine?`<a class="edit" href="/edit/?slug=${encodeURIComponent(s.slug)}">${t('edit')}</a>`:'';
+    const fb=FEATURED.includes(s.slug)?`<div class="fb">★ ${t('featured')}</div>`:'';
     return `<div class="card">
-      ${edit}
-      <a href="/${s.slug}"><div class="cover" ${s.cover_image?`style="background-image:url('${esc(s.cover_image)}')"`:''}>${s.cover_image?'':esc(s.title||s.slug)}</div></a>
+      ${fb}${edit}
+      <a href="/${s.slug}"><div class="cover" style="position:relative">${esc(s.title||s.slug)}<img src="/shots/${encodeURIComponent(s.slug)}.webp" loading="lazy" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top" onerror="this.remove()"></div></a>
       <a href="/${s.slug}"><div class="meta">
         <div class="tag">${VL(s.vertical||'page')}</div>
         <h3>${esc(s.title||s.slug)}</h3>
