@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>9Router 팩트체크 — "Claude Code 완전 무료" 진짜인가 · page.cocy.io</title>
+<meta name="description" content="X(트위터)에서 도는 'Claude Code 완전 무료 영원히' 주장을 직접 설치·실행해서 검증했다. 판정: 부분 사실 — 실존하는 유용한 도구지만 '무료 영원히'는 과장." />
+<link rel="canonical" href="https://page.cocy.io/9router-check/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="9Router 팩트체크 — Claude Code 완전 무료, 진짜인가" />
+<meta property="og:description" content="직접 설치·실행 검증 · 판정: 부분 사실 (6/10) · 도구는 진짜 / '무료 영원히'는 과장" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#9a5b34; --accent-2:#c2683f; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:58ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#fbf7f1);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--ink);margin-top:.2rem}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1}
+.score small{font-size:1rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.no{background:rgba(168,68,58,.12);color:var(--bad)}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.92rem}
+th,td{text-align:left;padding:.7rem .6rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:500}
+td .pct{font-family:var(--display);font-weight:600}
+.b-good{color:var(--good)}.b-warn{color:var(--warn)}.b-bad{color:var(--bad)}
+.tdtag{font-size:.78rem}
+
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+ol.steps{list-style:none;counter-reset:s;margin:.4rem 0}
+ol.steps li{position:relative;padding-left:2.2rem;margin-bottom:.9rem;counter-increment:s}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--mono);font-size:.78rem;display:flex;align-items:center;justify-content:center}
+ol.steps li b{color:var(--ink);font-weight:500}
+
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+</style>
+<meta property="og:url" content="https://page.cocy.io/9router-check/" />
+<meta property="article:published_time" content="2026-09-12" />
+<meta property="article:modified_time" content="2026-09-12" />
+<meta name="author" content="cocy" />
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "9Router 팩트체크 — Claude Code 완전 무료, 진짜인가", "description": "X(트위터)에서 도는 'Claude Code 완전 무료 영원히' 주장을 직접 설치·실행해서 검증했다. 판정: 부분 사실 — 실존하는 유용한 도구지만 '무료 영원히'는 과장.", "url": "https://page.cocy.io/9router-check/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/9router-check/"}, "datePublished": "2026-09-12", "dateModified": "2026-09-12", "inLanguage": "ko", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true}</script>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Tech Fact-Check · AI Coding Tools</div>
+    <h1>9Router 팩트체크</h1>
+    <p class="lead">X(트위터)에 "Claude Code를 완전 무료로 영원히 쓸 수 있다"는 글이 도는 걸 보고, 근거가 된 오픈소스 리포를 직접 설치·구동해서 검증했다.</p>
+    <div class="meta">
+      <span><b>작성</b> 2026-09-12</span>
+      <span><b>대상</b> Claude Code / Codex / Cursor 비용 절감을 찾는 개발자</span>
+      <span><b>방법</b> 리포 실사 + 로컬 설치·구동 실측</span>
+      <span><b>출처</b> github.com/decolua/9router (MIT, ⭐28,413)</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">최종 판정</div>
+          <div class="v-main">부분 사실 — 도구는 진짜, "무료 영원히"는 과장</div>
+        </div>
+        <div class="score">6<small>/10</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag yes">✓ 실존 프로젝트, 실제로 작동함</span>
+        <span class="tag yes">✓ 방식 자체는 안전(표준 base-URL 스위치)</span>
+        <span class="tag no">✗ "완전 무료 영원히" 문구는 사실 아님</span>
+        <span class="tag no">✗ 무료 티어는 매달 한도·주기적 단종</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="overview">
+    <h2><span class="n">01</span> 검증한 주장</h2>
+    <p>원문(스페인어, @alextalksai, 2026-09-11, 2.5만 뷰): "누군가 GitHub에 Claude Code를 완전 무료로 영원히 쓸 수 있게 해주는 리포를 올렸다. 검은 마법이 아니다 — 트래픽을 DeepSeek·Kimi 같은 무료 제공자 10곳으로 자동 리다이렉트한다. 설정 5분. 지금 쓰는 개발자 2만+." 트윗 본문엔 정작 <b>리포 이름이 없었다</b> — 그래서 먼저 실체부터 찾아야 했다.</p>
+    <p>GitHub 검색으로 특정한 실물: <b>decolua/9router</b>. 설명과 작동 방식이 트윗 내용과 정확히 일치하는 걸 확인했다.</p>
+  </section>
+
+  <section data-block="verify">
+    <h2><span class="n">02</span> 실측 — 직접 설치·구동</h2>
+    <p>말로만 읽고 판단하지 않았다. 로컬 환경에 실제로 설치해서 확인한 것들:</p>
+    <ul class="clean">
+      <li><b>리포 실체</b> — 2026-01-05 생성, 어제(9/10)도 푸시됨. ⭐28,413 — 트윗의 "2만+ 개발자" 주장과 대략 부합.</li>
+      <li><b>설치</b> — <code>npm install -g 9router</code>. postinstall 스크립트를 실행 전에 직접 읽었고, better-sqlite3 런타임 캐싱뿐 — 수상한 동작 없음.</li>
+      <li><b>구동</b> — 로컬 HTTP 서버(<code>localhost:20128</code>)가 정상 기동, Next.js 기반, OpenAI-호환 API로 응답 확인.</li>
+      <li><b>작동 원리</b> — Claude Code·Codex·Cursor 등이 이미 공식 지원하는 <code>ANTHROPIC_BASE_URL</code> 같은 커스텀 엔드포인트 스위치를 이 로컬 서버로 돌리는 방식. 요청 포맷을 OpenAI↔Claude로 번역하고, 구독 → 저가 → 무료 순으로 자동 폴백한다.</li>
+    </ul>
+    <p class="note">참고로 최근에 검토했던 다른 "무료로 쓰기" 류 툴(GPT-6 Astra용 프록시)은 api.anthropic.com을 사칭하는 자체 CA로 TLS를 가로채는 방식이라 거부했었다. 9Router는 그거랑 다르다 — 공식으로 지원되는 base-URL 교체 방식이라 CA 신뢰 같은 걸 요구하지 않는다. 이 부분은 설계가 안전하다.</p>
+  </section>
+
+  <section data-block="freecheck">
+    <h2><span class="n">03</span> "완전 무료 영원히" — 실제로는?</h2>
+    <p>여기가 트윗과 실체가 갈리는 지점이다. README가 직접 나열한 무료 경로들을 그대로 옮긴다:</p>
+    <table>
+      <thead><tr><th>무료 경로</th><th>실제 한도</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td>Kiro AI</td><td>월 <span class="pct b-warn">~50 크레딧</span>(신규 계정 첫 30일 +500)</td><td class="tdtag b-warn">한도 있음 △</td></tr>
+        <tr><td>OpenCode Free</td><td>무료 모델 목록이 <b>수시로 변동</b>, 일부는 한시 프로모션</td><td class="tdtag b-warn">불안정 △</td></tr>
+        <tr><td>Vertex AI</td><td>신규 가입 <span class="pct b-warn">$300 1회성</span> 크레딧</td><td class="tdtag b-warn">소진되면 끝 △</td></tr>
+        <tr><td>iFlow · Qwen Code · Gemini CLI</td><td>2026년에 무료 티어 <b>전부 단종됨</b></td><td class="tdtag b-bad">이미 끊김 ✗</td></tr>
+      </tbody>
+    </table>
+    <p class="note">마지막 줄은 9Router 자신의 README가 직접 명시한 내용이다 — "무료 제공자가 영원하지 않다"는 증거를 스스로 갖고 있는 셈.</p>
+    <p><b>요지:</b> "완전 무료·영원히"가 아니라 <b>"구독 한도를 다 쓸 때까지 아껴 쓰고, 그다음은 저가·한시 무료로 버티는 라우터"</b>다. 실제로 돈을 아예 안 쓰게 해주는 게 아니라, 있는 한도(구독)를 낭비 없이 쓰고 무료/저가로 폴백해서 <b>지출을 늦추고 줄여주는</b> 도구다. 부가로 tool_result 압축(RTK)으로 토큰 20~40% 절감도 따라온다 — 이건 진짜 실익.</p>
+  </section>
+
+  <section data-block="implications">
+    <h2><span class="n">04</span> 우리(OpenClaw/cocy.io) 스택에 주는 시사점</h2>
+    <ul class="clean">
+      <li><b>같은 문제를 이미 우리가 풀어놨다.</b> llm.cocy.io(Worker) + llm-proxy가 Claude CLI·Codex CLI 구독 경로를 하나의 게이트웨이로 묶어 쓰는 구조라, "하나의 하네스에서 여러 프로바이더 섞어 쓰기"라는 9Router의 핵심 가치는 우리 인프라로 이미 확보돼 있음.</li>
+        <li><b>RTK 토큰 압축은 참고할 만하다.</b> tool_result(grep·git diff·ls 출력)를 자동 압축해 20~40% 절감한다는 아이디어는 별도로 검토해볼 가치가 있음 — 단, 이전에 검토한 Headroom처럼 "코딩 에이전트 워크로드엔 효과가 작을 수 있다"는 동일한 함정을 의심해야 함.</li>
+        <li><b>무료 티어 체이닝은 우리 운영 원칙과 안 맞음.</b> "유료 API 회피"는 우리도 지향하는 방향이지만, 단종 위험이 있는 외부 무료 티어에 프로덕션 워크플로를 의존시키는 건 리스크 쪽이 더 큼 — 실험/개인용으로는 흥미롭지만 cocy.io 운영 파이프라인에 끌어들일 이유는 없음.</li>
+      </ul>
+  </section>
+
+  <section data-block="conclusion">
+    <h2><span class="n">05</span> 결론</h2>
+    <p>9Router는 <b>실존하고, 실제로 작동하고, 설계도 안전한</b> 진짜 도구다. 여기까진 트윗이 맞다. 하지만 "완전 무료로 영원히"는 <b>바이럴을 위한 과장</b>이다 — 무료 경로는 전부 한도가 있고, 몇몇은 이미 끊겼다는 걸 이 프로젝트 자신의 문서가 증언한다. 정확한 한 줄 요약은 <b>"Claude Code 비용을 크게 줄여주는 로컬 라우터"</b>지, "Claude Code 공짜"가 아니다.</p>
+  </section>
+
+  <div class="foot">
+    <span>analysis on page.cocy.io</span>
+    <span>판정: 부분 사실 · 6/10</span>
+  </div>
+</article>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# 9Router 팩트체크 — "Claude Code 완전 무료" 진짜인가
+
+> X(트위터, @alextalksai, 2026-09-11)에 돈 "Claude Code를 완전 무료로 영원히 쓸 수 있다"는 주장을 직접 설치·구동해 검증.
+> **한 줄 결론: 도구(9Router, github.com/decolua/9router, MIT, ⭐28,413)는 실존하고 실제로 작동하지만, "완전 무료·영원히"는 과장이다. 무료 경로는 전부 한도가 있고 일부는 이미 단종됐다(README 자체 명시).**
+
+## 검증한 주장
+원문 요지: Claude Code 트래픽을 DeepSeek·Kimi 등 무료 제공자 10곳으로 자동 리다이렉트해서 완전 무료로 쓸 수 있다. 설정 5분, 사용자 2만+.
+트윗 본문엔 리포 이름이 없어서 GitHub 검색으로 실체(decolua/9router)를 특정했다.
+
+## 실측 — 직접 설치·구동
+- 리포: 2026-01-05 생성, 9/10 푸시, ⭐28,413 (트윗의 "2만+" 주장과 대략 부합)
+- 설치: `npm install -g 9router`, postinstall 스크립트 직접 확인 — better-sqlite3 캐싱뿐, 수상한 동작 없음
+- 구동: 로컬 서버(localhost:20128) 정상 기동, OpenAI-호환 API 응답 확인
+- 원리: Claude Code/Codex/Cursor가 공식 지원하는 커스텀 base-URL 스위치를 로컬 라우터로 돌리는 표준 방식. 이전에 검토했던 "api.anthropic.com 사칭 CA 프록시"류와 달리 안전한 설계.
+
+## "완전 무료 영원히" 팩트체크
+| 무료 경로 | 실제 한도 |
+|---|---|
+| Kiro AI | 월 ~50크레딧 (신규 첫 30일 +500) |
+| OpenCode Free | 무료 모델 목록 수시 변동, 일부 한시 프로모션 |
+| Vertex AI | 신규가입 $300 1회성 크레딧 |
+| iFlow·Qwen Code·Gemini CLI | 2026년 무료 티어 전부 단종 (README 자체 명시) |
+
+요지: "완전 무료·영원히"가 아니라 "구독 한도를 아껴 쓰고 그다음 저가/한시무료로 버티는 라우터". 부가로 tool_result 압축(RTK)으로 토큰 20~40% 절감은 실익.
+
+## 우리(OpenClaw/cocy.io) 스택 시사점
+- 같은 문제(여러 프로바이더를 한 하네스에서 섞어쓰기)는 llm.cocy.io+llm-proxy로 이미 해결돼 있음.
+- RTK 토큰압축 아이디어는 참고할 만하나, Headroom 사례처럼 코딩 워크로드엔 효과가 작을 수 있어 별도 검증 필요.
+- 단종 위험 있는 외부 무료 티어에 프로덕션을 의존시키는 건 지향하지 않음 — 개인 실험용으로는 흥미로움.
+
+## 결론
+9Router는 실존·작동·안전 설계 3가지는 전부 사실이다. 다만 "완전 무료 영원히"는 바이럴용 과장이고, 정확한 한 줄 요약은 "Claude Code 비용을 크게 줄여주는 로컬 라우터"다.
+
+## 출처
+- 원 트윗: https://x.com/alextalksai/status/2098299112466547191
+- 검증 대상: https://github.com/decolua/9router (MIT)
+- 분석 원문: https://page.cocy.io/9router-check
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='9router-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body>
+</html>
