@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NCP-ArchPreview 팩트체크 — "LLM 시대 끝낼 논문"인가 · page.cocy.io</title>
+<meta name="description" content="'중국이 LLM 시대를 끝낼 논문을 냈다'는 X 게시물을 원 논문(arXiv 2609.10715)과 직접 대조 검증했다. 판정: 논문·모델은 실재하고 핵심 수치도 진짜지만, 트윗의 '6점 상승'은 체리피킹." />
+<link rel="canonical" href="https://page.cocy.io/ncp-check/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="NCP-ArchPreview 팩트체크 — LLM 시대 끝낼 논문?" />
+<meta property="og:description" content="원 논문 직접 대조 검증 · 판정: 실재+핵심수치 진짜, 프레이밍만 과장 (7/10)" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#9a5b34; --accent-2:#c2683f; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:58ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#fbf7f1);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--ink);margin-top:.2rem}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1}
+.score small{font-size:1rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.no{background:rgba(168,68,58,.12);color:var(--bad)}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.92rem}
+th,td{text-align:left;padding:.7rem .6rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:500}
+td .pct{font-family:var(--display);font-weight:600}
+.b-good{color:var(--good)}.b-warn{color:var(--warn)}.b-bad{color:var(--bad)}
+.tdtag{font-size:.78rem}
+
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+ol.steps{list-style:none;counter-reset:s;margin:.4rem 0}
+ol.steps li{position:relative;padding-left:2.2rem;margin-bottom:.9rem;counter-increment:s}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--mono);font-size:.78rem;display:flex;align-items:center;justify-content:center}
+ol.steps li b{color:var(--ink);font-weight:500}
+
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+</style>
+<meta property="og:url" content="https://page.cocy.io/ncp-check/" />
+<meta property="article:published_time" content="2026-09-14" />
+<meta property="article:modified_time" content="2026-09-14" />
+<meta name="author" content="cocy" />
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "NCP-ArchPreview 팩트체크 — LLM 시대 끝낼 논문인가", "description": "'중국이 LLM 시대를 끝낼 논문을 냈다'는 X 게시물을 원 논문(arXiv 2609.10715)과 직접 대조 검증했다. 판정: 논문·모델은 실재하고 핵심 수치도 진짜지만, 트윗의 '6점 상승'은 체리피킹.", "url": "https://page.cocy.io/ncp-check/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/ncp-check/"}, "datePublished": "2026-09-14", "dateModified": "2026-09-14", "inLanguage": "ko", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true}</script>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Tech Fact-Check · LLM Architecture Research</div>
+    <h1>NCP-ArchPreview 팩트체크</h1>
+    <p class="lead">"중국이 LLM 시대를 끝낼 논문을 냈다"는 X 게시물을 봤다. 원 논문(arXiv)과 직접 대조해서 뭐가 진짜고 뭐가 부풀려졌는지 확인했다.</p>
+    <div class="meta">
+      <span><b>작성</b> 2026-09-14</span>
+      <span><b>대상</b> LLM 아키텍처·학습 효율에 관심 있는 사람</span>
+      <span><b>방법</b> arXiv 원문 + HF 모델카드 직접 대조</span>
+      <span><b>출처</b> arXiv:2609.10715 (Shanghai AI Lab + 상하이교통대)</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">최종 판정</div>
+          <div class="v-main">논문·핵심 수치는 진짜 — 트윗 프레이밍만 과장</div>
+        </div>
+        <div class="score">7<small>/10</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag yes">✓ 실재하는 논문·공개 모델(Apache-2.0)</span>
+        <span class="tag yes">✓ "51.3% 데이터·85% 컴퓨트로 동급 도달"은 진짜</span>
+        <span class="tag no">✗ "massive 6점 상승"은 체리피킹</span>
+        <span class="tag no">✗ "LLM 시대 종료" — 초기 베이스모델 연구일 뿐</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="claim">
+    <h2><span class="n">01</span> 검증한 주장</h2>
+    <p>원문(@HowToPrompt__, 2026-09-14 시점 기준 최근 게시): "중국이 지금의 LLM 시대를 끝낼 수도 있는 논문을 발표했다. 한 단어씩 예측하는 대신 '개념' 단위로 사고하는 8.9B 모델 NCP-ArchPreview를 오픈소스로 공개했다. 학습 데이터 51.3%만으로 동급 성능에 도달했고, 수학·추론에서 massive 6점 상승, 컴퓨트는 15% 덜 썼다."</p>
+    <p>구체적 수치가 여러 개 나와서 원 논문과 하나씩 대조했다.</p>
+  </section>
+
+  <section data-block="verify">
+    <h2><span class="n">02</span> 실체 확인</h2>
+    <ul class="clean">
+      <li><b>진짜 논문이다.</b> arXiv:2609.10715, 2026-09-09 제출. 저자는 "Intern-NCP Team"(Shanghai AI Lab + 상하이교통대 LUMIA Lab), 유명 연구자 Dahua Lin(前 SenseTime, CUHK) 포함.</li>
+      <li><b>진짜 공개 모델이다.</b> HuggingFace에 8.9B 가중치 공개, Apache-2.0. Dolma-3 데이터셋 5.73조 토큰으로 학습.</li>
+      <li><b>구조</b>: 기존 Next-Token Prediction(NTP)을 없앤 게 아니라, 토큰 여러 개를 묶은 "개념(concept)"을 예측하는 Next Concept Prediction(NCP)을 <b>NTP와 같이 end-to-end로 학습</b>시키는 하이브리드 구조. "한 단어씩 예측하는 걸 버렸다"는 트윗 표현은 부정확 — 버린 게 아니라 하나 더 얹은 것.</li>
+    </ul>
+  </section>
+
+  <section data-block="factcheck">
+    <h2><span class="n">03</span> 수치 팩트체크</h2>
+    <table>
+      <thead><tr><th>트윗 주장</th><th>원 논문 실제 수치</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td>데이터 51.3%로 동급 도달</td><td>OLMo-3-7B의 최종 pretraining loss에 토큰 51.3%만으로 도달</td><td class="tdtag b-good">정확 ✓</td></tr>
+        <tr><td>컴퓨트 15% 절감</td><td>"85%의 표준 컴퓨트만으로" 동급 loss에 근접 (원문 그대로)</td><td class="tdtag b-good">정확 ✓</td></tr>
+        <tr><td>수학·추론 massive 6점 상승</td><td>GSM8K(수학) <span class="pct b-warn">+5.99점</span>뿐. 종합 평균(macro-average)은 <span class="pct b-bad">+2.45점</span>. HumanEval(+4.28점)은 코딩이지 추론이 아님</td><td class="tdtag b-bad">체리피킹 ✗</td></tr>
+        <tr><td>"LLM 시대를 끝낼 수도"</td><td>논문 자체가 "대화형 챗봇 용도 아님, 초기 아키텍처 실험"이라 명시</td><td class="tdtag b-bad">과장 ✗</td></tr>
+      </tbody>
+    </table>
+    <p class="note">놓친 것 하나: 논문에는 투기적 디코딩(speculative decoding) 드래프터에 개념 표현을 주입하면 평균 수락 길이가 4.17% 개선된다는 보너스 결과도 있는데, 트윗엔 언급 없음.</p>
+  </section>
+
+  <section data-block="implications">
+    <h2><span class="n">04</span> 시사점</h2>
+    <p>cocy.io는 모델을 직접 학습시키는 게 아니라 기존 프론티어 모델 API를 라우팅해서 쓰는 구조라, 이 논문을 당장 파이프라인에 적용할 방법은 없다. 다만 "같은 성능에 데이터·컴퓨트 절반만 써도 된다"는 방향 자체는 학습 효율 연구의 큰 흐름이고, LLM 게이트웨이·에이전트 런타임 쪽으로 커리어를 보는 입장에선 이런 아키텍처 트렌드를 계속 눈여겨볼 가치는 있다.</p>
+  </section>
+
+  <section data-block="conclusion">
+    <h2><span class="n">05</span> 결론</h2>
+    <p>논문과 모델은 진짜고, 핵심 수치("데이터 51.3%, 컴퓨트 85%로 동급 도달")도 정확하다 — 이것만으로도 학습 효율 연구로는 꽤 인상적이다. 근데 "massive 6점 상승"은 부분 지표(GSM8K)를 전체인 것처럼 부풀린 체리피킹이고, "LLM 시대를 끝낼 수도"는 논문 스스로도 안 하는 주장이다. <b>연구는 진짜, 바이럴 프레이밍은 과장.</b></p>
+  </section>
+
+  <div class="foot">
+    <span>analysis on page.cocy.io</span>
+    <span>판정: 실재+핵심수치 진짜, 프레이밍 과장 · 7/10</span>
+  </div>
+</article>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# NCP-ArchPreview 팩트체크 — "LLM 시대 끝낼 논문"인가
+
+> X(@HowToPrompt__, 2026-09-14)의 "중국이 LLM 시대를 끝낼 논문을 냈다" 주장을 원 논문(arXiv:2609.10715)과 직접 대조 검증.
+> **한 줄 결론: 논문·모델은 실재하고 핵심 수치("데이터 51.3%·컴퓨트 85%로 동급 도달")도 정확하지만, "massive 6점 상승"·"LLM 시대 종료"는 트윗의 과장이다.**
+
+## 검증한 주장
+"중국이 지금의 LLM 시대를 끝낼 수도 있는 논문을 발표했다. 한 단어씩 예측하는 대신 '개념' 단위로 사고하는 8.9B 모델 NCP-ArchPreview를 오픈소스로 공개했다. 학습 데이터 51.3%만으로 동급 성능 도달, 수학·추론에서 massive 6점 상승, 컴퓨트 15% 절감."
+
+## 실체 확인
+- 진짜 논문: arXiv:2609.10715 (2026-09-09), Intern-NCP Team(Shanghai AI Lab + 상하이교통대 LUMIA Lab), Dahua Lin 포함
+- 진짜 공개 모델: HF 8.9B 가중치, Apache-2.0, Dolma-3 5.73조 토큰 학습
+- 구조: NTP를 버린 게 아니라 NTP+NCP를 함께 end-to-end 학습하는 하이브리드
+
+## 수치 팩트체크
+| 트윗 주장 | 원 논문 실제 수치 | 판정 |
+|---|---|---|
+| 데이터 51.3%로 동급 도달 | OLMo-3-7B loss에 토큰 51.3%만으로 도달 | 정확 ✓ |
+| 컴퓨트 15% 절감 | "85%의 표준 컴퓨트만으로" 근접 (원문 그대로) | 정확 ✓ |
+| 수학·추론 massive 6점 상승 | GSM8K만 +5.99점, 종합평균은 +2.45점. HumanEval(+4.28)은 코딩이지 추론 아님 | 체리피킹 ✗ |
+| "LLM 시대를 끝낼 수도" | 논문 자체가 "챗봇 용도 아님, 초기 아키텍처 실험"이라 명시 | 과장 ✗ |
+
+## 시사점
+cocy.io는 모델을 직접 학습시키지 않고 기존 API를 라우팅하는 구조라 직접 적용은 어렵지만, "동급 성능에 데이터·컴퓨트 절반"이라는 학습효율 트렌드는 LLM 게이트웨이/에이전트 런타임 커리어 관점에서 계속 지켜볼 가치가 있다.
+
+## 결론
+연구는 진짜, 핵심 수치도 정확. 바이럴 프레이밍("massive 6점", "LLM 시대 종료")만 과장.
+
+## 출처
+- 원 트윗: https://x.com/HowToPrompt__/status/2099186312033259653
+- 원 논문: https://arxiv.org/abs/2609.10715
+- 분석 원문: https://page.cocy.io/ncp-check
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='ncp-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body>
+</html>
