@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Byte Latent Transformer 팩트체크 — "메타가 방금 발표"? · page.cocy.io</title>
+<meta name="description" content="'메타가 LLM 시대를 끝낼 논문을 방금 발표했다'는 X 게시물을 검증했다. 핵심 논문은 2024년 12월 것 — 21개월 된 연구를 방금 나온 것처럼 판 것으로 확인." />
+<link rel="canonical" href="https://page.cocy.io/blt-check/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Byte Latent Transformer 팩트체크 — 메타가 방금 발표?" />
+<meta property="og:description" content="원 논문 직접 대조 검증 · 판정: 기술은 진짜, '방금 발표'는 21개월 된 논문 재탕 (4/10)" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#9a5b34; --accent-2:#c2683f; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:58ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#fbf7f1);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--ink);margin-top:.2rem}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1}
+.score small{font-size:1rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.no{background:rgba(168,68,58,.12);color:var(--bad)}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.92rem}
+th,td{text-align:left;padding:.7rem .6rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:500}
+td .pct{font-family:var(--display);font-weight:600}
+.b-good{color:var(--good)}.b-warn{color:var(--warn)}.b-bad{color:var(--bad)}
+.tdtag{font-size:.78rem}
+
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+ol.steps{list-style:none;counter-reset:s;margin:.4rem 0}
+ol.steps li{position:relative;padding-left:2.2rem;margin-bottom:.9rem;counter-increment:s}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--mono);font-size:.78rem;display:flex;align-items:center;justify-content:center}
+ol.steps li b{color:var(--ink);font-weight:500}
+
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+</style>
+<meta property="og:url" content="https://page.cocy.io/blt-check/" />
+<meta property="article:published_time" content="2026-09-16" />
+<meta property="article:modified_time" content="2026-09-16" />
+<meta name="author" content="cocy" />
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Byte Latent Transformer 팩트체크 — 메타가 방금 발표?", "description": "'메타가 LLM 시대를 끝낼 논문을 방금 발표했다'는 X 게시물을 검증했다. 핵심 논문은 2024년 12월 것 — 21개월 된 연구를 방금 나온 것처럼 판 것으로 확인.", "url": "https://page.cocy.io/blt-check/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/blt-check/"}, "datePublished": "2026-09-16", "dateModified": "2026-09-16", "inLanguage": "ko", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true}</script>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Tech Fact-Check · LLM Architecture Research</div>
+    <h1>Byte Latent Transformer 팩트체크</h1>
+    <p class="lead">"메타가 LLM 시대를 끝낼 논문을 방금 발표했다"는 X 게시물을 봤다. 원 논문들과 날짜를 직접 대조해서 확인했다.</p>
+    <div class="meta">
+      <span><b>작성</b> 2026-09-16</span>
+      <span><b>대상</b> LLM 아키텍처 트렌드에 관심 있는 사람</span>
+      <span><b>방법</b> arXiv 원문 발행일 + 후속 논문 직접 대조</span>
+      <span><b>출처</b> arXiv:2412.09871, arXiv:2605.08044</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">최종 판정</div>
+          <div class="v-main">기술 설명은 진짜, "방금 발표"는 21개월 된 논문 재탕</div>
+        </div>
+        <div class="score">4<small>/10</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag yes">✓ BLT 아키텍처 자체는 실재 — 성능 수치도 정확</span>
+        <span class="tag no">✗ 핵심 논문은 2024년 12월 것(21개월 전)</span>
+        <span class="tag no">✗ "메타가" 아니라 스탠퍼드·워싱턴대 공저 후속 논문 존재</span>
+        <span class="tag no">✗ "LLM 시대 종료" — 21개월째 주류 모델 전환 없음</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="claim">
+    <h2><span class="n">01</span> 검증한 주장</h2>
+    <p>원문(@HowToPrompt__, 2026-09-15): "메타가 지금의 LLM 시대를 끝낼 수도 있는 논문을 방금 발표했다(just published). 7년간 다들 만들어온 토큰화 기반 거대 모델보다 바이트 레벨 모델이 더 작고 강할 수 있다는 걸 증명했다. 이름은 'Byte Latent Transformer'(BLT). 추론 메모리 대역폭을 50% 넘게 줄이는 BLT diffusion(BLT-D) 기법도 포함."</p>
+    <p>기술 설명 자체가 꽤 구체적이라 원 논문을 찾아 날짜부터 대조했다.</p>
+  </section>
+
+  <section data-block="verify">
+    <h2><span class="n">02</span> 실체 확인 — 날짜가 핵심이다</h2>
+    <ul class="clean">
+      <li><b>BLT 원 논문은 2024년 12월 13일 arXiv 등재.</b> "Byte Latent Transformer: Patches Scale Better Than Tokens" (arXiv:2412.09871), Meta FAIR, 제1저자 Artidoro Pagnoni. Meta AI 공식 발표도 2024-12-12. <b>이 트윗이 올라온 2026-09-15 기준으로 21개월 전 논문이다.</b></li>
+      <li><b>트윗이 언급한 "50% 메모리 대역폭 절감 BLT diffusion"은 다른 논문에서 나온 수치다.</b> "Fast Byte Latent Transformer"(arXiv:2605.08044, Kallini·Pagnoni 외, 2026년 5월 공개)라는 후속 논문 얘기 — 이건 Meta 단독이 아니라 <b>스탠퍼드·워싱턴대와 공동 저술</b>. 이것도 "방금"이라기엔 4개월 전이다.</li>
+      <li>기술 설명 자체(엔트로피 기반 동적 패칭, 고정 어휘 없이 바이트 직접 처리, 8B 파라미터·4조 바이트 스케일링, LLaMA 3 대비 추론 FLOPs 최대 50% 절감)는 원 논문 내용과 정확히 일치한다.</li>
+    </ul>
+  </section>
+
+  <section data-block="factcheck">
+    <h2><span class="n">03</span> 팩트체크 표</h2>
+    <table>
+      <thead><tr><th>트윗 주장</th><th>실제 확인</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td>"메타가 방금(just) 발표"</td><td>핵심 논문은 2024-12-13 공개, 21개월 전</td><td class="tdtag b-bad">허위 ✗</td></tr>
+        <tr><td>바이트 레벨이 토큰 기반보다 작고 강함</td><td>원 논문 실제 결론 — LLaMA 3 대비 동급 성능, FLOPs 최대 50%↓</td><td class="tdtag b-good">정확 ✓</td></tr>
+        <tr><td>BLT diffusion으로 메모리대역폭 50%+ 절감</td><td>별도 후속 논문(2026-05, 스탠퍼드·워싱턴대 공저)의 수치, 최대 81~92%까지도 확인됨(원문 그대로 인용은 정확)</td><td class="tdtag b-warn">출처 오기 △</td></tr>
+        <tr><td>"모든 프론티어 모델 제작 방식을 근본적으로 바꿀 것"</td><td>21개월이 지난 지금까지 GPT·Claude·Gemini·Llama 등 주요 상용 모델 중 바이트레벨로 전환한 사례 없음</td><td class="tdtag b-bad">미실현 ✗</td></tr>
+      </tbody>
+    </table>
+    <p class="note">기술 팩트(성능 수치, 절감률)는 둘 다 실제 논문에서 정확히 가져온 것들이다. 문제는 숫자가 아니라 <b>"방금 나온 이야기"라는 시점 프레임</b>이다 — 2년 다 된 논문을 최신 브레이킹뉴스처럼 포장했다.</p>
+  </section>
+
+  <section data-block="conclusion">
+    <h2><span class="n">04</span> 결론</h2>
+    <p>BLT는 실제로 흥미로운 아키텍처고, 인용된 수치들도 원 논문에서 정확히 가져왔다. 하지만 "메타가 방금 발표"는 틀렸다 — 2024년 12월 논문과 2026년 5월 후속 논문(스탠퍼드·워싱턴대 공동)을 섞어 "최신 속보"처럼 포장한 것이다. 게다가 "LLM 시대를 끝낼 것"이라는 예측은 원 논문 발표 후 21개월이 지나도록 아직 실현되지 않았다 — 여전히 모든 주류 프론티어 모델은 토큰화 기반이다. <b>오래된 뉴스를 새 뉴스처럼 포장한 사례.</b></p>
+  </section>
+
+  <div class="foot">
+    <span>analysis on page.cocy.io</span>
+    <span>판정: 기술은 진짜, 시점은 21개월 재탕 · 4/10</span>
+  </div>
+</article>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# Byte Latent Transformer 팩트체크 — 메타가 방금 발표?
+
+> X(@HowToPrompt__, 2026-09-15)의 "메타가 LLM 시대를 끝낼 논문을 방금 발표했다" 주장을 원 논문 발행일과 직접 대조 검증.
+> **한 줄 결론: 기술 설명·수치는 정확하지만, 핵심 논문은 2024년 12월(21개월 전) 것이고 "50% 메모리 절감" 수치는 스탠퍼드·워싱턴대 공저 후속 논문(2026-05, 4개월 전)에서 나온 것 — 오래된 연구를 "방금 나온 속보"처럼 포장했다.**
+
+## 검증한 주장
+"메타가 LLM 시대를 끝낼 수도 있는 논문을 방금 발표했다. 바이트 레벨 모델이 토큰화 기반보다 작고 강함을 증명했다. 'Byte Latent Transformer'(BLT). 메모리 대역폭 50%+ 절감하는 BLT diffusion 포함."
+
+## 실체 확인 — 날짜가 핵심
+- BLT 원 논문: arXiv:2412.09871, 2024-12-13 공개, Meta FAIR(Artidoro Pagnoni 등). 트윗 시점 기준 21개월 전.
+- "BLT diffusion" 50%+ 절감 수치는 별도 후속 논문 "Fast Byte Latent Transformer"(arXiv:2605.08044, 2026-05, Meta+스탠퍼드+워싱턴대 공저)에서 나온 것. 이것도 4개월 전.
+- 기술 설명(엔트로피 기반 동적 패칭, 무고정어휘, 8B·4조 바이트 스케일링, LLaMA 3 대비 FLOPs 최대 50%↓)은 원 논문과 정확히 일치.
+
+## 팩트체크
+| 주장 | 실제 확인 | 판정 |
+|---|---|---|
+| "메타가 방금 발표" | 핵심 논문 2024-12-13, 21개월 전 | 허위 ✗ |
+| 바이트레벨이 토큰기반보다 작고 강함 | 원 논문 실제 결론, 정확 | 정확 ✓ |
+| BLT diffusion 메모리대역폭 50%+ 절감 | 별도 후속 논문(2026-05) 수치, 최대 81~92%까지 확인 | 출처 오기 △ |
+| "모든 프론티어 모델 제작방식 근본전환" | 21개월째 주요 상용 모델 전환 사례 없음 | 미실현 ✗ |
+
+## 결론
+기술 팩트는 진짜 원 논문 수치 그대로다. 문제는 2024년 12월과 2026년 5월 논문 두 개를 섞어 "방금 나온 속보"처럼 포장한 시점 프레임이다. "LLM 시대 종료" 예측도 21개월째 미실현.
+
+## 출처
+- 원 트윗: https://x.com/HowToPrompt__/status/2099537110332231770
+- BLT 원 논문: https://arxiv.org/abs/2412.09871
+- 후속 논문(BLT-D): https://arxiv.org/abs/2605.08044
+- 분석 원문: https://page.cocy.io/blt-check
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='blt-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body>
+</html>
