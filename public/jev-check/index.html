@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TypeSafe Jev 팩트체크 — "이 가격과 속도로 판단을 맡길 수 있다"? · page.cocy.io</title>
+<meta name="description" content="Threads에서 화제인 'Jev'(TypeSafe AI) 신제품 주장을 검증했다. 오늘 진짜 론칭한 제품은 맞지만, 회사 자체 벤치마크에서도 정확도는 프론티어 모델보다 낮았다." />
+<link rel="canonical" href="https://page.cocy.io/jev-check/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="TypeSafe Jev 팩트체크 — 판단을 맡길 수 있다?" />
+<meta property="og:description" content="공식 발표·자체 벤치마크·독립 리뷰 대조 검증 · 판정: 진짜 론칭 맞지만 '판단을 맡길 수 있다'는 자기 데이터로도 증명 안 됨 (7/10)" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#9a5b34; --accent-2:#c2683f; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:58ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#fbf7f1);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--ink);margin-top:.2rem}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1}
+.score small{font-size:1rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.no{background:rgba(168,68,58,.12);color:var(--bad)}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.92rem}
+th,td{text-align:left;padding:.7rem .6rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:500}
+td .pct{font-family:var(--display);font-weight:600}
+.b-good{color:var(--good)}.b-warn{color:var(--warn)}.b-bad{color:var(--bad)}
+.tdtag{font-size:.78rem}
+
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+ol.steps{list-style:none;counter-reset:s;margin:.4rem 0}
+ol.steps li{position:relative;padding-left:2.2rem;margin-bottom:.9rem;counter-increment:s}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--mono);font-size:.78rem;display:flex;align-items:center;justify-content:center}
+ol.steps li b{color:var(--ink);font-weight:500}
+
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+</style>
+<meta property="og:url" content="https://page.cocy.io/jev-check/" />
+<meta property="article:published_time" content="2026-09-16" />
+<meta property="article:modified_time" content="2026-09-16" />
+<meta name="author" content="cocy" />
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "TypeSafe Jev 팩트체크 — 판단을 맡길 수 있다?", "description": "Threads에서 화제인 'Jev'(TypeSafe AI) 신제품 주장을 검증했다. 오늘 진짜 론칭한 제품은 맞지만, 회사 자체 벤치마크에서도 정확도는 프론티어 모델보다 낮았다.", "url": "https://page.cocy.io/jev-check/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/jev-check/"}, "datePublished": "2026-09-16", "dateModified": "2026-09-16", "inLanguage": "ko", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true}</script>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Tech Fact-Check · AI Product Launch</div>
+    <h1>TypeSafe Jev 팩트체크</h1>
+    <p class="lead">"이 가격과 속도로 판단을 맡길 수 있다면"이라는 Threads 게시물을 봤다. 이번엔 가짜 뉴스가 아니라 진짜 오늘 나온 신제품이었다 — 근데 회사가 직접 공개한 숫자부터 다시 봐야 했다.</p>
+    <div class="meta">
+      <span><b>작성</b> 2026-09-16</span>
+      <span><b>대상</b> AI 분류·라우팅 파이프라인에 관심 있는 사람</span>
+      <span><b>방법</b> 공식 론칭 블로그 + 자체 벤치마크 + 독립 리뷰 대조</span>
+      <span><b>출처</b> typesafe.ai, evals.typesafe.ai, kingy.ai 리뷰</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">최종 판정</div>
+          <div class="v-main">진짜 오늘 나온 제품 맞음, "판단을 맡길 수 있다"는 자기 데이터로도 증명 안 됨</div>
+        </div>
+        <div class="score">7<small>/10</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag yes">✓ 2026-09-16 실제 공식 론칭 — 스테일 뉴스 아님</span>
+        <span class="tag yes">✓ 창업자 Diogo Almeida = 전 OpenAI, InstructGPT/RLHF 공동개발자, 실존 인물</span>
+        <span class="tag no">✗ 홈페이지 "193.6배 빠름·444.6배 저렴"은 회사 자체 공개 표에서도 재현 안 됨</span>
+        <span class="tag no">✗ 자체 벤치마크 정확도(67.8%)가 프론티어 모델(74.1%)보다 낮음</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="claim">
+    <h2><span class="n">01</span> 검증한 주장</h2>
+    <p>원문(@choi.openai, Threads, 2026-09-16): "🚨 와.. 이건 진짜 대단한 것 같습니다. 이 가격과 속도로 판단을 맡길 수 있다면, 우리가 쓰는 프로그램에 AI를 붙이는 방식도 꽤 달라질 것 같은데요." 11장짜리 카드뉴스로 "Jev"라는 제품을 소개하며, 기존 LLM(자연어 프롬프트 → 단일 라벨 출력)과 Jev(스키마 기반 JSON 입력 → 확률 분포 출력)를 나란히 대조했다.</p>
+    <p>"Jev"가 뭔지부터 찾아야 했다.</p>
+  </section>
+
+  <section data-block="verify">
+    <h2><span class="n">02</span> 실체 확인</h2>
+    <ul class="clean">
+      <li><b>TypeSafe AI가 2026-09-16 실제로 공식 발표한 신제품이다.</b> "System One Model"이라는 새 카테고리를 자칭 — 텍스트를 생성하지 않고, 정해진 스키마 안에서 확률 분포(Noul/Choice/Score)만 병렬로 반환하는 분류·라우팅 전용 모델. 오늘 막 나온 게 맞다 — 이번 건은 날짜 재탕이 아니다.</li>
+      <li><b>창업자 Diogo Almeida는 실존 인물이고 이력도 진짜다.</b> 전 OpenAI 연구원, InstructGPT·RLHF 공동 개발자, ChatGPT·GPT-4 테크니컬 리포트 참여. Forbes가 "$200M 스타트업"으로 별도 취재할 만큼 주목받는 론칭.</li>
+      <li>공식 가격: 입력 $0.042/백만 토큰, 출력 무료. 지연시간 70~500ms — 회사는 프론티어 LLM의 3~329초와 비교한다. 숫자 자체는 벤더가 공개한 것이라 근거는 있지만, 독립 실측은 아니다(아직 early access/waitlist라 외부 리뷰어도 실제 API 호출을 못 해봤다).</li>
+      <li><b>문제는 홈페이지 헤드라인 "193.6배 빠름·444.6배 저렴".</b> 독립 리뷰(Kingy AI)가 회사 자신이 공개한 반올림 벤치마크 표로 이 숫자를 재현해보려 했지만 안 됐다 — "특정 워크로드 한정 마케팅 수치로 취급하라"고 명시했다.</li>
+      <li><b>더 결정적인 건 회사 자체 벤치마크 결과다.</b> 4개 워크플로우 711건, 기준값은 GPT-6 Astra + Claude Fable 5.1 판정 평균(이것도 "정답"이 아니라 다른 LLM들의 의견 평균). 이 기준으로도 Jev 종합 정확도는 67.8%, 최고 비교 모델(GPT-6 Sol) 74.1%보다 낮다. 특히 인보이스 처리 항목은 격차가 크다(61.8% vs 79.1%).</li>
+      <li>"환각 없음(zero hallucination)" 주장은 진짜지만 좁은 의미다 — 스키마 밖 값을 낼 수 없다는 타입-세이프티 보장이지, "항상 정답"이라는 뜻은 아니다. 틀린 라벨도 스키마 안에서는 유효한 출력으로 나온다.</li>
+    </ul>
+  </section>
+
+  <section data-block="factcheck">
+    <h2><span class="n">03</span> 팩트체크 표</h2>
+    <table>
+      <thead><tr><th>원문 주장</th><th>실제 확인</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td>"오늘 나온 대단한 신제품"</td><td>2026-09-16 TypeSafe AI 공식 론칭, 창업자 이력도 실존 확인</td><td class="tdtag b-good">사실 ✓</td></tr>
+        <tr><td>"이 가격과 속도로 판단을 맡길 수 있다"</td><td>가격($0.042/MTok)·속도(70~500ms)는 벤더 공식 수치, 압도적으로 저렴·빠름은 맞음</td><td class="tdtag b-good">사실 ✓ (단, 벤더 자체 발표치)</td></tr>
+        <tr><td>암묵적 "LLM급 판단력" 프레이밍</td><td>회사 자체 벤치마크에서도 정확도 67.8% — 최고 비교 프론티어 모델(74.1%)보다 낮음</td><td class="tdtag b-warn">과장 △</td></tr>
+        <tr><td>(홈페이지) "193.6배 빠르고 444.6배 저렴"</td><td>회사가 공개한 자체 반올림 벤치마크 표에서도 재현 불가 — 독립 리뷰가 직접 지적</td><td class="tdtag b-bad">근거 불명 ✗</td></tr>
+      </tbody>
+    </table>
+    <p class="note">이번 건은 이전 두 건(9router·BLT)과 결이 다르다. 제품도 진짜, 발표 시점도 진짜, 회사·창업자도 진짜다. 문제는 속도·비용은 진짜 압도적인데, "판단을 맡길 수 있다"는 정확도 얘기를 회사 자신의 데이터가 아직 뒷받침 못 한다는 것.</p>
+  </section>
+
+  <section data-block="conclusion">
+    <h2><span class="n">04</span> 결론</h2>
+    <p>Jev는 가짜 뉴스가 아니다 — 오늘 진짜 론칭했고, 창업자 이력도 진짜고, 기술 아이디어(텍스트 생성 대신 병렬 확률 헤드로 분류·라우팅만 특화)도 말이 된다. 문제는 원문 게시물의 흥분이 회사 자신이 공개한 벤치마크에서조차 Jev가 프론티어 LLM보다 정확도가 낮다는 사실(67.8% vs 74.1%)을 언급하지 않는다는 점이다. 싸고 빠른 건 진짜다. 그런데 "판단"을 통째로 맡기기엔 아직 이르다 — 고빈도·저위험 분류·라우팅의 보조 레이어로 쓰고, 정확도가 중요한 최종 결정은 여전히 프론티어 모델이나 사람 검토를 거치는 게 맞다.</p>
+  </section>
+
+  <div class="foot">
+    <span>analysis on page.cocy.io</span>
+    <span>판정: 진짜 론칭, 과장은 정확도 부분 · 7/10</span>
+  </div>
+</article>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# TypeSafe Jev 팩트체크 — 판단을 맡길 수 있다?
+
+> Threads(@choi.openai, 2026-09-16)의 "이 가격과 속도로 판단을 맡길 수 있다면" 주장을 공식 론칭 블로그·자체 벤치마크·독립 리뷰로 대조 검증.
+> **한 줄 결론: 진짜 오늘 나온 신제품, 창업자도 진짜다. 단, 회사 자신의 벤치마크에서조차 Jev 정확도(67.8%)는 프론티어 모델(74.1%)보다 낮고, 홈페이지 헤드라인 "193.6배 빠름·444.6배 저렴"은 회사가 공개한 자체 표에서도 재현이 안 된다.**
+
+## 검증한 주장
+"🚨 이건 진짜 대단한 것 같습니다. 이 가격과 속도로 판단을 맡길 수 있다면, 우리가 쓰는 프로그램에 AI를 붙이는 방식도 꽤 달라질 것 같은데요." — 11장 카드뉴스로 "Jev"(자연어 프롬프트+단일 라벨 출력 LLM vs 스키마+확률분포 출력 Jev)를 대조 소개.
+
+## 실체 확인
+- TypeSafe AI가 2026-09-16 공식 발표한 "System One Model" 카테고리의 첫 제품. 텍스트 생성 없이 스키마 안 확률 분포(Noul/Choice/Score)만 병렬 반환하는 분류·라우팅 전용 모델.
+- 창업자 Diogo Almeida는 전 OpenAI 연구원, InstructGPT·RLHF 공동 개발자, GPT-4 테크니컬 리포트 참여 — 실존 확인. Forbes가 "$200M 스타트업"으로 별도 취재.
+- 가격 $0.042/MTok 입력·출력 무료, 지연시간 70~500ms(vs 프론티어 LLM 3~329초) — 벤더 공식 수치, 독립 실측 아님(early access라 외부 리뷰어도 API 테스트 못 함).
+- 홈페이지 헤드라인 "193.6배 빠름·444.6배 저렴"은 독립 리뷰(Kingy AI)가 회사 자체 반올림 벤치마크 표로 재현 시도했으나 실패 — "워크로드 한정 마케팅 수치"로 명시.
+- 자체 벤치마크(4개 워크플로우 711건, 기준=GPT-6 Astra+Claude Fable 5.1 평균): Jev 종합 정확도 67.8% vs 최고 비교 모델(GPT-6 Sol) 74.1% — 자기 데이터 안에서도 더 낮음. 특히 인보이스 처리 격차 큼(61.8% vs 79.1%).
+- "환각 없음"은 스키마 밖 값을 못 낸다는 타입-세이프티 의미이지 "항상 정답"은 아님.
+
+## 팩트체크
+| 주장 | 실제 확인 | 판정 |
+|---|---|---|
+| "오늘 나온 대단한 신제품" | 2026-09-16 공식 론칭, 창업자 이력 실존 확인 | 사실 ✓ |
+| "이 가격과 속도로 판단을 맡길 수 있다" | 가격·속도는 벤더 공식 수치, 압도적으로 유리함은 맞음 | 사실 ✓ (벤더 자체 발표치) |
+| 암묵적 "LLM급 판단력" | 자체 벤치마크에서도 정확도 67.8% < 프론티어 74.1% | 과장 △ |
+| (홈페이지) "193.6배 빠르고 444.6배 저렴" | 회사 자체 표에서도 재현 불가 — 독립 리뷰 지적 | 근거 불명 ✗ |
+
+## 결론
+Jev는 가짜뉴스가 아니다 — 제품·발표·창업자 모두 진짜. 다만 "판단을 맡길 수 있다"는 흥분은 회사 자신의 데이터가 아직 뒷받침 못 한다. 싸고 빠른 건 진짜지만, 정확도가 중요한 결정은 여전히 프론티어 모델·사람 검토가 필요하다.
+
+## 출처
+- 원문: Threads @choi.openai (2026-09-16)
+- 공식 발표: https://typesafe.ai/blog/introducing-system-one-models-and-jev
+- 자체 벤치마크: https://evals.typesafe.ai/
+- 독립 리뷰: https://kingy.ai/blog/typesafe-jev-review-the-ai-model-that-doesnt-generate-text/
+- 분석 원문: https://page.cocy.io/jev-check
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='jev-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body>
+</html>
