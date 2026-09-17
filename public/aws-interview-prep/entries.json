@@ -8,11 +8,11 @@
     "sections": {
       "keyterms": "Agent orchestration, Workflow, Tool calling, Autonomy boundary",
       "definition": "AI 에이전트는 LLM이 스스로 다음에 뭘 할지 판단해서 도구를 골라 쓰고 반복하는 시스템이고, 워크플로우는 사람이 미리 정해둔 순서(A→B→C)대로만 LLM을 호출하는 시스템이다.",
-      "architect": "아키텍트 입장에서 이 구분이 중요한 이유는 \"얼마나 자유도를 줄 것인가\"가 곧 \"실패 범위를 얼마나 통제할 것인가\"이기 때문이다. 워크플로우는 각 단계가 예측 가능해서 테스트·모니터링·롤백이 쉽고, 에이전트는 유연하지만 무한루프·잘못된 도구 선택·비용 폭주 같은 새 실패모드가 생긴다. 그래서 실무에선 \"완전 자율 에이전트\"보다, 정해진 워크플로우 안에 판단이 필요한 지점에서만 에이전트적 판단을 끼워 넣는 하이브리드 설계가 많다.",
+      "architect": "아키텍트 입장에서 이 구분이 중요한 이유는 \"얼마나 자유도를 줄 것인가\"가 곧 \"실패 범위를 얼마나 통제할 것인가\"이기 때문이다. 워크플로우는 각 단계가 예측 가능해서 테스트·모니터링·롤백이 쉽고, 에이전트는 유연하지만 무한루프·잘못된 도구 선택·비용 폭주 같은 새 실패모드가 생긴다. 실무에서 이 경계를 직접 설계하는 건 대개 에이전트를 만드는 사람이 아니라 그 앞단의 게이트웨이/컨트롤플레인을 만드는 사람 몫인 경우가 많다 — cocy의 포지션이 정확히 여기다.",
       "tradeoff": "워크플로우: 예측 가능·저비용·디버깅 쉬움 — 대신 새 케이스가 생기면 코드를 다시 짜야 함.\n에이전트: 미지의 케이스에 유연하게 대응 — 대신 비용·지연시간·실패를 예측하기 어렵고 가드레일이 필수.",
       "aws": "Bedrock 기준으로는 결정론적 구간은 Step Functions + Bedrock InvokeModel 조합으로 짜고, 판단이 필요한 구간에만 Bedrock Agents(또는 AgentCore)를 얹는다. 실제 architecture review에서도 \"왜 전체를 에이전트로 안 만들었는가\"를 설명할 수 있어야 신뢰를 얻는다.",
-      "experience": "지금 만들고 있는 LLM Gateway 자체가 이 구분의 실전 사례다. Tool calling과 MCP 기반 agentic workflow를 라우팅하는 계층을 직접 설계·운영하면서, 어떤 요청은 결정론적 라우팅(모델 선택·정책 체크)으로 처리하고 어떤 요청만 에이전트적 판단(도구 선택·멀티스텝)으로 넘길지 그 경계를 계속 튜닝해왔다. Bedrock Agents/AgentCore 자체를 써본 적은 없지만, \"에이전트 vs 워크플로우 경계 설계\"는 프레임워크와 무관하게 매일 하는 일이다.",
-      "interview_en": "In my gateway, I don't treat every request as a full autonomous agent. Deterministic steps, like model routing or policy checks, run as a workflow, and I only let the model make an agentic decision where tool selection is genuinely ambiguous. That boundary is something I tune constantly for cost and reliability.",
+      "experience": "지금 만들고 있는 LLM Gateway가 이 구분의 실전 사례인데, 정확히는 \"에이전트를 만든 경험\"이 아니라 \"에이전트가 통과하는 control plane을 만든 경험\"이다. Claude Code·Codex 같은 에이전틱 클라이언트가 호출하는 요청을 게이트웨이 레벨에서 라우팅·인증·비용·가드레일로 통제하는 계층을 설계·운영해왔다 — tool 선택이나 멀티스텝 판단 로직 자체(에이전트의 \"뇌\")는 클라이언트(Claude Code/Codex) 쪽 일이고, 내가 통제하는 건 그 앞단의 게이트다. 직접 만든 에이전트는 딱 하나 — 사용자 OS에 맞게 Claude Code/Codex를 설치하고 Gateway 토큰을 셋팅해주는 15턴짜리 작은 셸 에이전트뿐이다. Bedrock Agents/AgentCore 자체를 써본 적도 없다.",
+      "interview_en": "I haven't built complex agent orchestration myself — the one agent I built directly is a small, about 15-turn shell agent that installs Claude Code or Codex based on the user's OS and configures the gateway token. What I actually built and run is the control plane those agentic clients call through: routing, auth, cost, and guardrails for tool calling and MCP traffic.",
       "question": "내가 지금 Gateway에서 \"이 부분은 워크플로우, 이 부분은 에이전트\"라고 나누는 기준을, 구체적 예시 하나로 30초 안에 설명할 수 있는가?"
     },
     "refs": [
