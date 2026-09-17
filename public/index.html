@@ -52,6 +52,9 @@ header.hero{min-height:78vh;display:flex;flex-direction:column;justify-content:c
 /* gallery */
 section.gallery{padding:5rem 0 7rem;border-top:1px solid var(--line)}
 .gallery h2{font-family:var(--serif);font-size:2rem;font-weight:500;margin:.6rem 0 1.6rem}
+.gsearch{display:block;width:100%;max-width:360px;background:var(--bg-2);border:1px solid var(--line);border-radius:30px;color:var(--ink);padding:.6rem 1.1rem;font-size:.88rem;font-family:var(--sans);margin-bottom:1.2rem;outline:none;transition:.2s}
+.gsearch::placeholder{color:var(--muted)}
+.gsearch:focus{border-color:var(--accent)}
 .cats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.4rem}
 .cats .c{font-family:var(--label);font-size:.78rem;letter-spacing:.05em;color:var(--ink-soft);border:1px solid var(--line);border-radius:30px;padding:.5rem 1rem;cursor:pointer;transition:.2s}
 .cats .c:hover{border-color:var(--accent)}
@@ -150,6 +153,7 @@ footer .donate:hover{border-color:var(--accent);color:var(--accent-2)}
   <div class="wrap">
     <div class="eyebrow">Showcase</div>
     <h2 id="g-h2">이렇게 만들어졌어요</h2>
+    <input class="gsearch" id="g-search" type="search" placeholder="제목·설명으로 검색" />
     <div class="cats" id="cats"></div>
     <div class="grid" id="grid"><div class="empty" id="g-loading">불러오는 중…</div></div>
   </div>
@@ -193,8 +197,8 @@ ko:{
  heroH1:'당신만을 위한<br><em>단 하나의</em> 페이지',
  heroP:'만들고 싶은 걸 말로 설명하면, AI가 당신만의 페이지를 그려서 링크로 드려요. 템플릿 고르기도, 결제도 없어요.',
  heroCta:'무료로 만들기 →',
- gH2:'이렇게 만들어졌어요', gLoading:'불러오는 중…',
- gEmpty:'아직 페이지가 없어요. 첫 번째가 되어보세요.', catAll:'전체',
+ gH2:'이렇게 만들어졌어요', gLoading:'불러오는 중…', gSearch:'제목·설명으로 검색',
+ gEmpty:'아직 페이지가 없어요. 첫 번째가 되어보세요.', gEmptySearch:'검색 결과가 없어요.', catAll:'전체',
  sH2:'만드는 법',
  s1H3:'말한다', s1P:'"할머니 팔순 초대장 만들어줘. 보라색 좋아하셔." 이 정도면 충분해요.',
  s2H3:'AI가 그린다', s2P:'템플릿이 아니라, 당신 이야기에 맞춰 매번 새로 디자인해요.',
@@ -213,8 +217,8 @@ en:{
  heroH1:'One page, made<br><em>only for you</em>',
  heroP:'Describe what you want in plain words and AI draws a page just for you — delivered as a link. No templates to pick, nothing to pay.',
  heroCta:'Create for free →',
- gH2:'Made this way', gLoading:'Loading…',
- gEmpty:'No pages yet. Be the first.', catAll:'All',
+ gH2:'Made this way', gLoading:'Loading…', gSearch:'Search by title or description',
+ gEmpty:'No pages yet. Be the first.', gEmptySearch:'No results.', catAll:'All',
  sH2:'How it works',
  s1H3:'Say it', s1P:'"Make an invitation for grandma\'s 80th. She loves purple." That\'s enough.',
  s2H3:'AI draws it', s2P:'Not a template — designed fresh every time, around your story.',
@@ -246,7 +250,7 @@ function applyLang(){
  $('bar-mk').textContent=t('barMk');
  $('hero-badge').textContent=t('heroBadge');
  $('hero-h1').innerHTML=t('heroH1'); $('hero-p').textContent=t('heroP'); $('hero-cta').textContent=t('heroCta');
- $('g-h2').textContent=t('gH2');
+ $('g-h2').textContent=t('gH2'); $('g-search').placeholder=t('gSearch');
  $('s-h2').textContent=t('sH2');
  $('s1-h3').textContent=t('s1H3'); $('s1-p').textContent=t('s1P');
  $('s2-h3').textContent=t('s2H3'); $('s2-p').textContent=t('s2P');
@@ -311,10 +315,11 @@ document.getElementById('m-list').addEventListener('click',async e=>{
   }catch{ chip.style.opacity=''; chip.style.pointerEvents=''; alert(t('mTglFail')); }
 });
 
-let SITES=[], CAT='all';
+let SITES=[], CAT='all', GQ='';
 const FEATURED=['footprints','marvel','doldol','sunja-hwangap','cafe-onwol','tzuyang-tokyo','diary','juno-dev'];
 const fIdx=s=>{const i=FEATURED.indexOf(s.slug);return i<0?999:i;};
 const ordered=()=>[...SITES].sort((a,b)=>fIdx(a)-fIdx(b));
+$('g-search').addEventListener('input',e=>{ GQ=e.target.value; renderGrid(); });
 (async()=>{
   try{ const r=await fetch('/api/sites'); SITES=(await r.json()).sites||[]; }catch{}
   renderCats(); renderGrid(); buildStrip();
@@ -335,8 +340,9 @@ function renderCats(){
 }
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function renderGrid(){
-  const rows=ordered().filter(s=>CAT==='all'||s.vertical===CAT);
-  if(!rows.length){ $('grid').innerHTML=`<div class="empty">${SITES.length?t('gEmpty'):t('gLoading')}</div>`; return; }
+  const q=GQ.trim().toLowerCase();
+  const rows=ordered().filter(s=>CAT==='all'||s.vertical===CAT).filter(s=>!q||(s.title||'').toLowerCase().includes(q)||(s.description||'').toLowerCase().includes(q)||(s.slug||'').toLowerCase().includes(q));
+  if(!rows.length){ $('grid').innerHTML=`<div class="empty">${!SITES.length?t('gLoading'):(q?t('gEmptySearch'):t('gEmpty'))}</div>`; return; }
   $('grid').innerHTML=rows.map(s=>{
     const mine=MY&&s.owner_id===MY;
     const edit=mine?`<a class="edit" href="/edit/?slug=${encodeURIComponent(s.slug)}">${t('edit')}</a>`:'';

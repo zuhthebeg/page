@@ -12,7 +12,7 @@ export const onRequestGet: PagesFunction<Env> = async (ctx) => {
          FROM sites
         WHERE status = 'published' AND listed = 1
         ORDER BY published_at DESC
-        LIMIT 60`
+        LIMIT 300`
     )
     .all();
 
