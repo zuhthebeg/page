@@ -110,5 +110,28 @@
       "https://strandsagents.com/latest/",
       "https://aws.amazon.com/blogs/aws/introducing-amazon-bedrock-agentcore-run-any-agent-at-any-scale/"
     ]
+  },
+  {
+    "index": 6,
+    "day": 1,
+    "date": "2026-09-18",
+    "topic": "Bedrock Agents",
+    "depth": "medium",
+    "sections": {
+      "keyterms": "Amazon Bedrock Agents, Action Groups, Knowledge Base integration, Orchestration loop",
+      "definition": "AWS가 에이전트 오케스트레이션 loop(판단→tool 호출→결과 반영→반복)를 대신 관리해주는 서비스 — 개발자는 \"어떤 tool을 노출할지\"만 정의하면 된다.",
+      "architect": "에이전트를 직접 만들면 \"모델 호출 → tool 실행 결과를 다시 모델에 전달 → 반복 종료 판단\"을 직접 코드로 구현해야 한다. Bedrock Agents는 이 orchestration loop를 managed로 제공해서, 개발자가 tool 정의(Action Groups)와 지식베이스 연결에만 집중하게 만든다.\n\n아키텍트 입장에서 핵심 질문은 \"이 managed service를 쓰면 어떤 선택권을 포기하는가\"다 — loop 동작을 세밀하게 제어 못 하고, 지연 특성이 AWS 구현에 묶이며, 디버깅 가시성이 제한된다.",
+      "tradeoff": "Bedrock Agents 사용: loop 구현·운영 부담 제로, 빠른 PoC 가능 — 대신 loop 제어 불가, 벤더 락인 강함.\n직접 구현: loop를 완전 제어하고 인프라 선택 자유도 높음 — 대신 상태 관리·오류 복구·트레이싱을 전부 직접 짜야 함. 복잡한 조건 분기나 자체 상태 머신이 필요하면 이 방향이 필수.",
+      "aws": "Bedrock Agents 핵심 컴포넌트:\n• Action Groups: Lambda 함수를 OpenAPI 스키마로 tool 등록 — 에이전트가 호출 결정하면 Bedrock이 Lambda를 자동 invoke.\n• Knowledge Bases: OpenSearch Serverless 기반 벡터 DB 직결 — RAG 파이프라인을 managed로 처리.\n• Orchestration: 내부적으로 ReAct 패턴(기본 system prompt 커스터마이징 제한적).\n• Bedrock Guardrails 연동: 에이전트 입출력 필터링 managed 추가.",
+      "experience": "Bedrock Agents를 직접 구현한 경험은 없다(Bedrock는 모델 직접 호출 수준만 사용). 하지만 Action Groups의 구조 — \"에이전트가 호출할 수 있는 tool 목록을 정의하고, Lambda 실행을 위임\" — 는 내 Gateway가 MCP tool에 대해 하는 역할과 구조적으로 같다. 차이는 내 Gateway에는 인증·비용·가드레일 계층이 포함된 control plane이 있고, Action Groups는 AWS 내부에서 IAM 기반으로 처리된다는 것. 고객이 Bedrock Agents를 쓰겠다고 할 때 내가 기여할 부분은 \"Action Groups 앞에 어떤 인증/거버넌스 계층을 둘 것인가\"다.",
+      "interview_en": "I haven't built production workflows with Bedrock Agents directly, but I understand its architecture well. Action Groups are essentially a managed version of the tool registry and execution layer I built from scratch — the key difference is that Bedrock handles the orchestration loop, while my gateway handles auth and governance for what those tools are allowed to do.",
+      "question": "고객이 \"Bedrock Agents 써도 되나요, 직접 에이전트 짜야 하나요?\"라고 물으면, 어떤 2~3가지 기준으로 판단하겠는가?",
+      "answer": "판단 기준 3가지: 1) loop 제어 복잡도 — 단순 선형 멀티스텝이면 Bedrock Agents OK. 복잡한 조건 분기/자체 상태 머신이 필요하면 Strands나 직접 구현이 낫다. 2) 인프라 소유권/규제 — 데이터가 AWS 밖으로 못 나가는 규제 환경(금융권 온프레미스 등)이면 Bedrock Agents 불가, self-hosted 필요. 3) 속도 vs 제어 — PoC나 일반 use case는 managed가 빠르지만, 운영 중 loop 동작을 직접 디버깅·조정해야 하는 고도화 단계에선 직접 구현이 필요하다. Gateway 운영 경험으로 보면, \"당장은 managed가 빠르다\"는 걸 알지만 \"6개월 후 운영 중 문제가 생겼을 때 뚜껑을 열 수 있는가\"가 결국 핵심 질문이다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/agents-action-groups.html",
+      "https://aws.amazon.com/blogs/machine-learning/amazon-bedrock-agents-now-support-returning-control-to-developers/"
+    ]
   }
 ]
