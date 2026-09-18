@@ -62,5 +62,27 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/bedrock-agentcore.html",
       "https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html"
     ]
+  },
+  {
+    "index": 5,
+    "day": 1,
+    "date": "2026-09-18",
+    "topic": "Amazon Bedrock AgentCore vs Strands Agents",
+    "depth": "deep",
+    "sections": {
+      "keyterms": "AgentCore Runtime, Strands SDK, Agent execution environment, Managed agent platform",
+      "definition": "Strands Agents는 에이전트를 만드는 Python SDK(코드 프레임워크)고, AgentCore는 그 에이전트를 배포하고 운영하는 AWS 관리형 플랫폼이다 — \"짜는 도구 vs 돌리는 플랫폼.\"",
+      "architect": "이 두 개를 아키텍처 레벨에서 구분하는 이유는 \"빌드 시간 결정\"과 \"런타임 운영 결정\"이 다른 문제이기 때문이다.\n\nStrands Agents: 에이전트 로직(어떤 순서로 tool을 부르고 어떻게 판단하는가)을 코드로 표현하는 방법. 간결한 Python으로 agent loop를 선언하고, 모델이 loop를 주도하게 한다. LangChain/LangGraph보다 보일러플레이트가 훨씬 적다.\n\nAgentCore: 그 에이전트가 production에서 안전하게 돌아가는 환경 제공. 6개 레이어: Runtime(실행 sandbox), Memory(상태 관리), Tools(tool 실행 sandbox), Identity(IAM 기반 에이전트 신원), Gateway(MCP 호환 tool 게이트웨이), Observability(trace/monitoring).\n\n핵심: 에이전트 코드(Strands)는 자동으로 안전해지지 않는다 — 배포·운영할 때 거버넌스 레이어(AgentCore)가 없으면 비용·보안·가용성 문제를 전부 직접 짜야 한다.",
+      "tradeoff": "Strands + AgentCore 조합: AWS 안에서 빠르게 production에 올릴 수 있고 운영 overhead 작음 — 대신 벤더 락인 강하고 AgentCore 한도에 구속됨.\n\nStrands만 쓰고 자체 인프라: 오픈소스(Apache 2.0)라 ECS/EKS/Lambda 위에서 직접 운영 가능 — 대신 Memory·Tool sandbox·Observability를 전부 자체 구축해야 함. 금융권처럼 데이터가 외부 managed service로 나가면 안 되는 환경에선 이 경로가 필요하다.",
+      "aws": "AgentCore 6개 컴포넌트:\n• Runtime: 에이전트 컨테이너 실행 (Lambda/Fargate 기반)\n• Memory: DynamoDB/S3 기반 단기·장기 상태 관리\n• Gateway: MCP 호환 tool endpoint — API Gateway+Lambda authorizer와 유사하지만 MCP 프로토콜 특화\n• Identity: IAM 기반 에이전트 신원 및 권한 관리\n• Tools: 코드·브라우저·파일 실행 sandbox\n• Observability: CloudWatch+X-Ray 기반 agent trace\n\nStrands는 AgentCore와 자연스럽게 통합되도록 설계됐지만, 특정 플랫폼에 종속되지 않게 오픈소스로 분리되어 있다.",
+      "experience": "AgentCore나 Strands를 직접 사용한 경험은 없다 — 개념 수준이고, 구현 디테일은 직접 써봐야 알 부분이 있다.\n\n그러나 AgentCore Gateway가 하려는 일 — MCP 요청의 인증·라우팅·정책 집행 — 은 내가 직접 만들고 운영하는 LLM Gateway와 거의 같은 레이어다. 차이는 \"AWS managed vs self-built\"이고, 그 trade-off를 고객에게 설명할 때 자체 구축 운영 경험이 실질적 근거가 된다.\n\nAgentCore Identity가 에이전트에 IAM role을 붙여주는 것처럼, 내 Gateway도 에이전틱 클라이언트별 인증·인가를 분리해서 policy-based access control로 운영한다.",
+      "interview_en": "I haven't used AgentCore or Strands directly, but conceptually, AgentCore Gateway is solving exactly the same problem I built from scratch — MCP routing, auth, and policy enforcement in front of tool servers. The difference is managed service versus self-built, and I know the trade-offs from running it in production in a financial environment.",
+      "question": "고객사가 \"Strands로 에이전트를 만들었는데, production에 올리려면 뭐가 더 필요한가\"라고 물으면, 내 운영 경험에서 필수 항목 3가지를 바로 말할 수 있는가?"
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/bedrock-agentcore.html",
+      "https://strandsagents.com/latest/",
+      "https://aws.amazon.com/blogs/aws/introducing-amazon-bedrock-agentcore-run-any-agent-at-any-scale/"
+    ]
   }
 ]
