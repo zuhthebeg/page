@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ternary Bonsai 2 27B 팩트체크 — "9배 축소, 98% 성능 유지"? · page.cocy.io</title>
+<meta name="description" content="X에서 도는 'Qwen3.8 27B를 9배 줄이면서 98% 성능 유지'라는 PrismML의 Ternary Bonsai 2 27B 주장을 검증했다. 회사·모델·용량 축소 수치는 진짜지만, 이 회사의 직전 모델이 독립검증에서 자체발표 수치와 크게 어긋났던 전적이 있다." />
+<link rel="canonical" href="https://page.cocy.io/bonsai2-check/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Ternary Bonsai 2 27B 팩트체크 — 9배 축소·98% 유지?" />
+<meta property="og:description" content="HuggingFace 파일사이즈 직접 대조 + 전작 독립검증 이력 조사 · 판정: 용량 수치는 정확, 품질 주장은 벤더 자체발표뿐 (6/10)" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f7f5f0; --paper:#fffefb; --ink:#23201b; --ink-soft:#5c574e; --muted:#928b7e;
+  --accent:#9a5b34; --accent-2:#c2683f; --good:#3f7d4f; --warn:#b8860b; --bad:#a8443a;
+  --line:rgba(35,32,27,.13); --line-soft:rgba(35,32,27,.07);
+  --display:"Fraunces",serif; --body:"Noto Sans KR",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.8;-webkit-font-smoothing:antialiased}
+.doc{background:var(--paper);max-width:820px;margin:40px auto;padding:clamp(28px,6vw,72px);border:1px solid var(--line);border-radius:4px;box-shadow:0 40px 90px -50px rgba(35,32,27,.4)}
+.kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,5.5vw,3rem);line-height:1.1;margin:.5rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:var(--ink-soft);font-size:1.05rem;max-width:58ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.meta b{color:var(--ink-soft);font-weight:400}
+section[data-block]{margin-top:3rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+p{margin-bottom:1rem}
+p+p{margin-top:-.2rem}
+.verdict{margin-top:2rem;background:linear-gradient(180deg,#fff,#fbf7f1);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1.5rem 1.6rem}
+.verdict .v-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.verdict .v-label{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:.66rem;color:var(--muted)}
+.verdict .v-main{font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--ink);margin-top:.2rem}
+.score{font-family:var(--display);font-weight:600;font-size:2.4rem;color:var(--accent);line-height:1}
+.score small{font-size:1rem;color:var(--muted)}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;padding:.25rem .7rem;border-radius:20px;font-weight:500}
+.tag.no{background:rgba(168,68,58,.12);color:var(--bad)}
+.tag.yes{background:rgba(63,125,79,.14);color:var(--good)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0 .4rem;font-size:.92rem}
+th,td{text-align:left;padding:.7rem .6rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:500}
+.b-good{color:var(--good)}.b-warn{color:var(--warn)}.b-bad{color:var(--bad)}
+.tdtag{font-size:.78rem}
+ul.clean{list-style:none;margin:.4rem 0}
+ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;color:var(--ink-soft)}
+ul.clean li::before{content:"";position:absolute;left:.2rem;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+ul.clean li b{color:var(--ink);font-weight:500}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+.foot{margin-top:3.2rem;padding-top:1.4rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font-family:var(--body);font-size:.85rem;font-weight:500;box-shadow:0 10px 26px -8px rgba(35,32,27,.55);cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+</style>
+<meta property="og:url" content="https://page.cocy.io/bonsai2-check/" />
+<meta property="article:published_time" content="2026-09-18" />
+<meta property="article:modified_time" content="2026-09-18" />
+<meta name="author" content="cocy" />
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Ternary Bonsai 2 27B 팩트체크 — 9배 축소·98% 유지?", "description": "PrismML의 Ternary Bonsai 2 27B '9배 축소, 98% 성능 유지' 주장을 HuggingFace 파일사이즈와 전작 독립검증 이력으로 검증했다.", "url": "https://page.cocy.io/bonsai2-check/", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://page.cocy.io/bonsai2-check/"}, "datePublished": "2026-09-18", "dateModified": "2026-09-18", "inLanguage": "ko", "author": {"@type": "Person", "name": "cocy", "url": "https://page.cocy.io/cocy"}, "publisher": {"@type": "Organization", "name": "cocy.io", "url": "https://cocy.io"}, "isAccessibleForFree": true}</script>
+</head>
+<body>
+<article class="doc">
+
+  <section data-block="hero">
+    <div class="kicker">Tech Fact-Check · Model Quantization Claims</div>
+    <h1>Ternary Bonsai 2 27B 팩트체크</h1>
+    <p class="lead">"Qwen3.8 27B를 9배 줄이면서 성능은 98% 유지"라는 X 게시물을 봤다. 용량 수치는 파일로 바로 검증되는데, 품질 주장은 이 회사의 전작에서 이미 한번 크게 어긋난 전적이 있어서 그 이력까지 같이 뒤졌다.</p>
+    <div class="meta">
+      <span><b>작성</b> 2026-09-18</span>
+      <span><b>대상</b> 로컬 LLM 양자화 소식을 믿고 받아들이기 전에 확인하고 싶은 사람</span>
+      <span><b>방법</b> HuggingFace 파일 사이즈 직접 대조 + 전작 독립검증 이력 조사</span>
+      <span><b>출처</b> huggingface.co/prism-ml/Ternary-Bonsai-2-27B-gguf</span>
+    </div>
+
+    <div class="verdict">
+      <div class="v-top">
+        <div>
+          <div class="v-label">최종 판정</div>
+          <div class="v-main">용량 축소 수치는 정확, "98% 성능 유지"는 벤더 자체 발표뿐 — 이 회사 전작은 독립검증에서 크게 깎였다</div>
+        </div>
+        <div class="score">6<small>/10</small></div>
+      </div>
+      <div class="tags">
+        <span class="tag yes">✓ 실제 회사·실제 모델 — PrismML, HF에 어제(9/16) 공개, Apache 2.0</span>
+        <span class="tag yes">✓ "9배 축소" 정확 — F16 53.8GB → 1비트 양자화 5.95GB = 9.04배</span>
+        <span class="tag no">✗ "98.2% 성능 유지"는 PrismML 자체 20개 벤치마크뿐, 독립검증 아직 없음</span>
+        <span class="tag no">✗ 전작(Bonsai 27B)은 자체발표 95% vs 독립검증 82.9%로 큰 격차 있었음</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-block="claim">
+    <h2><span class="n">01</span> 검증한 주장</h2>
+    <p>원문(@TheAhmadOsman, X, PrismML 공식 발표 인용): "9x size reduction from Qwen 3.8 27B while maintaining 98% of the performance — The future of Local AI is so good you won't believe it." PrismML 공식 발표: "Ternary Bonsai 2 27B는 Qwen3.8 27B 기반, 9배 작으면서 98.2%의 종합 벤치마크 성능을 유지한다. 용량 5.9GB. Apache 2.0으로 오늘 공개."</p>
+  </section>
+
+  <section data-block="verify">
+    <h2><span class="n">02</span> 실체 확인</h2>
+    <ul class="clean">
+      <li><b>회사와 모델 자체는 진짜다.</b> PrismML은 실제 존재하는 회사(prismml.com, PR Newswire 보도자료, Techmeme 등재)고, HF 리포 `prism-ml/Ternary-Bonsai-2-27B-gguf`는 2026-09-16 23:40(UTC)에 실제 공개됨 — 이 트윗이 올라온 시점과 거의 동시라 스테일 뉴스 재탕이 아니라 진짜 신선한 소식이다. 라이선스도 Apache 2.0으로 명시.</li>
+      <li><b>"9배 축소"는 파일 사이즈로 정확히 확인된다.</b> 풀프리시전 참조용 F16 파일이 53.8GB, 1비트 삼진(ternary) 양자화 파일(PTQ1_0)이 5.95GB — 53.8÷5.95 ≈ <b>9.04배</b>. 트윗의 "9x"와 정확히 일치한다. 가중치가 {-1, 0, +1} 세 값만 갖는 방식(유효 비트수 ≈1.71bpw)으로, MS의 BitNet b1.58 연구와 같은 계열 기법이다.</li>
+      <li><b>"98.2% 성능 유지"는 PrismML 자체 20개 벤치마크(추론·수학·코딩·명령어 준수·비전·에이전틱 tool use)로 측정한 수치다.</b> 공개된 지 하루밖에 안 돼서 독립적인 제3자 재현 벤치마크는 아직 없다.</li>
+      <li><b>이 회사의 전작 이력이 중요한 근거다.</b> 2달 전 나온 1세대 Ternary Bonsai 27B 때 PrismML은 "95% 성능 유지"라고 발표했는데, 독립 커뮤니티 벤치마크(98문항)는 1비트 버전을 82.9%로 측정했다(기준 Qwen3.6-27B는 94.2%) — 자체발표와 독립검증 사이에 10%p 넘는 격차가 있었다. 또 다른 독립 테스트(Terminal-Bench 2.0, 에이전틱 벤치마크)에서는 정확도 7.9%로 더 작은 dense 모델보다도 낮게 나온 사례도 있었다. 당시 이 회사 벤치마크를 팩트체크한 유튜브 영상은 "벤더 자체 측정뿐, 독립 재현 0건"이라 지적했고, 실사용자(Hacker News)들은 환각·약한 비전 성능·"벤치마크에 맞춰 튜닝된(benchmaxed) 느낌, 실제 일상 코딩엔 약함" 같은 후기를 남겼다.</li>
+    </ul>
+  </section>
+
+  <section data-block="factcheck">
+    <h2><span class="n">03</span> 팩트체크 표</h2>
+    <table>
+      <thead><tr><th>주장</th><th>실제 확인</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td>PrismML·Bonsai 2 27B 실재, 오늘 공개</td><td>HF 실제 등록(2026-09-16), Apache 2.0, PR 보도자료 확인</td><td class="tdtag b-good">사실 ✓</td></tr>
+        <tr><td>"Qwen3.8 27B 대비 9배 축소"</td><td>F16 53.8GB → 1비트 5.95GB = 9.04배, 파일로 정확히 재현됨</td><td class="tdtag b-good">사실 ✓</td></tr>
+        <tr><td>"98.2% 성능 유지"</td><td>PrismML 자체 20개 벤치마크뿐, 독립검증 아직 없음(공개 1일차)</td><td class="tdtag b-warn">미검증 △</td></tr>
+        <tr><td>암묵적 "믿을 만한 수치"라는 인상</td><td>전작(2달 전) 때 자체발표 95% vs 독립검증 82.9%, 에이전틱 벤치마크는 7.9%까지 하락한 전례</td><td class="tdtag b-bad">경계 필요 ✗</td></tr>
+      </tbody>
+    </table>
+    <p class="note">가짜뉴스는 아니다. 회사·모델·용량축소 수치는 전부 사실이다. 다만 "98%"라는 품질 숫자는 지금 시점에 독립적으로 확인할 방법이 없고, 같은 회사의 직전 사례를 보면 그 숫자를 곧이곧대로 믿기보다는 "일단 벤더 주장, 독립테스트 나올 때까지 보류"가 맞는 태도다.</p>
+  </section>
+
+  <section data-block="conclusion">
+    <h2><span class="n">04</span> 결론</h2>
+    <p>Ternary Bonsai 2 27B는 진짜 오늘 나온 진짜 모델이고, "9배 작아졌다"는 용량 수치는 파일로 정확히 검증된다. 문제는 "98.2% 성능 유지"라는, 이 소식에서 가장 임팩트 있는 숫자가 전적으로 벤더 자체 벤치마크에서만 나왔다는 것 — 그리고 정확히 같은 회사가 2달 전 내놓은 전작에서 "95% 유지"라고 했다가 독립검증에서 82.9%로, 특정 에이전틱 과제에서는 7.9%까지 떨어진 전례가 있다. "미래가 왔다"고 흥분하기 전에, 이번에도 독립 재현 벤치마크가 나올 때까지 기다려보는 게 합리적이다.</p>
+  </section>
+
+  <div class="foot">
+    <span>analysis on page.cocy.io</span>
+    <span>판정: 용량 수치 진짜, 품질 수치는 검증 대기 · 6/10</span>
+  </div>
+</article>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# Ternary Bonsai 2 27B 팩트체크 — 9배 축소·98% 유지?
+
+> X(@TheAhmadOsman)에서 공유된 PrismML의 "Ternary Bonsai 2 27B — Qwen3.8 27B 대비 9배 축소, 98.2% 성능 유지" 발표를 HuggingFace 파일 사이즈 직접 대조 + 전작 독립검증 이력으로 검증.
+> **한 줄 결론: 회사·모델·용량축소(9.04배) 전부 사실이다. "98.2% 성능 유지"는 벤더 자체 벤치마크뿐이고, 이 회사의 2달 전 전작은 자체발표 95% vs 독립검증 82.9%로 크게 어긋난 전례가 있다.**
+
+## 검증한 주장
+"9x size reduction from Qwen 3.8 27B while maintaining 98% of the performance. The future of Local AI is so good you won't believe it." — PrismML 공식: 9배 작고 5.9GB, 98.2% 종합 벤치마크 성능 유지, Apache 2.0으로 오늘(9/16) 공개.
+
+## 실체 확인
+- PrismML은 실제 회사(PR Newswire 보도자료, Techmeme 등재). HF 리포 `prism-ml/Ternary-Bonsai-2-27B-gguf` 2026-09-16 23:40 UTC 공개, Apache 2.0, base model Qwen/Qwen3.8-27B.
+- "9배 축소" 파일로 정확히 확인: F16 53.8GB → 1비트 삼진양자화(PTQ1_0) 5.95GB = 9.04배. {-1,0,+1} 세 값 가중치, BitNet b1.58과 같은 계열 기법.
+- "98.2% 성능 유지"는 PrismML 자체 20개 벤치마크 수치. 공개 1일차라 독립 재현 검증 아직 없음.
+- 전작(2달 전, Bonsai 27B) 이력: 자체발표 95% 유지 vs 독립 커뮤니티 벤치마크(98문항) 82.9%(기준 Qwen3.6-27B 94.2%) — 10%p+ 격차. 에이전틱 벤치마크(Terminal-Bench 2.0)에서는 7.9%까지 하락, 소형 dense 모델보다 낮음. 팩트체크 영상은 "벤더 자체 측정뿐, 독립 재현 0건" 지적, 실사용자는 환각·약한 비전·"benchmaxed" 느낌 보고.
+
+## 팩트체크
+| 주장 | 실제 확인 | 판정 |
+|---|---|---|
+| PrismML·Bonsai 2 27B 실재, 오늘 공개 | HF 실제 등록, Apache 2.0, PR 확인 | 사실 ✓ |
+| "9배 축소" | 53.8GB→5.95GB=9.04배, 파일로 정확히 재현 | 사실 ✓ |
+| "98.2% 성능 유지" | 벤더 자체 벤치마크뿐, 독립검증 없음 | 미검증 △ |
+| 암묵적 신뢰성 | 전작 자체발표 95% vs 독립검증 82.9%, 에이전틱 7.9% 전례 | 경계 필요 ✗ |
+
+## 결론
+가짜뉴스 아님. 용량축소 수치는 정확히 사실이나, 가장 임팩트있는 "98% 성능 유지"는 벤더 자체 발표뿐이고 같은 회사 전작이 독립검증에서 크게 깎인 전례가 있어 그대로 믿기엔 이르다. 독립 재현 벤치마크가 나올 때까지 보류 권장.
+
+## 출처
+- 원문: X @TheAhmadOsman (PrismML 인용)
+- HF 리포: https://huggingface.co/prism-ml/Ternary-Bonsai-2-27B-gguf
+- 분석 원문: https://page.cocy.io/bonsai2-check
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='bonsai2-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body>
+</html>
