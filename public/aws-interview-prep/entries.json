@@ -40,5 +40,27 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/tool-use.html",
       "https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference-call.html"
     ]
+  },
+  {
+    "index": 4,
+    "day": 1,
+    "date": "2026-09-18",
+    "topic": "MCP Gateway",
+    "depth": "quick",
+    "sections": {
+      "keyterms": "MCP Gateway, Control plane, Policy enforcement point, Tool registry",
+      "definition": "MCP Gateway는 에이전트와 MCP 서버 사이에 위치해서, 인증·인가·라우팅·비용·로깅·가드레일을 한 곳에서 통제하는 계층이다 — 즉 수백 개 MCP 서버에 대한 '프록시+경찰+계량기'다.",
+      "architect": "MCP 아키텍처(index=3)에서 에이전트가 각 MCP 서버를 직접 호출하는 구조는 실험 단계엔 괜찮지만, 조직 규모(1,000명+, 수백 개 서버)로 가면 바로 문제가 된다: 인증은 서버마다 따로 설정해야 하고, 누가 어떤 tool을 얼마나 쓰는지 보이지 않고, 특정 tool을 금지하거나 제한하려면 서버마다 일일이 건드려야 한다. MCP Gateway가 이 모든 것을 단일 진입점으로 해결한다 — 에이전트는 Gateway 하나에만 연결하고, Gateway가 뒤에서 올바른 MCP 서버로 라우팅하면서 정책을 집행한다.",
+      "tradeoff": "Gateway 도입: 단일 진입점으로 통제·가시성·정책 집행이 쉬워진다 — 대신 Gateway 자체가 SPOF가 되고 지연이 한 홉 추가된다. HA 설계와 빠른 프록시 구현이 필수.\n직접 연결 vs Gateway 경유: 소규모(팀 1~2개, 서버 5개 이하)에선 Gateway 오버헤드가 득보다 손실일 수 있다. 조직이 커질수록, 금융권처럼 규제·감사가 강할수록 Gateway의 가치가 급격히 올라간다.",
+      "aws": "AWS에 MCP Gateway 역할의 공식 managed service는 아직 없다. 현재는 Amazon API Gateway + Lambda authorizer 조합으로 프록시 계층을 구성하거나, Bedrock AgentCore의 Tool/Memory 레이어를 일부 활용하는 방식이 현실적이다. 장기적으로는 Bedrock AgentCore가 이 계층을 흡수할 방향으로 가고 있다. (단, AgentCore 직접 사용 경험은 없음 — 개념적 연결이다.)",
+      "experience": "이게 정확히 지금 만들고 운영 중인 시스템이다. Python/FastAPI 기반 LLM Gateway가 MCP Gateway 역할을 하고 있다: 수백 개 MCP 서버·수천 개 tool 앞에서 Claude Code·Codex의 모든 MCP 요청을 받아 라우팅·인증·비용 집계·가드레일 적용 후 통과시킨다. 1,000명 이상 내부 사용자, 월 수백억 token 규모, 금융권 보안 환경에서 운영 중이다. 아키텍처 결정(왜 Gateway를 두었는가, 어떤 정책을 어디서 집행하는가)을 상세히 설명할 수 있다.",
+      "interview_en": "I built and operate an MCP Gateway myself — a central control plane in front of hundreds of MCP servers and thousands of tools. Every tool call from agentic clients like Claude Code goes through it: authentication, authorization, cost tracking, and guardrail enforcement happen at the gateway layer, not inside each individual server. That's the architecture I'd recommend to enterprise customers before they touch any agent framework.",
+      "question": "MCP Gateway 없이 에이전트들이 MCP 서버를 직접 호출한다면, 금융권 보안 환경에서 구체적으로 어떤 문제가 생기는지 3가지만 꼽을 수 있는가?"
+    },
+    "refs": [
+      "https://modelcontextprotocol.io/docs/concepts/architecture",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/bedrock-agentcore.html",
+      "https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html"
+    ]
   }
 ]
