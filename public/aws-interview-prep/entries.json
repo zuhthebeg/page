@@ -19,5 +19,26 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html",
       "https://aws.amazon.com/blogs/machine-learning/build-multi-agent-systems-with-langgraph-and-amazon-bedrock/"
     ]
+  },
+  {
+    "index": 2,
+    "day": 1,
+    "date": "2026-09-18",
+    "topic": "Tool Calling",
+    "depth": "quick",
+    "sections": {
+      "keyterms": "Tool calling, Function calling, Schema validation, Tool registry",
+      "definition": "Tool calling은 LLM이 자연어 대신 정해진 스키마(JSON)로 \"이 함수를 이 인자로 불러줘\"라고 요청하면, 실제 코드가 그걸 실행하고 결과를 다시 LLM에 돌려주는 메커니즘이다.",
+      "architect": "아키텍트 입장에서 tool calling의 핵심은 \"모델이 뭘 해도 되는가\"를 스키마로 못박아두는 것이다 — 모델은 절대 직접 코드를 실행하지 않고, 항상 정의된 인터페이스(스키마)를 통해서만 외부 세계에 접근한다. 이게 무너지면 프롬프트 인젝션이나 의도치 않은 부작용(삭제·결제 등) 사고로 직결되기 때문에, 어떤 tool을 노출할지·어떤 스코프로 제한할지가 곧 architecture의 보안 경계선이다.",
+      "tradeoff": "Tool 수가 적고 명확하면 모델이 정확히 고르지만, 수백~수천 개로 늘어나면 모델이 헷갈려서 잘못된 tool을 고르거나 파라미터를 틀린다 — 그래서 tool을 다 노출하기보다 라우팅·그룹핑·검색으로 후보를 줄여주는 계층이 필요해진다.",
+      "aws": "Bedrock Converse API의 toolConfig가 이 구조를 그대로 구현한다 — JSON 스키마로 tool을 정의하고, 모델이 toolUse 블록을 리턴하면 애플리케이션이 실행 후 toolResult로 되돌려주는 왕복 구조다. Bedrock Agents/AgentCore는 이 왕복을 프레임워크가 대신 관리해줄 뿐, 원리는 동일하다.",
+      "experience": "게이트웨이에서 수백 개 MCP 서버, 수천 개 tool을 실제로 라우팅·인증·기록해왔다 — 다만 이건 tool 실행 로직 자체(에이전트의 tool 선택 판단)를 만든 게 아니라, 그 요청이 안전하게·정책대로 통과하도록 앞단에서 통제하는 일이다. 수천 개 tool 규모에서 \"이 tool을 이 사용자/이 에이전트가 호출해도 되는가\"를 게이트에서 걸러내는 경험은 실전이고, 이건 Bedrock toolConfig 스키마 검증 그 자체보다 한 겹 더 바깥의 governance 레이어 경험이다.",
+      "interview_en": "I don't build the tool-selection logic itself, that lives in the client, like Claude Code. What I built is the gateway in front of it: thousands of MCP tools, and every tool call gets authenticated, authorized, and logged before it's allowed to execute.",
+      "question": "우리 게이트웨이에서 \"이 tool은 허용, 이 tool은 차단\" 판단을 실제로 어떤 기준(정책)으로 하는지, 30초 안에 구체 예시로 설명할 수 있는가?"
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/tool-use.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference-call.html"
+    ]
   }
 ]
