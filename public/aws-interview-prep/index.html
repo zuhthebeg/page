@@ -44,6 +44,9 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(1.7rem,5vw,2.4rem)
 .sec p{font-size:.92rem;color:var(--ink-soft);white-space:pre-wrap}
 .interview{background:var(--bg);border-left:3px solid var(--accent-2);padding:.6rem .8rem;border-radius:4px;font-style:italic}
 .keyterms{font-family:var(--mono);font-size:.82rem;color:var(--accent);letter-spacing:.02em}
+.ans{margin-top:.5rem;background:var(--bg);border:1px dashed var(--line);border-radius:6px;padding:.5rem .8rem}
+.ans summary{cursor:pointer;font-family:var(--mono);font-size:.76rem;color:var(--accent);text-transform:uppercase;letter-spacing:.08em}
+.ans p{margin-top:.5rem;margin-bottom:0;font-size:.9rem;color:var(--ink-soft)}
 .refs{margin-top:.6rem;font-size:.82rem}
 .refs a{color:var(--accent);word-break:break-all}
 .empty{text-align:center;padding:4rem 1rem;color:var(--muted);font-family:var(--display);font-size:1.2rem}
@@ -91,7 +94,7 @@ function linkify(s){
         <div class="sec"><div class="lbl">AWS 연결</div><p>${linkify(s.aws||'')}</p></div>
         <div class="sec"><div class="lbl">내 경험과 연결</div><p>${linkify(s.experience||'')}</p></div>
         <div class="sec"><div class="lbl">면접에서 말하기</div><p class="interview">${linkify(s.interview_en||'')}</p></div>
-        <div class="sec"><div class="lbl">확인 질문</div><p>${linkify(s.question||'')}</p></div>
+        <div class="sec"><div class="lbl">확인 질문</div><p>${linkify(s.question||'')}</p>${s.answer ? `<details class="ans"><summary>모범답안 보기</summary><p>${linkify(s.answer)}</p></details>` : ''}</div>
         ${refs}
       </div>`;
     }).join('');

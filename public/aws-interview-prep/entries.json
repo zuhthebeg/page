@@ -13,7 +13,8 @@
       "aws": "Bedrock 기준으로는 결정론적 구간은 Step Functions + Bedrock InvokeModel 조합으로 짜고, 판단이 필요한 구간에만 Bedrock Agents(또는 AgentCore)를 얹는다. 실제 architecture review에서도 \"왜 전체를 에이전트로 안 만들었는가\"를 설명할 수 있어야 신뢰를 얻는다.",
       "experience": "지금 만들고 있는 LLM Gateway가 이 구분의 실전 사례인데, 정확히는 \"에이전트를 만든 경험\"이 아니라 \"에이전트가 통과하는 control plane을 만든 경험\"이다. Claude Code·Codex 같은 에이전틱 클라이언트가 호출하는 요청을 게이트웨이 레벨에서 라우팅·인증·비용·가드레일로 통제하는 계층을 설계·운영해왔다 — tool 선택이나 멀티스텝 판단 로직 자체(에이전트의 \"뇌\")는 클라이언트(Claude Code/Codex) 쪽 일이고, 내가 통제하는 건 그 앞단의 게이트다. 직접 만든 에이전트는 딱 하나 — 사용자 OS에 맞게 Claude Code/Codex를 설치하고 Gateway 토큰을 셋팅해주는 15턴짜리 작은 셸 에이전트뿐이다. Bedrock Agents/AgentCore 자체를 써본 적도 없다.",
       "interview_en": "I haven't built complex agent orchestration myself — the one agent I built directly is a small, about 15-turn shell agent that installs Claude Code or Codex based on the user's OS and configures the gateway token. What I actually built and run is the control plane those agentic clients call through: routing, auth, cost, and guardrails for tool calling and MCP traffic.",
-      "question": "내가 지금 Gateway에서 \"이 부분은 워크플로우, 이 부분은 에이전트\"라고 나누는 기준을, 구체적 예시 하나로 30초 안에 설명할 수 있는가?"
+      "question": "내가 지금 Gateway에서 \"이 부분은 워크플로우, 이 부분은 에이전트\"라고 나누는 기준을, 구체적 예시 하나로 30초 안에 설명할 수 있는가?",
+      "answer": "예를 들어 '모델 선택/정책 체크'는 규칙표로 바로 결정되는 워크플로우고, '이 로그 파일 분석해서 에러 원인 찾아줘' 같은 모호한 요청은 어떤 도구를 어떤 순서로 쓸지 모델이 판단해야 하니 에이전트에게 넘긴다. 기준은 '다음 스텝이 미리 코드로 쓸 수 있는가, 아니면 그때그때 판단이 필요한가'다."
     },
     "refs": [
       "https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html",
@@ -34,11 +35,34 @@
       "aws": "Bedrock Converse API의 toolConfig가 이 구조를 그대로 구현한다 — JSON 스키마로 tool을 정의하고, 모델이 toolUse 블록을 리턴하면 애플리케이션이 실행 후 toolResult로 되돌려주는 왕복 구조다. Bedrock Agents/AgentCore는 이 왕복을 프레임워크가 대신 관리해줄 뿐, 원리는 동일하다.",
       "experience": "게이트웨이에서 수백 개 MCP 서버, 수천 개 tool을 실제로 라우팅·인증·기록해왔다 — 다만 이건 tool 실행 로직 자체(에이전트의 tool 선택 판단)를 만든 게 아니라, 그 요청이 안전하게·정책대로 통과하도록 앞단에서 통제하는 일이다. 수천 개 tool 규모에서 \"이 tool을 이 사용자/이 에이전트가 호출해도 되는가\"를 게이트에서 걸러내는 경험은 실전이고, 이건 Bedrock toolConfig 스키마 검증 그 자체보다 한 겹 더 바깥의 governance 레이어 경험이다.",
       "interview_en": "I don't build the tool-selection logic itself, that lives in the client, like Claude Code. What I built is the gateway in front of it: thousands of MCP tools, and every tool call gets authenticated, authorized, and logged before it's allowed to execute.",
-      "question": "우리 게이트웨이에서 \"이 tool은 허용, 이 tool은 차단\" 판단을 실제로 어떤 기준(정책)으로 하는지, 30초 안에 구체 예시로 설명할 수 있는가?"
+      "question": "우리 게이트웨이에서 \"이 tool은 허용, 이 tool은 차단\" 판단을 실제로 어떤 기준(정책)으로 하는지, 30초 안에 구체 예시로 설명할 수 있는가?",
+      "answer": "정책은 클라이언트 신원(어느 에이전트/사용자인가) × tool 카테고리(읽기 전용 vs 쓰기/삭제/결제) × 민감도(PII 접근 여부) 조합의 매트릭스로 결정한다. 예를 들어 삭제·결제성 tool은 기본 차단하고 사람 승인을 거치게 하고, 읽기 전용 tool은 신원만 확인되면 바로 허용한다."
     },
     "refs": [
       "https://docs.aws.amazon.com/bedrock/latest/userguide/tool-use.html",
       "https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference-call.html"
+    ]
+  },
+  {
+    "index": 3,
+    "day": 1,
+    "date": "2026-09-18",
+    "topic": "MCP architecture",
+    "depth": "quick",
+    "sections": {
+      "keyterms": "Model Context Protocol, Client-Server, Resources/Tools/Prompts, JSON-RPC",
+      "definition": "MCP(Model Context Protocol)는 LLM 애플리케이션이 외부 데이터·도구·프롬프트 템플릿에 표준화된 방식으로 접근하게 해주는 개방형 프로토콜이다 — \"AI용 USB-C\"라고 생각하면 된다.",
+      "architect": "MCP 이전엔 에이전트마다, LLM 앱마다 각 외부 시스템(DB, API, 파일시스템)에 커스텀 커넥터를 따로 짜야 했다. MCP는 서버(도구/데이터 제공자)와 클라이언트(LLM 앱)를 표준 인터페이스(JSON-RPC 기반)로 분리해서, 서버 하나를 만들면 어떤 MCP 호환 클라이언트에서든 재사용 가능하게 만든다. 아키텍트 입장에서 이건 \"N×M 통합 문제\"를 \"N+M 문제\"로 바꾸는 표준화다.",
+      "tradeoff": "표준화로 재사용성·상호운용성은 크게 오르지만, 프로토콜 자체가 아직 빠르게 진화 중이라(버전 호환성, 인증 스펙 등) 프로덕션에서 버전 관리·보안 확장을 직접 신경 써야 한다. 또 MCP 서버가 많아질수록 신뢰 경계가 늘어나서 거버넌스 없이 그냥 다 연결하면 위험하다.",
+      "aws": "Bedrock AgentCore Gateway가 기존 API(OpenAPI/Lambda)를 MCP 호환 tool로 변환해주는 기능을 제공한다 — 신규로 MCP 서버를 안 만들어도 기존 자산을 MCP 인터페이스로 노출 가능하다.",
+      "experience": "MCP governance가 바로 지금 하는 일이다 — 수백 개 MCP 서버, 수천 개 tool을 게이트웨이 뒤에서 관리하면서 프로토콜 버전, 인증 방식, tool 스키마 변경까지 추적해왔다. MCP 스펙 자체를 설계한 건 아니지만(오픈 표준), 그걸 조직 규모로 안전하게 운영하는 계층은 직접 만들었다.",
+      "interview_en": "MCP standardizes how LLM apps connect to external tools and data, instead of building a custom integration for every pair. I don't maintain the spec itself, but I run the governance layer that manages hundreds of MCP servers safely at scale.",
+      "question": "MCP가 없던 시절이라면, 지금 우리 Gateway가 지원하는 수백 개 tool 연동을 어떻게 구축했을지 — 통합 비용이 얼마나 더 들었을지 한 문장으로 설명할 수 있는가?",
+      "answer": "MCP 없이는 서버마다 전용 어댑터를 따로 짜야 해서 통합 코드가 서버 수만큼 선형으로 늘어난다(N×M 문제) — 지금처럼 표준 클라이언트 하나로 수백 개 서버에 붙는 대신, 새 서버가 추가될 때마다 그 서버 전용 통합 코드를 처음부터 다시 짰어야 했을 것이다."
+    },
+    "refs": [
+      "https://modelcontextprotocol.io/introduction",
+      "https://docs.aws.amazon.com/bedrock/latest/agentcore-ug/gateway.html"
     ]
   },
   {
@@ -55,7 +79,8 @@
       "aws": "AWS에 MCP Gateway 역할의 공식 managed service는 아직 없다. 현재는 Amazon API Gateway + Lambda authorizer 조합으로 프록시 계층을 구성하거나, Bedrock AgentCore의 Tool/Memory 레이어를 일부 활용하는 방식이 현실적이다. 장기적으로는 Bedrock AgentCore가 이 계층을 흡수할 방향으로 가고 있다. (단, AgentCore 직접 사용 경험은 없음 — 개념적 연결이다.)",
       "experience": "이게 정확히 지금 만들고 운영 중인 시스템이다. Python/FastAPI 기반 LLM Gateway가 MCP Gateway 역할을 하고 있다: 수백 개 MCP 서버·수천 개 tool 앞에서 Claude Code·Codex의 모든 MCP 요청을 받아 라우팅·인증·비용 집계·가드레일 적용 후 통과시킨다. 1,000명 이상 내부 사용자, 월 수백억 token 규모, 금융권 보안 환경에서 운영 중이다. 아키텍처 결정(왜 Gateway를 두었는가, 어떤 정책을 어디서 집행하는가)을 상세히 설명할 수 있다.",
       "interview_en": "I built and operate an MCP Gateway myself — a central control plane in front of hundreds of MCP servers and thousands of tools. Every tool call from agentic clients like Claude Code goes through it: authentication, authorization, cost tracking, and guardrail enforcement happen at the gateway layer, not inside each individual server. That's the architecture I'd recommend to enterprise customers before they touch any agent framework.",
-      "question": "MCP Gateway 없이 에이전트들이 MCP 서버를 직접 호출한다면, 금융권 보안 환경에서 구체적으로 어떤 문제가 생기는지 3가지만 꼽을 수 있는가?"
+      "question": "MCP Gateway 없이 에이전트들이 MCP 서버를 직접 호출한다면, 금융권 보안 환경에서 구체적으로 어떤 문제가 생기는지 3가지만 꼽을 수 있는가?",
+      "answer": "1) 인증/인가가 서버마다 흩어져서 누가 뭘 호출했는지 중앙에서 감사 추적이 안 된다. 2) 특정 tool을 차단하려면 서버마다 일일이 수정해야 해서 정책이 서버 수만큼 드리프트한다. 3) 조직 단위 비용·사용량 집계가 안 돼서 이상 사용(과다 호출, 비정상 패턴)을 탐지하지 못한다 — 이건 실제로 금융권 감사 요건에서 바로 걸리는 지점이다."
     },
     "refs": [
       "https://modelcontextprotocol.io/docs/concepts/architecture",
@@ -77,7 +102,8 @@
       "aws": "AgentCore 6개 컴포넌트:\n• Runtime: 에이전트 컨테이너 실행 (Lambda/Fargate 기반)\n• Memory: DynamoDB/S3 기반 단기·장기 상태 관리\n• Gateway: MCP 호환 tool endpoint — API Gateway+Lambda authorizer와 유사하지만 MCP 프로토콜 특화\n• Identity: IAM 기반 에이전트 신원 및 권한 관리\n• Tools: 코드·브라우저·파일 실행 sandbox\n• Observability: CloudWatch+X-Ray 기반 agent trace\n\nStrands는 AgentCore와 자연스럽게 통합되도록 설계됐지만, 특정 플랫폼에 종속되지 않게 오픈소스로 분리되어 있다.",
       "experience": "AgentCore나 Strands를 직접 사용한 경험은 없다 — 개념 수준이고, 구현 디테일은 직접 써봐야 알 부분이 있다.\n\n그러나 AgentCore Gateway가 하려는 일 — MCP 요청의 인증·라우팅·정책 집행 — 은 내가 직접 만들고 운영하는 LLM Gateway와 거의 같은 레이어다. 차이는 \"AWS managed vs self-built\"이고, 그 trade-off를 고객에게 설명할 때 자체 구축 운영 경험이 실질적 근거가 된다.\n\nAgentCore Identity가 에이전트에 IAM role을 붙여주는 것처럼, 내 Gateway도 에이전틱 클라이언트별 인증·인가를 분리해서 policy-based access control로 운영한다.",
       "interview_en": "I haven't used AgentCore or Strands directly, but conceptually, AgentCore Gateway is solving exactly the same problem I built from scratch — MCP routing, auth, and policy enforcement in front of tool servers. The difference is managed service versus self-built, and I know the trade-offs from running it in production in a financial environment.",
-      "question": "고객사가 \"Strands로 에이전트를 만들었는데, production에 올리려면 뭐가 더 필요한가\"라고 물으면, 내 운영 경험에서 필수 항목 3가지를 바로 말할 수 있는가?"
+      "question": "고객사가 \"Strands로 에이전트를 만들었는데, production에 올리려면 뭐가 더 필요한가\"라고 물으면, 내 운영 경험에서 필수 항목 3가지를 바로 말할 수 있는가?",
+      "answer": "1) 인증/인가 — 에이전트·사용자별 신원 분리와 tool 접근 정책. 2) 비용/사용량 관측 — 조직 단위 토큰 집계와 이상 사용 알림. 3) 가드레일/정책 집행 — prompt injection 방어, 민감 tool 승인 플로우, 감사 로그. AgentCore가 이 3가지를 관리형으로 제공하지만, 자체 구축한다면 정확히 이 3개부터 시작해야 한다."
     },
     "refs": [
       "https://docs.aws.amazon.com/bedrock/latest/userguide/bedrock-agentcore.html",
