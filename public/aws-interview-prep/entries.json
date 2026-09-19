@@ -134,4 +134,27 @@
       "https://aws.amazon.com/blogs/machine-learning/amazon-bedrock-agents-now-support-returning-control-to-developers/"
     ]
   }
+  ,{
+    "index": 8,
+    "day": 2,
+    "date": "2026-09-19",
+    "topic": "Agentic RAG",
+    "depth": "medium",
+    "sections": {
+      "keyterms": "Agentic RAG, Query planning, Iterative retrieval, Grounded generation",
+      "definition": "질문을 한 번 검색해서 답하는 RAG가 아니라, 에이전트가 질문을 쪼개고 필요한 자료원을 선택한 뒤 검색 결과를 확인하며 추가 검색까지 수행하는 방식이다.",
+      "architect": "일반 RAG는 검색 한 번의 품질에 크게 의존한다. Agentic RAG는 질문 분석 → 검색 계획 → 검색/도구 호출 → 결과 평가 → 필요 시 재검색이라는 제어 루프를 둬서 복합 질문과 여러 자료원에 대응한다. 아키텍트의 핵심 판단은 모든 요청에 이 루프를 켜는 것이 아니라, 단순 FAQ에는 일반 RAG를 쓰고 다단계·조건부 질문에만 적용해 지연과 비용을 통제하는 것이다.",
+      "tradeoff": "검색 품질과 복합 질문 대응력은 좋아지지만, 모델 호출과 검색 횟수가 늘어 지연·토큰 비용·실패 지점이 증가한다. 또한 에이전트가 잘못된 검색 계획을 세우거나 근거가 부족한데도 종료할 수 있으므로 최대 단계 수, 허용 자료원, confidence 기준, citation 검증을 둬야 한다.",
+      "aws": "Amazon Bedrock Knowledge Bases를 기본 검색·생성 계층으로 두고 Retrieve 또는 RetrieveAndGenerate를 호출할 수 있다. Agentic RAG에서는 Bedrock Agents나 Strands 같은 orchestration 계층이 질문을 분해하고, Knowledge Bases·API·SQL 등 도구 중 무엇을 호출할지 결정한다. 실제 production에서는 S3/데이터베이스 수집·임베딩·벡터 검색은 Knowledge Bases에 맡기되, Gateway/API 계층에서 인증·비용·감사 로그·tool 정책을 중앙 통제하고, 반복 횟수와 답변 근거를 관측한다.",
+      "experience": "Agentic RAG orchestration을 직접 구현하거나 Bedrock Knowledge Bases를 운영한 경험은 없다. 다만 내가 만든 LLM Gateway는 에이전틱 클라이언트가 호출하는 모델·MCP 요청의 인증, 라우팅, 비용 집계, 가드레일을 통제한다. 따라서 에이전트의 검색 계획 로직을 직접 만들었다고 말하지 않고, Agentic RAG를 production에 넣을 때 필요한 control plane—허용된 자료원과 tool, 사용자별 권한, 호출량·비용, 감사 로그, prompt injection 방어—를 설계하는 관점으로 연결해서 말할 수 있다.",
+      "interview_en": "I have not built an Agentic RAG workflow directly, but I understand the architecture and its operational risks. The agent can plan and repeat retrieval when a simple search is not enough, while my experience is on the control plane: authentication, tool routing, cost tracking, and guardrails for agentic clients. I would use this pattern only for complex questions and keep simple requests on standard RAG to control latency and cost.",
+      "question": "일반 RAG 대신 Agentic RAG를 선택해야 하는 상황과, 오히려 쓰지 말아야 하는 상황을 각각 한 가지씩 설명할 수 있는가?",
+      "answer": "여러 문서나 시스템을 조합해야 하고 질문을 하위 질문으로 나눠야 하는 복합 조사형 요청이면 Agentic RAG를 고려한다. 반대로 정형화된 FAQ처럼 한 번의 검색으로 충분한 요청에는 일반 RAG가 낫다. Agentic RAG는 검색 계획과 반복 호출 때문에 지연·비용·실패 지점이 늘어나므로, 최대 반복 횟수와 허용 자료원, 근거 검증 기준을 함께 설계해야 한다. 내 경험과 연결하면, 에이전트 orchestration 자체는 직접 만든 적이 없지만 Gateway에서 tool 접근 정책·비용·감사·가드레일을 통제해 이 운영 위험을 관리하는 역할을 맡을 수 있다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html",
+      "https://docs.aws.amazon.com/bedrock/latest/APIReference/API_agent-runtime_RetrieveAndGenerate.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html"
+    ]
+  }
 ]
