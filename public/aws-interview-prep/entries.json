@@ -225,5 +225,28 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-evaluation.html",
       "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-eval.html"
     ]
+  },
+  {
+    "index": 12,
+    "day": 2,
+    "date": "2026-09-19",
+    "topic": "Guardrails",
+    "depth": "quick",
+    "sections": {
+      "keyterms": "Guardrails, Policy enforcement, Prompt injection, Defense in depth",
+      "definition": "모델이 위험하거나 허용되지 않은 입력·출력·행동을 하지 않도록 경계를 정하고 검사하는 통제 장치다.",
+      "architect": "Guardrails는 모델 하나의 기능이 아니라 요청이 들어와 도구를 호출하고 결과를 반환하는 전체 경로에 배치하는 정책 계층이다. 입력·출력 필터만으로는 부족하므로 인증/권한, tool allowlist, 데이터 분류, 감사 로그, 사람 승인, 속도·비용 제한을 함께 둬야 한다. 특히 prompt injection은 모델에게 하지 말아야 할 일을 시키는 공격이므로 모델의 판단을 신뢰하기보다 실행 경계에서 차단해야 한다.",
+      "tradeoff": "강한 차단 정책은 민감정보 유출과 위험한 tool 실행을 줄이지만 정상 업무까지 막고 사용자 경험을 떨어뜨릴 수 있다. 따라서 모든 요청에 같은 규칙을 적용하기보다 사용자·조직·데이터 민감도·tool 위험도별로 정책을 세분화하고, 차단·경고·사람 승인 단계를 나누는 것이 현실적이다.",
+      "aws": "Amazon Bedrock Guardrails는 모델 호출 앞뒤에서 유해 콘텐츠, 주제, 민감정보와 grounding 관련 정책을 적용하는 구성요소로 사용할 수 있다. 다만 애플리케이션의 IAM 권한, Lambda나 API Gateway의 tool 실행 권한, VPC 경계, 감사 로그를 대신하지 않는다. 실제 architecture에서는 Gateway에서 사용자 인증·조직 정책·모델/도구 allowlist를 먼저 검사하고, Bedrock Guardrails를 모델 입출력의 추가 방어층으로 둔다.",
+      "experience": "Guardrails 제품을 직접 구축한 경험이라기보다, 내가 운영한 Enterprise LLM Gateway에서 prompt injection guardrails, policy-based access control, 인증·인가, MCP tool 라우팅·감사 로그를 통제했다. 에이전트 자체나 Bedrock Guardrails를 직접 사용한 경험은 없지만, 에이전틱 클라이언트가 호출하는 control plane에 정책을 집행하는 경험이 이 개념과 직접 연결된다. 에이전트 orchestration을 직접 만든 경험은 제한적이며, 사용자 OS별 Claude Code/Codex 설치와 Gateway 토큰 설정을 하는 약 15턴짜리 셸 에이전트 하나가 전부다.",
+      "interview_en": "I treat guardrails as a control plane, not just a content filter. In my LLM gateway, I enforced authentication, policy-based access, prompt injection checks, tool routing, and audit logging. I would also use Bedrock Guardrails as an additional defense layer, while keeping tool permissions and business policies outside the model.",
+      "question": "Prompt injection 방어에서 모델 앞뒤의 필터만으로 부족한 이유와, Gateway·IAM·tool 실행 계층에 어떤 통제를 둘지 설명할 수 있는가?",
+      "answer": "모델은 입력에 포함된 지시를 완전히 신뢰할 수 없고, 필터를 통과한 뒤에도 위험한 tool을 선택하거나 민감한 데이터를 반환할 수 있으므로 모델 앞뒤의 필터만으로는 부족하다. Gateway에서 사용자·조직별 인증과 정책을 확인하고, 모델과 MCP tool allowlist, 데이터 민감도, 토큰·비용 한도, 감사 로그를 통제해야 한다. 실제 tool 실행은 IAM과 서비스 계층의 최소 권한으로 다시 제한하고, 고위험 작업은 사람 승인을 요구한다. 나는 에이전트 자체를 운영한 것은 아니지만, 30개 이상 모델과 수백 개 MCP 서버 요청이 통과하는 LLM Gateway에서 이런 control-plane 정책과 prompt injection guardrails를 운영한 경험이 있다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-use.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/agents-create.html"
+    ]
   }
 ]
