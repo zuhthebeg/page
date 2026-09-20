@@ -271,5 +271,28 @@
       "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
       "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-components.html"
     ]
+  },
+  {
+    "index": 14,
+    "day": 3,
+    "date": "2026-09-20",
+    "topic": "AI security",
+    "depth": "medium",
+    "sections": {
+      "keyterms": "Threat modeling, Data poisoning, Model exfiltration, Defense in depth",
+      "definition": "AI 시스템을 공격 대상으로 보고, 모델 입출력·학습 데이터·인프라·공급망 전체에 걸친 위협을 식별하고 통제하는 보안 체계다.",
+      "architect": "일반 앱 보안과 다른 점: 모델 자체가 공격 표면이 된다. 코드 취약점 외에도 입력을 조작해 모델의 \"판단\"을 바꾸거나, 학습 데이터를 오염시키거나, 모델 가중치를 탈취하는 새 공격 벡터가 존재한다.\nDefense in depth를 레이어별로 설계:\n- 인프라: VPC 격리, IAM 최소 권한, 데이터 암호화\n- 인증/인가: 사용자/에이전트 신원 분리, tool allowlist\n- 모델 입출력: prompt injection 방어, 출력 검증\n- 데이터/공급망: 학습 데이터 출처 검증, fine-tune 데이터 오염 방지",
+      "tradeoff": "보안 강화 vs 사용성: 강한 입력 필터와 tool 제한은 공격 표면을 줄이지만 정상 사용까지 막을 수 있다 — 규제 요건·데이터 민감도·tool 위험도별로 정책을 세분화해야 한다.\n모델 공개 vs 보안: 시스템 프롬프트·모델 정보 노출은 적응 공격(jailbreak 최적화, adversarial inputs)을 쉽게 만들어, 보안 환경에선 모델 정보 최소 공개가 원칙이다.",
+      "aws": "Bedrock Guardrails: 모델 입출력 필터(유해 콘텐츠·민감정보·주제 차단)\nAWS IAM + 최소 권한: 에이전트·사용자별 model/tool 접근 분리\nAmazon Macie: S3 저장 학습 데이터·로그의 PII 탐지\nCloudTrail + GuardDuty: 모델 호출·인프라 이상 행동 감지\nVPC + PrivateLink: Bedrock 엔드포인트 격리\nGateway(인증·policy) → Guardrails(입출력 필터) → IAM(실행 시점 최소 권한) 순서로 겹쳐 쌓는 구조가 실제 architecture다.",
+      "experience": "Enterprise LLM Gateway를 금융권 보안 환경에서 설계·운영한 것이 핵심 실전 사례다. Prompt injection guardrails(입력 출처별 신뢰 수준 차등 적용), policy-based access control(사용자·조직·tool 위험도 조합 정책 집행), 에이전틱 클라이언트별 신원 분리와 tool 호출 감사 로그, 비정상 호출 패턴의 토큰·비용 메트릭 탐지를 실제로 운영했다. 에이전트를 직접 만들지 않았기 때문에 오히려 이 security 레이어—모델이 무슨 말을 하든 Gateway에서 실행 경계를 쥐고 있는 구조—가 내 차별점이다. Bedrock 특화 보안 서비스(Macie 연동, GuardDuty AI 확장)는 직접 사용 경험 없음.",
+      "interview_en": "In a financial production environment, I treat AI security as defense in depth: the gateway enforces authentication, tool allowlisting, and policy checks before any model call happens, and prompt injection is blocked at the execution boundary, not by trusting the model. I have not used Bedrock-specific security services like Macie integration directly, but the principle — limit what the model can actually do even if compromised — is built into every layer of the gateway I run.",
+      "question": "AI security에서 \"모델을 믿지 마라\"는 원칙이 실제 architecture에 어떻게 반영되는지 — 구체적인 레이어 3개를 30초 안에 말할 수 있는가?",
+      "answer": "모델은 항상 조작될 수 있다는 가정에서 출발한다. 첫 번째 레이어는 Gateway의 인증·인가·tool allowlist — 모델이 어떤 판단을 내리든 실제로 호출할 수 있는 tool과 데이터 범위를 앞단에서 제한한다. 두 번째 레이어는 IAM 최소 권한 — tool 실행 시점에 서비스 레벨에서도 권한을 다시 검사해 이중으로 차단한다. 세 번째 레이어는 출력 검증과 감사 로그 — 모델 응답을 그대로 신뢰하지 않고 민감정보 필터와 이상 행동 탐지를 통과시킨 뒤 전체 경로를 기록한다. 내 LLM Gateway 운영에서 이 세 레이어는 실제로 동시에 작동했고, 금융권 감사 요건상 어느 하나라도 빠지면 전체 보안 설계가 인정받지 못했다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html",
+      "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+      "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-ec2.html"
+    ]
   }
 ]
