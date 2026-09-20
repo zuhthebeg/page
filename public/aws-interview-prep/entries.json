@@ -340,5 +340,28 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/batch-inference.html",
       "https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html"
     ]
+  },
+  {
+    "index": 18,
+    "day": 3,
+    "date": "2026-09-20",
+    "topic": "Prompt caching",
+    "depth": "quick",
+    "sections": {
+      "keyterms": "Prompt cache, Cache prefix, Cache hit/miss, Cache TTL",
+      "definition": "반복적으로 사용되는 system prompt나 tool 정의를 모델 내부에 미리 연산해두고, 같은 prefix가 다시 오면 재처리 없이 재사용해 비용과 지연을 줄이는 기능이다.",
+      "architect": "Prompt caching의 핵심 설계 문제는 \"어떤 텍스트가 여러 요청에 걸쳐 반복되는가\"를 파악하는 것이다.\n\n효과가 나는 조건: prefix가 길고 고정되어 있으며, TTL(보통 5분) 내에 충분한 재사용 트래픽이 있어야 한다. Tool 정의 수백 개, 긴 정책 컨텍스트가 대표적인 타겟.\n\nCross-caching(여러 사용자가 동일 prefix 공유)이 히트율을 극대화한다 — 1명의 요청으로 cache가 따뜻해지면 이후 수백 명이 cache hit을 받는다. 단, 개인화 컨텍스트가 prefix에 섞이면 캐시 공유가 불가능해지므로 \"공유 고정 prefix / 사용자별 컨텍스트\"를 명확히 분리하는 게 architecture 결정이다.",
+      "tradeoff": "효과 있는 경우: prefix가 크고 고정되어 있고 트래픽이 높을 때 — input token 비용 최대 90% 절감.\n\n효과 없는 경우: 요청마다 prefix가 달라지거나 TTL 내 재사용이 없으면 cache write 비용(약 25% 할증)만 나고 이득 없음. 개인화 컨텍스트와 고정 prefix를 분리하지 않으면 히트율이 바닥.",
+      "aws": "Amazon Bedrock Prompt Caching (Claude 3.x, 일부 Nova 지원):\n- API 요청에 cache_point 명시 → 해당 위치까지 KV cache로 서버 유지\n- Cache hit 시 input token 비용 최대 90% 절감 / cache write는 25% 할증\n- TTL ~5분: 트래픽 패턴이 TTL과 맞는지 확인이 설계 체크포인트\n- Bedrock invocation logging → CloudWatch에서 cache hit/miss 비율 추적\n- Cross-region inference와 조합 시 비용+가용성 동시 최적화 가능",
+      "experience": "직접 운영 경험이다. 월 수백억 tokens Gateway에서 prompt caching과 cross-caching을 구현했다.\n\n수백 개 MCP tool 정의를 system prompt에 포함하는 구조에서 효과가 가장 컸다 — tool 정의가 매 요청마다 수천 input token으로 과금되던 걸 cache prefix로 묶어 90%까지 절감. 1,000명 사용자가 공통 system prompt를 공유하는 cross-caching 설계로 히트율을 높였고, 조직별 cost observability로 실제 절감분을 측정해 보고했다.\n\nGateway를 만든 사람으로서 이건 \"기능 추가\"가 아니라 \"아키텍처 결정\"이었다 — 고정 prefix와 개인화 컨텍스트를 어떻게 분리하느냐가 히트율을 좌우하기 때문이다.",
+      "interview_en": "Prompt caching is one of the highest-leverage cost optimizations I've run in production. In my LLM gateway, we had hundreds of MCP tool definitions in every system prompt — by marking that as a shared cache prefix, we cut input token costs by up to 90 percent on those calls. The key design decision is separating the fixed shared prefix from user-specific context.",
+      "question": "우리 Gateway에서 prompt cache hit율이 낮다면, 어떤 지표를 먼저 보고 어떤 원인 3가지를 순서대로 확인할 것인가?",
+      "answer": "Bedrock invocation logging의 cacheReadInputTokens vs cacheWriteInputTokens 비율을 먼저 확인한다. Hit율이 낮으면 원인 순서대로: (1) prefix 내용이 요청마다 달라지는지 — 개인화 컨텍스트가 고정 prefix 앞에 섞여 있으면 캐시 무효화가 계속 발생한다. 해결: 공유 가능한 고정 부분을 prefix 앞쪽에 집중시키고 개인화 컨텍스트는 뒤로 분리. (2) TTL(~5분) 내에 동일 prefix로 재사용 트래픽이 충분한지 — 트래픽이 낮은 use case는 캐싱 적용을 제거하고 트래픽 높은 use case에 집중. (3) cache_point 위치가 잘못 설정됐는지 — 자주 바뀌는 부분이 prefix 안에 포함되어 있으면 항상 miss가 난다. 이 진단 과정은 실제 운영에서 조직별 cost observability로 use case별 hit율을 측정해 개선한 경험이 있다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html",
+      "https://aws.amazon.com/blogs/machine-learning/reduce-costs-and-latency-with-amazon-bedrock-prompt-caching/"
+    ]
   }
 ]
