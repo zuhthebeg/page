@@ -133,8 +133,8 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/agents-action-groups.html",
       "https://aws.amazon.com/blogs/machine-learning/amazon-bedrock-agents-now-support-returning-control-to-developers/"
     ]
-  }
-  ,{
+  },
+  {
     "index": 8,
     "day": 2,
     "date": "2026-09-19",
@@ -202,8 +202,8 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html",
       "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless.html"
     ]
-  }
-  ,{
+  },
+  {
     "index": 11,
     "day": 2,
     "date": "2026-09-19",
@@ -247,6 +247,29 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html",
       "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-use.html",
       "https://docs.aws.amazon.com/bedrock/latest/userguide/agents-create.html"
+    ]
+  },
+  {
+    "index": 13,
+    "day": 3,
+    "date": "2026-09-20",
+    "topic": "Prompt injection",
+    "depth": "quick",
+    "sections": {
+      "keyterms": "Direct injection, Indirect injection, Jailbreak, Defense in depth",
+      "definition": "사용자 입력·검색 결과·외부 문서 등에 악의적인 지시를 끼워 넣어, 모델이 원래 정책을 무시하고 공격자가 원하는 행동을 하게 만드는 공격이다.",
+      "architect": "\"모델이 잘 훈련됐으니 주입에 강할 것\"이라는 가정이 근본적으로 위험하다. 모델은 system prompt와 user input, 외부 데이터를 완전히 신뢰 수준으로 분리하지 못하며, 어떤 모델도 injection-proof이라고 확신할 수 없다.\n진짜 방어선은 실행 경계에 있다: 공격자가 모델을 어떻게 \"설득\"하든, 모델이 실제로 할 수 있는 범위를 IAM·tool allowlist·Gateway policy로 제한하면 피해 범위를 통제할 수 있다.\n특히 에이전틱 시스템에서 위험도가 급증한다. 에이전트가 tool을 호출할 수 있는 구조라면, 주입 성공 시 데이터 삭제·외부 전송·비정상 API 호출이 실제 피해로 이어진다.",
+      "tradeoff": "입력 필터링(내용 기반 차단): 알려진 주입 패턴을 막을 수 있지만, 정상 입력과의 구분이 어렵고 오탐 위험이 있으며 새로운 변형은 통과한다.\n실행 경계 통제(IAM + tool allowlist + Gateway policy): 입력 내용을 신뢰하지 않아도 피해 범위를 확실히 제한한다 — 대신 설계 복잡도가 높아지고 모든 tool·권한 정의를 사전에 명확히 해야 한다.",
+      "aws": "Amazon Bedrock Guardrails가 모델 입출력의 prompt attack·주제 차단·민감정보 필터 계층을 제공한다. 그러나 Guardrails는 필요조건이지 충분조건이 아니다. 실제 architecture에서는 Guardrails를 방어 레이어 중 하나로 두고, IAM least privilege로 Lambda·tool에 최소 권한을 부여하고, Gateway에서 사용자 인증·tool allowlist·조직 정책을 먼저 검사하며, CloudTrail·감사 로그로 이상 행동을 탐지하는 구조가 되어야 한다.",
+      "experience": "직접 운영 경험이다. Enterprise LLM Gateway에서 prompt injection guardrails를 구현하고 실제로 운영했다. 수천 개 MCP tool, 수백 개 서버 앞에서 allowlist·인증·인가로 실행 경계를 구성했고, 금융권 보안 환경이라 어떤 입력이 들어오더라도 모델이 실제로 호출할 수 있는 tool과 데이터 범위를 Gateway에서 엄격히 제한하는 것이 설계 원칙이었다.\n에이전트 자체를 직접 만들지 않았기 때문에 오히려 더 명확하게 말할 수 있다: 모델이 무슨 말을 하든 Gateway에서 실행 경계를 쥐고 있는 구조.",
+      "interview_en": "Prompt injection defense is not about trusting the model to behave correctly — it's about limiting what the model can actually do even if it's compromised. In my LLM gateway, I enforced tool allowlists, authentication, and policy checks so that even a successful injection cannot reach sensitive operations.",
+      "question": "Direct injection과 indirect injection을 각각 한 줄로 정의하고, 우리 Gateway에서 어느 쪽이 더 위험한지, 그 이유는?",
+      "answer": "Direct injection은 사용자가 직접 \"지시를 무시하고 X를 해줘\"를 입력하는 것이고, indirect injection은 검색 결과·문서·도구 응답 같은 외부 데이터에 악의적인 지시가 숨어 있다가 모델에게 전달되는 것이다. Gateway 운영 관점에서는 indirect injection이 더 위험한데, 모델이 외부 데이터를 \"신뢰할 수 있는 정보\"로 처리하는 과정에서 공격자의 지시가 system 지시처럼 작동할 수 있기 때문이다. 우리 Gateway에서는 입력 출처(사용자 vs 도구 응답 vs 외부 데이터)를 구분해 신뢰 수준을 다르게 적용하고, 어떤 입력이 들어오더라도 실제 tool 실행을 allowlist와 IAM으로 제한하는 것이 핵심 방어 방식이다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html",
+      "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-components.html"
     ]
   }
 ]
