@@ -294,5 +294,28 @@
       "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
       "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-ec2.html"
     ]
+  },
+  {
+    "index": 15,
+    "day": 3,
+    "date": "2026-09-20",
+    "topic": "AI observability",
+    "depth": "quick",
+    "sections": {
+      "keyterms": "LLM observability, Trace, Token usage, Evaluation",
+      "definition": "AI observability는 모델 호출이 얼마나 빠르고 비싸고 정확하며 안전했는지를 요청 단위로 추적해 문제의 원인을 찾는 체계다.",
+      "architect": "일반 애플리케이션의 CPU·에러율만 봐서는 AI 시스템의 품질을 알 수 없다. 하나의 요청이 Gateway, 모델, 검색, MCP tool을 거치면서 발생한 trace에 latency, input/output tokens, model, policy decision, tool call, 오류, 사용자 피드백을 함께 묶어야 한다. 운영 지표는 세 층으로 나눈다: 시스템 건강성(지연·오류·처리량), 경제성(토큰·비용), 결과 품질(정확성·groundedness·task success).",
+      "tradeoff": "전체 prompt와 output을 저장하면 디버깅은 쉬워지지만 금융권에서는 개인정보·기밀 유출과 저장 비용이 커진다. 따라서 기본은 메타데이터·해시·샘플링 중심으로 두고, 민감정보 마스킹과 접근통제를 적용한 제한적 payload logging을 별도로 운영한다. 자동 품질 점수도 유용하지만 모델 기반 평가의 편향이 있으므로 사용자 피드백과 사람 샘플 리뷰를 함께 둔다.",
+      "aws": "Amazon Bedrock runtime의 CloudWatch 지표로 호출량·지연·토큰·오류를 보고, Bedrock model invocation logging을 CloudWatch Logs 또는 S3로 보내 상세 분석한다. CloudWatch Dashboards·Alarms·Logs Insights로 운영 대시보드를 만들고, CloudTrail은 API 변경·관리 행위 감사에 사용한다. 실제 architecture에서는 애플리케이션과 Gateway가 request ID·tenant·model·use case·policy decision을 일관되게 전파해 Bedrock 호출과 사용자 요청을 연결해야 한다.",
+      "experience": "내가 운영한 Enterprise LLM Gateway에서 30개 이상 모델과 1,000명 이상 내부 사용자의 호출을 모델·조직·사용자 단위로 추적했고, 토큰·비용 observability와 usage reporting을 구축했다. MCP 요청과 tool 라우팅도 Gateway에서 기록·통제했지만, 에이전트의 orchestration trace나 자동 품질 평가 pipeline을 직접 만든 경험은 없다. 면접에서는 ‘모델 응답 자체를 평가했다’고 과장하지 않고, 에이전틱 클라이언트가 통과하는 control plane에서 비용·지연·권한·감사 신호를 일관되게 수집한 경험으로 연결한다.",
+      "interview_en": "I see AI observability as more than latency and error monitoring. In my LLM gateway, I tracked model usage, token cost, routing, authorization, and MCP requests by user and organization. I would connect those signals with request IDs and add quality and safety signals, while masking sensitive prompts and outputs.",
+      "question": "AI observability에서 latency·cost만 보고 품질을 놓치지 않으려면 어떤 신호를 수집하고, 금융권에서는 prompt/output 로그를 어떻게 다룰 것인가?",
+      "answer": "Latency와 cost는 운영 효율을 보여주지만 답변이 정확한지, 근거가 있는지, 정책을 위반했는지는 설명하지 못한다. 요청 ID를 기준으로 모델·조직·use case·input/output token·지연·오류·tool 호출·policy decision을 연결하고, 사용자 피드백과 사람 샘플 리뷰 또는 별도 평가로 품질 신호를 추가해야 한다. 금융권에서는 prompt와 output 전체를 무조건 저장하지 않고 민감정보를 마스킹하며, 기본은 메타데이터와 샘플링 로그로 두고 제한된 접근의 상세 로그만 보관한다. 나는 Enterprise LLM Gateway에서 30개 이상 모델의 토큰·비용·사용량과 MCP 요청을 조직 단위로 추적한 경험이 있고, 이를 Bedrock의 CloudWatch 지표와 invocation logging에 연결해 설명할 수 있다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/GenAI-observability.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/monitoring-runtime-metrics.html"
+    ]
   }
 ]
