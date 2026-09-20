@@ -317,5 +317,28 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html",
       "https://docs.aws.amazon.com/bedrock/latest/userguide/monitoring-runtime-metrics.html"
     ]
+  },
+  {
+    "index": 17,
+    "day": 3,
+    "date": "2026-09-20",
+    "topic": "Token economics / cost optimization",
+    "depth": "quick",
+    "sections": {
+      "keyterms": "Input/output token pricing, Prompt caching, Model routing, Batch inference",
+      "definition": "LLM 비용은 \"토큰 수 × 모델 단가\"가 기본이지만, 어떤 토큰을 어떤 모델에서 얼마나 재사용하느냐에 따라 수십 배 차이가 난다.",
+      "architect": "Token economics는 AI 시스템을 지속 가능하게 만드는 핵심 설계 문제다. 세 가지 포인트:\n\n1. Input vs output 비용 비대칭: 대부분 모델은 output token이 input보다 3~5배 비싸다. 긴 system prompt가 verbose한 출력을 유도하면 비용이 폭발한다. output 길이를 통제하는 설계가 그 이유다.\n\n2. 컨텍스트 누적: stateful 대화는 턴이 늘수록 context window가 쌓여 매 요청의 input token 수가 선형으로 늘어난다. 언제 컨텍스트를 요약/압축하거나 잘라낼지를 명시적으로 설계해야 한다.\n\n3. 모델 tiering: 모든 요청이 가장 비싼 모델이 필요하지 않다. 단순 질문은 저렴한 모델로, 복잡한 추론만 고성능 모델로 라우팅하면 전체 비용이 크게 줄어든다.",
+      "tradeoff": "비용 절감 vs 품질: 저렴한 모델로 라우팅하면 단순 요청엔 충분하지만, 복잡한 요청에서 품질 저하 위험이 있다. 라우팅 기준(complexity 분류, use case tier)을 잘못 설계하면 오히려 사용자 경험을 해친다.\n\n캐싱 vs 신선도: 동일 system prompt를 캐싱하면 비용이 줄지만, 캐시 대상이 자주 바뀌는 컨텍스트라면 히트율이 낮아 효과가 없고, 오래된 캐시가 부적절하게 재사용될 위험도 있다.",
+      "aws": "• Bedrock prompt caching: Claude 3.x 등 지원 모델에서 system prompt 반복 비용 최대 90% 절감. 캐시 prefix를 명시적으로 지정.\n• Bedrock Batch Inference: 실시간 응답이 불필요한 대량 작업에 최대 50% 할인.\n• Cross-region inference: 리전별 가용성·가격 차를 활용한 비용 최적화.\n• Bedrock model invocation logging + CloudWatch: 요청별 input/output token 기록 → 조직/use case별 비용 분석.\n• AWS Cost Explorer: Bedrock 서비스 비용 추적 및 예산 알림.",
+      "experience": "이건 직접 운영 경험 그 자체다. 월 수백억 tokens, 1,000명 이상 사용자 규모에서 token·cost observability를 직접 구축해 조직별 usage reporting을 운영했다. Prompt caching과 cross-caching 비용 최적화를 실제로 구현했고, 30개 이상 모델을 라우팅하면서 use case별로 적합한 모델을 선택하는 model routing을 Gateway에서 운영했다. 단순한 요청은 저렴한 모델로, 복잡한 추론이 필요한 요청은 고성능 모델로 라우팅하는 정책을 Gateway에서 집행했다. 에이전트가 아니라 control plane을 만든 사람이기 때문에, 비용 문제를 모델 내부가 아닌 라우팅·캐싱·observability 레이어에서 해결하는 관점이 자연스럽게 나온다.",
+      "interview_en": "At hundreds of billions of tokens per month, cost optimization is architecture, not an afterthought. In my LLM gateway, I built per-organization token and cost observability, implemented prompt caching and cross-caching, and routed requests to cheaper models for simpler use cases. Those three levers alone can reduce total inference cost by 40 to 80 percent.",
+      "question": "지금 우리 Gateway에서 비용을 가장 많이 줄인 최적화 기법 하나를 골라서, \"왜 그 기법이 가장 효과적이었는가\"를 면접관에게 30초 안에 설명할 수 있는가?",
+      "answer": "프롬프트 캐싱이 가장 효과적이었다. 1,000명 이상의 사용자가 공통으로 사용하는 긴 system prompt(정책, 컨텍스트, tool 정의)가 매 요청마다 input token으로 과금되고 있었는데, prompt caching 적용 후 동일 prefix에 대해 캐시 히트가 발생하면 input token 비용이 최대 90%까지 줄었다. 특히 수백 개 MCP tool 정의를 system prompt에 포함하는 구조에서 효과가 컸다. 단순히 비용 수치보다 \"왜 이게 큰지\"를 설명할 수 있는 이유는 LLM Gateway에서 조직 단위 token·cost observability를 구축해서 어느 use case에서 얼마나 절감됐는지 실제로 측정했기 때문이다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/batch-inference.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html"
+    ]
   }
 ]
