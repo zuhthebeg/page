@@ -409,5 +409,28 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/api-methods-run.html",
       "https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html"
     ]
+  },
+  {
+    "index": 21,
+    "day": 4,
+    "date": "2026-09-21",
+    "topic": "Bedrock Knowledge Bases",
+    "depth": "deep",
+    "sections": {
+      "keyterms": "Knowledge Base, Vector store, Chunking strategy, Ingestion pipeline, Retrieve API",
+      "definition": "문서·데이터를 자동으로 임베딩해 벡터 저장소에 넣고, 질문이 오면 관련 청크를 찾아 모델에 주입하는 AWS 관리형 RAG 인프라.",
+      "architect": "RAG를 직접 만들면 세 파이프라인을 모두 소유해야 한다: ① 문서 ingestion·청킹, ② 임베딩 생성, ③ 벡터 검색 + 컨텍스트 주입. Bedrock Knowledge Bases는 이 세 레이어를 관리형으로 제공한다.\n\n핵심 설계 결정은 두 가지다:\n1. 청킹 전략(fixed-size vs semantic vs hierarchical)·임베딩 모델·hybrid search를 정밀 제어해야 하는가 → 직접 구현\n2. 팀이 RAG 파이프라인 자체를 유지보수할 여유가 없는가 → Knowledge Bases\n\n데이터 소스(S3, Confluence, SharePoint, Salesforce 등)와 벡터 스토어(OpenSearch Serverless, Aurora pgvector, Pinecone 등)를 연결하는 ingestion sync를 Bedrock가 자동 관리한다. Bedrock Agents와 결합하면 retrieve action group으로 KB를 자동 호출하는 패턴이 된다.",
+      "tradeoff": "써야 할 때: 데이터 소스가 AWS 생태계 내에 있고, 기본 청킹·검색 품질로 충분하며, 운영 overhead를 낮추고 싶을 때. PoC·MVP에 특히 빠름.\n\n쓰지 말아야 할 때: 도메인 특화 청킹(코드 블록, 금융 표, 계층적 문서)이나 hybrid search(dense+sparse) 튜닝이 필요할 때. 벤더 락인을 피해야 하거나 자체 벡터 스토어가 이미 있을 때.\n\n핵심 trade-off: 관리 편의성 vs 검색 품질 커스텀. KB는 빠르지만 청킹·검색 제어에 한계가 있다.",
+      "aws": "- S3 → 주 데이터 소스 (다른 옵션: Confluence, SharePoint, Salesforce, Web)\n- OpenSearch Serverless → 기본 벡터 스토어 (다른 옵션: Aurora pgvector, Pinecone, Redis Enterprise)\n- Amazon Titan Embeddings / Cohere → 임베딩 모델 선택지\n- Retrieve API: 검색만 / RetrieveAndGenerate API: 검색+생성 일괄\n- Bedrock Agents + KB: Agent가 retrieve action group으로 KB 자동 호출\n- IAM role + VPC PrivateLink: S3·벡터 스토어 접근 권한 및 네트워크 격리",
+      "experience": "직접 구현 경험은 없다. 하지만 내가 운영하는 LLM Gateway는 에이전틱 클라이언트가 모델·MCP tool을 호출할 때 앞단에서 인증·라우팅·비용·가드레일을 통제하는 계층이다. Retrieve/RetrieveAndGenerate API 호출도 게이트웨이를 통과하는 트래픽이고, RAG 컨텍스트 주입 시 input token이 크게 늘어나므로 token observability와 비용 알림이 중요해지는 지점이다. 고객에게 KB 도입을 권할 때 \"청킹 전략·벡터 스토어 선택\" 이전에 \"앞단 인증·비용·감사 로그를 어떻게 구성할 것인가\"가 내가 기여할 관점이다.",
+      "interview_en": "I haven't built a production Knowledge Base myself, but I understand where it fits architecturally. The real design question I'd ask a customer is whether managed chunking and retrieval are sufficient, or whether they need custom hybrid search. Either way, RAG context injection significantly increases token cost — exactly the kind of signal we'd monitor and govern at the gateway layer.",
+      "question": "고객이 \"사내 문서 수만 건을 AI 검색에 쓰고 싶다\"고 할 때, Bedrock Knowledge Bases를 쓸지 직접 RAG 파이프라인을 구축할지 — 판단 기준 3가지를 말해보라.",
+      "answer": "직접 경험은 없지만 인프라 관점에서 판단 기준 세 가지. 첫째, 청킹·검색 커스텀 필요도 — 문서 구조가 복잡하거나 도메인 특화 임베딩이 필요하면 Bedrock KB 기본 청킹으로는 검색 품질이 부족할 수 있다. 둘째, 벤더 락인 허용 범위 — 금융권처럼 특정 AWS 서비스에 데이터가 묶이는 것에 제약이 있다면 자체 벡터 스토어를 검토해야 한다. 셋째, 팀 운영 역량 — RAG ingestion pipeline과 벡터 스토어를 직접 유지보수할 인력이 있는가. 내 LLM Gateway 운영 경험으로 보면, 금융권에서 managed 서비스는 IAM·감사·VPC 격리가 기본으로 붙어 있어 보안 심사를 통과하기 오히려 쉬운 경우가 많다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/kb-data-source-types.html",
+      "https://docs.aws.amazon.com/bedrock/latest/APIReference/API_agent-runtime_RetrieveAndGenerate.html"
+    ]
   }
 ]
