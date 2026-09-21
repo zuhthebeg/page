@@ -386,5 +386,28 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html",
       "https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html"
     ]
+  },
+  {
+    "index": 20,
+    "day": 4,
+    "date": "2026-09-21",
+    "topic": "AWS Bedrock architecture",
+    "depth": "medium",
+    "sections": {
+      "keyterms": "Foundation Models, Converse API, InvokeModel, Cross-region inference",
+      "definition": "Amazon Bedrock는 Anthropic, Amazon, Meta 등 여러 제공사의 파운데이션 모델을 AWS 인프라 위에서 단일 API로 호출할 수 있게 해주는 완전 관리형 서비스다 — 모델 호출 데이터는 AWS 외부로 나가지 않고 모델 학습에도 사용되지 않는다.",
+      "architect": "세 가지 핵심 가치:\n\n1. 멀티 모델 통합 API: Anthropic Claude, Amazon Nova, Meta Llama 등을 동일한 API(InvokeModel, Converse)로 호출 — 모델 교체 시 비즈니스 로직 변경 없이 model ID만 바꾸면 됨.\n\n2. AWS 에코시스템 네이티브 통합: IAM 인증, CloudWatch 모니터링, VPC PrivateLink 격리, KMS 암호화 — 기존 AWS 거버넌스 체계를 그대로 사용.\n\n3. 데이터 격리 보장: 입력 데이터가 모델 제공사 fine-tuning이나 개선에 사용되지 않는다는 계약적 보장 — 금융·의료 규제 환경에서 핵심 조건.\n\n기본 호출 흐름: 클라이언트 → (IAM 인증) → Bedrock API endpoint → Foundation Model → 응답 반환. PrivateLink 구성 시 인터넷 없이 VPC 내부 트래픽만.",
+      "tradeoff": "편의 vs 제어: Converse API 추상화로 멀티모델 라우팅이 쉬워지지만, 모델별 특수 기능(extended thinking 파라미터 등)은 InvokeModel을 직접 써야 하거나 지원 시기가 늦을 수 있다.\n\nCross-region inference: 단일 리전 quota 한계를 넘기 위해 여러 리전으로 분산하면 throughput·가용성이 오르지만, 데이터 레지던시 규제를 먼저 확인해야 한다 — 금융권에서 데이터가 특정 국가 밖으로 나가면 안 된다는 규정이 있으면 cross-region 자체가 불가하다.",
+      "aws": "주요 API:\n- InvokeModel: 모델별 포맷을 직접 다루는 low-level API\n- InvokeModelWithResponseStream: 스트리밍 응답\n- Converse / ConverseStream: 멀티턴 대화·tool calling을 모델 종류 무관하게 통일된 포맷으로 처리 — 신규 구현은 Converse 권장\n\n관련 서비스:\n- IAM: bedrock:InvokeModel 등 권한으로 서비스·사용자별 세분화\n- VPC Interface Endpoint (PrivateLink): 인터넷 없이 Bedrock 호출 — 금융권 필수\n- CloudWatch: InvocationLatency, InputTokenCount, OutputTokenCount 기본 메트릭\n- CloudTrail: 모든 Bedrock API 호출 감사 로그\n- Bedrock Model Invocation Logging: 요청/응답 payload를 S3 또는 CloudWatch Logs에 선택 저장",
+      "experience": "Bedrock을 모델 호출 수준에서 직접 사용해왔다 — Python/FastAPI LLM Gateway에서 InvokeModel과 Converse API를 통해 Claude 등 Bedrock 모델을 라우팅했다. Gateway가 인증·라우팅·비용 집계·가드레일을 담당하고, Bedrock는 모델 실행 계층으로 사용하는 구조다.\n\nBedrock Agents, Knowledge Bases, Bedrock Guardrails 같은 상위 서비스는 직접 사용 경험이 없다 — 면접에서는 API 호출 수준에서 운영했고, 상위 서비스는 아키텍처를 이해하지만 직접 구현 경험은 없다고 정직하게 프레이밍한다.\n\n이전 회차(#19 Model routing)와 직결: Converse API로 model ID를 동적으로 주입하는 구조 덕분에 Gateway에서 30개 이상 모델을 동일한 라우팅 로직으로 처리할 수 있었다.",
+      "interview_en": "I use Bedrock through the Converse API in our LLM gateway — it gives us model-agnostic routing, so we can switch between Claude, Nova, or other models without changing the calling code. I have operated it at scale with IAM-based auth, per-org token tracking, and PrivateLink isolation in a financial environment. For higher-level services like Bedrock Agents or Knowledge Bases, I understand the architecture but have not deployed them directly.",
+      "question": "Converse API와 InvokeModel API의 차이를 한 문장으로 설명하고, 어떤 상황에서 InvokeModel을 직접 써야 하는지 답할 수 있는가?",
+      "answer": "Converse는 멀티턴 대화·tool calling·멀티모달을 모델 종류에 상관없이 동일한 포맷으로 처리하는 표준화 API고, InvokeModel은 모델별 고유 request/response 포맷을 직접 다루는 low-level API다. 대부분의 경우 Converse가 권장인데, 모델을 바꿔도 코드 수정이 없고 tool use 왕복 구조가 표준화되어 Gateway에서 라우팅과 파싱이 쉽기 때문이다. InvokeModel을 직접 써야 하는 경우는 Converse가 아직 지원하지 않는 모델별 특수 기능이 필요하거나, 레거시 통합이 특정 포맷에 의존할 때다. 내 Gateway에서는 Converse API로 30개 이상 모델을 동일한 라우팅 로직으로 처리했다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/api-methods-run.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html"
+    ]
   }
 ]
