@@ -363,5 +363,28 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html",
       "https://aws.amazon.com/blogs/machine-learning/reduce-costs-and-latency-with-amazon-bedrock-prompt-caching/"
     ]
+  },
+  {
+    "index": 19,
+    "day": 4,
+    "date": "2026-09-21",
+    "topic": "Model routing",
+    "depth": "quick",
+    "sections": {
+      "keyterms": "Model routing, Inference profile, Fallback chain, Cost-quality tradeoff",
+      "definition": "요청의 복잡도·비용 정책·가용성에 따라 여러 LLM 중 가장 적합한 모델을 동적으로 선택하는 메커니즘이다.",
+      "architect": "Model routing은 단순한 비용 절감 기술이 아니라 AI 시스템의 reliability와 economics를 동시에 통제하는 architecture 결정이다. 모델 하나에 고정하면 그 모델의 outage·rate limit·버전 변경이 전체 시스템 장애로 직결되고, 모든 요청을 가장 비싼 모델에 보내면 비용과 지연이 폭증한다.\n\nGateway 레이어에서 라우팅을 집행할 때 핵심 기준 세 가지:\n1. 복잡도 기반: 단순 FAQ·요약 → 저렴한 소형 모델 / 멀티스텝 추론·코드 생성 → 고성능 모델\n2. 정책/규제 기반: 금융 데이터 포함 요청 → 특정 리전 or 온프레미스 모델로 강제 라우팅\n3. 가용성 기반: primary 모델 rate limit·outage → fallback 모델 자동 전환\n\n이 로직을 Gateway에서 집행하면 클라이언트 코드가 모델 선택을 전혀 몰라도 되고, 정책 변경 시 Gateway 설정만 바꾸면 전체 시스템에 적용된다.",
+      "tradeoff": "Rules-based routing (use case tag, complexity keyword): 빠르고 예측 가능하지만 경계 케이스에서 틀린 모델을 고를 수 있다.\nML-based routing (classifier): 더 정밀하지만 classifier 유지·학습 비용이 추가되고 classifier 자체가 실패 지점이 된다.\nFallback chain: 가용성 향상 — 대신 fallback 모델의 응답 품질 차이를 서비스 레벨에서 허용할 수 있는지 미리 검증해야 한다.",
+      "aws": "• Amazon Bedrock Inference Profiles: 리전 간 라우팅으로 rate limit 분산 + 가용성 향상\n• Bedrock Converse API: model ID만 바꾸면 라우팅 전환 가능 — Gateway가 model ID를 동적으로 주입하는 구조에 딱 맞음\n• Bedrock Cross-region inference: 특정 리전 용량 부족 시 다른 리전으로 자동 fallback — latency vs availability trade-off를 리전 선택으로 통제\n• API Gateway + Lambda authorizer: 라우팅 정책 실행 계층으로 활용 가능",
+      "experience": "직접 운영 경험이다. 30개 이상 모델(Bedrock, Azure OpenAI, GPU-hosted OSS)을 Gateway에서 라우팅하며, 요청의 use case·조직 정책·비용 한도·모델 가용성에 따라 동적으로 모델을 선택했다. Fallback도 실제 구현 — 특정 모델의 rate limit·장애 시 자동으로 다음 모델로 전환하는 로직이 Gateway에 있어서 클라이언트는 모델이 바뀐 걸 모른다.\n\n이전 회차(#17 Token economics)에서 다룬 비용 최적화와 직결 — routing 없이는 prompt caching만으로 절감 효과가 제한된다. 에이전트가 아니라 control plane을 만든 사람이기 때문에, 이 routing 결정이 클라이언트나 모델이 아닌 Gateway 레이어에서 일어난다는 점이 명확하게 말할 수 있는 차별점이다.",
+      "interview_en": "In my LLM gateway, I route requests across more than 30 models based on use case complexity, cost policy, and availability. Simple requests go to cheaper models, complex reasoning goes to high-performance ones, and when a primary model hits its rate limit or goes down, the gateway automatically fails over — clients never see the model change.",
+      "question": "지금 Gateway에서 \"이 요청은 소형 모델로 충분하다\"고 판단하는 기준 2가지를, 면접관에게 30초 안에 구체적으로 설명할 수 있는가?",
+      "answer": "두 가지 기준: 첫 번째는 use case tier — 미리 정의된 카테고리(단순 Q&A, 요약, 번역 등)는 해당 tier에 매핑된 최소 모델로 시작한다. 두 번째는 컨텍스트 복잡도 — 짧은 컨텍스트이고 tool call이 없거나 읽기 전용 단순 tool만 있으면 소형 모델로 충분하다. 반대로 멀티스텝 plan·코드 생성·복잡한 추론이 필요하거나, 조직 정책상 특정 모델 고정이 요구되면 상위 모델로 올린다. 이 판단은 Gateway 라우팅 규칙으로 집행해서 클라이언트는 모델 선택을 신경 쓰지 않는다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html"
+    ]
   }
 ]
