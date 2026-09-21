@@ -455,5 +455,28 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-create.html",
       "https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_ApplyGuardrail.html"
     ]
+  },
+  {
+    "index": 23,
+    "day": 4,
+    "date": "2026-09-21",
+    "topic": "AWS IAM for AI applications",
+    "depth": "medium",
+    "sections": {
+      "keyterms": "IAM Role, Least privilege, Resource-based policy, Service Control Policy (SCP)",
+      "definition": "AI 서비스(Bedrock, Lambda 등)가 \"누가 무엇을 어떤 조건에서 호출할 수 있는가\"를 정의하는 권한 체계 — AI 애플리케이션에서는 사람이 아닌 서비스·에이전트에 대한 권한 설계가 핵심이다.",
+      "architect": "AI 애플리케이션에서 IAM은 단순 접근 제어를 넘어 \"이 서비스가 어떤 모델을, 어떤 조건에서, 얼마나 호출할 수 있는가\"를 정의한다. Bedrock 호출(bedrock:InvokeModel), Knowledge Base 읽기(bedrock:Retrieve), Guardrail 적용(bedrock:ApplyGuardrail)이 모두 IAM Role로 묶인다.\n\nGateway 레이어에서 보면, Gateway가 assume하는 Role이 모든 downstream 권한의 진입점이다 — Role 하나에 과도한 권한이 붙으면 전체 시스템의 폭발반경이 커진다. bedrock:ModelId Condition Key를 쓰면 \"이 Role은 Claude 3 Haiku만 호출 가능\"처럼 Policy 레벨에서 모델별 제한도 걸 수 있다.",
+      "tradeoff": "Broad vs Least-privilege: 넓은 권한은 개발이 빠르지만 침해 시 폭발반경이 크다. Least-privilege는 설계 비용이 높지만 침해 영향을 최소화 — 금융권 규제 환경에서는 선택이 아니다.\n\nIAM 제어 vs 애플리케이션 레이어 제어: 조직 전체에 강제할 규칙(특정 리전/모델 금지)은 SCP로 IAM에 박고, 사용자·팀별 세밀한 라우팅 정책은 Gateway 레이어에서 관리하는 것이 현실적 — IAM Role은 서비스 단위이므로 사용자별 Role은 관리 불가하다.",
+      "aws": "• bedrock:InvokeModel / bedrock:InvokeModelWithResponseStream: 모델 호출에 필요한 핵심 IAM 권한.\n• bedrock:ModelId Condition Key: Policy에서 특정 모델만 허용하는 세밀한 제어 가능.\n• Lambda/ECS Execution Role: AI 서비스를 호출하는 컴퓨트에 붙는 Role — Bedrock 호출 권한은 여기에 부여.\n• AWS Organizations + SCP: \"이 계정에서 Bedrock 호출은 특정 리전만\" 같은 전사 강제 정책 — 애플리케이션 코드 우회 불가.\n• IAM Identity Center: 사람 사용자의 단기 credential 관리 — AI 서비스에서는 사람보다 서비스 Role 설계가 더 중요하다.",
+      "experience": "LLM Gateway 설계에서 Gateway가 assume하는 Role의 권한 범위가 시스템 전체의 폭발반경을 결정했다. 에이전틱 클라이언트가 Gateway를 통해 모델을 호출할 때 Gateway IAM Role이 모든 downstream 권한의 진입점이 되므로, Role 설계가 곧 보안 경계 설계였다.\n\n\"누가 어떤 모델을 얼마나 쓸 수 있는가\"는 Gateway 내부 Policy 엔진에서 관리했는데, AWS IAM bedrock:ModelId Condition Key는 이 패턴을 IAM 레이어에서도 강제할 수 있는 추가 방어선이다. Bedrock IAM 특화 설정을 직접 구현한 경험은 없지만, 설계 판단 기준은 자체 Gateway 운영 경험과 직접 연결된다.",
+      "interview_en": "In my gateway, the service role is the single choke point for all Bedrock access. I designed it with least privilege — only the models and actions the service actually needs — while user-level routing policies live in the application layer. For enterprise customers I'd also add AWS SCPs at the org level to enforce regional and model restrictions that application config can't bypass.",
+      "question": "Bedrock을 호출하는 Lambda에 IAM 권한을 설계할 때, \"모델별 접근 제어\"를 IAM 레이어에서 직접 걸어야 하는 경우와 애플리케이션(Gateway) 레이어에서 걸어야 하는 경우 — 각각 어떤 기준으로 판단하는가?",
+      "answer": "IAM 레이어에서 직접 거는 게 맞는 경우: 조직 전체에 \"이 서비스/계정은 절대 특정 모델 호출 불가\"라는 강제 정책이 필요할 때 — bedrock:ModelId Condition Key나 SCP로 박으면 애플리케이션 코드 버그나 우회를 막는 절대 방어선이 된다. 반면 사용자·팀별로 세밀하게 나뉘는 라우팅 정책은 애플리케이션(Gateway) 레이어에서 관리하는 게 맞다 — IAM Role은 서비스 단위이므로 사용자별 Role을 만드는 건 현실적으로 불가하다. 내가 구현한 방식도 이 분리였다: Gateway의 IAM Role은 허용 모델 전체를 커버하되, 사용자·팀별 접근 제어는 Gateway 내부 Policy 엔진이 담당했다. 금융권에서는 두 레이어가 모두 필요하다 — IAM/SCP로 절대 불가 경계를 만들고, Gateway에서 세밀한 비즈니스 정책을 집행했다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/security_iam_id-based-policy-examples.html",
+      "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html"
+    ]
   }
 ]
