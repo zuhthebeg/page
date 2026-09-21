@@ -478,5 +478,28 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/security_iam_id-based-policy-examples.html",
       "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html"
     ]
+  },
+  {
+    "index": 24,
+    "day": 4,
+    "date": "2026-09-21",
+    "topic": "VPC / PrivateLink / Bedrock 네트워크 아키텍처",
+    "depth": "deep",
+    "sections": {
+      "keyterms": "VPC Interface Endpoint, AWS PrivateLink, Endpoint Policy, Security Group",
+      "definition": "VPC 안의 애플리케이션이 인터넷을 거치지 않고 AWS 서비스(Bedrock 등)에 직접 연결하는 전용 사설 통로.",
+      "architect": "기본적으로 Bedrock API 호출은 퍼블릭 인터넷을 타고 나간다. 금융·의료 같은 규제 환경에서는 이게 바로 문제다 — \"회사 망 밖으로 데이터 못 나간다\" 정책이 있기 때문이다.\n\nVPC Interface Endpoint(PrivateLink 기반)를 만들면:\n- VPC 서브넷 안에 ENI(Elastic Network Interface)가 생겨 내부 IP 할당됨\n- SDK 코드는 그대로(같은 DNS 이름), 실제 트래픽은 AWS 백본 망으로만 이동\n- NAT Gateway·인터넷 게이트웨이 없이도 Bedrock 호출 가능\n\nBedrock 관련 엔드포인트:\n- `bedrock` — 관리 플레인 (모델 목록 등)\n- `bedrock-runtime` — 실제 모델 호출 (InvokeModel, Converse API)\n- `bedrock-agent-runtime` — Bedrock Agents 실행\n\n보안 3레이어 (AND 조건 — 하나라도 Deny면 차단):\n1. Security Group — 어떤 소스(IP/SG)만 ENI에 접근 허용\n2. Endpoint Policy — 이 엔드포인트로 허용할 Principal·Action·Resource 제한 (IAM 정책 문법)\n3. IAM Policy — 호출 역할에 붙는 표준 Bedrock 권한",
+      "tradeoff": "쓸 때: 금융·의료 규제 환경, 프라이빗 서브넷(NAT 없음), 데이터 exfiltration 방지가 필요한 멀티테넌트 환경.\n\n쓰지 않아도 될 때: 빠른 프로토타입, 인터넷 아웃바운드 허용된 비규제 환경.\n\n핵심 Trade-off:\n- 보안/컴플라이언스 충족 vs 비용·복잡도 — ENI 시간 요금 + 데이터 처리 요금(~$0.01/GB), Private DNS 설정, 서브넷마다 ENI 관리 포인트 증가\n- Endpoint Policy 세분화 vs 운영 부담 — 정책을 좁게 잡으면 새 모델 추가 때마다 업데이트 필요",
+      "aws": "- VPC Interface Endpoint (`enablePrivateDnsNames=true`): 기존 SDK 코드 변경 없이 자동으로 프라이빗 라우팅\n- 허브-앤-스포크 패턴: 중앙 shared services VPC에 엔드포인트 배치 → Transit Gateway로 여러 팀 VPC 연결 → 엔드포인트 비용 절감\n- Route 53 Private Hosted Zone: VPC 내 DNS 쿼리가 엔드포인트 IP로 자동 resolve\n- VPC Flow Logs: 엔드포인트 트래픽도 기록 → 네트워크 레벨 감사\n- Direct Connect / Site-to-Site VPN → VPC → PrivateLink: 온프레미스에서도 인터넷 없이 Bedrock 호출 가능",
+      "experience": "직접 Bedrock VPC Endpoint를 구성한 경험은 없다. 하지만 금융권 LLM Gateway를 운영하면서 \"외부 모델 API 호출이 공용망을 타도 되는가\"는 실제로 마주한 문제다. 우리 환경에선 Gateway가 네트워크 정책의 경계선이었다 — 내부 클라이언트(Claude Code, Codex 등)는 Gateway 내부망 엔드포인트만 호출하고, Gateway만 외부 API에 나가는 구조. 이 패턴은 \"Gateway를 shared services VPC에 두고, Bedrock Endpoint도 같은 VPC 안에 배치\"하는 구조와 정확히 같은 원리다. PrivateLink 구체 설정은 직접 경험 없지만, 왜 이 아키텍처가 필요한지는 실제 경험으로 설명할 수 있다.",
+      "interview_en": "In our financial environment, model API calls cannot go over the public internet. Our LLM gateway sits in a private subnet and is the single exit point for all model traffic. On AWS, I'd implement this with a VPC Interface Endpoint for bedrock-runtime — private DNS handles routing transparently, so no SDK changes needed. Endpoint policy adds an extra IAM-level guardrail on top of role-based permissions.",
+      "question": "금융권 고객이 \"직원들이 Bedrock을 쓰게 해주되, 데이터는 인터넷으로 절대 나가면 안 된다\"고 했을 때, 네트워크 컴포넌트를 어떤 순서로 설계하겠는가?",
+      "answer": "설계 순서: 1) 애플리케이션(또는 LLM Gateway)을 프라이빗 서브넷에 배치 — NAT Gateway 없이 인터넷 아웃바운드 차단. 2) VPC Interface Endpoint for bedrock-runtime 생성, Private DNS 활성화 — SDK 코드 변경 없이 트래픽이 AWS 백본으로만 이동. 3) Security Group을 Gateway SG에서만 엔드포인트 ENI 접근 허용으로 설정. 4) Endpoint Policy로 특정 계정·역할만 특정 모델에만 InvokeModel 허용. 5) 호출 역할 IAM Policy에 최소 Bedrock 권한 추가. 여러 팀이 있으면: shared services VPC에 엔드포인트 하나 배치 → Transit Gateway로 스포크 VPC 연결해 비용 절감. VPC Flow Logs로 네트워크 레벨 감사."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/vpc-interface-endpoints.html",
+      "https://aws.amazon.com/blogs/machine-learning/secure-your-amazon-bedrock-environment-with-vpc-endpoints/",
+      "https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html"
+    ]
   }
 ]
