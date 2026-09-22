@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>"Stagehand v4, Jev 탑재로 97% 절감·11배" 팩트체크 · page.cocy.io</title>
+<meta name="description" content="Stagehand v4가 Jev를 탑재해 Playwright를 대체한다는 바이럴 트윗을 검증했다. 숫자는 진짜 PR 데이터에서 나왔지만, 전부 merge 안 된 실험 브랜치 얘기다.">
+<meta name="keywords" content="Stagehand, Jev, TypeSafe, Playwright, browserbase, 브라우저 자동화, act observe">
+<meta property="og:title" content="Stagehand v4 Jev 통합, 출시됐다는 게 사실인가">
+<meta property="og:description" content="숫자(4.3배·11.1배·97%)는 실제 PR에서 나왔다. 근데 그 PR 10개, 전부 merge 안 됨.">
+<meta property="og:url" content="https://page.cocy.io/stagehand-jev-check/">
+<meta property="og:type" content="article"><meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://page.cocy.io/stagehand-jev-check/">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Stagehand v4 Jev 통합, 출시됐다는 게 사실인가","url":"https://page.cocy.io/stagehand-jev-check/","inLanguage":"ko","author":{"@type":"Person","name":"cocy"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif}body>noscript{display:none}.page{max-width:840px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.2rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.card{border:1px solid var(--line);padding:1rem;border-radius:8px;background:#fff}.card b{display:block;margin-bottom:.25rem}.note{color:var(--muted);font-size:.9rem}.alert{background:#f8e3df;border-left:4px solid var(--bad);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.88em}
+</style></head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<div class="kicker">Model check · Follow-up to jev-check</div>
+<h1>Stagehand v4, Jev 탑재로<br>정말 출시됐나</h1>
+<p class="lead">"오픈소스 Stagehand v4가 나와서 Playwright 유저들이 대거 갈아탄다. 요즘 화제인 Jev를 탑재해서 LLM 호출을 97% 줄이고 속도를 11배 올렸다"는 바이럴 트윗을 봤다. 반복 실행 비용이 "0원"으로 수렴한다는 표현까지 붙었다. 숫자만 보면 인상적인데, 실제로 뭐가 릴리즈됐고 뭐가 아직 아닌지 GitHub PR과 npm 배포 기록을 직접 대조했다.</p>
+
+<div class="verdict"><span class="score">6/10</span><strong>판정: 숫자는 진짜 PR 데이터에서 나왔다, 근데 그 PR 10개가 전부 merge 안 됐다</strong><br>
+<span class="pill yes">✓ Stagehand는 실재하는 유명 오픈소스(★25,009, MIT, Browserbase)</span>
+<span class="pill yes">✓ Jev 연동 작업도 실재 — GitHub에 PR 10개, 9/17~9/21 사이 커밋</span>
+<span class="pill warn">△ 인용된 숫자(4.3배·11.1배·97%)는 실제 PR 결과 표에서 나온 값, 다만 각기 다른 PR의 최고치를 하나로 합침</span>
+<span class="pill no">✗ npm 최신 안정판 v4.1.0(9/9)엔 Jev 코드 자체가 없음 — "v4 출시"와 시점이 안 맞음</span>
+<span class="pill no">✗ PR 10개 전부 merge 안 됨. merge돼도 `experimentalJevAct` 플래그 opt-in이라 기본은 꺼짐</span></div>
+
+<h2>1. 진짜인 부분 — Stagehand와 Jev 연동 작업 자체</h2>
+<p>Stagehand는 진짜다. Browserbase가 만든 오픈소스 브라우저 자동화 SDK로, Playwright 위에서 자연어로 <code>act()</code>(클릭·입력 등 액션), <code>observe()</code>(페이지 요소 파악), <code>extract()</code>(데이터 추출)를 시키는 라이브러리다. 2024년부터 개발돼 ★25,009, MIT 라이선스, 지금도 활발히 커밋되는 프로젝트다.</p>
+<p>Jev 연동도 실재한다. GitHub에 <b>PR 10개짜리 스택</b>(#2951~#2998, 9/17~9/21 사이)이 있다. 지금까지 매 <code>act()</code> 호출마다 a11y 트리 전체를 LLM 한 번에 넘기던 구조를, "클릭 X" "Y에 텍스트 입력" 같은 뻔한 액션은 먼저 Jev(닫힌 선택지 분류 문제)에게 맡기고 애매할 때만 LLM으로 폴백하는 구조로 바꾸는 작업이다. <a href="https://page.cocy.io/jev-gateway-usecases/">전에 정리한 Jev 유즈케이스 리뷰</a>에서 "④ Browser Use"로 꼽았던 바로 그 자리다.</p>
+
+<h2>2. 숫자 검증 — PR 데이터 원본 대조</h2>
+<p>PR 설명에 실제 측정 표가 있다. 트윗의 "97%·11배" 숫자는 실제로 이 표들에서 나왔다:</p>
+<table><thead><tr><th>지표</th><th>출처</th><th>측정값</th></tr></thead><tbody>
+<tr><td>act() 지연시간</td><td>PR #2953</td><td>P50 1.97s → 0.46s = <b>4.3배</b></td></tr>
+<tr><td>observe() 지연시간</td><td>PR #2954</td><td>P50 1.99s → 0.18s = <b>11.1배</b></td></tr>
+<tr><td>LLM 호출 불필요 비율</td><td>PR #2953 (act 스위트)</td><td>147개 중 143개(4개만 LLM 필요) = <b>97.3%</b></td></tr>
+</tbody></table>
+<p>즉 트윗의 "11배"는 <code>observe()</code> 숫자, "97%"는 <code>act()</code> 스위트의 LLM-불필요 비율이다. 둘 다 진짜 값이지만 <b>서로 다른 PR, 서로 다른 함수의 최고치</b>를 하나로 묶어 "Stagehand 전체가 이렇게 좋아졌다"는 식으로 포장한 것 — laya-mlx의 "50배" 사건과 같은 패턴이다. PR 저자 본인도 "in-sample로 threshold를 튜닝했다"고 caveat을 달아뒀다.</p>
+
+<h2>3. "v4 출시로 탑재됐다"는 왜 틀렸나</h2>
+<div class="alert">
+<b>타임라인이 안 맞는다.</b><br>
+- npm <code>@browserbasehq/stagehand</code> 최신 <b>안정판은 v4.1.0, 9월 9일 배포</b>. 이 시점엔 Jev 관련 코드가 저장소에 전혀 없었다(PR들은 9/17부터 시작).<br>
+- Jev 연동 PR <b>10개 전부 아직 merge 안 됨</b>(#2998은 merge 없이 close됨). 지금 <code>npm install</code>로 받는 Stagehand엔 Jev 코드가 안 들어 있다.<br>
+- PR 설명에 명시: "Experimental and off by default. Nothing changes unless <code>experimentalJevAct</code> is present in the init params." — 나중에 merge돼도 기본은 꺼진 상태로 배포될 설계다.
+</div>
+<p>"반복 실행 비용이 0원으로 수렴한다"는 표현도 방향은 맞지만 과장이다. Jev가 LLM 폴백 없이 액션을 끝내면 그 호출의 LLM 토큰 비용은 실제로 0이 맞다(PR 테스트 로그에 "0 LLM tokens"로 명시). 다만 Jev 자체 API 호출 비용은 별도로 존재하고, 97.3%는 특정 튜닝된 테스트 스위트에서 측정한 비율이라 모든 워크로드에 그대로 적용되진 않는다.</p>
+
+<h2>4. 그래서 지금 쓸 수 있나</h2>
+<div class="grid">
+<div class="card"><b>✗ 지금 당장</b><code>npm install stagehand</code>로는 Jev 기능이 안 들어온다. 쓰려면 PR 브랜치를 직접 체크아웃해야 함</div>
+<div class="card"><b>△ merge된 이후</b>플래그 opt-in이라 명시적으로 <code>experimentalJevAct</code>를 켜야 동작. 프로덕션 기본값은 여전히 LLM 전체 경로</div>
+<div class="card"><b>✓ 아이디어 자체</b>a11y 트리 전체를 매번 LLM에 넘기는 대신, 닫힌 선택지 판단만 빠른 분류 모델에 맡기는 설계는 타당 — Jev 게이트웨이 리뷰에서 이미 "지금 당장 넣을 만한 것"으로 꼽은 유즈케이스와 정확히 일치</div>
+</div>
+
+<h2>결론</h2>
+<p>Stagehand도 진짜, Jev 연동 작업도 진짜, 인용된 숫자도 실제 PR 측정치에서 나온 진짜 값이다. 다만 "v4 릴리즈로 탑재돼 Playwright 유저들이 갈아타는 중"이라는 프레이밍은 사실이 아니다 — 10개 PR 전부 merge 전 단계고, merge돼도 기본 꺼짐 상태로 나올 설계다. 실제로 쓰려면 지금은 PR 브랜치를 직접 받아 실험하는 수밖에 없고, 프로덕션에 넣을 물건은 아직 아니다.</p>
+
+<h2>출처</h2><ul class="sources">
+<li><a href="https://x.com/Dontgiveup_26/status/2102286564521111687">원문 X 포스트</a></li>
+<li><a href="https://github.com/browserbase/stagehand">GitHub — browserbase/stagehand</a> (MIT, ★25,009)</li>
+<li><a href="https://github.com/browserbase/stagehand/pull/2953">PR #2953 — act() Jev decision tree (4.3배, 97.3% LLM-free)</a></li>
+<li><a href="https://github.com/browserbase/stagehand/pull/2954">PR #2954 — observe() + cache check (11.1배)</a></li>
+<li><a href="https://www.npmjs.com/package/@browserbasehq/stagehand">npm — @browserbasehq/stagehand</a> (최신 안정판 4.1.0, 9/9 배포)</li>
+<li><a href="https://www.stagehand.dev/evals">stagehand.dev/evals — 공식 벤치마크 페이지</a></li>
+<li><a href="https://page.cocy.io/jev-gateway-usecases/">page.cocy.io — Jev 게이트웨이 유즈케이스 리뷰</a></li>
+<li><a href="https://page.cocy.io/jev-check/">page.cocy.io — Jev 팩트체크</a></li>
+<li><a href="https://page.cocy.io/laya-mlx-check/">page.cocy.io — laya-mlx 팩트체크(같은 패턴)</a></li>
+</ul>
+<div class="foot">cocy.io research note · 2026-09-22 · GitHub PR·npm 배포 기록 1차 출처 대조 검증</div>
+</main></body></html>
