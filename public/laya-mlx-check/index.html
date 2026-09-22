@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>laya-mlx 팩트체크 — "Jev보다 50배 빠르다"? · page.cocy.io</title>
+<meta name="description" content="맥북에어에서 Jev를 11배 빠르게 이긴다는 laya-mlx Tetris 영상과 '50배 빠르다'는 주장을 검증했다. MLX 포팅 자체는 진짜 빠르지만, 50배는 저장소 벤치마크로도 안 나오는 숫자다.">
+<meta name="keywords" content="laya-mlx, Jev, TypeSafe, Apple Silicon, MLX, atomic.chat, System One model, 온디바이스 AI">
+<meta property="og:title" content="laya-mlx, Jev보다 정말 50배 빠른가?">
+<meta property="og:description" content="GitHub 저장소 실측치로 재계산: 실제 배수는 18~37배. 50배는 트윗에만 있고 벤치마크 문서엔 없다.">
+<meta property="og:url" content="https://page.cocy.io/laya-mlx-check/">
+<meta property="og:type" content="article"><meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://page.cocy.io/laya-mlx-check/">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"laya-mlx, Jev보다 정말 50배 빠른가?","url":"https://page.cocy.io/laya-mlx-check/","inLanguage":"ko","author":{"@type":"Person","name":"cocy"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif}body>noscript{display:none}.page{max-width:840px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.4rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.55rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.25rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.card{border:1px solid var(--line);padding:1rem;border-radius:8px;background:#fff}.card b{display:block;margin-bottom:.25rem}.note{color:var(--muted);font-size:.9rem}table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{text-align:left;padding:.75rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.75rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.88em}
+</style></head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<div class="kicker">Model check · Follow-up to laya-check</div>
+<h1>laya-mlx,<br>Jev보다 정말 50배 빠른가?</h1>
+<p class="lead">atomic.chat(@atomic_chat_hq)이 "맥북에어에서 로컬로 돌린 laya가 클라우드 Jev를 11배 빠른 판단으로 테트리스에서 이겼다"는 영상을 올렸다. 인용한 원 트윗(@mizorewww)은 "Jev보다 50배 빠른 버전"이라고 laya-mlx를 소개한다. 둘 다 확인했다 — laya 자체는 <a href="https://page.cocy.io/laya-check/">이미 별도로 검증</a>했으니, 여기서는 이번에 나온 MLX 포팅과 두 속도 주장만 본다.</p>
+
+<div class="verdict"><span class="score">7/10</span><strong>판정: MLX 포팅은 진짜고 빠르다, 그런데 "50배"는 저장소 문서에도 없는 숫자다</strong><br>
+<span class="pill yes">✓ laya-mlx 저장소·HF 가중치 실재, Apache-2.0, 검증 방법론 이례적으로 꼼꼼함</span>
+<span class="pill yes">✓ "1GB 메모리"는 사실 — 실측 피크 할당 943.6MiB/687.6MiB</span>
+<span class="pill warn">△ 실제 배수 재계산하면 18~37배 — "50배"보다 낮음</span>
+<span class="pill no">✗ "50배" 수치는 저장소의 README·BENCHMARKS.md 어디에도 없음 — 트윗에만 있음</span>
+<span class="pill no">✗ 테트리스 "11배" 영상은 방법론 비공개 — laya-mlx 자체 벤치마크(스네이크)와는 다른, 검증 불가능한 데모</span></div>
+
+<h2>1. laya-mlx는 실재하는가</h2>
+<table><thead><tr><th>항목</th><th>확인</th><th>근거</th></tr></thead><tbody>
+<tr><td>GitHub 저장소</td><td><b>실재</b></td><td><code>mizorewww/laya-mlx</code>, 2026-09-19 생성, ★3,769, Apache-2.0</td></tr>
+<tr><td>HF 가중치</td><td><b>실재</b></td><td><code>aac6fef/laya-mlx</code> 등 3종, 2026-09-19 공개, Apache-2.0</td></tr>
+<tr><td>원본 laya와의 정합성</td><td><b>검증됨(저장소 자체 보고)</b></td><td>63개 검증 질문 × FP32/FP16 = 378/378 전부 원본과 동일한 답 선택</td></tr>
+<tr><td>"1GB 메모리" 주장</td><td><b>사실</b></td><td>M3 Max 실측 피크 MLX 할당 943.6MiB(영어)/687.6MiB(다국어)</td></tr>
+<tr><td>atomic.chat 계정</td><td><b>실체 있는 제품</b></td><td>Mac/Windows/iPhone 로컬 AI 앱. <a href="https://page.cocy.io/atomicchat-check/">이전에 별도 검증한 적 있음(8/10)</a></td></tr>
+</tbody></table>
+
+<h2>2. "Jev보다 50배 빠르다" — 어디서 나온 숫자인가</h2>
+<p>인용 트윗(@mizorewww, laya-mlx 제작자 본인)은 "Jev보다 50배 빠른 버전"이라고 못박는다. 그런데 저장소의 README와 BENCHMARKS.md를 전체 검색해도 <b>"Jev"라는 단어도, "50"이라는 배수도 나오지 않는다.</b> 저장소는 자기 모델의 절대 지연시간만 보고한다:</p>
+<div class="grid">
+<div class="card"><b>영어 체크포인트</b>M3 Max에서 P50 <b>13.42ms</b> / P95 13.92ms</div>
+<div class="card"><b>다국어 체크포인트</b>M3 Max에서 P50 <b>7.39ms</b> / P95 7.79ms</div>
+</div>
+<p>Jev 쪽 숫자는 <a href="https://page.cocy.io/jev-check/">이전 검증</a>과 <a href="https://page.cocy.io/jev-gateway-usecases/">Jev 게이트웨이 리뷰</a>에서 쓴 것과 같은 제3자 측정치를 그대로 쓴다 — TypeSafe API 접근 없는 독립 벤치마크 2곳이 측정한 P50 <b>236~296ms</b>(과업별로 다름, 클라우드 호출 기준). 이 둘을 직접 나누면:</p>
+<table><thead><tr><th>비교</th><th>배수</th></tr></thead><tbody>
+<tr><td>영어 체크포인트 (13.42ms) 기준</td><td><b>17.6~22.1배</b></td></tr>
+<tr><td>다국어 체크포인트 (7.39ms) 기준</td><td><b>31.9~40.1배</b></td></tr>
+</tbody></table>
+<p>가장 유리하게 계산해도(다국어 체크포인트 vs Jev 최악 케이스) <b>40배 근처</b>가 최댓값이고, 대표값으로 보면 20~30배대다. "50배"에 닿으려면 Jev를 실제보다 더 느린 조건으로 잡거나, laya-mlx 쪽에서 문서화되지 않은 더 빠른 설정(컴파일·prefix-reuse 등)을 썼을 가능성이 있는데, 어느 쪽이든 트윗에 근거가 안 달려 있다. <b>기술은 진짜 빠르다. "50배"라는 숫자만 부풀려졌다.</b></p>
+
+<h2>3. 테트리스에서 "11배 빠르다"는 영상은 얼마나 믿을 만한가</h2>
+<p>atomic.chat 본문 트윗의 핵심 주장은 다르다 — 실제 게임(Grok 4.7로 만든 테트리스)에서 laya가 Jev보다 <b>11배 빠른 판단</b>으로 이겼다는 것. 이건 위의 원-질문 API 벤치마크와 별개로, 게임 루프 안에서 실측한 수치라는 뜻이다.</p>
+<p>흥미로운 지점: 11배는 방금 계산한 20~40배대보다 오히려 <b>낮다</b>. 이건 오히려 자연스럽다 — 실제 게임에서는 Jev가 클라우드 호출이라 네트워크 왕복 시간이 더해지는데, 그럼에도 11배면 라야 쪽이 유리한 조건을 다 반영해도 보수적인 숫자로 보인다는 뜻이다. 즉 <b>수치 자체의 방향은 그럴듯하다.</b></p>
+<p>다만 검증 가능성은 다른 문제다. laya-mlx 저장소가 공개한 건 <b>스네이크</b> 데모(코드·측정 방법론·GIF·MP4 전부 저장소에 있음)이고, <b>테트리스</b>는 저장소 어디에도 없다 — atomic.chat이 별도로 만든 데모다. 재현 가능한 벤치마크 코드나 방법론 문서가 공개되지 않았으므로, 이건 회사가 만든 <b>프로모션 영상</b>이지 검증 가능한 벤치마크가 아니다. 숫자의 방향은 믿을 만해 보이지만, "11배"라는 정확한 값 자체를 제3자가 재현할 방법은 없다.</p>
+
+<h2>4. 실제로 뭐가 좋은가</h2>
+<p>과장을 걷어내도 남는 게 있다. laya-mlx는 애플 실리콘에서 <b>진짜로 빠르고 가벼운</b> 판단 엔진을 로컬에 놓는 방법을 제공한다. 특히:</p>
+<ul>
+<li><b>13ms 이하 P50</b>은 실시간 루프(게임 AI, 에이전트 내부 판단)에 충분히 쓸 만한 지연시간이다</li>
+<li><b>1GB 이하 메모리</b>는 맥북 에어급 기기에서도 상주시켜 둘 수 있는 수준</li>
+<li><b>378/378 정합성 검증</b>은 포팅 과정에서 원본 모델의 판단이 바뀌지 않았다는 근거로 이례적으로 꼼꼼하다</li>
+</ul>
+<p>단, <a href="https://page.cocy.io/laya-check/">이전 laya 검증</a>에서 확인한 한계는 MLX 포팅으로도 사라지지 않는다 — laya 계열 모델은 confidence가 미보정 상태로 나올 수 있다(비라틴 문자권에서 정확도 0%인데 confidence 95%였던 사례). laya-mlx는 원본 가중치·보정값을 그대로 쓰므로, 속도가 빨라졌다고 판단 품질이 좋아진 건 아니다. 빠른 오답도 여전히 오답이다.</p>
+
+<h2>결론</h2>
+<p>laya-mlx는 실재하고, 성실하게 문서화됐고, 빠르다는 것도 사실이다. atomic.chat의 "11배" 영상은 숫자 방향이 그럴듯하지만 재현 불가능한 데모다. 문제는 "50배"라는 가장 화제성 있는 숫자가 정작 laya-mlx 제작자 본인의 벤치마크 문서에는 없다는 것 — 실제로 계산하면 20~40배대다. 이미 충분히 인상적인 결과에 굳이 더 큰 숫자를 얹은 셈이라, 이 부분만 걸러서 보면 된다.</p>
+
+<h2>출처</h2><ul class="sources">
+<li><a href="https://x.com/atomic_chat_hq/status/2102160983409955244">원문 X 포스트 — atomic.chat, 테트리스 데모</a></li>
+<li><a href="https://github.com/mizorewww/laya-mlx">GitHub — mizorewww/laya-mlx</a> (Apache-2.0, ★3,769)</li>
+<li><a href="https://github.com/mizorewww/laya-mlx/blob/main/BENCHMARKS.md">laya-mlx BENCHMARKS.md — 배수/"Jev" 언급 전무 확인</a></li>
+<li><a href="https://huggingface.co/aac6fef/laya-mlx">HF — aac6fef/laya-mlx</a></li>
+<li><a href="https://atomic.chat">atomic.chat 공식 사이트</a></li>
+<li><a href="https://github.com/AbdelStark/jev-benchmarks">AbdelStark/jev-benchmarks</a> — Jev 클라우드 P50 236~296ms 제3자 측정</li>
+<li><a href="https://page.cocy.io/laya-check/">page.cocy.io — laya 원본 검증(confidence 미보정 문제)</a></li>
+<li><a href="https://page.cocy.io/jev-check/">page.cocy.io — Jev 팩트체크</a></li>
+<li><a href="https://page.cocy.io/atomicchat-check/">page.cocy.io — atomic.chat/Qwen3.8-Flash-Next 검증</a></li>
+</ul>
+<div class="foot">cocy.io research note · 2026-09-22 · 저장소·HF·제3자 벤치마크 1차 출처 대조 검증</div>
+</main></body></html>
