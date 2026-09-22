@@ -617,4 +617,26 @@
       "https://docs.aws.amazon.com/wellarchitected/latest/userguide/intro.html"
     ]
   }
+  ,{
+    "index": 30,
+    "day": 5,
+    "date": "2026-09-22",
+    "topic": "AWS Leadership Principles 관련 경험 정리",
+    "depth": "deep",
+    "sections": {
+      "keyterms": "Ownership, Earn Trust, Dive Deep, Deliver Results",
+      "definition": "Leadership Principles는 성격을 평가하는 구호가 아니라, 실제 상황에서 어떤 판단을 하고 어떻게 결과를 냈는지 설명하는 공통 언어다.",
+      "architect": "Senior Architect는 설계도만 내는 사람이 아니라, 고객의 제약을 이해하고 결정의 책임을 지며 여러 팀의 신뢰를 얻어 결과를 만드는 사람이다. 따라서 경험을 말할 때 기술 스택보다 문제의 맥락, 본인의 판단, 반대 의견과 trade-off, 측정 가능한 결과를 보여줘야 한다. 답변은 STAR를 기본으로 하되, 설계 경험에는 Context → Options → Decision → Consequences를 섞으면 architect다운 판단이 선명해진다.",
+      "tradeoff": "모든 Leadership Principle을 한 사례에 억지로 넣지 않는다. 한 사례의 대표 원칙 1~2개를 고르고, 무엇을 포기했는지까지 말하는 편이 강하다. 결과를 과장하지 말고 본인이 직접 한 일과 팀의 기여를 구분한다. 속도(Bias for Action)를 강조하더라도 금융권 production에서는 안전장치와 검증을 생략하지 않았다는 균형이 필요하다.",
+      "aws": "AWS ProServe 인터뷰에서는 고객 상황에 맞춰 Ownership, Earn Trust, Dive Deep, Deliver Results를 함께 보여주는 방식이 유효하다. 예를 들어 고객의 GenAI 플랫폼을 설계할 때 먼저 보안·데이터 경계를 확인하고(Ownership/Dive Deep), 선택지와 포기할 점을 투명하게 설명해 신뢰를 얻은 뒤(Earn Trust), 운영 가능한 단계적 결과를 낸다(Deliver Results). AWS의 공식 Leadership Principles와 면접 안내도 원칙 기반 질문과 STAR 방식의 경험 설명을 강조한다: https://amazon.jobs/content/en-gb/our-workplace/leadership-principles",
+      "experience": "가장 강한 사례는 금융권 Enterprise LLM Gateway다. 30개 이상 모델과 1,000명 이상의 내부 사용자를 지원하면서 인증·권한·정책·비용·감사·운영을 한 진입점에서 통제했다. 이는 Ownership과 Dive Deep으로 설명할 수 있다. 또한 조직별 사용량과 비용을 보이게 하고, prompt injection guardrail과 policy-based access control을 운영해 사용자와 보안팀의 신뢰를 얻었다는 점은 Earn Trust로 연결된다. 마지막으로 수백억 tokens 규모의 production 환경을 계속 운영한 사실은 Deliver Results의 근거다. 다만 에이전트 orchestration을 직접 만든 경험으로 포장하지 않는다. 내 경험은 에이전틱 클라이언트가 통과하는 control plane을 설계·운영한 것이고, 직접 만든 에이전트는 OS별 Claude Code/Codex 설치와 Gateway 토큰 설정을 하는 약 15턴 셸 에이전트 하나다.",
+      "interview_en": "I show ownership by building and operating an enterprise LLM gateway in a regulated financial environment. I went deep into authentication, policy, cost, and audit requirements, and I earned trust by making the trade-offs visible to security and engineering teams. The result was a production control plane serving over 1,000 internal users and more than 30 models.",
+      "question": "LLM Gateway 사례를 Ownership, Earn Trust, Dive Deep, Deliver Results 중 두 가지 원칙만 골라 STAR 구조로 90초 안에 설명할 수 있는가?",
+      "answer": "Situation: 금융권에서 여러 팀이 서로 다른 방식으로 LLM을 호출하면서 보안·비용·감사 기준을 일관되게 적용하기 어려웠다. Task: 30개 이상 모델과 1,000명 이상의 사용자를 수용하면서 인증, 권한, 비용, 정책을 중앙에서 통제해야 했다. Action: Python/FastAPI 기반 Gateway를 설계하고 모델 라우팅, policy-based access control, prompt injection guardrail, 조직별 사용량·비용 관측을 넣었다. Result: 에이전틱 클라이언트와 MCP 요청이 통과하는 공통 control plane을 production으로 운영했고, 규제 환경에서 통제권과 감사 가능성을 확보했다. 이 사례는 문제를 끝까지 책임진 Ownership과 세부 운영 지표까지 파고든 Dive Deep으로 설명하되, 에이전트 자체를 만든 경험이라고 과장하지 않는다."
+    },
+    "refs": [
+      "https://amazon.jobs/content/en-gb/our-workplace/leadership-principles",
+      "https://www.amazon.jobs/content/en/how-we-hire/interview-loop"
+    ]
+  }
 ]
