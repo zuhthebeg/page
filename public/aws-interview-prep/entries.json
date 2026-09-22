@@ -593,5 +593,28 @@
       "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
       "https://aws.amazon.com/blogs/enterprise-strategy/working-backwards-the-story-behind-amazons-innovation/"
     ]
+  },
+  {
+    "index": 29,
+    "day": 5,
+    "date": "2026-09-22",
+    "topic": "Architecture decision / trade-off 설명법",
+    "depth": "medium",
+    "sections": {
+      "keyterms": "Architecture Decision Record (ADR), Trade-off analysis, Decision framing, Stakeholder alignment",
+      "definition": "아키텍처 결정을 \"이게 최선이라서\"가 아니라 \"이걸 얻기 위해 저걸 포기했다\"는 구조로 — 기술팀과 비즈니스 의사결정권자 모두를 설득할 수 있게 설명하는 방법이다.",
+      "architect": "좋은 아키텍트와 기술 지식만 많은 사람의 차이는 여기서 드러난다. 모든 아키텍처 결정은 trade-off의 선택이다 — 비용을 낮추면 통제권이 줄고, 보안을 강화하면 속도가 느려지고, 관리형 서비스를 쓰면 유연성이 제한된다.\n\nProServe Architect 역할에서 이게 특히 중요한 이유: 고객에게 내 판단을 설득해야 하는 상황이 기본값이다. 기술적으로 옳더라도 고객이 \"왜 그래야 하는지\" 이해하지 못하면 실행되지 않는다.\n\n실전에서 쓰는 설명 구조 (ADR 패턴):\n1. Context — 왜 이 결정이 필요했는가\n2. Options — 어떤 선택지가 있었는가\n3. Decision — 무엇을 골랐는가\n4. Consequences — 무엇을 얻고, 무엇을 포기했는가\n\n이 구조로 말하면 \"Best practice여서\"를 넘어, 기술팀·CTO·CFO가 같은 결정을 같은 맥락에서 이해한다.",
+      "tradeoff": "기술 정확도 vs 비즈니스 언어: 설명이 기술적일수록 정확하지만 의사결정권자를 설득 못 한다. \"성능이 더 낫다\"보다 \"이 선택으로 운영 비용이 얼마 줄고 어떤 위험을 감수하는가\"가 더 의미 있다. 반대로 비즈니스 언어로만 말하면 기술팀의 신뢰를 잃는다. 아키텍트는 두 방향 모두 구사해야 한다.\n\n결정 속도 vs 문서화: 빠른 결정은 delivery를 앞당기지만, ADR로 문서화하지 않으면 6개월 후 \"왜 이렇게 됐냐\"는 질문에 답할 수 없다. ProServe처럼 고객 인수인계가 있는 환경에서는 결정 문서화가 deliverable의 일부다.",
+      "aws": "AWS Well-Architected Framework 6 pillars (Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, Sustainability)가 trade-off 대화의 공통 언어다. 예를 들어 \"Lambda vs ECS\" 결정을 설명할 때: Performance(콜드 스타트 vs 상시 가동), Cost(요청당 과금 vs 고정 비용), Operational Excellence(관리 부담 최소 vs 컨테이너 제어권) 축으로 정리하면 기술팀과 CTO가 같은 언어로 대화할 수 있다.\n\nAWS Well-Architected Tool(콘솔에서 workload 리뷰 가능)과 Architecture Decision Review 문서는 ProServe engagement에서 실제 deliverable로 자주 사용된다.",
+      "experience": "LLM Gateway를 설계할 때 두 가지 핵심 결정이 있었고 각각 명확한 trade-off가 있었다.\n\nManaged vs self-built: AWS 관리형 서비스 대신 Python/FastAPI로 직접 만든 이유는 금융권 보안 요건(데이터가 외부 관리형 서비스로 나가면 안 됨)과 커스텀 인증·감사·정책 집행 필요성이었다. 얻은 것: 완전한 통제권과 감사 가능성. 포기한 것: managed service의 운영 편의성.\n\n중앙 집중 Gateway vs 팀별 분산: 단일 진입점을 선택한 이유는 정책 일관성과 조직 단위 비용 추적. 포기한 것: 각 팀이 자체 라우팅을 최적화할 자유도.\n\n이 결정들을 Context → Options → Decision → Consequences 구조로 설명하는 것이 ProServe Architect가 고객에게 하는 일과 구조적으로 같다.",
+      "interview_en": "Every architecture decision I've made is a trade-off, not just a best practice. When I chose to build a self-hosted gateway instead of a managed service, I gained full control over authentication, policy enforcement, and audit logging — but I accepted the operational burden of running it at scale in a financial environment. I always frame architecture decisions as: here is what we gained, here is what we gave up, and here is the explicit criterion that made this the right trade for this context.",
+      "question": "MCP Gateway를 \"managed service 사용 vs 직접 구축\" 두 선택지로 놓고, Context-Options-Decision-Consequences 4단계로 30초 안에 설명할 수 있는가?",
+      "answer": "Context: 금융권에서 수백 개 MCP 서버·수천 개 tool에 대한 인증·감사·비용 집계·정책 집행이 필수 요건이었고, 데이터가 외부 관리형 서비스로 나가면 안 되는 규제 환경이었다. Options: ① AWS Bedrock AgentCore Gateway 같은 관리형 서비스 — 운영 부담 최소, 빠른 시작. ② Python/FastAPI 직접 구축 — 완전한 통제권, 커스텀 정책 집행. Decision: 직접 구축 선택. Consequences: 얻은 것 — 데이터 격리, 커스텀 감사 로그, 조직별 비용 추적, 모델 라우팅 완전 통제. 포기한 것 — managed service의 자동 스케일링과 운영 편의성. 결정 기준: \"금융권 규제 환경에서 통제권 > 운영 편의성\"이라는 명확한 criterion이 있었다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html",
+      "https://aws.amazon.com/architecture/well-architected/",
+      "https://docs.aws.amazon.com/wellarchitected/latest/userguide/intro.html"
+    ]
   }
 ]
