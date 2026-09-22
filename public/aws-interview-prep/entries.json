@@ -524,5 +524,28 @@
       "https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html",
       "https://docs.aws.amazon.com/bedrock/latest/userguide/inference.html"
     ]
+  },
+  {
+    "index": 26,
+    "day": 5,
+    "date": "2026-09-22",
+    "topic": "Production AI architecture trade-offs",
+    "depth": "quick",
+    "sections": {
+      "keyterms": "Build vs buy, Latency budget, Vendor lock-in, Abstraction layer",
+      "definition": "Production AI 시스템을 실제 서비스에 올릴 때, 성능·비용·보안·유지보수성 사이에서 어떤 것을 포기하고 어떤 것을 얻을지를 명시적으로 결정하는 아키텍처 판단 과정.",
+      "architect": "핵심 질문: \"최선의 설계\"가 아니라 \"이 제약 조건에서 최적의 설계\"가 무엇인가.\n\n주요 결정 축:\n• Managed vs self-hosted: Bedrock 같은 managed inference vs GPU 클러스터 직접 운영 — 초기 속도·운영 부담 절감 vs 장기 비용·모델 커스터마이징·데이터 주권\n• Centralized gateway vs distributed: 모든 LLM 호출을 단일 게이트웨이로 vs 각 서비스가 직접 호출 — 거버넌스·비용 가시성 vs 레이턴시·SPOF 위험\n• Abstraction layer 여부: 처음부터 모델 provider를 추상화할지 vs 특정 provider에 바로 의존할지 — 장기 유연성 vs 초기 속도\n\nProServe 아키텍트 역할: 고객의 실제 우선순위를 파악하고 trade-off를 명시적으로 선택·문서화하는 것. \"내가 이 선택을 한 이유\"를 설명할 수 있어야 한다.",
+      "tradeoff": "1. Managed(Bedrock) → 빠른 시작, 운영 부담 없음, AWS 통합 자연스러움. 단, 수백억 token 규모 이상에서는 dedicated GPU가 비용 우위. 규제로 외부 전송 불가인 환경은 선택지 자체가 없음.\n2. Abstraction layer → 첫날부터 두면 나중에 provider swap 시 클라이언트 코드 무변경. 초기 설계 복잡도는 오르지만 \"빠르게 시작하고 싶다\"와 \"나중에 바꿀 수도 있다\"를 동시에 충족하는 유일한 답.",
+      "aws": "• Bedrock: managed inference + PrivateLink로 데이터 인터넷 미경유 가능\n• SageMaker Endpoints (Dedicated): 대용량·커스터마이징 필요 시, Bedrock보다 제어권 높음\n• API Gateway + Lambda / ECS: LLM 앞단 추상화 레이어 — spiky 트래픽은 Lambda, steady high-throughput은 ECS\n• Step Functions: 비동기 AI 워크플로우 — long-running 작업, human approval, retry managed 처리",
+      "experience": "이게 실제로 매일 하는 판단이다.\n• Gateway 집중형 선택: 30개 이상 모델·1,000명 이상 사용자를 단일 control plane에서 통제 — 거버넌스·비용 추적·가드레일이 목적. 레이턴시 홉 추가와 SPOF 위험은 HA 설계로 감수했다.\n• Managed + self-hosted 혼용: Bedrock + Azure OpenAI + open-source GPU 클러스터를 동시에 운영하며 비용·성능 균형. 첫날부터 abstraction layer를 뒀기 때문에 가능했다.\n• 금융권 데이터 주권: 일부 모델은 데이터가 외부로 나가면 안 되는 규제 때문에 on-prem GPU로만 처리 — \"managed가 편하더라도 선택지가 없는 경우\"가 실제로 존재한다.",
+      "interview_en": "In my experience running an enterprise LLM gateway at scale — over 30 models, 1,000-plus users, hundreds of billions of tokens per month — every architecture decision was a trade-off. We chose a centralized gateway for governance and cost visibility, accepting the extra hop. We mixed Bedrock, Azure OpenAI, and on-prem GPU to balance cost and regulatory constraints. The abstraction layer we built on day one is what made that mix-and-match possible.",
+      "question": "고객이 \"지금 당장 Bedrock으로 시작하고 싶다\"면서 \"6개월 후에 자체 GPU로 바꿀 수도 있다\"고 할 때, 첫날부터 해놔야 하는 아키텍처 결정은 무엇인가?",
+      "answer": "첫날부터 LLM 호출을 추상화하는 레이어(내부 API 또는 게이트웨이)를 두고, 애플리케이션 코드가 Bedrock SDK를 직접 부르지 않게 한다. 게이트웨이가 모델 엔드포인트를 추상화하면 Bedrock → SageMaker → on-prem GPU로 swap할 때 클라이언트 코드를 건드리지 않아도 된다. 이건 내가 실제 Gateway를 설계할 때 쓴 접근법 — Bedrock/Azure/on-prem GPU를 단일 API surface 뒤에서 라우팅하면서 provider를 자유롭게 바꿀 수 있었다. \"빠른 시작\"과 \"장기 유연성\"은 서로 배타적이지 않다. 단, 추상화 레이어 자체의 복잡도와 유지보수 비용은 처음부터 고려해야 한다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html",
+      "https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/usingVPC.html"
+    ]
   }
 ]
