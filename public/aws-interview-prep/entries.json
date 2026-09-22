@@ -547,5 +547,28 @@
       "https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints.html",
       "https://docs.aws.amazon.com/bedrock/latest/userguide/usingVPC.html"
     ]
+  },
+  {
+    "index": 27,
+    "day": 5,
+    "date": "2026-09-22",
+    "topic": "Customer-facing architecture discussion",
+    "depth": "deep",
+    "sections": {
+      "keyterms": "Discovery session, Architecture Decision Record (ADR), Trade-off presentation, Working backwards",
+      "definition": "고객의 비즈니스 목표·기술 제약·운영 현실을 먼저 듣고, 가능한 architecture 선택지와 각 trade-off를 설명하며, 고객이 스스로 결정을 내릴 수 있도록 이끄는 대화다.",
+      "architect": "ProServe 아키텍트의 역할은 \"최선의 답을 알려주는 것\"이 아니라 \"고객이 올바른 질문을 하도록 돕는 것\"이다.\n\n고객 대면 architecture 대화에서 흔한 실수:\n- 솔루션을 먼저 제시하고 고객 맥락은 나중에 듣는 것\n- 기술 용어로 설명하다 고객이 \"그냥 맡길게요\"가 되게 만드는 것\n- 고객이 실제로 무엇을 걱정하는지(비용? 규제? 일정?) 안 묻고 기술 완성도만 추구하는 것\n\n올바른 흐름:\n1. Listen first — 현황(기존 시스템, 데이터, 사용자, 규제), 비즈니스 목표, 실패 경험\n2. Frame the problem — \"지금 가장 큰 위험은 X이고, Y가 해결되면 Z가 가능합니다\"\n3. Present options, not answers — 선택지 2~3개 + 각각의 trade-off를 대화로\n4. Drive to decision — 고객이 선택 근거를 이해하고 스스로 결정하게\n\n결정은 ADR(Architecture Decision Record)로 문서화 — \"무엇을 선택했고, 왜 다른 선택지를 배제했는가\"를 남겨야 6개월 후 \"왜 이렇게 됐지?\"를 방지한다.",
+      "tradeoff": "Discovery 깊이 vs 속도: 고객 현황을 충분히 듣지 않으면 틀린 솔루션을 빠르게 제안하게 된다. Discovery에 투자하는 시간이 전체 프로젝트 속도를 높인다.\n\n기술 완성도 vs 운영 현실: 아키텍트 눈에 \"완벽한\" 설계가 고객 팀의 역량·예산·일정과 맞지 않을 수 있다. 고객이 실제로 운영할 수 있는 단순한 설계가 완벽한 설계보다 낫다.",
+      "aws": "AWS Well-Architected Framework가 고객 대면 architecture 대화의 공용 언어다. 5개 기둥(운영 우수성·보안·신뢰성·성능 효율성·비용 최적화)으로 구조화된 질문을 던지면, 고객도 자신의 시스템 위험을 스스로 인식한다.\n\nProServe에서 실제로 쓰는 접근:\n- Well-Architected Review: 기존 시스템의 위험을 구조화된 질문지로 찾아내는 세션\n- Working Backwards: 고객이 원하는 결과(press release 형태)에서 역방향으로 기술 요구사항 도출\n- PRFAQ → Architecture: 고객의 실제 목표와 기술 구현 사이의 간극을 드러내는 도구\n\nAI architecture 맥락: \"Bedrock 쓰면 됩니다\"가 아니라 \"데이터가 어디 있는가, 누가 접근하는가, 규제 요건은 무엇인가\"를 먼저 묻는 것이 ProServe architect의 시작점.",
+      "experience": "직접적인 ProServe 스타일 외부 고객 컨설팅 경험은 없다. 내 경험은 \"조직 내 이해관계자 대면\"이다.\n\n금융권에서 LLM Gateway를 설계하면서 보안팀·컴플라이언스·인프라·사업부 등 서로 다른 청중에게 같은 architecture를 다른 언어로 설명해야 했다:\n- 보안팀: \"모든 AI 호출이 단일 관문을 통과해 감사가 가능합니다\"\n- 재무팀: \"조직 단위로 비용이 측정됩니다\"\n- 엔지니어: \"FastAPI + policy engine으로 MCP 요청을 라우팅합니다\"\n\n이것이 ProServe 대화와 구조적으로 같은 스킬이다 — 같은 architecture를 청중에 맞는 언어로 번역하는 것. 외부 고객 대면 경험을 과장하지 않되, 이 내부 경험을 \"다른 맥락에서 증명된 같은 역량\"으로 솔직하게 연결한다.",
+      "interview_en": "I haven't done ProServe-style customer engagements directly, but inside a financial organization I had to translate the same architecture for security, compliance, finance, and engineering teams. The skill is the same: listen to what each stakeholder actually worries about, then frame trade-offs in their language so the decision becomes theirs to own.",
+      "question": "고객사 CTO가 \"AI 에이전트를 도입하고 싶은데 어디서 시작해야 하는가?\"라고 물었을 때, 솔루션 제시 전에 먼저 어떤 질문 4가지를 하겠는가?",
+      "answer": "좋은 첫 4가지 질문: 1) \"지금 사람이 이 프로세스를 어떻게 처리하는가?\" — AI를 붙이기 전에 현재 워크플로우를 이해해야 한다. 2) \"어떤 데이터가 있고, 누가 접근할 수 있으며, 규제 제약은 무엇인가?\" — 금융권이라면 데이터 문제가 곧 architecture를 결정한다. 3) \"성공을 어떻게 측정할 것인가?\" — 답변 정확도? 처리 시간 단축? 비용 절감? 명확한 성공 기준 없이는 에이전트를 평가할 수 없다. 4) \"가장 큰 위험은 속도인가, 비용인가, 규제인가?\" — 이 답에 따라 managed service vs self-hosted, RAG vs fine-tuning 같은 핵심 architecture 결정이 달라진다. 이 4가지만으로 \"에이전트가 정말 필요한지, 아니면 단순한 RAG나 워크플로우 자동화로 충분한지\"를 먼저 판단하고 솔루션을 제안해야 한다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+      "https://aws.amazon.com/architecture/well-architected/",
+      "https://aws.amazon.com/blogs/enterprise-strategy/working-backwards-the-story-behind-amazons-innovation/"
+    ]
   }
 ]
