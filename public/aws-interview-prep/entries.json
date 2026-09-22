@@ -501,5 +501,28 @@
       "https://aws.amazon.com/blogs/machine-learning/secure-your-amazon-bedrock-environment-with-vpc-endpoints/",
       "https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html"
     ]
+  },
+  {
+    "index": 25,
+    "day": 5,
+    "date": "2026-09-22",
+    "topic": "RAG vs fine-tuning vs prompting",
+    "depth": "quick",
+    "sections": {
+      "keyterms": "Retrieval-Augmented Generation, Fine-tuning, In-context learning, Knowledge boundary",
+      "definition": "모델에게 지식을 주는 세 가지 방법: 프롬프트에 직접 넣거나(prompting), 외부 검색으로 끌어오거나(RAG), 모델 가중치 자체를 학습시키거나(fine-tuning) — 셋은 배타적 선택이 아니라 조합해서 쓴다.",
+      "architect": "아키텍트의 질문은 \"어느 하나를 고를 것인가\"가 아니라 \"어느 조합이 이 use case의 비용·품질·유지관리 trade-off를 충족하는가\"다.\n\n- Prompting: 모델을 바꾸지 않고 system prompt·예시·context에 정보를 담는다. 가장 빠르고 변경이 쉬우며 재훈련 없이 즉시 반영된다. 컨텍스트 window 한계와 매 요청의 토큰 비용이 제한.\n- RAG: 동적으로 외부 저장소에서 관련 문서를 검색해 context에 주입한다. 지식 베이스가 크거나 자주 바뀌는 경우 적합. 검색 품질에 의존하고 파이프라인 운영 비용이 생긴다.\n- Fine-tuning: 모델 가중치 자체를 업데이트해 특정 스타일·형식·행동 패턴을 고정한다. prompting으로 통제 안 되는 형식 강제에 유효하지만, 고비용·재훈련 주기·데이터 준비가 필요하다.\n\n실무 접근 순서: prompting 먼저 → 지식 규모/신선도 문제면 RAG 추가 → 그래도 해결 안 되면 fine-tuning.",
+      "tradeoff": "1. 지식 업데이트 빈도: 지식이 자주 바뀌면 fine-tuning은 부적합(재훈련 비용·주기 문제). RAG는 모델 재훈련 없이 데이터 업데이트만으로 최신 지식 반영 가능.\n2. 행동 통제 vs 지식 주입: \"항상 이 형식으로 답해라\" 같은 행동 패턴은 fine-tuning이 확실하지만, 먼저 system prompt + few-shot으로 시도하는 게 맞다. \"이 도메인 지식을 알아야 한다\"는 RAG나 prompting으로 대부분 해결된다.",
+      "aws": "- Prompting: Bedrock Converse API + system prompt 구성\n- RAG: Bedrock Knowledge Bases (OpenSearch Serverless 벡터 검색 + 생성 파이프라인 managed)\n- Fine-tuning: Bedrock Custom Model Customization — fine-tuning 또는 continued pre-training 잡 실행\n- 세 방식을 조합할 때 Gateway/API 계층에서 어떤 모델(base vs fine-tuned)을 어떤 use case에 라우팅할지 결정하고, 비용과 품질을 per-use-case로 추적해야 한다.",
+      "experience": "Prompting과 model routing은 실무 경험 그 자체다 — 30개 이상 모델을 Gateway에서 라우팅하면서 어떤 요청에 어떤 모델을 쓸지 정책으로 관리했다. 놀랍게도 fine-tuned model이 필요한 case는 생각보다 드물었고, 대부분 system prompt 설계와 모델 선택으로 해결됐다.\n\nRAG는 개념과 architecture 수준에서 잘 알지만 Bedrock Knowledge Bases를 직접 운영한 경험은 없다. Fine-tuning은 개념 수준 — 직접 fine-tune을 실행해본 경험은 없다.\n\n면접에서 이 순서를 정직하게 말할 수 있다: \"prompting부터 쓴다 → 지식 규모 문제면 RAG → 행동 고정이 목적이고 prompting으로 안 되면 그때 fine-tuning 검토.\" Gateway 운영자로서 비용·유지관리·품질의 조합이 어느 지점에서 갈리는지 실제로 봤기 때문에.",
+      "interview_en": "My default is prompting first — it's the cheapest and fastest to iterate. When the knowledge base is too large or changes too frequently to fit in context, I layer in RAG. Fine-tuning is the last resort, only when behavior or output format cannot be reliably controlled through prompting alone.",
+      "question": "고객이 \"우리 도메인 용어를 잘 아는 챗봇이 필요한데 fine-tuning이 필요하냐\"고 물으면, 판단 기준 3가지를 30초 안에 말할 수 있는가?",
+      "answer": "1) 지식이 자주 바뀌는가 → 바뀐다면 fine-tuning 재훈련 주기를 감당할 수 없으니 RAG가 낫다. 2) prompting(system prompt + few-shot examples)으로 먼저 시도했는가 → 대부분의 도메인 용어·스타일은 여기서 해결된다. 3) prompting으로도 안 되는 형식·행동 강제가 있는가 → 그때만 fine-tuning 검토. Gateway 운영 경험에서 보면, 30개 이상 모델을 라우팅할 때 fine-tuned model이 필요한 case는 드물었고, 대부분은 system prompt + model routing으로 해결됐다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html",
+      "https://docs.aws.amazon.com/bedrock/latest/userguide/inference.html"
+    ]
   }
 ]
