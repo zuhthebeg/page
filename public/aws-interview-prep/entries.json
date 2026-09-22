@@ -570,5 +570,28 @@
       "https://aws.amazon.com/architecture/well-architected/",
       "https://aws.amazon.com/blogs/enterprise-strategy/working-backwards-the-story-behind-amazons-innovation/"
     ]
+  },
+  {
+    "index": 28,
+    "day": 5,
+    "date": "2026-09-22",
+    "topic": "AWS ProServe 방식의 workshop / discovery",
+    "depth": "deep",
+    "sections": {
+      "keyterms": "Discovery workshop, Current-state assessment, Working backwards, Action plan",
+      "definition": "고객사 현장에 들어가서, 현재 상태와 목표를 체계적으로 파악하고, 고객이 직접 결론에 도달하도록 이끄는 AWS ProServe의 컨설팅 진단 방식이다.",
+      "architect": "ProServe Architect가 기술을 \"팔거나 설명\"하는 게 아니라 고객이 문제를 스스로 발견하고 우선순위를 매기도록 퍼실리테이션하는 것이 핵심이다. Architect의 역할은 세 가지:\n• Assessment: 현재 인프라·프로세스·조직 역량을 있는 그대로 기록\n• Gap 식별: 목표 상태(TO-BE)와의 간격을 기술·조직·재무 관점에서 정리\n• Prioritization: ROI·위험·실현 가능성 기준으로 Quick Win과 장기 이니셔티브 분리\nArchitecture recommendation은 이 Discovery 결과를 근거로 나온다 — 근거 없이 솔루션을 먼저 제안하면 신뢰를 잃는다.",
+      "tradeoff": "깊이 vs 속도: 2~3일 단기 workshop은 빠르게 방향을 잡지만 조직 정치·숨겨진 의존성을 놓칠 수 있다. 길면 정확하지만 고객 피로도가 올라간다.\n고객 주도 vs Architect 주도: 고객이 결론을 스스로 내려야 buy-in이 생긴다 — 퍼실리테이션 없이 방치하면 논의가 산으로 간다. 질문을 던지고 구조를 잡되 답을 먼저 말하지 않는 균형이 필요하다.",
+      "aws": "AWS CAF(Cloud Adoption Framework): Business/People/Governance/Platform/Security/Operations 6개 관점으로 현재 상태를 평가하는 공통 언어. ProServe Workshop의 구조적 기반.\nWell-Architected Review: 특정 워크로드의 현재 상태 Gap 분석 — 고객이 스스로 체크하게 만드는 도구.\nWorking Backwards: PRFAQ 방식으로 목표를 먼저 쓰고 거꾸로 갭을 찾는 AWS 특유의 접근법. Discovery workshop에서 자주 활용된다.",
+      "experience": "AWS ProServe Workshop/Discovery를 직접 퍼실리테이션한 경험은 없다 — 명확히 약한 영역이다.\n다만 Enterprise LLM Gateway를 조직에 도입할 때 사실상 내부 Discovery를 거쳤다: 어느 팀이 어떤 모델을 얼마나 쓰는지, 비용·보안·컴플라이언스 요건이 팀마다 어떻게 다른지를 먼저 파악하고 architecture를 잡았다. 외부 퍼실리테이션이라고 포장할 수는 없지만, 조직 내 stakeholder 요건 수집 → 우선순위 정리 → architecture 결정 구조는 유사하다. 면접에서는 이걸 \"다른 맥락에서 증명된 같은 역량\"으로 정직하게 연결하는 게 낫다.",
+      "interview_en": "I haven't facilitated formal ProServe workshops with external customers, but I've done something structurally similar internally. Before designing our LLM gateway, I mapped requirements from different teams — cost, security, compliance, and access control — before proposing any architecture. I understand the principle of assessing current state before recommending solutions, and I'm ready to apply that formally using AWS CAF and Working Backwards.",
+      "question": "금융권 고객사가 'LLM Gateway를 도입하고 싶다'고 할 때, 첫 Discovery workshop에서 내가 던질 핵심 질문 3가지는 무엇인가?",
+      "answer": "1) \"지금 어떤 AI 서비스·모델을 이미 쓰고 있나요?\" — 현황 파악. Azure OpenAI나 Bedrock을 직접 쓰는 중이라면 Gateway가 중간에 끼어드는 구조인지 교체 구조인지가 달라진다. 2) \"보안·컴플라이언스 요건 중 AI 트래픽에 특별히 적용되는 게 있나요?\" — 제약 파악. 데이터 레지던시, 감사 로그 보존 기간, 모델 벤더 허용 여부가 architecture를 결정한다. 3) \"이 도입의 성공을 1년 후에 어떻게 측정할 예정인가요?\" — 목표 정의. 비용 절감·개발 생산성·보안 컴플라이언스 통과 중 무엇이 우선인지에 따라 Quick Win 우선순위가 달라진다. 이 3가지가 Working Backwards + CAF 구조의 출발점이다: 현황 → 제약 → 성공 기준."
+    },
+    "refs": [
+      "https://aws.amazon.com/cloud-adoption-framework/",
+      "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+      "https://aws.amazon.com/blogs/enterprise-strategy/working-backwards-the-story-behind-amazons-innovation/"
+    ]
   }
 ]
