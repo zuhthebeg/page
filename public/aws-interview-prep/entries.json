@@ -684,5 +684,28 @@
       "https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html",
       "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues-at-least-once-delivery.html"
     ]
+  },
+  {
+    "index": 33,
+    "day": 6,
+    "date": "2026-09-23",
+    "topic": "Legacy application modernization",
+    "depth": "deep",
+    "sections": {
+      "keyterms": "Strangler Fig pattern, Anti-corruption layer, 6R strategy, Lift-and-shift",
+      "definition": "오래된 모놀리식 시스템을 비즈니스를 멈추지 않으면서, 단계적으로 현대적인 구조(마이크로서비스, 클라우드, API 기반)로 분리·이전하는 작업이다.",
+      "architect": "Legacy modernization의 핵심 질문: \"왜, 얼마나, 어떤 순서로\" 바꿀 것인가.\n\n6R 전략으로 선택지를 분류한다:\n• Rehost(Lift-and-shift): 코드 변경 없이 클라우드로 이동. 빠르지만 클라우드 이점 최소.\n• Replatform: 구조는 유지, 플랫폼만 현대화. 예: 온프레미스 Java → ECS.\n• Refactor/Re-architect: 마이크로서비스로 분리·재설계. 가장 가치 높고 가장 복잡.\n• Repurchase: SaaS로 교체. Retire: 미사용 시스템 제거. Retain: 현상 유지.\n\n핵심 원칙: Big Bang(한 번에 전부 교체)은 피한다. 이전 기간이 길수록 실패 위험이 커진다.\n→ Strangler Fig 패턴: 새 기능은 새 서비스에 만들고, 레거시는 점진적으로 교체.\n→ Anti-corruption layer: 새 서비스가 레거시 데이터 모델에 직접 오염되지 않도록 번역 어댑터를 둔다.",
+      "tradeoff": "Big Bang vs 점진적(Strangler Fig): Big Bang은 짧은 시간에 현대 구조 달성 가능 — 실패 시 롤백 어렵고 비즈니스 중단 위험이 크다. Strangler Fig는 리스크가 작고 각 단계에서 롤백 가능 — 레거시·신규 공존 기간의 운영 복잡도(데이터 동기화, 이중 라우팅)가 늘어난다.\n\nLift-and-shift vs Re-architect: 전자는 빠르고 안전하지만 기술 부채를 클라우드로 그대로 이전. ProServe 현실 전략: Lift-and-shift로 먼저 올린 후 Re-architect 단계로 진행.",
+      "aws": "• AWS Migration Hub: 이전 상태 중앙 추적\n• AWS Application Discovery Service: 온프레미스 서버·의존성·사용량 자동 분석\n• AWS App2Container: 기존 Java/ASP.NET 앱을 ECS/EKS 컨테이너로 자동 변환\n• AWS DMS(Database Migration Service): Oracle/MSSQL → Aurora 등 이기종 DB 이전\n• AWS Mainframe Modernization Service: COBOL/PL/I 앱의 관리형 재컴파일 또는 재구축\n• AWS Schema Conversion Tool: 이기종 DB 스키마 변환 자동화\n• AWS Migration Evaluator: 온프레미스 TCO 분석 및 클라우드 비용 비교\n\nProServe: Discovery → Assess → Migrate → Optimize 단계적 접근으로 고객 상황에 맞는 6R 전략을 추천하고 실제 이전 아키텍처를 설계한다.",
+      "experience": "직접 Legacy modernization(COBOL/메인프레임, Java/.NET 이전)을 수행한 경험은 없다 — 이 영역은 경험 부족임을 정직하게 인정한다.\n\n개념적으로 연결 가능한 사례: 내가 만든 LLM Gateway가 일종의 'AI 인프라 modernization'이었다. 금융권에서 팀별로 Azure OpenAI를 직접 호출하던 방식을 Gateway라는 중앙 control plane으로 통합하면서, Anti-corruption layer + Strangler Fig 접근을 실제로 택했다. 새 팀은 Gateway만 쓰고, 기존 팀은 점진적으로 이전. 레거시 통합을 한 번에 바꾸지 않았고, 이전 기간에 두 경로가 동시에 살아있었다.",
+      "interview_en": "I haven't led a COBOL or Java legacy migration project directly. But the core principles — strangler fig, anti-corruption layer, gradual migration without stopping the business — are exactly the pattern I applied when consolidating our enterprise AI integrations into a single LLM gateway. Teams migrated one by one without rewriting their calling code.",
+      "question": "Strangler Fig와 Big Bang의 차이를 '이전 중 운영 복잡도'와 '롤백 가능성' 두 축으로 30초 안에 설명할 수 있는가?",
+      "answer": "Big Bang은 이전 완료 전까지 레거시와 신규가 병존하지 않아 이론상 단순해 보이지만, 실패 시 되돌아오기 어렵고 이전 기간 내내 비즈니스가 사실상 동결된다. Strangler Fig는 레거시·신규가 동시에 운영되므로 이중 라우팅·데이터 동기화·두 시스템 유지 복잡도가 늘지만, 각 단계에서 롤백이 가능하고 비즈니스는 계속 돌아간다. ProServe 맥락에서 전략 선택 기준은 '이전 기간의 복잡도를 고객 조직이 감당할 수 있는가'다. 내 LLM Gateway 경험과 연결하면: 기존 팀들의 AI API 직접 호출을 한 번에 바꾸지 않고 Gateway를 먼저 올린 뒤 팀별로 점진 이전하면서, 이전 기간에 두 경로를 동시에 운영했다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/migrationhub/latest/ug/whatishub.html",
+      "https://docs.aws.amazon.com/modernizing-aspnet-and-java/latest/userguide/what-is-modernizing.html",
+      "https://docs.aws.amazon.com/mainframe-modernization/latest/userguide/what-is-mainframe-modernization.html"
+    ]
   }
 ]
