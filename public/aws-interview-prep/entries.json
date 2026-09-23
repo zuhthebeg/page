@@ -616,8 +616,8 @@
       "https://aws.amazon.com/architecture/well-architected/",
       "https://docs.aws.amazon.com/wellarchitected/latest/userguide/intro.html"
     ]
-  }
-  ,{
+  },
+  {
     "index": 30,
     "day": 5,
     "date": "2026-09-22",
@@ -637,6 +637,29 @@
     "refs": [
       "https://amazon.jobs/content/en-gb/our-workplace/leadership-principles",
       "https://www.amazon.jobs/content/en/how-we-hire/interview-loop"
+    ]
+  },
+  {
+    "index": 31,
+    "day": 6,
+    "date": "2026-09-23",
+    "topic": "Serverless vs ECS/EKS for AI applications",
+    "depth": "medium",
+    "sections": {
+      "keyterms": "Lambda cold start, Fargate, GPU-backed container, Stateless inference",
+      "definition": "AI 시스템의 각 구성 요소를 \"요청이 있을 때만 켜지는 Lambda\"로 할지, \"항상 떠 있는 컨테이너(ECS/EKS)\"로 할지를 결정하는 compute tier 선택이다.",
+      "architect": "AI 애플리케이션은 단일 서비스가 아니라 여러 구성 요소의 조합(API 레이어, 오케스트레이터, 모델 추론, 벡터 검색, 에이전트 실행)이고, 각 구성요소마다 최적 compute tier가 다르다.\n\nLambda는 이벤트당 과금·자동 스케일·무인프라가 장점이지만, 15분 실행 제한·cold start 지연·GPU 미지원이 AI 워크로드의 발목을 잡는다. ECS/EKS는 GPU 인스턴스 선택 가능·긴 실행 가능·웜 컨테이너로 지연 예측이 가능하지만, 항상 떠 있는 비용과 인프라 관리 부담이 생긴다.\n\n아키텍트의 핵심 판단: \"이 컴포넌트가 stateless·짧은 실행·GPU 불필요한가?\" → Lambda 고려. \"persistent connection·GPU·긴 실행·warm 상태가 필요한가?\" → ECS/EKS 고려. 실제 production AI 시스템은 보통 두 가지를 섞는다.",
+      "tradeoff": "Lambda: zero-infra, 이벤트당 과금, scale-to-zero → cold start latency(특히 Python/ML 라이브러리), 15분 제한, GPU 없음, 큰 dependency 패키지 부담.\nECS/EKS: GPU 지원, warm 컨테이너, 긴 실행 → 항상 실행 중인 비용, 클러스터 관리 overhead. EKS는 ECS보다 설정 복잡도가 높지만 멀티 클라우드 이식성과 Helm/Operator 생태계가 장점.",
+      "aws": "• Lambda: 요청 라우팅·이벤트 처리·짧은 전처리·Bedrock API 호출 래퍼에 적합.\n• ECS Fargate: GPU 없는 컨테이너 서비스. Gateway, 오케스트레이터, API 서버에 현실적 선택.\n• ECS on EC2 (g5/p4): GPU 추론 서빙. 오픈소스 LLM 자체 운영 시.\n• EKS: 대규모 ML 워크로드, Karpenter GPU 오토스케일, Kubeflow 같은 ML 파이프라인 생태계 필요할 때.\n• Bedrock: managed 모델 추론 = \"사실상 serverless inference\" — GPU 인프라 없이 API로 모델 호출.",
+      "experience": "LLM Gateway를 Python/FastAPI로 만들었으니 이건 Lambda가 아니라 컨테이너(ECS 또는 유사 플랫폼) 위에서 돌아가는 서비스다. 1,000명 이상, 월 수백억 token 규모에서 persistent connection·웜 인스턴스·상태 유지가 필요한 서비스는 Lambda의 cold start와 15분 제한으로는 운영이 힘들다. open-source GPU 모델 운영 경험이 있어서, GPU 인스턴스 기반 컨테이너 서빙의 이유(지연·비용·상태)는 실전으로 설명 가능하다. Bedrock는 모델 호출 수준으로 사용 — 그게 사실상 \"serverless inference\"이고 GPU 인프라 없이 모델을 호출하는 경험이다. AWS ECS/EKS 특정 구현 디테일(task definition, node group 설정 등)은 직접 경험 없음.",
+      "interview_en": "For my LLM gateway, a persistent container is the right choice — we need warm instances, stable long-running connections, and in-memory caching for thousands of concurrent users. Lambda works well for lightweight routing or short event triggers, but not for a high-throughput AI service with state. On the model inference side, Bedrock is effectively serverless inference — we get GPU capacity on demand without managing instances.",
+      "question": "LLM Gateway 같은 AI control plane을 Lambda로 만들지 않고 컨테이너(ECS/EKS)로 운영하는 이유를 3가지만 꼽을 수 있는가?",
+      "answer": "1) Persistent connection — 1,000명 이상의 동시 사용자와 수백 개 MCP 서버 연결을 유지하려면 cold start 없는 warm 인스턴스가 필수다. Lambda는 요청마다 재시작할 수 있어 연결 재설정 비용이 발생한다.\n2) 실행 시간 제한 없음 — LLM 응답이나 에이전트 작업은 수 분 이상 걸릴 수 있는데, Lambda의 15분 제한이 장애 원인이 된다.\n3) 인메모리 상태 유지 — 모델 라우팅 정책, 비용 집계 상태, 프롬프트 캐시 등 인메모리 상태를 컨테이너에서 유지하면 자연스럽지만, Lambda에선 매 요청마다 외부 저장소를 읽어야 하는 레이턴시 오버헤드가 생긴다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html",
+      "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/what-is-fargate.html",
+      "https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html"
     ]
   }
 ]
