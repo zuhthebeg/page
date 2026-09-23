@@ -753,5 +753,28 @@
       "https://docs.aws.amazon.com/m2/latest/userguide/what-is-m2.html",
       "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html"
     ]
+  },
+  {
+    "index": 36,
+    "day": 6,
+    "date": "2026-09-23",
+    "topic": "Java/.NET modernization",
+    "depth": "deep",
+    "sections": {
+      "keyterms": "App2Container, Strangler Fig, Re-platforming, Amazon Q Developer Transform",
+      "definition": "수십 년간 운영해온 Java EE나 .NET Framework 레거시 앱을 컨테이너·서버리스·마이크로서비스 같은 클라우드 네이티브 구조나 최신 언어 버전으로 안전하게 이전하는 전체 과정이다.",
+      "architect": "핵심 판단은 \"얼마나 바꿀 것인가\"다. Lift & Shift(코드·아키텍처 그대로 클라우드로) → Re-platform(컨테이너화·관리형 DB 이전) → Re-architect(마이크로서비스·이벤트 기반 재설계) 세 단계로 비용·위험·효과가 선형 이상으로 달라진다.\n\nProServe에서 가장 자주 막아야 하는 패턴이 \"Big Bang 재작성\"이다. 한 번에 전부 새로 짜겠다는 계획은 대부분 중간에 멈춘다. Strangler Fig 패턴 — 기존 시스템을 살려두면서 기능을 하나씩 새 서비스로 옮기다가 결국 기존 앱을 대체하는 방식 — 이 실패 위험이 가장 낮다.\n\nAmazon Q Developer Transform 같은 AI 보조 도구는 코드 변환 단가를 낮추지만, 변환 결과를 자동 신뢰하면 안 된다 — 테스트 커버리지와 사람의 검토가 반드시 필요하다.",
+      "tradeoff": "Big Bang 재작성: 기술 부채를 한 번에 정리 가능 — 대신 비즈니스 가치를 못 내는 기간이 길고 위험이 집중되며 대부분 실패한다.\nStrangler Fig(점진적 이전): 기존 시스템을 살려두고 안전하게 이전 — 대신 두 시스템 병행 운영 기간이 길고 인터페이스 호환성 유지 비용이 든다.",
+      "aws": "• AWS App2Container(a2c): 실행 중인 Java/Spring, ASP.NET 앱을 스캔해 Dockerfile + ECS/EKS task definition 자동 생성. 코드 변경 없이 컨테이너화 가능한 가장 빠른 경로.\n• Amazon Q Developer Transform: Java 8/11 → 17/21, .NET Framework → .NET 8 코드 변환 자동화. 수천 개 클래스의 API 교체·라이브러리 업그레이드를 자동 제안.\n• AWS Migration Hub: 이전 전체 진행 상황과 의존성 맵 추적.\n• AWS Schema Conversion Tool + DMS: DB 이전(Oracle → Aurora 등)을 앱 이전과 병행할 때.",
+      "experience": "Java/.NET 앱을 직접 모더나이즈한 경험은 없다. App2Container나 Q Developer Transform을 실제로 써본 적도 없다.\n\n연결 가능한 접점:\n- SRE/인프라 배경으로 Docker 컨테이너화와 ECS 배포 파이프라인 설계는 익숙하다. App2Container가 만들어주는 결과물(Dockerfile + task definition)을 운영하는 쪽 경험이다.\n- Amazon Q Developer Transform이 LLM 기반 코드 변환 도구라는 점에서, LLM Gateway 운영 경험(\"LLM 출력은 그냥 신뢰하지 않는다\")을 직접 적용할 수 있다 — 자동 변환 코드도 테스트 스위트로 반드시 검증해야 한다는 원칙은 동일하다.\n- 직접 경험이 없으므로, 고객 현장에서는 실제 코드 스캔 결과와 의존성 분석을 먼저 보고 판단한다는 것을 솔직히 전달하는 게 신뢰를 높인다.",
+      "interview_en": "I don't have hands-on experience modernizing Java or .NET applications directly. My strength is the infrastructure side: containerization pipelines, deployment architecture, and observability. For the migration strategy, I would start with App2Container to separate the infrastructure risk from the code risk, use Amazon Q Developer Transform for language version upgrades, and apply the Strangler Fig approach to avoid a big-bang rewrite.",
+      "question": "고객의 Java 8 + Spring Boot 2.x 앱을 AWS로 이전할 때, \"코드 변환 먼저\"가 아니라 \"컨테이너화 먼저\"를 제안하는 이유는?",
+      "answer": "코드 변환(Java 8→17, Spring Boot 2→3)과 인프라 이전을 동시에 하면, 문제가 생겼을 때 원인이 코드 변화인지 환경 변화인지 구분하기 어려워진다. App2Container로 코드는 그대로 두고 컨테이너화·ECS 이전을 먼저 완료해서 새 인프라에서 기존 동작이 정상임을 확인한 뒤, 그다음 단계로 Q Developer Transform을 써서 언어 버전을 올린다. 단계를 분리하면 각 단계의 롤백 범위가 명확하고 리스크가 통제된다. SRE 관점에서 이건 \"변경을 한 번에 하나씩\"이라는 기본 원칙이다. 직접 Java/Spring 앱을 이전해본 경험은 없지만, 실제 스캔 결과를 보고 판단한다는 것을 고객에게 명확히 전달하는 게 신뢰를 높인다."
+    },
+    "refs": [
+      "https://docs.aws.amazon.com/app2container/latest/UserGuide/what-is-a2c.html",
+      "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/code-transformation.html",
+      "https://aws.amazon.com/blogs/devops/modernizing-net-framework-applications-with-aws-app2container/"
+    ]
   }
 ]
