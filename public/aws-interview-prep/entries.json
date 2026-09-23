@@ -730,5 +730,28 @@
       "https://aws.amazon.com/q/developer/",
       "https://aws.amazon.com/app2container/"
     ]
+  },
+  {
+    "index": 35,
+    "day": 6,
+    "date": "2026-09-23",
+    "topic": "Mainframe / COBOL modernization",
+    "depth": "deep",
+    "sections": {
+      "keyterms": "Rehost, Replatform, Refactor, Strangler fig",
+      "definition": "40~60년간 수정·패치되며 살아남은 COBOL/메인프레임 코어 시스템을 현대 클라우드 아키텍처로 안전하게 전환하는 작업이다.",
+      "architect": "메인프레임 현대화의 핵심은 '코드 교체'가 아니라 '숨겨진 비즈니스 로직 발굴'이다. COBOL 코드는 수십 년간 패치되면서 원래 설계를 아는 사람도, 완전한 문서도 없는 경우가 대부분이다. 이 상태에서 big bang 재작성은 역사적 실패율이 높다(대형 은행 core banking 교체 실패 사례들이 증거다).\n\n아키텍트가 먼저 내려야 할 3가지 판단:\n1. 전략 선택 — 4R: Rehost(그대로 이전) / Replatform(최소 수정) / Refactor(아키텍처 변경) / Re-write(완전 재작성). 비용·리스크·일정 기준으로 결정한다.\n2. 경계 식별 — 메인프레임 안에서 어떤 로직이 비즈니스 핵심이고, 어떤 게 단순 배치/리포팅인지 분리한다. 후자부터 빠르게 현대화한다.\n3. Strangler fig 패턴 — 메인프레임 앞에 API façade를 두고, 기능을 하나씩 현대 서비스로 이전하면서 메인프레임이 fallback을 계속 담당한다. 전체가 준비될 때까지 기존 시스템은 계속 돌아간다.",
+      "tradeoff": "Rehost: 빠르고 리스크 낮음 — 기술 부채를 그대로 클라우드로 가져오고 네이티브 이점을 못 누린다.\nRe-write: 현대 아키텍처로 갈 수 있지만, 수십 년 묵은 edge case 비즈니스 로직을 놓치면 장애로 직결된다. 역사적 실패율이 높아 ProServe에서 첫 번째로 권하지 않는 옵션이다.\nStrangler fig: 가장 안전하지만 기간이 길고 메인프레임과 현대 시스템을 동시에 운영하는 비용이 따른다.",
+      "aws": "AWS Mainframe Modernization 두 경로:\n• Blu Age (Refactor): COBOL → Java/Spring Boot 자동 변환. 전환 후 ECS/EKS에서 실행.\n• Micro Focus (Rehost): COBOL 런타임을 AWS 관리형 환경에서 그대로 실행. 코드 변경 없음.\n\nAmazon Q Developer: COBOL 코드 분석·설명, 의존성 매핑, 마이그레이션 계획 수립 지원.\n\nStrangler fig 구현: API Gateway + Lambda 앞단 → Direct Connect/VPN으로 메인프레임 백엔드 라우팅 → 기능 이전 비율을 점진적으로 조정.",
+      "experience": "직접 경험 없음 — 메인프레임이나 COBOL을 직접 다루거나 마이그레이션에 참여한 적이 없다.\n\n개념적으로 연결되는 원칙:\n• '내부를 모르는 시스템 앞에 통제 계층을 두는 것' — LLM Gateway를 설계할 때 30개 이상 LLM 모델 각각의 내부를 완전히 이해하지 못한 채로, 외부 인터페이스(API)로 통제하고 관측하는 계층을 먼저 만들었다. 메인프레임 앞에 API façade를 두는 패턴과 구조가 같다.\n• '한 번에 교체하지 않는다' — 금융권 AI 도입 시에도 기존 시스템을 즉시 대체하지 않고 Gateway 레이어에서 점진적으로 새 기능을 끼워 넣으며, 기존 시스템이 fallback으로 계속 작동하게 했다.",
+      "interview_en": "I don't have direct mainframe or COBOL experience. But the core principle is the same: you never replace a 40-year-old critical system all at once. You put a control layer in front, map what it actually does, and replace it piece by piece. That's the strangler fig pattern, and it's exactly what I applied when introducing AI capabilities into a financial system without breaking what was already running.",
+      "question": "고객이 'COBOL 시스템 다 버리고 처음부터 새로 만들자'고 할 때 — 왜 big bang re-write를 말리고, 어떤 조건이 되어야 full re-write를 고려할 수 있는지 설명할 수 있는가?",
+      "answer": "Full re-write를 말리는 이유: COBOL 코드 안에는 수십 년간 수정·패치되면서 명시적 문서로 남지 않은 비즈니스 로직(edge case, 특수 거래 처리, 규제 대응 로직 등)이 축적되어 있다. 새로 짜면서 이 로직들을 빠뜨리면 새 시스템이 기존처럼 작동하지 않아 장애·규제 위반으로 이어진다. 대형 은행들의 core banking 교체 실패 사례가 이를 증명한다. 표준 접근은 strangler fig — 기존 시스템 앞에 API façade를 두고 기능을 단위별로 현대화하며, 완전 전환 전까지 메인프레임이 fallback을 담당한다.\n\nFull re-write를 고려할 수 있는 조건: 1) 기능 범위가 좁고 명확하게 정의된 모듈 2) 완전한 테스트 커버리지와 명세가 이미 존재 3) 현재 시스템 유지보수 비용이 재개발 비용보다 명확히 높을 때. 이 조건이 모두 충족되는 경우는 드물고, ProServe에서는 코드 분석·의존성 매핑·비즈니스 로직 발굴을 하는 discovery phase가 반드시 선행되어야 한다."
+    },
+    "refs": [
+      "https://aws.amazon.com/mainframe-modernization/",
+      "https://docs.aws.amazon.com/m2/latest/userguide/what-is-m2.html",
+      "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html"
+    ]
   }
 ]
