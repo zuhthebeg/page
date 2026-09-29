@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>"Jev + Opus 5.5로 에이전트 비용 1/5" — 팩트체크, 로컬 Jev 비교, OpenClaw·Claude Code 적용법 · page.cocy.io</title>
+<meta name="description" content="X에서 화제인 'Jev가 작은 판단을, Opus 5.5가 추론을 맡으면 $2.24가 $0.43이 된다' 데모를 검증했다. 산수는 맞다. 하지만 Jev의 판단력은 처음 보는 어려운 문제에서 찍기 수준이고, 진짜 경쟁자는 Opus가 아니라 싼 LLM이다. 로컬 Jev 클론 실측과 OpenClaw·Claude Code에 붙이는 법까지 정리했다.">
+<meta name="keywords" content="Jev, TypeSafe, Opus 5.5, 에이전트 비용, 판단 모델, System One, JevBench, Jev-Style, Laya, Claude Code hooks, OpenClaw, 로컬 LLM">
+<meta property="og:title" content="Jev + Opus 5.5 = 비용 1/5? — 팩트체크와 로컬 비교">
+<meta property="og:description" content="산수는 맞다. 판단력은 쉬운 문제까지만. 진짜 경쟁자는 Opus가 아니라 3배 비싼 싼 LLM이다. 로컬 2B 실측과 OpenClaw·Claude Code 적용법 포함. 판정 6/10.">
+<meta property="og:url" content="https://page.cocy.io/jev-opus-check/">
+<meta property="og:type" content="article"><meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://page.cocy.io/jev-opus-check/">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Jev + Opus 5.5로 에이전트 비용 1/5? — 팩트체크, 로컬 Jev 비교, OpenClaw·Claude Code 적용법","url":"https://page.cocy.io/jev-opus-check/","inLanguage":"ko","datePublished":"2026-09-30","dateModified":"2026-09-30","author":{"@type":"Person","name":"cocy"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif}body>noscript{display:none}.page{max-width:860px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.1rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.note{color:var(--muted);font-size:.88rem}.box{background:#f6f1e6;border-left:4px solid var(--accent);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{text-align:left;padding:.6rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.86em}pre{background:#2b2723;color:#f3ede2;padding:1rem 1.1rem;border-radius:8px;overflow-x:auto;font-size:.8rem;line-height:1.55}pre code{background:none;padding:0;color:inherit}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer}
+</style></head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<div class="kicker">Viral claim check · local benchmark · how-to</div>
+<h1>Jev + Opus 5.5로<br>에이전트 비용 1/5?</h1>
+<p class="lead">X(@Mahaximus_, 2026-09-28)의 데모 영상이다. 같은 에이전트, 같은 작업, 같은 60번의 판단을 두 방식으로 돌렸다. 모든 판단을 Opus 5.5가 하면 $2.24·3분 37초, 작은 판단은 Jev가 하고 Opus는 진짜 추론에만 쓰면 $0.43·1분 15초. "60번 중 57번은 Opus를 안 거쳤고, 결과물은 똑같다." 공식 가격표와 제3자 벤치마크로 검산했다. 우리 PC에서 로컬 Jev 클론도 새로 돌려봤다.</p>
+<p><span class="pill tag">바이럴 검증</span><span class="pill tag">에이전트 비용</span><span class="pill tag">판단 모델</span><span class="pill tag">로컬 실측</span><span class="pill tag">Claude Code</span><span class="pill tag">OpenClaw</span></p>
+
+<div class="verdict"><span class="score">6/10</span><strong>판정: 산수는 맞다. 그 판단을 Jev에 맡겨도 되는지가 빠졌다.</strong><br>
+<span class="pill yes">✓ 가격 전제 정확 — Jev $0.042/백만 입력 토큰, Opus 5.5 캐시 히트 $0.20 (공식 가격표)</span>
+<span class="pill yes">✓ 데모 숫자끼리 앞뒤가 맞음 — 판단당 $0.032, 나머지 3번의 Opus 호출 비용까지 계산이 일치</span>
+<span class="pill warn">△ "결과물 동일"은 영상 한 번뿐 — 코드·로그·반복 실행 없음</span>
+<span class="pill no">✗ 제3자 벤치마크에서 Jev는 처음 보는 어려운 판단에 36.7% (찍기 29.3%) — "목표 달성했나?"를 맡기기엔 위험</span>
+<span class="pill no">✗ 비교 대상이 틀림 — 작은 판단의 현실적 대안은 Opus가 아니라 싼 LLM이고, 그 가격 차이는 200배가 아니라 약 3배</span>
+<p>데모의 계산은 정직하다. 문제는 전제다. "작은 판단"은 쉬운 판단일 때만 Jev가 맞힌다. 게다가 이 절감은 판단 하나하나가 별도 LLM 호출인 구조에서만 나온다. Claude Code나 OpenClaw처럼 모델이 한 턴 안에서 도구를 고르는 에이전트에는 그대로 옮겨지지 않는다.</p>
+</div>
+
+<h2>1. 데모 숫자 검산</h2>
+<table><thead><tr><th>주장</th><th>검산</th><th>판정</th></tr></thead><tbody>
+<tr><td>Jev 가격 "백만 입력 토큰당 $0.042, 출력 무료"</td><td>TypeSafe 홈페이지 "$42 per billion input tokens"와 일치. 아직 early access</td><td><span class="pill yes">사실</span></td></tr>
+<tr><td>Opus 5.5 캐시 "$4 → $0.20"</td><td>Anthropic 가격표: 기본 입력 $4, 캐시 히트 $0.20. Opus 5.5만 0.05배(다른 모델은 0.1배)</td><td><span class="pill yes">사실</span></td></tr>
+<tr><td>판단당 $0.032 → $0.00025</td><td>Opus만 쓸 때 60번에 $2.24 = 평균 $0.037. 작은 판단 57번을 $0.032로 치면 $1.82, 남은 $0.42가 무거운 3번. Jev 쪽도 57 × $0.00025 = $0.014 + 무거운 3번 $0.42 ≈ $0.43. 앞뒤가 맞는다. $0.00025는 판단 1번에 입력 약 6,000토큰을 넣었다는 뜻</td><td><span class="pill yes">일관됨</span></td></tr>
+<tr><td>"결과물은 똑같다"</td><td>영상 한 번의 결과. 코드·로그·반복 실행이 공개되지 않아 재현할 수 없다. 작성자 소속·광고 여부도 표기 없음</td><td><span class="pill warn">검증 불가</span></td></tr>
+<tr><td>"Opus 5.5보다 200배 싸다"</td><td>같은 질문을 Opus에 묻는 것과 비교하면 맞다. 하지만 작은 판단을 Opus에 맡기는 사람은 거의 없다. 아래 3장 참고</td><td><span class="pill warn">비교 대상 선택</span></td></tr>
+</tbody></table>
+
+<h2>2. Jev의 판단력은 어디까지 믿을 수 있나</h2>
+<p><a href="https://github.com/fstandhartinger/jevbench">JevBench</a>는 Jev 계열 판단 모델을 82개 시스템으로 비교하는 제3자 오픈 벤치마크다(MIT, v1.4.1, 2026-09-23). 문항 일부는 공개하지 않는 비공개(sealed) 308문항이라, 공개 문항에 맞춰 학습한 효과를 걸러낸다. 이 비공개 문항에서 찍어서 맞힐 확률은 29.3%다.</p>
+<table><thead><tr><th>시스템</th><th>쉬움</th><th>보통</th><th>채점형</th><th>어려움</th><th>비공개 308문항</th><th>1,000번 판단 비용</th><th>응답 p50</th></tr></thead><tbody>
+<tr><td><b>Jev 1.13 (TypeSafe API)</b></td><td>100%</td><td>99.0%</td><td>94.5%</td><td>74.1%</td><td><b>36.7%</b></td><td>$0.040</td><td>0.65초</td></tr>
+<tr><td>GPT-6 Luna (추론 low)</td><td colspan="3">공개 문항 99.1%</td><td>97.3%</td><td><b>92.9%</b></td><td>$0.127</td><td>1.44초</td></tr>
+<tr><td>GPT-6 Luna (추론 medium)</td><td colspan="3">공개 문항 99.6%</td><td>98.6%</td><td><b>95.5%</b></td><td>$0.135</td><td>1.48초</td></tr>
+<tr><td>Gemini 3.1 Flash-Lite</td><td colspan="3">공개 문항 87.0%</td><td>75.0%</td><td>38.6%</td><td>$0.264</td><td>0.76초</td></tr>
+</tbody></table>
+<p class="note">출처: JevBench v1.4.1 결과 파일. "어려움"은 2~6천 토큰짜리 정책 문서, 함정, 여러 단계 추론, 날짜·숫자 계산 문항이다.</p>
+<div class="box"><b>읽는 법:</b> Jev는 도구 선택이나 형식 확인 같은 <b>쉬운·보통 판단은 거의 다 맞힌다.</b> 그런데 처음 보는 어려운 판단에서는 찍기보다 7%p 높은 수준이다. 같은 문항에서 싼 LLM(GPT-6 Luna)은 93~96%를 맞혔고, 1,000번 판단 비용은 $0.127로 Jev의 약 3배였다. "Opus의 1/200"이 아니라 "싼 LLM의 1/3"이 현실적인 비교다. 2026-09-16 Jev 출시 때 TypeSafe 자체 벤치마크에서도 Jev 종합 정확도는 67.8%로, 프론티어 모델의 74.1%보다 낮았다(<a href="https://page.cocy.io/jev-check/">jev-check</a>).</div>
+<p>데모의 세 가지 작은 판단에 대입하면 이렇다. "다음에 어떤 도구를 쓸까"와 "이 출력이면 충분한가"는 대개 쉬운·채점형이라 Jev의 강점 구간이다. "목표를 달성했나"는 다르다. 틀리면 일을 덜 끝낸 채 멈추거나 끝없이 돌기 때문에 오판 비용이 가장 크다. 이 판단만큼은 싼 LLM이나 규칙으로 두는 편이 안전하다(평가).</p>
+
+<h2>3. 로컬 Jev는 쓸 만해졌나</h2>
+<h3>3-1. 같은 벤치마크에서의 로컬 모델</h3>
+<table><thead><tr><th>모델</th><th>크기·라이선스</th><th>공개 문항</th><th>비공개 문항</th><th>비고</th></tr></thead><tbody>
+<tr><td>Jev 1.13 (API)</td><td>비공개</td><td>86.6%</td><td>36.7%</td><td>보드 1위</td></tr>
+<tr><td>JevK5 v0.2</td><td>4B/9B 계열, HF 공개</td><td>85.3%</td><td>33.1%</td><td>보드 2위, Jev와 거의 같은 수준</td></tr>
+<tr><td>Winnow-12B Q8</td><td>12B, 오픈웨이트</td><td>85.7%</td><td>33.1%</td><td>보드 4위</td></tr>
+<tr><td>Jev-Style 2B v3 (9/27 공개)</td><td>2B, Apache-2.0</td><td>73.6%*</td><td>—</td><td>*제작자가 공식 하니스로 직접 잰 값, 보드 등재 전</td></tr>
+<tr><td>decider-2b</td><td>2B</td><td>71.0%</td><td>24.7%</td><td>같은 2B급 비교</td></tr>
+<tr><td>Jev-Style 0.8B v3</td><td>0.8B, Apache-2.0</td><td>64.1%*</td><td>—</td><td>*제작자 측정</td></tr>
+<tr><td>Laya</td><td>421M, Apache-2.0</td><td>58.4%</td><td>30.8%</td><td>가장 싸고 빠름</td></tr>
+</tbody></table>
+<p>4B~12B급 로컬 클론은 공개 문항에서 이미 Jev와 비슷한 점수를 낸다. 그리고 비공개 문항에서는 Jev를 포함한 판단 전용 모델 전부가 비슷하게 무너진다. 즉 <b>"로컬로 Jev급"은 이미 현실이다. 다만 그 Jev급이 쉬운 판단까지만이라는 한계도 같이 따라온다.</b></p>
+
+<h3>3-2. 우리 한국어 대화로 직접 재봤다 (RTX 3080 Ti)</h3>
+<p>OpenClaw 텔레그램에서 실제로 받은 한국어 메시지 147건을 "가벼움·보통·무거움"으로 라벨링하고, 어느 모델에 보낼지 판단시켰다. 직전 대화 2턴을 같이 넣었다. 9/26 실험에 이번에 새로 나온 2B를 추가했다.</p>
+<table><thead><tr><th>방법</th><th>정확도</th><th>무거움 → 가벼움 오분류</th><th>속도</th></tr></thead><tbody>
+<tr><td>규칙 20줄 + 직전 작업 유지</td><td><b>76.2%</b></td><td>0건</td><td>즉시</td></tr>
+<tr><td>Jev-Style 2B v3 (이번에 추가)</td><td><b>67.3~68.0%</b></td><td>2건</td><td>0.24초/건</td></tr>
+<tr><td>전부 "보통"으로 보내기</td><td>64.6%</td><td>0건</td><td>—</td></tr>
+<tr><td>Jev-Style 0.8B v3</td><td>49.0~51.7%</td><td>3건</td><td>0.2초/건</td></tr>
+<tr><td>Laya</td><td>24.5~34.0%</td><td>—</td><td>—</td></tr>
+</tbody></table>
+<p class="note">범위는 선택지 순서를 뒤집은 두 조건의 값. 라벨러 1명, 147건이라 일반 벤치마크가 아니라 현장 관찰이다. 원문 메시지는 공개하지 않는다. Jev 원본 API는 개인 대화를 외부로 보내야 해서 이 실험에 넣지 않았다. 2B는 최적화 커널 없이 fp32로 돌렸다.</p>
+<p>2B는 0.8B보다 확실히 나아졌다(+17%p). 하지만 147건 중 113~126건을 "보통"으로 보내서, 전부 보통으로 보내는 기준선보다 3%p 높은 데 그쳤다. 가벼움은 10건 중 2건만 알아봤다. 사람마다 다른 "이 일은 무겁다"는 기준은 아무 학습 없이 바로 쓰는 판단 모델이 알 수 없다. 이 용도로 쓰려면 우리 라벨로 학습시켜야 한다.</p>
+
+<h2>4. OpenClaw·Claude Code에 붙이는 법</h2>
+<p>먼저 구조부터 짚어야 한다. 데모의 57번 절감은 <b>판단 하나하나가 별도 LLM 호출인 오케스트레이션</b>(LangGraph처럼 코드가 "다음은 뭐 할까"를 매번 모델에 묻는 구조)에서 나온다. Claude Code와 OpenClaw는 다르다. Opus가 한 턴 안에서 생각하며 도구를 고르기 때문에, "다음 도구 선택"이라는 별도 호출 자체가 없다. 떼어낼 게 없으니 절감도 없다. Jev류를 끼울 수 있는 곳은 <b>훅, 곧 에이전트 바깥의 관문</b>뿐이다.</p>
+
+<h3>4-1. Claude Code</h3>
+<table><thead><tr><th>데모의 판단</th><th>Claude Code 훅</th><th>추천 판단자</th></tr></thead><tbody>
+<tr><td>목표를 달성했나</td><td><code>Stop</code> / <code>SubagentStop</code> — <code>ok:false</code>면 이유를 Claude에게 돌려주고 계속 일하게 함</td><td>Haiku 급 prompt 훅 (Jev는 어려운 판단에서 약함)</td></tr>
+<tr><td>이 출력이면 충분한가</td><td><code>PostToolUse</code> + <code>continueOnBlock:true</code></td><td>로컬 판단 모델 가능 (쉬운 채점형)</td></tr>
+<tr><td>이 도구를 실행해도 되나</td><td><code>PreToolUse</code></td><td>규칙(권한 설정)이 1순위, 모델은 보조</td></tr>
+<tr><td>어느 모델로 처리할까</td><td>하위 에이전트의 <code>model</code> 지정</td><td>작업 종류별 고정 (우리 실측에선 규칙 &gt; 모델)</td></tr>
+</tbody></table>
+<p><code>settings.json</code> 예시다. Stop 시점에 가벼운 모델이 "요청을 다 끝냈나"만 판정한다(공식 문서의 prompt 훅 형식, <code>model</code> 생략 시 백그라운드용 기본 모델).</p>
+<pre><code>{
+  "hooks": {
+    "Stop": [{ "hooks": [{
+      "type": "prompt",
+      "model": "claude-haiku-4-5",
+      "prompt": "Did the assistant finish every task the user asked for, with tests run? $ARGUMENTS\nReply ok:true, or ok:false with the missing item as reason.",
+      "timeout": 30
+    }]}]
+  }
+}</code></pre>
+<p>로컬 판단 모델(Ollaya의 <code>/v1/systemone</code>이나 Laya·Jev-Style 서버)을 쓰려면 <code>type: "command"</code> 훅에서 로컬 서버를 호출하고, 막을 때 <code>{"decision":"block","reason":"..."}</code>를 출력하면 된다. 외부로 나가는 데이터가 없고 호출 비용은 0이다.</p>
+
+<h3>4-2. OpenClaw</h3>
+<table><thead><tr><th>용도</th><th>OpenClaw 플러그인 훅</th><th>비고</th></tr></thead><tbody>
+<tr><td>모델 라우팅</td><td><code>before_model_resolve</code> — 세션 시작 전에 provider/model을 결정적으로 덮어씀</td><td>우리 실측상 규칙 + 직전 모델 유지가 판단 모델보다 나음</td></tr>
+<tr><td>도구 차단·승인</td><td><code>before_tool_call</code> — <code>block</code> 또는 <code>requireApproval</code> 반환</td><td>확신도가 낮으면 사람 승인으로 넘기는 용도에 적합</td></tr>
+<tr><td>목표 달성 확인</td><td><code>before_agent_finalize</code> — 최종 답을 보고 모델에 한 번 더 돌리도록 요청</td><td>1회 추가 패스라 무한루프 위험 적음</td></tr>
+<tr><td>필요 없는 턴 막기</td><td><code>before_agent_run</code> — 모델 호출 전에 실행 자체를 차단</td><td>embedded·CLI 러너만 지원</td></tr>
+</tbody></table>
+<p class="note">대화 내용을 읽는 훅은 비번들 플러그인이면 <code>plugins.entries.&lt;id&gt;.hooks.allowConversationAccess=true</code>가 필요하다(OpenClaw 문서). 위 표는 문서 기준 설계안이고, 우리 환경에서 플러그인을 만들어 붙여보지는 않았다.</p>
+
+<div class="box"><b>우리 환경에서 가장 큰 절감 지점(평가):</b> 채팅 한 턴 안의 판단이 아니다. <b>"새 소식 없음"으로 끝나는 정기 자동 작업</b>이다. 매 2시간·매일 도는 점검 잡들이 에이전트를 깨워 한참 돌린 뒤 NO_REPLY로 끝나는 경우가 많다. 에이전트를 부르기 전에 "새로 할 일이 있나?"를 스크립트나 로컬 판단 모델로 먼저 거르면, 아무 일 없는 날의 비용이 거의 0이 된다. 데모가 말한 "Jev가 먼저 묻고, 필요할 때만 Opus"가 가장 깔끔하게 맞아떨어지는 구조가 바로 이것이다.</div>
+
+<h2>결론</h2>
+<ul class="sources">
+<li><b>데모:</b> 계산은 정직하다. 하지만 "결과물 동일"은 한 번의 영상이고, Jev는 어려운 판단에서 찍기 수준이다. 작은 판단의 현실적 대안(싼 LLM)과 비교하면 절감폭은 크게 줄어든다.</li>
+<li><b>로컬 Jev:</b> 이미 쓸 만하다. 4B~12B 클론은 공개 벤치마크에서 Jev와 비슷하고, 2B는 우리 3080 Ti에서 건당 0.24초로 돈다. 쉬운 관문(형식 검사, 출력 채점, 저위험 이진 판단)에는 무료·로컬이라는 장점이 크다.</li>
+<li><b>쓰지 말 곳:</b> 한국어 대화의 난이도 라우팅(규칙이 더 나음)과 "목표 달성" 같은 오판 비용이 큰 판단.</li>
+<li><b>쓸 곳:</b> Claude Code의 <code>PostToolUse</code> 출력 채점, OpenClaw의 <code>before_tool_call</code> 승인 분기, 그리고 무엇보다 자동 작업을 깨우기 전의 "할 일 있나?" 관문.</li>
+</ul>
+
+<h2>출처</h2><ul class="sources">
+<li><a href="https://x.com/Mahaximus_/status/2104616458709831718">원문 X 포스트 (@Mahaximus_, 2026-09-28)</a></li>
+<li><a href="https://typesafe.ai/">TypeSafe AI — Jev 가격 ($42 / 10억 입력 토큰)</a></li>
+<li><a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic 가격표 — Opus 5.5 캐시 히트 $0.20</a></li>
+<li><a href="https://github.com/fstandhartinger/jevbench">JevBench v1.4.1 (제3자, MIT)</a></li>
+<li><a href="https://huggingface.co/chaoliangUNSW/Jev-Style-2B-Decision-v3">Jev-Style 2B v3 모델 카드 (Apache-2.0)</a></li>
+<li><a href="https://code.claude.com/docs/en/hooks">Claude Code 훅 문서 — prompt/agent/HTTP 훅</a></li>
+<li><a href="https://docs.openclaw.ai/plugins/hooks">OpenClaw 플러그인 훅 문서</a></li>
+<li><a href="https://page.cocy.io/jev-check/">page.cocy.io — Jev 출시 팩트체크 (2026-09-16)</a> · <a href="https://page.cocy.io/local-decision-routing-2026/">한국어 라우팅 실험 1·2차</a> · <a href="https://page.cocy.io/ollaya-local-decision-models/">Ollaya 검증</a></li>
+</ul>
+<div class="foot">cocy.io research note · 2026-09-30 · 공식 가격표·제3자 벤치마크 원자료 대조 + RTX 3080 Ti 로컬 실측(147건, 라벨러 1명). 데모 영상 자체는 재현하지 않았다.</div>
+</main>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# Jev + Opus 5.5로 에이전트 비용 1/5? — 팩트체크, 로컬 Jev 비교, OpenClaw·Claude Code 적용법
+
+> X(@Mahaximus_, 2026-09-28) 데모: 같은 60번의 판단, Opus만 $2.24·3분37초 vs Jev+Opus $0.43·1분15초.
+> **한 줄 결론: 산수는 맞다. 그 판단을 Jev에 맡겨도 되는지가 빠졌다. 6/10.**
+
+## 판정 요약
+- ✓ 가격 전제 정확: Jev $0.042/M 입력, Opus 5.5 캐시 히트 $0.20
+- ✓ 데모 숫자 앞뒤 일치 (판단당 $0.032, 무거운 3번 ≈ $0.42)
+- △ "결과물 동일"은 영상 1회, 코드·로그 없음
+- ✗ JevBench 비공개 308문항에서 Jev 36.7% (찍기 29.3%) vs GPT-6 Luna 92.9~95.5%
+- ✗ 현실적 대안은 Opus가 아니라 싼 LLM, 가격 차 약 3배 ($0.040 vs $0.127 / 1,000 판단)
+
+## 로컬 Jev
+- JevBench 공개 문항: Jev 86.6, JevK5 85.3, Winnow-12B 85.7, Jev-Style 2B 73.6(제작자 측정), decider-2b 71.0, Jev-Style 0.8B 64.1, Laya 58.4
+- 비공개 문항에선 Jev 포함 판단 전용 모델 전부 25~37%
+- 우리 한국어 147건 라우팅(3080 Ti): 규칙+유지 76.2%, Jev-Style 2B 67.3~68.0%(0.24초/건, 무거움→가벼움 2건), 전부 보통 64.6%, 0.8B 49~52%, Laya 24.5~34%
+
+## 적용법
+- 구조: 데모 절감은 판단마다 별도 호출하는 오케스트레이션에서만. Claude Code·OpenClaw는 한 턴 안에서 도구를 고르므로 훅(관문)에만 끼울 수 있다.
+- Claude Code: Stop/SubagentStop(목표 달성, Haiku prompt 훅), PostToolUse+continueOnBlock(출력 채점, 로컬 가능), PreToolUse(규칙 우선), 하위 에이전트 model 고정.
+- OpenClaw: before_model_resolve(라우팅, 규칙 권장), before_tool_call(block/requireApproval), before_agent_finalize(한 번 더), before_agent_run(실행 차단). 대화 접근 훅은 allowConversationAccess=true 필요.
+- 최대 절감 지점(평가): "새 소식 없음"으로 끝나는 정기 자동 작업을 에이전트 호출 전에 스크립트·로컬 판단으로 거르기.
+
+## 출처
+- https://x.com/Mahaximus_/status/2104616458709831718
+- https://typesafe.ai/
+- https://platform.claude.com/docs/en/about-claude/pricing
+- https://github.com/fstandhartinger/jevbench
+- https://huggingface.co/chaoliangUNSW/Jev-Style-2B-Decision-v3
+- https://code.claude.com/docs/en/hooks
+- https://docs.openclaw.ai/plugins/hooks
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='jev-opus-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body></html>
