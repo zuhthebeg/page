@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>"벡터DB 없는 RAG가 RAG 업계를 끝낸다?" — PageIndex 팩트체크 · page.cocy.io</title>
+<meta name="description" content="X에서 화제인 'PageIndex가 RAG 업계를 끝낸다, FinanceBench 98.7%, 100% 무료' 주장을 GitHub·벤치마크 원자료로 검증했다. 기술은 진짜다. 하지만 98.7%는 오픈소스가 아니라 상용 제품 점수고, 신작도 아니며, 무료도 코드까지만이다.">
+<meta name="keywords" content="PageIndex, VectifyAI, vectorless RAG, 벡터DB, RAG, FinanceBench, Mafin 2.5, 트리 인덱스, 바이럴 검증">
+<meta property="og:title" content="벡터DB 없는 RAG, PageIndex — 팩트체크">
+<meta property="og:description" content="기술은 진짜고 쓸 만하다. 그런데 98.7%는 오픈소스가 아닌 상용 Mafin 2.5 점수, 17개월 된 프로젝트, 무료는 코드까지만. 판정 6/10.">
+<meta property="og:url" content="https://page.cocy.io/pageindex-check/">
+<meta property="og:type" content="article"><meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://page.cocy.io/pageindex-check/">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"벡터DB 없는 RAG가 RAG 업계를 끝낸다? — PageIndex 팩트체크","url":"https://page.cocy.io/pageindex-check/","inLanguage":"ko","datePublished":"2026-09-30","dateModified":"2026-09-30","author":{"@type":"Person","name":"cocy"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif}body>noscript{display:none}.page{max-width:840px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.2rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.note{color:var(--muted);font-size:.9rem}.box{background:#f6f1e6;border-left:4px solid var(--accent);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.88em}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer;transition:transform .1s}.mdbtn:active{transform:translateY(1px)}
+</style></head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<div class="kicker">Viral claim check · X post verification</div>
+<h1>벡터DB 없는 RAG가<br>RAG 업계를 끝낸다?</h1>
+<p class="lead">X(@oliviscusAI, 2026-09-28)에서 이런 글이 돌고 있다. "RAG 업계 전체가 끝장날 판이다. 연구자들이 벡터DB, 임베딩, 청킹, 유사도 검색 없이 돌아가는 새 RAG를 만들었다. 이름은 PageIndex. FinanceBench 98.7%로 리더보드의 모든 벡터 RAG를 이겼다. 100% 무료 오픈소스." GitHub API, 벤치마크 원자료, 공개된 답안 파일을 직접 대조했다.</p>
+<p><span class="pill tag">바이럴 검증</span><span class="pill tag">RAG</span><span class="pill tag">벡터DB</span><span class="pill tag">벤치마크</span><span class="pill tag">오픈소스</span></p>
+
+<div class="verdict"><span class="score">6/10</span><strong>판정: 기술은 진짜고 쓸 만하다. 포장이 과장이다.</strong><br>
+<span class="pill yes">✓ PageIndex 실존 — MIT 라이선스, ★36,940, 이틀 전까지 커밋</span>
+<span class="pill yes">✓ 벡터DB·임베딩·청킹 없이 트리 인덱스 + LLM 추론 — 구조 설명은 사실</span>
+<span class="pill warn">△ 98.7%는 오픈소스 PageIndex가 아니라 상용 제품 Mafin 2.5의 자체 보고 점수(150문항, 관대한 LLM 채점)</span>
+<span class="pill no">✗ "새로 개발됐다" — 2025년 4월 공개, 17개월 된 프로젝트</span>
+<span class="pill no">✗ "리더보드의 모든 벡터 RAG를 이겼다" — 공식 리더보드 없음, 비교 기준선은 2023년 GPT-4-Turbo</span>
+<span class="pill warn">△ "100% 무료" — 코드만 무료, 질문마다 LLM API 비용이 든다</span>
+<p>PageIndex는 진짜 있고, 긴 전문 문서를 다룰 때 벡터 검색의 약점을 정면으로 겨냥한 좋은 설계다. 하지만 게시물이 내세운 숫자와 표현은 대부분 맥락이 빠졌다. 98.7%는 이 오픈소스가 아니라 같은 회사의 상용 금융 제품 점수다. 채점도 "정답을 포함하면 정답"으로 처리하는 관대한 LLM 채점에 사람이 보정한 결과다. "업계 종말"은 적용 범위를 무시한 과장이다.</p>
+</div>
+
+<h2>1. 프로젝트는 진짜다 — 그리고 신작이 아니다</h2>
+<p>2026-09-30 기준 GitHub API로 직접 조회한 결과다.</p>
+<table><thead><tr><th>항목</th><th>값</th><th>판정</th></tr></thead><tbody>
+<tr><td>레포</td><td><code>VectifyAI/PageIndex</code> (Vectify AI라는 회사의 레포, "연구자들"이 아님)</td><td><span class="pill warn">표현 부정확</span></td></tr>
+<tr><td>생성일</td><td>2025-04-01</td><td><span class="pill no">신작 아님</span></td></tr>
+<tr><td>최근 커밋</td><td>2026-09-28</td><td><span class="pill yes">활발히 유지</span></td></tr>
+<tr><td>스타 / 포크</td><td>36,940 / 3,232</td><td><span class="pill yes">대형 레포</span></td></tr>
+<tr><td>라이선스</td><td>MIT</td><td><span class="pill yes">상업 이용 가능</span></td></tr>
+</tbody></table>
+<p>"연구자들이 새 접근법을 개발했다"는 문장은 두 가지가 틀렸다. 만든 주체는 Vectify AI라는 회사고, 공개된 지 1년 반이 됐다. 최근 화제가 된 계기는 2026년 8월 SDK에 추가된 <b>로컬 모드</b>(<code>pip install pageindex</code>로 내 PC에서 색인·검색)로 보인다. 이건 평가지, 확인된 사실이 아니다.</p>
+
+<h2>2. 어떻게 동작하나 — 이 부분은 주장대로다</h2>
+<p>일반 RAG는 문서를 잘게 쪼개(청킹) 벡터로 바꾸고(임베딩), 질문과 비슷한 조각을 찾는다(유사도 검색). PageIndex는 다른 방식을 쓴다.</p>
+<ul class="sources">
+<li><b>색인:</b> 문서의 목차 구조를 뽑아 장·절·항 형태의 트리를 만든다. README에 따르면 트리 구조 자체는 LLM 없이 레이아웃에서 추출하고, 싼 모델이 각 노드를 요약한다.</li>
+<li><b>검색:</b> 질문을 받으면 LLM이 트리를 위에서부터 읽어 내려가며 "이 질문의 답은 어느 절에 있을까"를 추론해 해당 노드만 연다. 사람이 두꺼운 보고서에서 목차를 보고 찾아가는 방식과 같다.</li>
+<li><b>장점:</b> "비슷한 문장"이 아니라 "관련 있는 위치"를 찾는다. 재무제표처럼 비슷한 표현이 수십 번 반복되는 문서에서 벡터 검색이 엉뚱한 연도·항목을 집어오는 문제를 피한다. 어느 절을 읽었는지 경로가 남아서 근거 추적도 쉽다.</li>
+</ul>
+<p>벡터DB, 임베딩, 청킹, 유사도 검색이 없다는 네 줄은 전부 사실이다.</p>
+
+<h2>3. 98.7%의 정체</h2>
+<p>게시물의 핵심 숫자다. 출처를 따라가면 PageIndex README가 링크한 <code>VectifyAI/Mafin2.5-FinanceBench</code> 레포가 나온다.</p>
+<table><thead><tr><th>확인 항목</th><th>원자료 내용</th><th>판정</th></tr></thead><tbody>
+<tr><td>누구의 점수인가</td><td><b>Mafin 2.5</b> — Vectify의 금융 보고서 전용 상용 RAG 제품(PageIndex 기반). 오픈소스 PageIndex 자체 점수가 아님</td><td><span class="pill no">대상 혼동</span></td></tr>
+<tr><td>언제</td><td>레포 생성 2025-02-19. 1년 7개월 전 결과</td><td><span class="pill warn">오래됨</span></td></tr>
+<tr><td>몇 문항</td><td>FinanceBench 공개 샘플 150문항(전체 10,231문항의 1.5%). 결과 파일에서 150개 확인</td><td><span class="pill warn">부분 셋</span></td></tr>
+<tr><td>채점 방식</td><td>GPT-4o가 채점. 기준에 "정답의 상위집합이면 정답", "합리적 해석이면 정답" 포함. 애매한 문항은 사람이 보정</td><td><span class="pill warn">관대한 채점</span></td></tr>
+<tr><td>독립 검증</td><td>제3자 재현 없음. 벤더 자체 보고</td><td><span class="pill warn">자체 보고</span></td></tr>
+</tbody></table>
+
+<h3>직접 검산해봤다</h3>
+<p>Vectify가 답안 원문(<code>result_gpt4o.json</code>)을 공개해둔 덕에 일부는 확인할 수 있다. 150문항 중 정답이 짧은 숫자인 54문항을 골라, 정답 숫자가 Mafin 답변 안에 실제로 들어 있는지 기계적으로 대조했다.</p>
+<div class="box"><b>결과: 54문항 중 51개는 숫자가 그대로 일치했다.</b> 나머지 3개 중 1개는 표기 차이($400,000,000 vs "$0.4 billion"), 1개는 반올림 차이(7.9% vs 7.8%)라 사실상 정답이다. 명확히 다른 건 1개(Pfizer 분할 비용, 정답 77.78 vs 답변 70)였다. <b>숫자형 문항에서는 98% 안팎이 실제로 맞는다.</b></div>
+<p>즉 98.7%라는 숫자 자체는 조작이 아니다. 문제는 그 숫자가 가리키는 대상이다. 튜닝된 상용 제품이 150문항에서 받은 점수를, 무료 오픈소스를 설치하면 얻는 성능처럼 옮겨 적었다.</p>
+
+<h2>4. "모든 벡터 RAG를 이겼다"의 기준선</h2>
+<p>PageIndex README 그래프는 "PageIndex 98.7% vs 벡터 RAG 50%"로 그려져 있다. 그런데 공식 FinanceBench 리더보드라는 건 없다. 벡터 RAG 쪽 수치는 2023년 11월 FinanceBench 논문의 실험에서 나왔다. 논문 초록에는 "GPT-4-Turbo에 검색 시스템을 붙였더니 81%를 틀리거나 답을 거부했다"고 적혀 있다.</p>
+<ul class="sources">
+<li>비교가 불공정하다. 2023년 GPT-4-Turbo + 기본 벡터 검색과 2025년 GPT-4o + 튜닝된 상용 파이프라인을 붙여놨다. 모델 세대 차이와 파이프라인 튜닝 효과가 "벡터 vs 트리" 차이와 섞여 있다.</li>
+<li>Mafin 레포의 경쟁 비교표도 상대가 Quantly·Fintool·Perplexity 같은 상용 서비스다. 같은 모델, 같은 조건에서 벡터 RAG와 1:1로 붙인 대조 실험은 없다.</li>
+</ul>
+<p>공정하게 말하면 이렇다. PageIndex 쪽에는 오픈소스 버전으로 측정한 별도 벤치마크(<code>PageIndex-OSS-Benchmark</code>)도 있다. 34개 PDF, 62문항에서 gpt-5.6-luna는 85.5~96.8%, gpt-5.6-sol은 96.8~100%가 나왔다. 오픈소스 자체도 성능이 좋다는 근거다. 다만 역시 벤더 측정이고, 벡터 RAG 비교군은 없다.</p>
+
+<h2>5. "100% 무료"와 "업계 종말"</h2>
+<table><thead><tr><th>주장</th><th>실제</th><th>판정</th></tr></thead><tbody>
+<tr><td>"100% 무료"</td><td>코드는 MIT 무료. 하지만 색인과 검색에 LLM API가 필요하다. README 실측으로 색인 약 $0.001/페이지, 질문당 $0.003(luna)~$0.08(sol). OCR·MCP 서버·대규모 파일시스템 기능은 PageIndex Cloud(별도 API 키) 전용</td><td><span class="pill warn">코드만 무료</span></td></tr>
+<tr><td>"RAG 업계 끝"</td><td>긴 전문 문서 몇 개를 정밀하게 묻는 작업에 강하다. 대신 질문마다 LLM이 트리를 추론해서 벡터 검색보다 느리고 비싸다. 수백만 문서에서 빠르게 찾는 용도는 Vectify도 별도 클라우드 레이어로 풀고 있다</td><td><span class="pill no">과장(평가)</span></td></tr>
+</tbody></table>
+<p>README도 스스로 적용 대상을 "재무 보고서, 법률 문서, 규제 공시, 기술 매뉴얼, 의학 문헌, 교과서 같은 길고 복잡한 전문 문서"로 한정한다. 벡터 RAG를 대체한다기보다 <b>긴 문서 정밀 QA라는 한 영역에서 더 나은 선택지</b>가 생긴 것이다.</p>
+
+<h2>결론 — 쓸까?</h2>
+<p>쓸 만하다. 계약서, 공시, 매뉴얼처럼 목차가 있는 긴 문서를 다루는데 벡터 검색이 자꾸 엉뚱한 조각을 가져온다면 PageIndex는 시험해볼 가치가 충분하다. 로컬 모드라 문서가 밖으로 안 나가는 것도 장점이다(LLM API로 보내는 부분은 제외). 반대로 짧은 문서가 대량으로 쌓인 사내 위키나 고객 문의 검색이라면, 벡터 검색의 속도와 비용 이점이 여전히 크다.</p>
+<p>게시물에서 가져갈 건 "PageIndex라는 좋은 도구가 있다"까지다. "98.7%", "업계 종말", "완전 무료"는 각각 "상용 제품이 150문항에서", "특정 문서 유형에서", "코드는"을 붙여야 참이 된다.</p>
+
+<h2>출처</h2><ul class="sources">
+<li><a href="https://x.com/oliviscusAI/status/2104534255636513268">원문 X 포스트 (@oliviscusAI, 2026-09-28)</a></li>
+<li><a href="https://github.com/VectifyAI/PageIndex">GitHub — VectifyAI/PageIndex</a> (★36,940, MIT, 2025-04-01 생성)</li>
+<li><a href="https://github.com/VectifyAI/Mafin2.5-FinanceBench">GitHub — VectifyAI/Mafin2.5-FinanceBench</a> (98.7% 원자료, 평가 코드·답안 공개)</li>
+<li><a href="https://github.com/VectifyAI/PageIndex-OSS-Benchmark">GitHub — VectifyAI/PageIndex-OSS-Benchmark</a> (오픈소스 버전 62문항 측정)</li>
+<li><a href="https://arxiv.org/abs/2311.11944">FinanceBench 논문 (arXiv:2311.11944, 2023-11)</a></li>
+<li><a href="https://github.com/patronus-ai/financebench">GitHub — patronus-ai/financebench</a> (공개 150문항)</li>
+<li><a href="https://docs.pageindex.ai/">PageIndex 공식 문서</a></li>
+</ul>
+<div class="foot">cocy.io research note · 2026-09-30 · GitHub API·벤치마크 원자료·공개 답안 파일 1차 출처 대조 검증. 숫자형 54문항 검산은 정답 숫자 포함 여부만 본 기계적 대조로, 전체 재채점이 아니다.</div>
+</main>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# 벡터DB 없는 RAG가 RAG 업계를 끝낸다? — PageIndex 팩트체크
+
+> X(@oliviscusAI, 2026-09-28)의 "PageIndex가 RAG 업계를 끝낸다, FinanceBench 98.7%, 100% 무료 오픈소스" 주장을 GitHub API·벤치마크 원자료·공개 답안 파일로 대조 검증.
+> **한 줄 결론: 기술은 진짜고 쓸 만하다. 포장이 과장이다. 6/10.**
+
+## 판정 요약
+- ✓ PageIndex 실존 — MIT, ★36,940, 활발히 유지
+- ✓ 벡터DB·임베딩·청킹 없이 트리 인덱스 + LLM 추론 — 구조 설명은 사실
+- △ 98.7%는 오픈소스가 아니라 상용 제품 Mafin 2.5의 자체 보고 점수(150문항, 관대한 LLM 채점)
+- ✗ "새로 개발됐다" — 2025-04 공개, 17개월 된 프로젝트
+- ✗ "리더보드의 모든 벡터 RAG를 이겼다" — 공식 리더보드 없음, 기준선은 2023년 GPT-4-Turbo
+- △ "100% 무료" — 코드만 무료, 질문마다 LLM API 비용
+
+## 1. 프로젝트는 진짜다 — 신작은 아니다
+VectifyAI/PageIndex: 2025-04-01 생성, 2026-09-28 최근 커밋, ★36,940 / 포크 3,232, MIT. "연구자들"이 아니라 Vectify AI라는 회사. 최근 화제는 2026-08 SDK 로컬 모드 추가 때문으로 추정(평가).
+
+## 2. 어떻게 동작하나 — 주장대로다
+문서 목차 구조로 트리를 만들고(구조 추출은 LLM 없이, 노드 요약만 싼 모델), 질문 시 LLM이 트리를 따라 내려가며 관련 절만 연다. "비슷한 문장"이 아니라 "관련 있는 위치"를 찾고, 읽은 경로가 근거로 남는다.
+
+## 3. 98.7%의 정체
+| 확인 항목 | 원자료 | 판정 |
+|---|---|---|
+| 누구의 점수 | 상용 금융 RAG 제품 Mafin 2.5 (PageIndex 기반) | 대상 혼동 |
+| 언제 | 2025-02 | 오래됨 |
+| 몇 문항 | FinanceBench 공개 150문항 (전체 10,231의 1.5%) | 부분 셋 |
+| 채점 | GPT-4o 채점, "상위집합이면 정답" 등 관대한 기준 + 사람 보정 | 관대한 채점 |
+| 독립 검증 | 없음 | 자체 보고 |
+
+직접 검산: 공개 답안에서 숫자형 54문항을 기계적으로 대조 → 51개 일치, 2개는 표기·반올림 차이, 명확한 오답 1개. 숫자 자체는 조작이 아니다. 문제는 상용 제품 점수를 무료 오픈소스 성능처럼 옮긴 것.
+
+## 4. "모든 벡터 RAG를 이겼다"의 기준선
+공식 리더보드 없음. 벡터 RAG 수치는 2023-11 FinanceBench 논문(GPT-4-Turbo + 검색 시스템이 81% 오답·거부). 2023년 모델+기본 검색 vs 2025년 모델+튜닝된 상용 파이프라인 비교라 세대 차이가 섞여 있다. 오픈소스 버전 자체 측정(PageIndex-OSS-Benchmark, 62문항): luna 85.5~96.8%, sol 96.8~100% — 역시 벤더 측정, 벡터 비교군 없음.
+
+## 5. "100% 무료"와 "업계 종말"
+- 무료: 코드만. 색인 ~$0.001/페이지, 질문당 $0.003~$0.08(README 실측). OCR·MCP·대규모 파일시스템은 Cloud 전용.
+- 업계 종말: 긴 전문 문서 정밀 QA에 강하지만 질문마다 LLM 추론이라 느리고 비싸다. 대량 문서 검색은 여전히 벡터가 유리(평가).
+
+## 결론
+목차 있는 긴 문서(계약서·공시·매뉴얼)에서 벡터 검색이 엉뚱한 조각을 가져온다면 시험해볼 가치 충분. 짧은 문서 대량 검색이면 벡터가 여전히 낫다. "98.7%", "업계 종말", "완전 무료"는 각각 "상용 제품이 150문항에서", "특정 문서 유형에서", "코드는"을 붙여야 참이 된다.
+
+## 출처
+- 원문: https://x.com/oliviscusAI/status/2104534255636513268
+- https://github.com/VectifyAI/PageIndex
+- https://github.com/VectifyAI/Mafin2.5-FinanceBench
+- https://github.com/VectifyAI/PageIndex-OSS-Benchmark
+- https://arxiv.org/abs/2311.11944
+- https://github.com/patronus-ai/financebench
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='pageindex-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body></html>
