@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>"메타가 판을 바꿨다, 하네스 없이 59% 적은 연산으로 SOTA"? — Context Language Models 팩트체크 · page.cocy.io</title>
+<meta name="description" content="X에서 화제인 '메타가 Context Language Models를 오픈소스로 공개했다, LangChain·RAG·하네스 없이 모델이 스스로 컨텍스트를 관리하고 59% 적은 연산으로 모든 SOTA를 이겼다' 주장을 논문·코드로 검증했다. 연구는 탄탄하다. 하지만 하네스 위에서 돌아가고, 59%는 한 벤치마크 숫자이며, 코드는 비상업 라이선스다.">
+<meta name="keywords" content="Context Language Models, CLM, 컨텍스트 관리, compaction, 컨텍스트 압축, BrowseComp-Plus, EdgeBench, Suffix Cache Reuse, SGLang, Meta, University of Washington, 바이럴 검증">
+<meta property="og:title" content="Context Language Models — 팩트체크">
+<meta property="og:description" content="연구는 탄탄하다. 그런데 '하네스 없이'는 틀렸고, '59% 적은 연산'은 EdgeBench 한 곳 숫자, 코드는 CC BY-NC(비상업), 가중치 공개 없음. 판정 6/10.">
+<meta property="og:url" content="https://page.cocy.io/clm-context-check/">
+<meta property="og:type" content="article"><meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://page.cocy.io/clm-context-check/">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"메타가 판을 바꿨다? — Context Language Models 팩트체크","url":"https://page.cocy.io/clm-context-check/","inLanguage":"ko","datePublished":"2026-10-01","dateModified":"2026-10-01","author":{"@type":"Person","name":"cocy"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif}body>noscript{display:none}.page{max-width:840px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.2rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.note{color:var(--muted);font-size:.9rem}.box{background:#f6f1e6;border-left:4px solid var(--accent);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.88em}pre{background:#f0ebe1;padding:.9rem 1rem;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.6}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer;transition:transform .1s}.mdbtn:active{transform:translateY(1px)}
+</style></head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<div class="kicker">Viral claim check · X post verification</div>
+<h1>메타가 판을 바꿨다?<br>Context Language Models</h1>
+<p class="lead">X(@thesupermannx, 2026-09-30)에서 이런 글이 돌고 있다. "메타가 Context Language Models를 오픈소스로 공개했다. LangChain, RAG, 오케스트레이션 하네스 없이 모델이 스스로 컨텍스트를 파일처럼 관리한다. 59% 적은 연산으로 모든 SOTA 컨텍스트 기법을 이겼다." 논문 원문(arXiv:2609.37725), 공식 코드 저장소, 실제 프롬프트 파일을 직접 대조했다.</p>
+<p><span class="pill tag">바이럴 검증</span><span class="pill tag">컨텍스트 관리</span><span class="pill tag">에이전트</span><span class="pill tag">논문</span><span class="pill tag">라이선스</span></p>
+
+<div class="verdict"><span class="score">6/10</span><strong>판정: 연구는 탄탄하다. 트윗이 결과를 부풀렸다.</strong><br>
+<span class="pill yes">✓ 논문·코드 실존 — UW·Meta 등 공저, 2026-09-30, facebookresearch 저장소</span>
+<span class="pill yes">✓ 논문 핵심 숫자 6개를 검산 — 모두 본문 수치와 일치</span>
+<span class="pill no">✗ "하네스 없이" — 기존 에이전트 하네스 위에서 돌아간다. 차이는 모델에게 대화 기록 파일 편집권을 준 것</span>
+<span class="pill no">✗ "59% 적은 연산으로 모든 SOTA를 이겼다" — 59%는 EdgeBench 10개 과제(점수 +5%) 숫자. TerminalBench 2.1은 동점</span>
+<span class="pill warn">△ "가중치로만 학습, 사람이 만든 프레임워크 없음" — 주요 결과는 프롬프트 기반 zero-shot. RL은 9B 모델 실험 하나</span>
+<span class="pill warn">△ "메타가 오픈소스로" — 주저자·교신은 워싱턴대. 코드는 CC BY-NC 4.0(비상업), 모델 가중치는 미공개</span>
+<p>이 연구가 실제로 보여준 건 이렇다. 자동 요약 압축(Codex 스타일)을 쓰는 대신, 에이전트에게 "네 대화 기록이 이 파일에 있으니 필요 없는 부분은 직접 고쳐라"라고 맡기면 같은 모델로 더 잘하고 더 싸게 끝나는 경우가 많다. 의미 있는 결과다. 다만 새 모델이 나온 게 아니고, 하네스가 사라진 것도 아니며, "모든 SOTA를 59% 적은 연산으로"는 서로 다른 벤치마크의 숫자를 섞은 문장이다.</p>
+</div>
+
+<h2>1. 무엇이 공개됐나</h2>
+<p>2026-10-01 기준 GitHub API와 arXiv로 직접 확인했다.</p>
+<table><thead><tr><th>항목</th><th>값</th><th>판정</th></tr></thead><tbody>
+<tr><td>논문</td><td>"Context Language Models", arXiv:2609.37725, 2026-09-30</td><td><span class="pill yes">실존</span></td></tr>
+<tr><td>저자</td><td>Rulin Shao 외 13명. 워싱턴대(주저자·교신 이메일), Meta Superintelligence Labs, MIT, Trillium Labs</td><td><span class="pill warn">"메타 단독" 아님</span></td></tr>
+<tr><td>코드</td><td><code>facebookresearch/context-language-models</code> (2026-09-18 생성, ★178). 하네스·프롬프트 진화·RL 패치·Suffix Cache Reuse</td><td><span class="pill yes">공개</span></td></tr>
+<tr><td>라이선스</td><td><b>CC BY-NC 4.0</b> — 비상업 이용만 허용</td><td><span class="pill no">상업 이용 불가</span></td></tr>
+<tr><td>모델 가중치</td><td>없음. RL 학습 코드도 저장소에 없고, 외부 학습 프레임워크에 적용하는 패치 2개만 있다</td><td><span class="pill warn">재현 부담 큼</span></td></tr>
+<tr><td>파생 도구</td><td>Pi 에이전트용 확장 <code>@lolipopshock/pi-clm</code> (npm, MIT, 2026-09-30)</td><td><span class="pill yes">바로 써볼 경로</span></td></tr>
+</tbody></table>
+
+<h2>2. "하네스 없이"가 틀린 이유 — 실제 동작</h2>
+<p>이름이 "Language Model"이라 새 모델처럼 들리지만, 논문의 주요 결과는 <b>기존 모델</b>(Qwen3.6-27B, Claude 4.6 Sonnet, GPT-5.6 Sol)을 그대로 쓴 것이다. 바뀐 건 하네스 안의 규칙이다.</p>
+<ul class="sources">
+<li><b>기존 방식:</b> 하네스가 정한 규칙대로 기록을 줄인다. 예를 들어 길이가 일정 수준을 넘으면 앞부분을 요약해서 갈아끼운다(Codex 스타일 요약). 최근 연구들은 "언제 요약할지"나 "무엇을 빼둘지" 같은 정해진 도구를 모델에게 준다.</li>
+<li><b>CLM:</b> 대화 기록 전체를 파일 하나로 비춰두고, 모델이 그 파일을 마음대로 고치게 한다. 다음 요청은 고쳐진 파일 내용으로 나간다. 요약할지, 지울지, 메모를 남길지, 그대로 둘지는 모델이 정한다.</li>
+</ul>
+<p>저장소의 실제 시스템 프롬프트(<code>clm/clm_harness/clm_agent/prompts.yaml</code>)를 보면 구조가 그대로 드러난다.</p>
+<pre>Your conversation is mirrored to /tmp/.live_ctx/LIVE_CTX_MAIN.txt
+(refreshed before every command). Free up context by editing that file —
+replace stale regions (big outputs, dead ends, superseded notes) with a
+concise, specific summary.</pre>
+<p>즉 Mini-SWE-Agent 계열 하네스와 Harbor 실행 환경 위에서, "기록 파일을 bash로 고쳐라"라는 지시와 편집 규칙을 준 것이다. 하네스는 그대로 있고 <b>하네스가 하던 압축 결정을 모델에게 넘긴 것</b>이 핵심이다. LangChain이나 RAG와는 애초에 다루는 문제가 다르다(RAG는 외부 지식 검색, CLM은 작업 중 쌓이는 대화 기록 관리).</p>
+
+<h2>3. 숫자 검증 — 숫자는 맞다, 문장이 섞였다</h2>
+<p>트윗과 초록에 나온 숫자를 논문 본문 수치로 다시 계산했다.</p>
+<table><thead><tr><th>주장</th><th>본문 수치</th><th>검산</th><th>조건</th></tr></thead><tbody>
+<tr><td>BrowseComp-Plus 정확도 +11.4%</td><td>CLM 59.4%, 최강 기준선은 Codex 스타일 요약</td><td>상대 비율로 일치</td><td>Qwen3.6-27B, 32K 컨텍스트, 830문항</td></tr>
+<tr><td>BrowseComp-Plus 연산 -21.5%</td><td>요약 방식 대비 prefix-reuse FLOPs</td><td>본문 기재</td><td>같은 조건</td></tr>
+<tr><td>EdgeBench 점수 +5%, 연산 -59%</td><td>44.6 vs 42.3, 179 vs 437 PFLOPs</td><td>+5.4%, -59.0% ✓</td><td>10개 과제 부분셋, 12시간, 3시드 중 최고</td></tr>
+<tr><td>RL로 BrowseComp-Plus +47.6%</td><td>28.8% → 42.5%</td><td>×1.476 ✓</td><td>Qwen3.5-9B, 상대 비율</td></tr>
+<tr><td>RL 후 연산 -12%</td><td>1.52 → 1.34 PFLOPs</td><td>-11.8% ✓</td><td>자기 자신의 학습 전 대비</td></tr>
+<tr><td>요약 방식 대비 연산 -38.8%</td><td>1.34 vs 2.19 PFLOPs</td><td>-38.8% ✓</td><td>같은 RL로 학습한 요약 방식과 비교</td></tr>
+</tbody></table>
+<div class="box"><b>숫자 6개는 모두 본문 수치로 재계산된다.</b> 문제는 트윗이 이 숫자들을 섞어서 "모든 SOTA를 59% 적은 연산으로 이겼다"고 쓴 것이다. 59%는 EdgeBench에서 점수를 5% 올렸을 때의 수치다. 논문 본문에서 TerminalBench 2.1은 "최강 기준선과 같은 점수를 70% 연산으로"이고, 이겼다고 하지 않는다. 비교 대상도 업계 전체가 아니라 논문이 고른 기준선 5~6개다.</div>
+
+<h3>"47.6% 폭등"의 실제 의미</h3>
+<p>트윗이 가장 크게 내세운 숫자인데, 논문을 보면 해석이 다르다.</p>
+<ul class="sources">
+<li>학습 전 9B 모델은 CLM 방식이 오히려 요약 방식보다 <b>6점 낮았다</b>(28.8% vs 34.7%). 작은 모델은 기록을 언제 어떻게 고칠지 잘 판단하지 못했기 때문이다. 논문도 그렇게 설명한다.</li>
+<li>같은 RL로 학습시킨 요약 방식도 34.7% → 42.1%로 올랐다. 학습 후 차이는 <b>0.4점</b>이다.</li>
+<li>진짜 성과는 정확도가 아니라 <b>비슷한 정확도를 38.8% 적은 연산으로</b> 낸다는 점이다.</li>
+</ul>
+
+<h3>Suffix Cache Reuse — 조건부 사실</h3>
+<p>모델이 대화 중간을 고치면 일반 서빙 엔진은 고친 지점 뒤를 전부 다시 계산한다(KV 캐시 재사용은 앞부분이 똑같을 때만 된다). 그래서 저자들은 고친 지점 뒤쪽 캐시도 재사용하는 SGLang 패치를 만들었다. BrowseComp-Plus에서 표준 SGLang 대비 65% 연산으로 같은 정확도를 냈다(35% 절감). 서버를 직접 운영해야 쓸 수 있는 최적화이고, API로 모델을 쓰는 사용자에게는 해당이 없다.</p>
+
+<h2>4. 트윗 문장별 판정</h2>
+<table><thead><tr><th>트윗 주장</th><th>실제</th><th>판정</th></tr></thead><tbody>
+<tr><td>"메타가 오픈소스로 공개"</td><td>워싱턴대 주도 + 메타 공저. 코드는 CC BY-NC(비상업), 가중치 없음</td><td><span class="pill warn">반쯤 맞음</span></td></tr>
+<tr><td>"LangChain·RAG·하네스 없이"</td><td>기존 하네스 위에서 프롬프트로 동작. RAG와는 다른 문제</td><td><span class="pill no">틀림</span></td></tr>
+<tr><td>"모델이 컨텍스트를 파일처럼 관리"</td><td>논문 핵심 그대로</td><td><span class="pill yes">맞음</span></td></tr>
+<tr><td>"59% 적은 연산으로 모든 SOTA를 이김"</td><td>59%는 EdgeBench 한 곳. 다른 곳은 21.5~30% 절감, 한 곳은 동점</td><td><span class="pill no">섞어서 과장</span></td></tr>
+<tr><td>"가중치로만 학습, 사람이 만든 프레임워크 없음"</td><td>주요 결과는 프롬프트 기반 zero-shot. 사람이 만든 지시문 + 프롬프트 진화 루프도 쓴다</td><td><span class="pill no">틀림</span></td></tr>
+<tr><td>"BrowseComp-Plus 47.6% 폭등, 12% 적은 연산"</td><td>숫자는 맞다. 다만 학습 전엔 요약 방식보다 낮았고, 학습 후 차이는 0.4점</td><td><span class="pill warn">맥락 빠짐</span></td></tr>
+<tr><td>"서버 연산 35% 절감"</td><td>SGLang 패치, 자체 서빙에만 해당</td><td><span class="pill warn">조건부</span></td></tr>
+<tr><td>"토큰 더 넣기는 틀린 문제였다"</td><td>논문은 일부러 32K 제한을 걸고 실험했다. 긴 컨텍스트를 대체한다는 증거는 아님</td><td><span class="pill warn">의견</span></td></tr>
+</tbody></table>
+
+<h2>5. 우리한테 의미 있나 — Claude Code·Codex·OpenClaw 사용자 관점</h2>
+<p>이 논문에서 가장 실용적인 대목은 비교 대상이다. 논문이 계속 이긴 "가장 강한 기준선"은 <b>Codex 스타일 요약</b>, 즉 기록이 길어지면 앞부분을 요약해서 갈아끼우는 방식이다. Claude Code, Codex, OpenClaw의 자동 압축도 큰 틀에서 이 계열이다(평가). 그러니 이 결과는 "우리가 매일 쓰는 압축 방식보다 모델에게 맡기는 게 나은 경우가 많다"는 뜻으로 읽을 수 있다.</p>
+<ul class="sources">
+<li><b>지금 써보려면:</b> Pi 에이전트라면 <code>pi install npm:@lolipopshock/pi-clm</code>으로 바로 된다(MIT). Claude Code와 OpenClaw에는 모델이 자기 대화 기록 파일을 직접 고치는 경로가 기본으로 없다. 붙이려면 하네스를 고쳐야 한다(평가).</li>
+<li><b>모델 크기가 중요하다:</b> 논문 부록을 보면 9B 모델은 TerminalBench 2.1에서 과제 절반에서 기록을 한 번도 고치지 않았다. 27B 모델은 과제당 평균 2.6번 고쳤다. 작은 로컬 모델에 그대로 적용하면 오히려 손해일 수 있다.</li>
+<li><b>회사에서 쓰려면:</b> 코드는 비상업 라이선스다. 회사 서비스에 그대로 가져다 쓸 수 없다. 아이디어 자체(기록 파일 + 편집 지시)는 단순해서 직접 구현할 수 있지만, 이건 라이선스 판단이 아니라 기술적 평가다.</li>
+<li><b>보안:</b> 논문도 직접 경고한다. 모델이 자기 컨텍스트를 고칠 수 있으면 프롬프트 인젝션이나 모델이 스스로 만든 지시가 턴을 넘어 살아남는 통로가 된다. 압축 요약에 모델이 승인되지 않은 지시를 끼워 넣은 사례도 인용했다. LLM 게이트웨이나 감사 로그를 운영한다면, 모델이 고친 기록과 원본 기록을 따로 보관해야 한다.</li>
+</ul>
+
+<h2>결론</h2>
+<p>좋은 연구다. 저자진이 탄탄하고, 코드와 프롬프트가 공개돼 있고, 본문 숫자는 서로 앞뒤가 맞는다. "자동 요약 압축보다 모델에게 기록 편집을 맡기는 게 낫다"는 주장은 여러 벤치마크에서 일관되게 나왔다.</p>
+<p>게시물에서 가져갈 건 "대화 기록 관리를 하네스 규칙에서 모델 판단으로 넘기는 방식이 실제로 효과가 있다"까지다. "하네스 없이"는 "하네스의 압축 규칙 대신"으로, "59% 적은 연산으로 모든 SOTA"는 "고른 기준선 대비, 벤치마크에 따라 21~59% 적은 연산으로 대부분 이기거나 비김"으로, "메타가 오픈소스로"는 "워싱턴대·메타 공동 연구, 비상업 코드 공개"로 고쳐야 참이 된다.</p>
+
+<h2>출처</h2><ul class="sources">
+<li><a href="https://x.com/thesupermannx/status/2105235093967261708">원문 X 포스트 (@thesupermannx, 2026-09-30)</a></li>
+<li><a href="https://arxiv.org/abs/2609.37725">논문 — Context Language Models (arXiv:2609.37725)</a></li>
+<li><a href="https://github.com/facebookresearch/context-language-models">GitHub — facebookresearch/context-language-models</a> (CC BY-NC 4.0, ★178)</li>
+<li><a href="https://github.com/facebookresearch/context-language-models/blob/main/clm/clm_harness/clm_agent/prompts.yaml">실제 CLM 시스템 프롬프트 (prompts.yaml)</a></li>
+<li><a href="https://github.com/facebookresearch/context-language-models/tree/main/clm/clm_rl">RL 디렉터리 README</a> (학습 코드 미포함, 패치만)</li>
+<li><a href="https://x.com/RulinShao/status/2105282444270448647">주저자 Rulin Shao의 X 스레드</a></li>
+<li><a href="https://www.npmjs.com/package/@lolipopshock/pi-clm">npm — @lolipopshock/pi-clm</a> (Pi 확장, MIT)</li>
+</ul>
+<div class="foot">cocy.io research note · 2026-10-01 · 논문 본문·GitHub API·저장소 코드 1차 출처 대조 검증. 숫자 검산은 논문 본문에 적힌 수치를 다시 계산한 것으로, 실험을 재현한 것이 아니다.</div>
+</main>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# 메타가 판을 바꿨다? — Context Language Models 팩트체크
+
+> X(@thesupermannx, 2026-09-30)의 "메타가 CLM을 오픈소스로 공개, 하네스 없이 모델이 스스로 컨텍스트를 관리, 59% 적은 연산으로 모든 SOTA를 이김" 주장을 논문(arXiv:2609.37725)·코드·실제 프롬프트로 대조 검증.
+> **한 줄 결론: 연구는 탄탄하다. 트윗이 결과를 부풀렸다. 6/10.**
+
+## 판정 요약
+- ✓ 논문·코드 실존 — UW·Meta 등 공저, 2026-09-30, facebookresearch 저장소
+- ✓ 핵심 숫자 6개 모두 본문 수치로 재계산됨
+- ✗ "하네스 없이" — 기존 하네스 위에서 동작. 차이는 모델에게 대화 기록 파일 편집권을 준 것
+- ✗ "59% 적은 연산으로 모든 SOTA" — 59%는 EdgeBench 10과제(점수 +5%). TerminalBench 2.1은 동점
+- △ "가중치로만 학습" — 주요 결과는 프롬프트 기반 zero-shot. RL은 9B 실험 하나
+- △ "메타가 오픈소스로" — 워싱턴대 주도, 코드 CC BY-NC 4.0(비상업), 가중치 미공개
+
+## 1. 무엇이 공개됐나
+논문 arXiv:2609.37725(2026-09-30), 저장소 facebookresearch/context-language-models(2026-09-18 생성, ★178, CC BY-NC 4.0). 가중치 없음, RL 학습 코드 없음(외부 프레임워크용 패치 2개). Pi 확장 @lolipopshock/pi-clm(MIT).
+
+## 2. "하네스 없이"가 틀린 이유
+주요 결과는 기존 모델(Qwen3.6-27B, Claude 4.6 Sonnet, GPT-5.6 Sol)을 그대로 씀. 대화 기록을 파일 하나로 비춰두고 모델이 bash로 고치게 하는 프롬프트(prompts.yaml: "Your conversation is mirrored to /tmp/.live_ctx/LIVE_CTX_MAIN.txt ... Free up context by editing that file"). Mini-SWE-Agent 계열 하네스 + Harbor 위에서 동작. 하네스가 하던 압축 결정을 모델에게 넘긴 것이 핵심. RAG와는 다른 문제.
+
+## 3. 숫자 검증
+| 주장 | 본문 수치 | 검산 | 조건 |
+|---|---|---|---|
+| BCP +11.4% | CLM 59.4%, 기준선 Codex 스타일 요약 | 상대 비율 | Qwen3.6-27B, 32K, 830문항 |
+| BCP 연산 -21.5% | 요약 대비 | 본문 기재 | 같은 조건 |
+| EdgeBench +5%, -59% | 44.6 vs 42.3, 179 vs 437 PFLOPs | +5.4%, -59.0% | 10과제 부분셋, 12시간 |
+| RL +47.6% | 28.8 → 42.5% | ×1.476 | Qwen3.5-9B |
+| RL 연산 -12% | 1.52 → 1.34 | -11.8% | 자기 학습 전 대비 |
+| 요약 대비 -38.8% | 1.34 vs 2.19 | -38.8% | 같은 RL 학습한 요약 |
+
+47.6%의 맥락: 학습 전 CLM은 요약보다 6점 낮았고(28.8 vs 34.7), 같은 RL로 요약도 42.1%까지 올라 학습 후 차이는 0.4점. 진짜 성과는 비슷한 정확도를 38.8% 적은 연산으로.
+Suffix Cache Reuse: 중간 편집 뒤 캐시까지 재사용하는 SGLang 패치, BCP에서 연산 35% 절감. 자체 서빙에만 해당.
+
+## 4. 문장별 판정
+- 메타가 오픈소스로 → 반쯤 맞음(UW 주도, 비상업, 가중치 없음)
+- 하네스 없이 → 틀림
+- 컨텍스트를 파일처럼 관리 → 맞음
+- 59% 적은 연산으로 모든 SOTA → 섞어서 과장
+- 가중치로만 학습 → 틀림
+- 47.6% 폭등 → 숫자는 맞으나 맥락 빠짐
+- 서버 연산 35% 절감 → 조건부(자체 서빙)
+
+## 5. 우리한테 의미
+- 논문이 이긴 최강 기준선은 Codex 스타일 요약 = Claude Code·Codex·OpenClaw 자동 압축과 같은 계열(평가)
+- 지금 써보려면 Pi: `pi install npm:@lolipopshock/pi-clm`. Claude Code·OpenClaw는 기본 경로 없음, 하네스 수정 필요(평가)
+- 9B 모델은 TB2.1 과제 절반에서 기록을 한 번도 안 고침 → 작은 로컬 모델엔 손해일 수 있음
+- 회사 사용: 코드는 비상업. 아이디어 자체는 단순해 직접 구현 가능(기술 평가, 라이선스 판단 아님)
+- 보안: 편집 가능한 컨텍스트는 인젝션·자기생성 지시가 살아남는 통로. 게이트웨이/감사 로그는 원본과 편집본을 따로 보관
+
+## 출처
+- 원문: https://x.com/thesupermannx/status/2105235093967261708
+- https://arxiv.org/abs/2609.37725
+- https://github.com/facebookresearch/context-language-models
+- https://x.com/RulinShao/status/2105282444270448647
+- https://www.npmjs.com/package/@lolipopshock/pi-clm
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='clm-context-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body></html>
