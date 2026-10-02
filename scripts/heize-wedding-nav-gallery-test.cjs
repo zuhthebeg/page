@@ -15,6 +15,9 @@ const route='https://map.kakao.com/link/to/'+encodeURIComponent(name)+','+lat+',
   p.on('request',r=>{if(new URL(r.url()).origin!==new URL(base).origin)thirdParty++});
   await p.goto(base,{waitUntil:'networkidle'});
   check(await p.locator('a[href*="mcard.barunsoncard.com"]').count()===0,'No original invitation fallback');
+  check(await p.locator('[data-navigation]').count()===1,'Exactly one remaining navigation destination');
+  check(await p.locator('[data-navigation="tmap"],#navigation-help,.privacy').count()===0,'Removed TMAP, navigation explanation and privacy UI');
+  check(!/티맵|TMAP|검색에 등록|전달받은 링크와 개인정보/.test(await p.locator('body').innerText()),'Removed visible cleanup wording');
   for(const width of [325,375,430]){
    await p.setViewportSize({width,height:812});
    await p.locator('.gallery-grid').evaluate(async e=>{for(const img of e.querySelectorAll('img')){img.loading='eager';await img.decode()}});
@@ -25,7 +28,7 @@ const route='https://map.kakao.com/link/to/'+encodeURIComponent(name)+','+lat+',
    check(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width}px no overflow`);
   }
   await context.close();
-  // Both labels honestly describe web fallback: never pretend SDK/native app support.
+  // One clearly labelled web destination; never claim native app support.
   for(const platform of [{name:'desktop',userAgent:'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/145.0.0.0 Safari/537.36'},{name:'android',userAgent:'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/145.0.0.0 Mobile Safari/537.36'},{name:'ios',userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1'}]){
    const c=await browser.newContext({userAgent:platform.userAgent,reducedMotion:'reduce'}),page=await c.newPage();
    await c.addInitScript(()=>document.addEventListener('click',e=>{const a=e.target.closest('a[data-navigation]');if(a){window.navAttempt={href:a.href,gesture:e.isTrusted,label:a.textContent.trim()};e.preventDefault()}},true));
@@ -33,12 +36,12 @@ const route='https://map.kakao.com/link/to/'+encodeURIComponent(name)+','+lat+',
    let external=0;c.on('request',r=>{if(new URL(r.url()).origin!==new URL(base).origin)external++});
    await page.goto(base,{waitUntil:'networkidle'});
    check(await page.evaluate(()=>window.navAttempt===undefined),platform.name+': no automatic navigation');
-   for(const service of ['tmap','kakao']){
+   for(const service of ['kakao']){
     const a=page.locator(`[data-navigation="${service}"]`);
     check(await a.count()===1,platform.name+': separate '+service+' destination button');
     if(await a.count()!==1)continue;
     check(await a.getAttribute('href')===route,platform.name+': official encoded venue URL '+service);
-    check(/웹/.test(await a.innerText())&&(service!=='tmap'||/대체/.test(await a.innerText())),platform.name+': honest fallback label '+service);
+    check(await a.innerText()==='카카오맵 길찾기',platform.name+': exact web-map label '+service);
     await a.click();const attempted=await page.evaluate(()=>window.navAttempt);
     check(attempted.gesture&&attempted.href===route,platform.name+': trusted user-gesture route '+service);
     report.navigation.push({platform:platform.name,service,...attempted});
