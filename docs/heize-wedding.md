@@ -14,10 +14,16 @@ All image, font, script, gallery JSON and calendar references are root-relative 
 A real static OpenStreetMap map was downloaded from nine zoom-16 tiles, with OSM attribution. Its label/marker uses the original invitation coordinates. The cached same-origin map needs no credentials, remote runtime request, iframe or broad CSP permission. This is a real map, not a decorative SVG or external-link-only placeholder. The map does not support interactive panning/zoom; navigation buttons remain separate. Original Naver URLs are unchanged. Tmap/Kakao app SDK actions remain explicitly linked to the original invitation's navigation section rather than copying its app key or pretending the SDK is available here.
 
 ## Source fidelity and tests
-Names, date/time, venue, introduction, family/contact links, notices, five accounts, original photos and calendar come from `source/swiy-wedding`. Sensitive values never belong in reports. 32 original assets (31 images and Korean font) are SHA256 verified. Original artwork and its reduced-motion policy remain available. Flower ordering and advertisements are absent; the original flower-refusal notice is retained.
+Names, date/time, venue, introduction, family/contact links, notices, five accounts, original photos and calendar come from `source/swiy-wedding`. Sensitive values never belong in reports. 32 original assets (31 images and Korean font) are SHA256 verified. Original artwork assets remain stored, but the requested archive viewer has been removed. Flower ordering and advertisements are absent; the original flower-refusal notice is retained.
 
 `node scripts/heize-wedding-verify.cjs [baseURL]` runs read-only DOM/geometry/network browser verification, no screenshots. Covers 320/375/430 and landscape, all 12 full-image gallery decoding, swipe/keyboard/focus, clipboard success/denial, original content equality, actual map geometry/image/marker, asset HTTP/MIME/hash, enforced CSP/noindex, ad absence, calendar and zero console/page/network errors.
 
 Evidence: `/home/cocy/.openclaw/workspace/tmp/heize-source/`. Result/checkpoint: `/home/cocy/.openclaw/workspace/tmp/heize-wedding-result.md`.
 
 Deploy only a clean archive of committed HEAD. Existing untracked pages and unfinished changes in the old `swiy-wedding` directory are not part of this release. The old invitation remains unchanged.
+
+
+## Point motion and sharing revision
+Hero-only CSS decoration: eight slow petals and two soft gold glints (ten objects total), a low-opacity portrait light pass, staggered date/venue entrance, and a subtle wedding-date halo. Transform/opacity only, no animation timers/canvas/RAF; decorative layer is aria-hidden and pointer-events:none. Hidden tabs pause CSS animations; reduced-motion hides decoration and disables all animation/transitions. No screenshots were taken.
+
+The original-sharing fallback link was removed; original navigation links remain. Sharing uses navigator.share, not the Kakao SDK. Supported mobile OS share sheets may offer KakaoTalk; unsupported browsers explicitly label the action as link copy. User cancellation is silent; other share failures and clipboard denial produce honest feedback. Native payload tests use stubs, never transmit an invitation.
