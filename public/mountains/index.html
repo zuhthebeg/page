@@ -12,7 +12,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>산 체크리스트 — 한국 명산 지도로 보고 다녀온 산 기록하기</title>
-<meta name="description" content="한국 명산 35곳의 대표 등산코스·소요시간·실용 팁을 난이도별 지도에서 확인하고, 다녀온 산을 체크해 나만의 등반 기록을 쌓아보세요. 로그인 없이 이 브라우저에만 저장됩니다.">
+<meta name="description" content="한국 명산 44곳의 대표 등산코스·소요시간·실용 팁을 난이도별 지도에서 확인하고, 다녀온 산을 체크해 나만의 등반 기록을 쌓아보세요. 로그인 없이 이 브라우저에만 저장됩니다.">
 <meta name="keywords" content="한국 명산, 등산 난이도, 산 체크리스트, 100대 명산, 등산 지도, 다녀온 산 기록">
 <link rel="canonical" href="https://page.cocy.io/mountains/">
 <meta property="og:type" content="website">
@@ -22,10 +22,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="산 체크리스트 — 한국 명산, 다녀온 곳 체크하기">
 <link rel="icon" type="image/svg+xml" href="/mountains/icon.svg">
+<link rel="manifest" href="/mountains/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/mountains/apple-touch-icon.png">
+<meta name="theme-color" content="#0a1120">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="산 체크">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/mountains/mountains.css?v=2">
+<link rel="stylesheet" href="/mountains/mountains.css?v=3">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -53,7 +59,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <section class="hero">
     <div class="tape"><span class="dot"></span>Local-only Checklist</div>
-    <h1>한국 명산 35곳,<br><span class="hl">몇 개나 다녀왔을까?</span></h1>
+    <h1>한국 명산 44곳,<br><span class="hl">몇 개나 다녀왔을까?</span></h1>
     <p class="sub">난이도별(초급·중급·고급)로 정리한 한국 명산을 지도와 목록에서 확인하고, 다녀온 산을 체크해보세요. 산 이름을 누르면 대표 등산코스와 실용 팁이 펼쳐집니다.</p>
     <div class="privacy-pill">🔒 체크 기록은 이 브라우저에만 저장됩니다 — 로그인·업로드 없음</div>
   </section>
@@ -61,7 +67,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section class="panel">
     <div class="reco" id="reco"></div>
     <div class="progress-row">
-      <div class="progress-num" id="p-num">0 / 35</div>
+      <div class="progress-num" id="p-num">0 / 44</div>
       <div class="progress-bar"><b id="p-bar" style="width:0%"></b></div>
       <div class="progress-label" id="p-label">완등 0%</div>
     </div>
@@ -86,7 +92,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </footer>
 </div>
 
-<script src="/mountains/mountains-info.js?v=1"></script>
-<script src="/mountains/mountains.js?v=3"></script>
+<script src="/mountains/mountains-info.js?v=2"></script>
+<script src="/mountains/mountains.js?v=4"></script>
+<script>if("serviceWorker"in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/mountains/sw.js",{scope:"/mountains/"}).catch(function(){});});}</script>
 </body>
 </html>

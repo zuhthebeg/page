@@ -1,0 +1,19 @@
+{
+  "id": "/mountains/",
+  "name": "산 체크리스트",
+  "short_name": "산 체크",
+  "description": "한국 명산 44곳 지도에서 다녀온 산을 체크하고 코스·제철 정보를 확인하세요.",
+  "start_url": "/mountains/?utm_source=pwa",
+  "scope": "/mountains/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070b14",
+  "theme_color": "#0a1120",
+  "lang": "ko",
+  "categories": ["travel", "lifestyle", "sports"],
+  "icons": [
+    { "src": "/mountains/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/mountains/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/mountains/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

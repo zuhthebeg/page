@@ -40,6 +40,15 @@
     { id: "daedun", name: "대둔산", region: "전북·충남", elev: 878, tier: "mid", lat: 36.148, lng: 127.360 },
     { id: "cheonma", name: "천마산", region: "경기", elev: 812, tier: "easy", lat: 37.618, lng: 127.256 },
     { id: "geomdan", name: "검단산", region: "경기", elev: 657, tier: "easy", lat: 37.516, lng: 127.204 },
+    { id: "gaji", name: "가지산", region: "울산·경남·경북", elev: 1241, tier: "mid", lat: 35.620, lng: 129.003 },
+    { id: "unmun", name: "운문산", region: "경북 청도", elev: 1195, tier: "mid", lat: 35.616, lng: 128.960 },
+    { id: "cheonhwang", name: "천황산", region: "경남 밀양", elev: 1189, tier: "mid", lat: 35.558, lng: 128.972 },
+    { id: "jaeyak", name: "재약산", region: "경남 밀양", elev: 1119, tier: "mid", lat: 35.545, lng: 128.981 },
+    { id: "sinbul", name: "신불산", region: "울산·경남", elev: 1159, tier: "mid", lat: 35.539, lng: 129.054 },
+    { id: "yeongchuk", name: "영축산", region: "경남 양산·울산", elev: 1081, tier: "mid", lat: 35.516, lng: 129.053 },
+    { id: "ganwol", name: "간월산", region: "울산", elev: 1069, tier: "mid", lat: 35.552, lng: 129.040 },
+    { id: "goheon", name: "고헌산", region: "울산", elev: 1034, tier: "mid", lat: 35.641, lng: 129.085 },
+    { id: "munbok", name: "문복산", region: "경북", elev: 1015, tier: "mid", lat: 35.676, lng: 129.034 },
   ];
   var TIER_LABEL = { easy: "초급", mid: "중급", hard: "고급" };
   var TIER_COLOR = { easy: "#39c0ff", mid: "#ffb224", hard: "#ff6b81" };
@@ -81,6 +90,15 @@
     daedun: [{ m: [10, 11], why: "구름다리 단풍" }],
     cheonma: [{ m: [4, 5], why: "야생화·봄 숲" }],
     geomdan: [{ m: [3, 4, 10, 11], why: "한강·팔당 조망 근교 산행" }],
+    gaji: [{ m: [12, 1, 2], why: "영남알프스 최고봉 설경·상고대" }, { m: [10, 11], why: "가을 단풍" }],
+    unmun: [{ m: [10, 11], why: "가을 단풍·석골사 계곡" }],
+    cheonhwang: [{ m: [10, 11], why: "사자평 억새 능선 (10월 중순~)" }],
+    jaeyak: [{ m: [10, 11], why: "사자평 억새 (10월 중순~)" }],
+    sinbul: [{ m: [10, 11], why: "신불평원 억새 (10월 중순~11월 초)" }],
+    yeongchuk: [{ m: [10, 11], why: "신불평원 억새 능선" }],
+    ganwol: [{ m: [10, 11], why: "간월재 억새·석양" }],
+    goheon: [{ m: [10, 11], why: "고헌산성 억새·일출" }],
+    munbok: [{ m: [10, 11], why: "영남 대표 단풍산·삼계리 계곡" }],
   };
 
   var STORE_KEY = "kr_mountains_v1";
@@ -319,7 +337,7 @@
     });
   });
 
-  // ── 날짜·날씨 기반 오늘의 추천 — Open-Meteo(무키), 35개 좌표 일괄 1콜 ──
+  // ── 날짜·날씨 기반 오늘의 추천 — Open-Meteo(무키), 전체 좌표 일괄 1콜 ──
   // 기온은 산 지형 고도 기준이라(한라산 17°C vs 서울 33°C) 여름 고산 우대가 자동으로 반영된다
   function wxLabel(code) {
     if (code <= 1) return "☀️ 맑음";
