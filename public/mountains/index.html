@@ -12,7 +12,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>산 체크리스트 — 한국 명산 지도로 보고 다녀온 산 기록하기</title>
-<meta name="description" content="한국 명산 44곳의 대표 등산코스·소요시간·실용 팁을 난이도별 지도에서 확인하고, 다녀온 산을 체크해 나만의 등반 기록을 쌓아보세요. 로그인 없이 이 브라우저에만 저장됩니다.">
+<meta name="description" content="한국 명산 44곳의 대표 등산코스·소요시간·실용 팁을 난이도별 지도에서 확인하고, 다녀온 산을 체크하고 정상에서 GPS로 인증해 도장을 모아보세요. 로그인 없이 이 브라우저에만 저장됩니다.">
 <meta name="keywords" content="한국 명산, 등산 난이도, 산 체크리스트, 100대 명산, 등산 지도, 다녀온 산 기록">
 <link rel="canonical" href="https://page.cocy.io/mountains/">
 <meta property="og:type" content="website">
@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/mountains/mountains.css?v=3">
+<link rel="stylesheet" href="/mountains/mountains.css?v=5">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -60,11 +60,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section class="hero">
     <div class="tape"><span class="dot"></span>Local-only Checklist</div>
     <h1>한국 명산 44곳,<br><span class="hl">몇 개나 다녀왔을까?</span></h1>
-    <p class="sub">난이도별(초급·중급·고급)로 정리한 한국 명산을 지도와 목록에서 확인하고, 다녀온 산을 체크해보세요. 산 이름을 누르면 대표 등산코스와 실용 팁이 펼쳐집니다.</p>
-    <div class="privacy-pill">🔒 체크 기록은 이 브라우저에만 저장됩니다 — 로그인·업로드 없음</div>
+    <p class="sub">난이도별(초급·중급·고급)로 정리한 한국 명산을 지도와 목록에서 확인하고, 다녀온 산을 체크해보세요. 정상에 올랐다면 GPS로 인증해 도장을 모으고, 칭호와 배지를 채워보세요. 산 이름을 누르면 대표 등산코스와 실용 팁이 펼쳐집니다.</p>
+    <div class="privacy-pill">🔒 체크·도장 기록은 이 브라우저에만 저장됩니다 — 위치는 인증하는 순간에만 쓰고 저장·전송하지 않아요</div>
   </section>
 
   <section class="panel">
+    <div class="summit-cta">
+      <button type="button" id="btn-summit" class="summit-btn"><span class="pin">📍</span><span id="btn-summit-t">지금 정상이에요 — 도장 찍기</span></button>
+      <div class="summit-sub">정상 반경 400m 안에서 누르면 GPS로 확인해 도장이 찍혀요</div>
+      <div class="summit-msg" id="summit-msg" role="status" aria-live="polite"></div>
+    </div>
+    <div class="rankcard" id="rankcard"></div>
     <div class="reco" id="reco"></div>
     <div class="progress-row">
       <div class="progress-num" id="p-num">0 / 44</div>
@@ -79,12 +85,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <canvas id="map" width="860" height="640"></canvas>
     <div class="map-hint">지도의 점을 클릭하면 체크됩니다 · 목록에서는 왼쪽 네모가 체크, 이름을 누르면 코스 정보</div>
+    <div class="tabs" id="tabs" role="tablist">
+      <button type="button" role="tab" data-tab="list" class="active">📋 목록</button>
+      <button type="button" role="tab" data-tab="stamps">🏅 도장판</button>
+    </div>
     <div class="mlist" id="mlist"></div>
+    <div class="stampbook" id="stampbook" hidden></div>
   </section>
+
+  <div class="modal" id="stamp-modal" hidden role="dialog" aria-modal="true" aria-labelledby="sm-title">
+    <div class="modal-card" id="stamp-modal-card"></div>
+  </div>
 
   <section class="sect">
     <h2><span class="num">01</span>난이도는 어떻게 나눴나요</h2>
     <p>공식 인증 등급이 아니라, 표고·구간 난이도에 대해 일반적으로 알려진 평판을 참고해 셋으로 나눈 자체 분류입니다. 🟦 초급은 접근이 쉬운 근교산, 🟧 중급은 반나절~하루가 걸리는 국립공원급 산, 🟥 고급은 한라산·지리산·설악산처럼 장거리·고지대 코스입니다.</p>
+  </section>
+
+  <section class="sect">
+    <h2><span class="num">02</span>정상 인증은 어떻게 하나요</h2>
+    <p>정상 근처에서 위치 권한을 허용하고 "도장 찍기"를 누르면, 기기 GPS가 정상 좌표 반경 400m 안인지 확인해 도장을 찍어줍니다. 서버 검증이 없는 기기 기반 자가 인증이라 재미용 기록이고, 위치는 판정에만 쓰고 어디에도 저장·전송하지 않습니다. 사파리는 오래 접속하지 않으면 사이트 저장소를 지울 수 있으니, 도장판 아래 "백업 코드"로 가끔 저장해두거나 홈 화면에 설치해 쓰세요.</p>
   </section>
 
   <footer>
@@ -93,7 +113,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script src="/mountains/mountains-info.js?v=2"></script>
-<script src="/mountains/mountains.js?v=4"></script>
+<script src="/mountains/mountains.js?v=6"></script>
 <script>if("serviceWorker"in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/mountains/sw.js",{scope:"/mountains/"}).catch(function(){});});}</script>
 </body>
 </html>
