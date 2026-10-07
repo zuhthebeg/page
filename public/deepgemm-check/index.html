@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>"DeepSeek DeepGEMM이 GPT·Opus 토큰을 98% 아껴준다"? — 바이럴 팩트체크 · page.cocy.io</title>
+<meta name="description" content="X에서 화제인 &quot;DeepSeek가 DeepGEMM을 풀었다, GPT와 Opus 토큰이 최대 98% 절약, $50 대신 $1.6&quot;을 검증했다. 라이브러리는 실존하고 MIT지만 GPU 커널 라이브러리라 클로즈드 API 토큰 요금과 무관하다. 판정 2/10.">
+<meta name="keywords" content="DeepGEMM, DeepSeek, GPU 커널, FP8 GEMM, Mega MoE, 토큰 비용, 추론 비용, 바이럴 검증, 팩트체크">
+<meta property="og:title" content="DeepGEMM 토큰 98% 절약? — 팩트체크">
+<meta property="og:description" content="DeepGEMM은 실존한다(MIT, GPU 커널). 그러나 클로즈드 API 요금을 98% 깎는다는 건 틀렸다. 저장소 벤치마크는 Mega MoE 커널 1.5~1.96배. 판정 2/10.">
+<meta property="og:url" content="https://page.cocy.io/deepgemm-check/">
+<meta property="og:type" content="article"><meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://page.cocy.io/deepgemm-check/">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek DeepGEMM이 GPT·Opus 토큰을 98% 아껴준다? — 팩트체크","url":"https://page.cocy.io/deepgemm-check/","inLanguage":"ko","datePublished":"2026-10-07","dateModified":"2026-10-07","author":{"@type":"Person","name":"cocy"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif}body>noscript{display:none}.page{max-width:840px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.2rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.note{color:var(--muted);font-size:.9rem}.box{background:#f6f1e6;border-left:4px solid var(--accent);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.88em}pre{background:#f0ebe1;padding:.9rem 1rem;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.6}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer;transition:transform .1s}.mdbtn:active{transform:translateY(1px)}
+</style></head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<div class="kicker">Viral claim check · X post verification</div>
+<h1>DeepGEMM이 GPT·Opus 토큰을<br>98% 아껴준다?</h1>
+<p class="lead">X(@Rahmanbarik, 2026-10-06)에서 이런 글이 돌고 있다. "DeepSeek가 DeepGEMM이라는 킬러 라이브러리를 풀었다. GPT Astra와 Opus 5.5 토큰을 최대 98% 아껴준다. $50 낼 걸 $1.6만 내게 된다." 저장소와 README, 벤치마크 PR을 직접 열어서 따져봤다.</p>
+<p><span class="pill tag">바이럴 검증</span><span class="pill tag">DeepSeek</span><span class="pill tag">GPU 커널</span><span class="pill tag">토큰 비용</span><span class="pill tag">오픈소스</span></p>
+
+<div class="verdict"><span class="score">2/10</span><strong>판정: 라이브러리는 진짜고, 트윗의 핵심 주장은 틀렸다.</strong><br>
+<span class="pill yes">✓ DeepGEMM 실존 — deepseek-ai/DeepGEMM, MIT, 2026-09-30 최신 커밋, ★8.7천</span>
+<span class="pill no">✗ "GPT·Opus 토큰 98% 절약" — 자기 GPU에서 모델을 돌릴 때 쓰는 커널 라이브러리다. 클로즈드 API 요금과 무관</span>
+<span class="pill no">✗ "$50 대신 $1.6" — 근거 없음. 98%면 $1.0이라 트윗 안에서도 숫자가 안 맞는다(실제로는 96.8% 절감)</span>
+<span class="pill warn">△ 저장소가 보여주는 속도 향상은 Mega MoE 커널 1.5~1.96배(legacy 대비). 커널 단위일 뿐 종단 비용이 아니다</span>
+<span class="pill warn">△ "DeepSeek가 쓰는 엔진" — DeepSeek 모델용 커널과 벤치마크는 확인되나, README가 프로덕션 사용을 명시하진 않는다</span>
+<p>DeepGEMM은 자체 GPU로 모델을 서빙하는 팀에게 의미 있는 오픈소스 커널이다. 하지만 OpenAI나 Anthropic API 사용자의 청구서에는 닿지 않는다. 좋은 물건이 엉뚱한 자리에 붙어서 부풀려졌다.</p>
+</div>
+
+<h2>1. 무엇이 공개됐나</h2>
+<p>2026-10-07 기준으로 GitHub API와 README를 직접 확인했다.</p>
+<table><thead><tr><th>항목</th><th>값</th><th>판정</th></tr></thead><tbody>
+<tr><td>저장소</td><td><code>deepseek-ai/DeepGEMM</code>, 2025-02-13 생성, ★8.7천, 포크 1.4천</td><td><span class="pill yes">실존</span></td></tr>
+<tr><td>라이선스</td><td>MIT</td><td><span class="pill yes">상업 이용 가능</span></td></tr>
+<tr><td>성격</td><td>GPU용 BLAS 커널 라이브러리. FP8/FP4/BF16 GEMM, Mega MoE, MQA 스코어링 등 CUDA 커널</td><td><span class="pill yes">GPU 커널</span></td></tr>
+<tr><td>최근 활동</td><td>2026-09-30 "Public release 26/09/30 (#462)"</td><td><span class="pill yes">활발</span></td></tr>
+<tr><td>요구사항</td><td>NVIDIA SM90 또는 SM100 GPU, CUDA 12.9 이상, PyTorch 2.3 이상</td><td><span class="pill warn">하드웨어 제약</span></td></tr>
+<tr><td>토큰 요금</td><td>README와 벤치마크 PR 어디에도 API 가격·절약률 언급 없음</td><td><span class="pill no">근거 없음</span></td></tr>
+</tbody></table>
+
+<h2>2. 왜 "토큰 98% 절약"이 안 되나</h2>
+<p>DeepGEMM은 행렬곱 같은 GPU 연산을 빠르게 하는 커널이다. 같은 GPU에서 더 빨리 계산하면 <b>그 GPU로 모델을 직접 돌리는 쪽</b>의 토큰당 원가가 내려갈 수 있다. 트윗의 논리("더 빠른 GPU 수학 → GPU당 더 많은 토큰 → 더 싼 토큰")는 여기까지는 맞다.</p>
+<p>문제는 대상이다. GPT Astra와 Opus 5.5는 OpenAI와 Anthropic이 자기 서버에서 돌리는 클로즈드 모델이고, 사용자는 회사가 정한 단가로 청구받는다. 사용자가 DeepGEMM을 "꽂을" 곳이 없다. 이 라이브러리로 줄어드는 건 오픈 모델을 자기 GPU에 올린 쪽의 서버 비용이지, API 요금이 아니다.</p>
+
+<h2>3. 숫자 검증</h2>
+<table><thead><tr><th>주장·수치</th><th>확인한 것</th><th>판정</th></tr></thead><tbody>
+<tr><td>토큰 최대 98% 절약</td><td>저장소·README·PR에 해당 수치 없음</td><td><span class="pill no">근거 없음</span></td></tr>
+<tr><td>$50 → $1.6</td><td>1.6 / 50 = 3.2%, 즉 96.8% 절감. 트윗의 98%와 불일치(98%면 $1.0)</td><td><span class="pill no">모순</span></td></tr>
+<tr><td>Mega MoE 속도 향상</td><td>PR #316, DeepSeek-V4-Flash/Pro, EP8, legacy 대비 1.50~1.96배. 1.96배도 시간 약 49% 감소</td><td><span class="pill warn">커널 단위, 종단 아님</span></td></tr>
+<tr><td>"전문가 튜닝 라이브러리와 같거나 능가"</td><td>README의 자체 문구. 독립 벤치마크는 확인하지 못함</td><td><span class="pill warn">제작사 주장</span></td></tr>
+</tbody></table>
+<p>"legacy"가 구체적으로 무엇인지는 PR에 따로 정의되어 있지 않아 이전 구현이라고만 읽었다.</p>
+
+<h2>4. 트윗 문장별 판정</h2>
+<table><thead><tr><th>주장</th><th>실제</th><th>판정</th></tr></thead><tbody>
+<tr><td>DeepSeek가 킬러 라이브러리를 공개했다</td><td>2025-02부터 있던 저장소, 9월 말 업데이트. 실존</td><td><span class="pill yes">대체로 맞음</span></td></tr>
+<tr><td>GPT Astra·Opus 5.5 토큰을 최대 98% 절약</td><td>클로즈드 API 요금과 무관</td><td><span class="pill no">틀림</span></td></tr>
+<tr><td>DeepSeek가 학습·서빙에 쓰는 엔진</td><td>DeepSeek 모델용 커널과 벤치마크 확인. 프로덕션 사용 명시는 없음</td><td><span class="pill warn">부분적</span></td></tr>
+<tr><td>내 GPU에서 토큰을 더 짜낼 수 있다</td><td>SM90/SM100 GPU에서 자체 서빙할 때만 해당</td><td><span class="pill warn">조건부</span></td></tr>
+<tr><td>$50 대신 $1.6</td><td>근거 없음, 98%와도 모순</td><td><span class="pill no">틀림</span></td></tr>
+</tbody></table>
+
+<h2>5. 우리한테 의미 있나</h2>
+<ul class="sources">
+<li><b>API로 GPT·Claude를 쓰는 입장:</b> 바뀌는 게 없다. 청구서를 줄이는 현실적 수단은 프롬프트 캐싱, 모델 라우팅, 작은 모델 폴백이다(평가).</li>
+<li><b>로컬 GPU 입장:</b> 요구 아키텍처가 SM90/SM100(Hopper/Blackwell)이라 RTX 30·40 세대 소비자 GPU에서는 쓸 수 없다. 직접 돌려보진 않았고, README 요구사항 기준의 판단이다.</li>
+<li><b>자체 서빙 팀 입장:</b> MIT 라이선스라 읽고 가져다 쓰기 좋은 레퍼런스 구현이다. 실제 이득은 모델·배치 크기·통신 구성에 따라 달라지므로 자기 환경에서 측정해야 한다.</li>
+</ul>
+
+<h2>결론</h2>
+<p>저장소는 진짜고 DeepSeek의 GPU 최적화 수준을 볼 수 있는 좋은 자료다. 그러나 "남의 API 토큰값을 98% 깎아준다"는 문장은 라이브러리가 하는 일과 맞지 않는다. 숫자도 트윗 안에서 서로 맞지 않는다.</p>
+
+<h2>출처</h2><ul class="sources">
+<li><a href="https://x.com/Rahmanbarik/status/2107504110903943585">원문 트윗 (@Rahmanbarik)</a></li>
+<li><a href="https://github.com/deepseek-ai/DeepGEMM">deepseek-ai/DeepGEMM (저장소·README)</a></li>
+<li><a href="https://github.com/deepseek-ai/DeepGEMM/pull/316">PR #316 — Mega MoE 벤치마크</a></li>
+</ul>
+<div class="foot">cocy.io research note · 2026-10-07 · GitHub API와 README, 벤치마크 PR을 직접 확인. 코드를 실행하거나 속도를 재현하진 않았다. 벤치마크 수치는 저장소 기재값이며 독립 검증하지 않았다.</div>
+</main>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# "DeepSeek DeepGEMM이 GPT·Opus 토큰을 98% 아껴준다" — 팩트체크
+
+판정 2/10 — 라이브러리는 진짜고 좋은 물건이다. 트윗의 핵심 주장은 틀렸다. (2026-10-07, cocy.io research note)
+
+원문: https://x.com/Rahmanbarik/status/2107504110903943585 (@Rahmanbarik, 2026-10-06, 영상 15초)
+
+## 한 줄 요약
+- ✓ DeepGEMM 실존: deepseek-ai/DeepGEMM, MIT, 2026-09-30 최신 커밋, GPU(CUDA) 커널 라이브러리
+- ✗ "GPT Astra·Opus 5.5 토큰 최대 98% 절약" — 자기 GPU에서 모델을 돌릴 때 쓰는 커널이다. 클로즈드 API 요금과 무관
+- ✗ "$50 대신 $1.6" — 근거 없음. 98% 절약이면 $1.0이라 트윗 안에서도 숫자가 안 맞음(실제 96.8% 절감)
+- △ 저장소가 보여주는 속도 향상은 Mega MoE 커널 1.5~1.96배(legacy 대비). 커널 단위이며 종단 비용이 아님
+- △ "DeepSeek가 쓰는 엔진" — DeepSeek 모델용 커널·벤치마크는 확인, 프로덕션 사용 명시는 없음
+
+## 1. 무엇이 공개됐나 (2026-10-07, GitHub API·README 직접 확인)
+- deepseek-ai/DeepGEMM, 2025-02-13 생성, MIT, ★8.7천
+- 최신 커밋 2026-09-30 "Public release 26/09/30 (#462)"
+- 요구사항: NVIDIA SM90 또는 SM100 GPU, CUDA 12.9+, PyTorch 2.3+
+- README에 토큰 요금·API 가격 언급 없음
+
+## 2. 왜 98% 절약이 안 되나
+DeepGEMM은 GPU 연산 커널이다. 자기 GPU로 모델을 돌리는 쪽의 원가는 내려갈 수 있다. 하지만 OpenAI·Anthropic API 청구서는 그 회사들이 정한 단가라 이 라이브러리를 붙일 곳이 없다.
+
+## 3. 숫자
+- 98% → 근거 없음
+- $50 → $1.6 = 96.8% 절감(98%와 불일치)
+- Mega MoE 벤치마크(PR #316, DeepSeek-V4-Flash/Pro, EP8): legacy 대비 1.50~1.96배, 커널 단위
+
+## 4. 우리한테 의미
+- API 사용자: 변화 없음. 현실적 절감 수단은 캐싱·모델 라우팅·작은 모델 폴백
+- 로컬 소비자 GPU(RTX 30/40): SM90/SM100 전용이라 사용 불가(README 요구사항 기준, 직접 실행은 안 함)
+- 자체 서빙 팀: MIT 레퍼런스로 유용. 실제 이득은 자기 환경에서 측정 필요
+
+## 출처
+- https://x.com/Rahmanbarik/status/2107504110903943585
+- https://github.com/deepseek-ai/DeepGEMM
+- https://github.com/deepseek-ai/DeepGEMM/pull/316
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='deepgemm-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body></html>
