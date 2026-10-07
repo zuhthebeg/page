@@ -28,14 +28,14 @@
 <span class="pill yes">✓ 실존하는 오픈웨이트 모델. 421M·Apache 2.0, 모델 카드 기준 약 33ms</span>
 <span class="pill yes">✓ 로컬 추론이 클라우드 왕복보다 빠른 것은 구조상 자연스럽다</span>
 <span class="pill warn">△ 트윗의 "34ms/링크, 3배 더 검사"는 영상 속 시연이라 재현 정보가 없다</span>
-<span class="pill no">✗ 비교한 클라우드 모델 4개의 이름, 링크 수, 방법론이 공개되지 않았다</span>
+<span class="pill no">✗ 경주한 결정 모델 4개 중 나머지의 이름, 링크 수, 방법론이 공개되지 않았다</span>
 <span class="pill no">✗ 정확도 수치가 없다. Laya 모델 카드의 zero-shot은 0.362(파인튜닝 0.766)</span>
 <span class="pill no">✗ JevBench에서 Luna(low) 35.11 대 Laya 30.25(v1.4), v1.5는 40.48 대 0.00</span>
 <p>점수는 "주장이 말하는 것을 그대로 믿어도 되는가" 기준이다. 속도 방향성 자체는 맞아 보여서 낮게 주지는 않았고, 정확도 근거 없이 "이겼다"고 말한 점과 조건이 다른 비교라는 점에서 4점으로 깎았다(평가).</p>
 </div>
 
 <h2>1. 무엇을 주장했나</h2>
-<p>트윗은 "Local Laya beat OpenAI's decision API"라고 쓰고, M5 Max에서 로컬로 돌린 Laya가 링크 하나를 34ms에 처리해서 같은 시간에 클라우드 모델보다 3배 더 많이 검사했다고 설명한다. 29초짜리 영상이 붙어 있는데 이 영상은 보지 못했다. 아래 분석은 트윗 본문과 공개 문서에 근거한다.</p>
+<p>트윗은 "Local Laya beat OpenAI's decision API"라고 쓰고, 결정 모델 4개가 웹 페이지를 내려가며 "거미(spider)를 언급하는 링크"를 뽑아내는 경주를 했다고 설명한다. M5 Max에서 로컬로 돌린 Laya는 링크당 34ms가 걸려 클라우드 모델보다 3배 더 많이 검사했다는 것이다. 트윗 끝에는 "Run decision models locally"라는 atomic.chat 제품 안내가 붙어 있어 홍보 성격의 시연이다. 과제는 키워드성 필터에 가까워 어려운 판단이 아니고, 맞고 틀림을 채점한 정보도 없다. 29초짜리 영상이 붙어 있는데 이 영상은 보지 못했다. 아래 분석은 트윗 본문과 공개 문서에 근거한다.</p>
 
 <h2>2. OpenAI Decisions API는 무엇인가</h2>
 <ul class="sources">
@@ -82,7 +82,7 @@
 <li><a href="https://github.com/NandhaKishorM/laya">NandhaKishorM/laya</a> · <a href="https://ollama.com/library/laya">Ollama laya</a></li>
 <li><a href="https://github.com/fstandhartinger/jevbench">fstandhartinger/jevbench</a> · <a href="https://benchlm.ai/compare/gpt-6-luna-low-vs-laya">benchlm 비교</a></li>
 </ul>
-<div class="foot">cocy.io research note · 2026-10-08 · 트윗 본문, OpenAI 문서와 커뮤니티 글, Laya 모델 카드·저장소·Ollama 페이지, JevBench 저장소와 benchlm 비교 페이지를 직접 읽었다. 29초 영상은 보지 못했고, 트윗이 비교한 클라우드 모델 4개의 정체는 알 수 없다. 이번 비교를 직접 재현 실험하지는 않았다. Laya zero-shot 수치는 우리의 이전 측정과 모델 카드에 근거한다. 4/10은 필자의 평가다.</div>
+<div class="foot">cocy.io research note · 2026-10-08 · 트윗 본문, OpenAI 문서와 커뮤니티 글, Laya 모델 카드·저장소·Ollama 페이지, JevBench 저장소와 benchlm 비교 페이지를 직접 읽었다. 29초 영상은 보지 못했고, 경주에 나온 나머지 결정 모델의 정체는 알 수 없다. 이번 비교를 직접 재현 실험하지는 않았다. Laya zero-shot 수치는 우리의 이전 측정과 모델 카드에 근거한다. 4/10은 필자의 평가다.</div>
 </main>
 
 <button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
@@ -94,9 +94,9 @@
 원문: https://x.com/atomic_chat_hq/status/2107828492297720017
 
 ## 한 줄 요약
-- 트윗 주장: M5 Max에서 로컬로 도는 Laya가 링크 하나를 34ms에 처리해 클라우드 모델보다 3배 많이 검사했다 (29초 영상 포함, 영상은 보지 못함)
+- 트윗 주장: 결정 모델 4개가 웹 페이지를 내려가며 "거미를 언급하는 링크"를 뽑아내는 경주를 했고, M5 Max에서 로컬로 도는 Laya가 링크당 34ms로 클라우드 모델보다 3배 많이 검사했다 (29초 영상 포함, 영상은 보지 못함)
 - ✓ 속도 방향은 그럴듯하다. Laya는 421M 파라미터·Apache 2.0, 모델 카드가 약 33ms, Ollama 페이지가 M5 Max에서 질문당 10ms 미만이라고 적음
-- ✗ 비교 대상 4개 모델, 링크 수, 방법론이 공개되지 않았고 정확도는 주장에 없다
+- ✗ 경주에 나온 나머지 모델의 이름, 링크 수, 방법론이 공개되지 않았고 정확도는 주장에 없다. 과제 자체도 장난감 수준(거미 링크 거르기)
 - ✗ 로컬 기기 vs 클라우드 왕복은 같은 조건의 비교가 아니다
 - ✗ Laya 모델 카드 스스로 zero-shot 0.362, 파인튜닝 0.766이라고 밝힘
 - ✗ 제3자 JevBench: Luna(low) 35.11 vs Laya 30.25 (v1.4), 40.48 vs 0.00 (v1.5)
