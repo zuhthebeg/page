@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HOP(Open HWP) 쓸만한가 — 무료 HWP 편집기 검증 · page.cocy.io</title>
+<meta name="description" content="HOP은 rhwp 위에 얹은 무료 오픈소스 HWP/HWPX 데스크톱 앱이다. 저장소·릴리스·열린 이슈를 직접 확인해 어디까지 믿고 쓸 수 있는지 정리했다. 열람·PDF 변환은 쓸 만하고, 중요한 문서를 편집·저장하는 데는 아직 위험이 남아 있다.">
+<meta name="keywords" content="HOP, Open HWP, HWP 뷰어, HWP 편집기, 무료 한글 편집기, rhwp, HWPX, macOS HWP, Linux HWP, 알한글">
+<meta property="og:title" content="HOP(Open HWP) 쓸만한가 — 무료 HWP 편집기 검증">
+<meta property="og:description" content="열람·PDF 변환은 쓸 만하다. 다만 내장 엔진이 rhwp 0.8.4로 멈춰 있고 표 렌더링·저장 호환 이슈가 열려 있어, 중요한 문서를 덮어쓰기 저장하기엔 이르다.">
+<meta property="og:url" content="https://page.cocy.io/hop-check/">
+<meta property="og:type" content="article"><meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://page.cocy.io/hop-check/">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"HOP(Open HWP) 쓸만한가 — 무료 HWP 편집기 검증","url":"https://page.cocy.io/hop-check/","inLanguage":"ko","datePublished":"2026-10-08","dateModified":"2026-10-08","author":{"@type":"Person","name":"cocy"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif}body>noscript{display:none}.page{max-width:840px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.2rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.note{color:var(--muted);font-size:.9rem}.box{background:#f6f1e6;border-left:4px solid var(--accent);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.88em}pre{background:#f0ebe1;padding:.9rem 1rem;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.6}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer;transition:transform .1s}.mdbtn:active{transform:translateY(1px)}
+</style></head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<div class="kicker">Tool check · free HWP editor</div>
+<h1>HOP(Open HWP),<br>쓸 만한가</h1>
+<p class="lead">HOP은 한컴 없이 HWP/HWPX 문서를 열고 고치고 PDF로 뽑는 무료 오픈소스 데스크톱 앱이다. 랜딩 페이지가 말하는 것이 아니라 저장소, 릴리스, 열린 이슈에서 확인되는 것을 기준으로 어디까지 믿을 수 있는지 따져봤다. 직접 설치해서 문서를 돌려보지는 않았다.</p>
+<p><span class="pill tag">도구 검증</span><span class="pill tag">HWP/HWPX</span><span class="pill tag">오픈소스 · MIT</span><span class="pill tag">rhwp</span></p>
+
+<div class="verdict"><span class="score">6/10</span><strong>판정: 열람·PDF 변환용으로는 쓸 만하다. 중요한 문서를 편집해서 덮어쓰기 저장하는 용도로는 아직 이르다.</strong><br>
+<span class="pill yes">✓ 실존·무료·MIT. macOS(서명·공증), Windows, Linux 빌드. GitHub 별 약 1,860개</span>
+<span class="pill yes">✓ 열기, HWP 저장, PDF 내보내기(텍스트 레이어), 인쇄, 파일 연결</span>
+<span class="pill warn">△ 문서 엔진은 rhwp를 그대로 쓴다. 번들은 0.8.4, 업스트림은 0.8.7</span>
+<span class="pill warn">△ 마지막 커밋과 릴리스가 2026-08-28. 이후 41일간 공개 커밋 없음</span>
+<span class="pill no">✗ 표 셀 마지막 줄 누락(화면·PDF·인쇄), 저장 후 한컴이 못 읽는다는 보고가 열려 있음</span>
+<span class="pill no">✗ Windows 빌드는 코드 서명이 없다</span>
+<p>점수는 "한컴이 없는 사람이 무료로 HWP를 다루는 도구로서" 기준이다. 열람과 변환만 보면 7점쯤, 중요한 문서를 편집하고 덮어쓰는 용도까지 포함하면 4점쯤이어서 중간인 6점으로 잡았다(평가).</p>
+</div>
+
+<h2>1. 무엇인가</h2>
+<p>README는 HOP을 rhwp 위에 "얇게 껍데기를 씌운 앱"이라고 설명한다. 문서 파싱·렌더링·편집은 rhwp가 하고, HOP은 파일 열기, 저장, PDF 내보내기, 인쇄, 파일 연결 같은 OS 통합만 맡는다. 즉 HOP의 품질은 대부분 번들된 rhwp 버전이 결정한다.</p>
+<table><thead><tr><th>항목</th><th>확인한 내용</th></tr></thead><tbody>
+<tr><td>기능</td><td>HWP/HWPX 열기, HWP 저장·다른 이름으로 저장, PDF 내보내기, 인쇄, 드래그 앤 드롭, 파일 연결, 여러 창</td></tr>
+<tr><td>라이선스</td><td>MIT</td></tr>
+<tr><td>저장소</td><td>2026-04-19 생성, 별 약 1,860개, 열린 이슈 22건과 열린 PR 1건</td></tr>
+<tr><td>최신 릴리스</td><td>v0.4.4 (2026-08-28). 그 전은 v0.4.3(같은 날), v0.4.1(07-21), v0.4.0(07-19)</td></tr>
+<tr><td>배포</td><td>macOS dmg(서명·공증, Homebrew 가능), Windows msi(서명 없음), Linux deb·rpm·AppImage·arm64 deb, AUR</td></tr>
+</tbody></table>
+
+<h2>2. 믿을 만한 부분</h2>
+<ul class="sources">
+<li><b>초기 대응이 빨랐다.</b> 메인테이너 코멘트에 따르면 v0.4.3에서 다크 테마와 검색 가능한 PDF 텍스트 레이어·한국어 폰트 번들을, v0.4.4에서 서식 도구 상자 깨짐을 고쳤다.</li>
+<li><b>저장 안전장치가 있다고 한다.</b> 이슈 #73에서 메인테이너는 v0.4.0 예정 코드가 "임시 파일에 쓴 뒤 다시 파싱에 성공해야만 원본을 원자적으로 교체"한다고 답했다. 구조가 깨진 결과가 원본을 덮어쓰는 일은 막지만, 한컴에서의 의미적 손상까지 막는다는 뜻은 아니라고 본인이 선을 그었다. 이 동작은 직접 검증하지 못했다.</li>
+<li><b>엔진은 살아 있다.</b> 엔진인 rhwp는 2026-10-06에 v0.8.7을 냈고, README는 외부 기여자 40명 이상과 공동 유지보수자 2명을 적고 있다.</li>
+</ul>
+
+<h2>3. 걸리는 부분</h2>
+<table><thead><tr><th>항목</th><th>확인한 사실</th><th>의미</th></tr></thead><tbody>
+<tr><td>엔진 버전 지연</td><td>HOP v0.4.4는 rhwp 0.8.4. 업스트림은 0.8.6(09-02), 0.8.7(10-06)</td><td><span class="pill warn">이미 고쳐진 버그를 그대로 안고 있음</span></td></tr>
+<tr><td>표 마지막 줄 누락 (#99)</td><td>셀 높이가 한 줄 모자라게 계산돼 화면·PDF·인쇄에서 마지막 줄이 사라진다는 보고. 파일에는 글자가 있고 rhwp 웹 데모·한글에서는 정상이라고 한다. 협력자는 관련 수정이 rhwp 0.8.6에 들어갔으나 같은 원인인지는 미확인이라고 답했다</td><td><span class="pill no">그대로 제출하면 글자가 빠진 PDF가 나갈 수 있음</span></td></tr>
+<tr><td>저장 호환 (#73)</td><td>0.3.1에서 원본 HWP를 열어 저장하면 한컴이 파일을 못 연다는 보고. 메인테이너는 재현용 최소 파일을 요청했고 이슈는 열려 있다</td><td><span class="pill warn">최신 버전에서의 재현 여부는 불명</span></td></tr>
+<tr><td>p 키 입력 불가 (#95·#100)</td><td>영문 p/P가 입력되지 않음. 개체 속성 단축키가 키를 소비하던 문제로, rhwp 0.8.6에서 수정. 수정 PR #101은 미병합</td><td><span class="pill warn">영문을 쓰는 문서에선 치명적일 수 있음</span></td></tr>
+<tr><td>암호 문서 (#98)</td><td>Linux에서 암호 걸린 HWP를 열면 비밀번호 입력창 없이 오류만 뜬다</td><td><span class="pill warn">암호 문서는 다른 도구 필요</span></td></tr>
+<tr><td>그 밖</td><td>새 창 복사 시 레이아웃 깨짐(#96), 인쇄 시 표 안 글자 누락(#78)·레이아웃 깨짐(#70), macOS v0.4.1 서명 검증 실패 보고(#89), Windows ARM64 빌드 없음(#80)</td><td><span class="pill warn">모두 열린 상태</span></td></tr>
+<tr><td>HWPX 저장</td><td>README의 저장 항목은 "HWP 문서"만 적혀 있다. HWPX 저장 가능 여부는 확인하지 못했다</td><td><span class="pill warn">HWPX 편집은 미확인</span></td></tr>
+<tr><td>유지보수</td><td>마지막 공개 커밋 08-28. 이슈 #95·#99에 답한 것은 메인테이너가 아니라 외부 협력자다</td><td><span class="pill warn">당분간 업데이트를 기대하기 어렵다</span></td></tr>
+</tbody></table>
+<p>이 목록의 상당수는 HOP이 아니라 rhwp 쪽 문제를 번들 버전이 못 따라간 결과다. 반대로 말하면 HOP은 업스트림이 고친 것을 곧바로 받지 못하는 구조이고, 메인테이너가 움직이지 않는 동안에는 사용자가 고칠 방법이 없다.</p>
+
+<h2>4. 용도별 판정</h2>
+<table><thead><tr><th>용도</th><th>판정</th></tr></thead><tbody>
+<tr><td>받은 HWP 열어보기</td><td><span class="pill yes">쓸 만함</span> 표가 많은 문서는 한컴이나 rhwp 웹 데모와 한 번 대조</td></tr>
+<tr><td>HWP를 PDF로 변환</td><td><span class="pill warn">조건부</span> #99 때문에 표 있는 문서는 결과 PDF의 셀 마지막 줄을 눈으로 확인</td></tr>
+<tr><td>가벼운 수정 후 다른 이름으로 저장</td><td><span class="pill warn">조건부</span> 저장본을 한컴에서 열어 확인</td></tr>
+<tr><td>제출·계약 문서를 덮어쓰기 저장</td><td><span class="pill no">비권장</span></td></tr>
+<tr><td>한컴 없이 Mac·Linux에서 HWP를 가끔 볼 때</td><td><span class="pill yes">가장 현실적인 무료 선택지 중 하나</span></td></tr>
+<tr><td>암호 문서, HWPX 편집, ARM64 Windows</td><td><span class="pill no">지원이 불확실하거나 없음</span></td></tr>
+</tbody></table>
+
+<h2>5. 쓴다면 이렇게</h2>
+<ul class="sources">
+<li>원본을 따로 두고 항상 다른 이름으로 저장한다.</li>
+<li>저장본과 PDF를 한컴 또는 rhwp 웹 데모로 열어 대조한다. 표가 있으면 셀 마지막 줄부터 본다.</li>
+<li>Windows·Linux라면 HOP 코드에서 출발했다는 포크 알한글(Alhangeul)도 비교 대상이다. 개발자 본인 소개로는 rhwp 0.8.6 기반이고 v0.1.1이 최신이며, 이 수치와 "관련 수정 포함" 주장은 직접 검증하지 못했다. Windows 설치 파일은 서명이 없다고 스스로 밝히고 있다.</li>
+<li>업스트림의 rhwp 웹 데모는 설치 없이 같은 엔진의 최신판을 볼 수 있어, 문제가 HOP 문제인지 엔진 문제인지 가릴 때 쓸 수 있다.</li>
+</ul>
+
+<h2>결론</h2>
+<p>HOP은 "한컴 없이 HWP를 연다"는 목적에는 이미 충분하다. 약점은 앱 자체보다, 엔진 업데이트를 따라가지 못하는 현재의 유지보수 상태와 아직 열려 있는 표 렌더링·저장 호환 이슈다. 열람과 PDF 변환은 결과를 한 번 확인하는 조건으로 쓰고, 중요한 문서의 편집과 덮어쓰기는 한컴으로 하는 것이 안전하다. 새 릴리스가 rhwp 0.8.7 이상으로 올라오고 #99·#73이 닫히면 점수를 다시 올릴 수 있다.</p>
+
+<h2>출처</h2><ul class="sources">
+<li><a href="https://golbin.github.io/hop/">HOP 소개 페이지</a></li>
+<li><a href="https://github.com/golbin/hop">golbin/hop — README, 릴리스, 이슈 #73·#89·#95·#98·#99, PR #101</a></li>
+<li><a href="https://github.com/edwardkim/rhwp">edwardkim/rhwp — README, 릴리스(v0.8.6·v0.8.7)</a></li>
+<li><a href="https://github.com/postmelee/alhangeul-tauri">postmelee/alhangeul-tauri — 알한글 README</a></li>
+</ul>
+<div class="foot">cocy.io research note · 2026-10-08 · 소개 페이지, GitHub API(저장소·릴리스·커밋·이슈·댓글), HOP·rhwp·알한글 README를 직접 읽었다. 앱을 설치하거나 문서를 열어 테스트하지 않았다. 이슈 내용은 보고자 주장이며 모두 재현하지 않았다. 알한글 관련 내용은 그 개발자 본인의 소개와 댓글에 근거한다. 6/10은 필자의 평가다.</div>
+</main>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# HOP(Open HWP) 쓸만한가 — 무료 HWP 편집기 검증
+
+6/10 — 열람·PDF 변환 용도로는 쓸 만하다. 중요한 문서를 편집해서 덮어쓰기 저장하는 용도로는 아직 이르다. (2026-10-08, cocy.io research note, 직접 설치·실행해 보지 않음)
+
+원문: https://golbin.github.io/hop/
+
+## 한 줄 요약
+- ✓ 실존·MIT·무료. macOS(서명·공증)/Windows/Linux 빌드, GitHub 별 약 1,860개
+- ✓ HWP/HWPX 열기, HWP 저장, PDF 내보내기, 인쇄, 파일 연결
+- △ 문서 엔진은 rhwp를 그대로 쓰는 얇은 껍데기. 번들은 rhwp 0.8.4, 업스트림은 0.8.7
+- △ 마지막 커밋·릴리스 2026-08-28. 이후 41일간 공개 커밋 없음
+- ✗ 표 셀 마지막 줄 누락(화면·PDF·인쇄), 저장 후 한컴에서 안 열린다는 보고 등이 열려 있음
+- ✗ Windows 빌드는 코드 서명 없음
+
+## 1. 무엇인가
+- 오픈소스 HWP/HWPX 데스크톱 앱. 파싱·렌더링·편집은 rhwp에 맡기고 파일 열기·저장·PDF·인쇄·파일 연결만 얹었다고 README가 설명
+- 저장소 생성 2026-04-19, 최신 릴리스 v0.4.4(2026-08-28)
+
+## 2. 믿을 만한 부분
+- 활동 초기엔 빠르게 움직였다. v0.4.3·v0.4.4에서 다크 테마, PDF 텍스트 레이어, 한국어 폰트 번들 등을 처리(메인테이너 코멘트 기준)
+- 저장 안전장치: 메인테이너가 v0.4.0 예정 코드를 "임시 파일에 쓴 뒤 다시 파싱에 성공해야만 원본을 교체"한다고 설명(직접 검증하지 않음)
+- 엔진 쪽 rhwp는 활발하다. v0.8.7이 2026-10-06 릴리스, 외부 기여자 40명 이상
+
+## 3. 걸리는 부분
+- 번들 엔진이 뒤처짐: P 키 입력 불가와 표 셀 마지막 줄 잘림은 rhwp v0.8.6에서 고쳐졌지만 HOP v0.4.4는 0.8.4
+- 열린 이슈 22건: #99 표 마지막 줄 누락(PDF·인쇄 포함), #73 저장하면 한컴이 못 읽음(0.3.1 보고, 재현자료 대기), #95/#100 p 키(수정 PR #101 미병합), #98 암호 HWP 열기 실패(Linux), #96 새 창 복사 시 레이아웃 깨짐, #78/#70 인쇄 문제, #89 macOS 서명 검증 실패 보고
+- HWPX는 열기 중심. README의 저장 항목은 HWP만 적혀 있음(HWPX 저장은 확인하지 못함)
+- Windows 설치 파일은 서명이 없어 SmartScreen 경고, Windows ARM64 빌드 없음(#80)
+
+## 4. 용도별 판정
+- 받은 HWP를 열어보기: 쓸 만함(표 많은 문서는 한컴이나 rhwp 웹 데모와 대조)
+- HWP를 PDF로 변환: 쓸 만함. 단 #99 때문에 표 있는 문서는 결과 PDF를 반드시 눈으로 확인
+- 가벼운 수정 후 다른 이름으로 저장: 가능. 저장본을 한컴에서 열어 확인
+- 제출·계약 문서를 덮어쓰기 저장: 비권장
+- 한컴 없이 Mac/Linux에서 HWP를 가끔 볼 때: 가장 현실적인 무료 선택지 중 하나
+
+## 5. 안전하게 쓰는 방법
+- 원본 보관, 항상 다른 이름으로 저장
+- 저장·PDF 결과를 한컴 또는 rhwp 웹 데모로 열어 대조
+- 표가 많은 문서는 PDF 마지막 줄 누락부터 확인
+- 같은 엔진의 더 새 버전을 쓰는 Windows·Linux용 포크 알한글(rhwp 0.8.6 기반, 개발자 본인 소개 기준, 미검증)도 비교 대상
+
+## 출처
+- https://golbin.github.io/hop/
+- https://github.com/golbin/hop (README, 릴리스, 이슈 #73 #89 #95 #98 #99, PR #101)
+- https://github.com/edwardkim/rhwp (README, 릴리스)
+- https://github.com/postmelee/alhangeul-tauri
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='hop-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body></html>
