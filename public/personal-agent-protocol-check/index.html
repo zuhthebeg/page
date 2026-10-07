@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Personal Agent Protocol(Sierra·Meta) — 스펙 공개 전 기술 분석 · page.cocy.io</title>
+<meta name="description" content="Sierra·Meta가 발표한 Personal Agent Protocol을 공식 블로그와 인접 표준(MCP 인증, Visa TAP, Web Bot Auth)으로 따져봤다. 발표는 사실이지만 v0.1 스펙은 아직 공개되지 않았다. 확정된 것, 비어 있는 것, 사내 에이전트 플랫폼 대비 포인트 정리.">
+<meta name="keywords" content="Personal Agent Protocol, PAP, Sierra, Meta, 에이전트 프로토콜, OAuth, MCP, 에이전트 인증, 사내 에이전트 플랫폼, Visa Trusted Agent Protocol">
+<meta property="og:title" content="Personal Agent Protocol — 스펙 공개 전 기술 분석">
+<meta property="og:description" content="발표는 사실, 인터페이스는 아직 없다. OAuth·MCP·OpenAPI 세 가지만 확인된다. 확정된 것과 비어 있는 것, 사내 에이전트 플랫폼이 미리 할 일을 정리했다.">
+<meta property="og:url" content="https://page.cocy.io/personal-agent-protocol-check/">
+<meta property="og:type" content="article"><meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://page.cocy.io/personal-agent-protocol-check/">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Personal Agent Protocol(Sierra·Meta) — 스펙 공개 전 기술 분석","url":"https://page.cocy.io/personal-agent-protocol-check/","inLanguage":"ko","datePublished":"2026-10-07","dateModified":"2026-10-07","author":{"@type":"Person","name":"cocy"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif}body>noscript{display:none}.page{max-width:840px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.2rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.note{color:var(--muted);font-size:.9rem}.box{background:#f6f1e6;border-left:4px solid var(--accent);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.88em}pre{background:#f0ebe1;padding:.9rem 1rem;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.6}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer;transition:transform .1s}.mdbtn:active{transform:translateY(1px)}
+</style></head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<div class="kicker">Spec watch · pre-release protocol analysis</div>
+<h1>Personal Agent Protocol,<br>스펙이 나오기 전에 알 수 있는 것</h1>
+<p class="lead">2026-10-06, Sierra가 Meta 등과 함께 개인 에이전트가 기업과 상호작용하는 개방형 표준 "Personal Agent Protocol(PAP)"을 발표했다. 사내에 에이전트 플랫폼을 제공하게 될 수도 있는 입장에서, 실제 인터페이스가 얼마나 구체적으로 확인되는지부터 따져봤다.</p>
+<p><span class="pill tag">프로토콜 분석</span><span class="pill tag">Sierra · Meta</span><span class="pill tag">OAuth</span><span class="pill tag">MCP</span><span class="pill tag">에이전트 플랫폼</span></p>
+
+<div class="verdict"><span class="score">3/10</span><strong>판정: 발표는 사실이다. 그러나 구현할 수 있는 인터페이스 정보는 아직 거의 없다.</strong><br>
+<span class="pill yes">✓ 공식 발표 실존 — Sierra 블로그(Bret Taylor, Clay Bavor), 파트너 7곳 명시</span>
+<span class="pill yes">✓ 확정된 기술 요소 3가지 — OAuth 기반 세션, 게스트→로그인(읽기 전용/쓰기 선택), 회사가 고르는 세 경로(웹·API·회사 에이전트)</span>
+<span class="pill no">✗ v0.1 스펙·레퍼런스 구현·저장소는 아직 공개되지 않았다. "이달 중 공개 예정"이 전부다</span>
+<span class="pill warn">△ 발견 방식, 에이전트 신원 증명, 세션 객체, 스코프 어휘, 오류 모델은 전부 비어 있다</span>
+<span class="pill warn">△ "누구나 구현 가능"은 스펙이 나와야 확인할 수 있다. 거버넌스와 라이선스도 미공개</span>
+<p>점수는 "지금 이 정보만으로 구현 설계를 얼마나 할 수 있나"를 뜻한다. 방향은 분명하지만 바이트 단위 규격은 없다. 이 상태에서 PAP 전용으로 만들기보다, 겹칠 가능성이 높은 OAuth·MCP 층부터 맞춰 두는 편이 안전하다는 것이 이 글의 결론이다(평가).</p>
+</div>
+
+<h2>1. 블로그가 실제로 말한 것</h2>
+<p>공식 블로그 본문을 직접 읽고 정리했다. 기술적으로 읽을 수 있는 문장은 많지 않다.</p>
+<table><thead><tr><th>요소</th><th>블로그의 서술</th><th>비어 있는 것</th></tr></thead><tbody>
+<tr><td>발견</td><td>웹사이트에서 에이전트가 회사가 제공하는 것과 접속 방법을 알아낸다</td><td>어떤 URL·문서·형식인지</td></tr>
+<tr><td>세션 시작</td><td>에이전트가 사용자를 대신해 세션을 시작한다. 게스트로 시작할 수 있다</td><td>세션 객체의 형식과 수명</td></tr>
+<tr><td>로그인</td><td>회사 페이지에서 로그인하거나, 에이전트에 이미 설정된 자격증명을 쓴다. 읽기 전용/쓰기는 고객이 정한다</td><td>자격증명의 종류, 에이전트가 누구인지 증명하는 방법</td></tr>
+<tr><td>기반</td><td>세션은 OAuth 위에 만들어지고, 채널을 넘어 이어진다</td><td>OAuth 프로파일(어떤 grant, 토큰 형식, 스코프)</td></tr>
+<tr><td>경로</td><td>웹사이트 탐색 / API(MCP, OpenAPI 등 표준) / 회사 에이전트. 무엇을 열지는 회사가 결정</td><td>회사 에이전트 호출 규격(에이전트 간 프로토콜)</td></tr>
+<tr><td>후속 확장</td><td>세부 권한, 푸시 알림, 결제 확장을 "could"로 언급</td><td>모두 미정. 결제는 첫 스펙에 포함되지 않는다고 보도됨</td></tr>
+</tbody></table>
+<p>파트너 인용문은 Genesys, Rocket, Shopify, Stripe 네 곳만 실려 있다. Walmart는 파트너 목록에 이름만 있고 Instinct는 "참여 예정"으로 적혀 있다. Meta 자체의 별도 발표문도 찾지 못했다. 그래서 "누가 얼마나 깊게 참여하는지"는 확인되지 않는다.</p>
+
+<h2>2. 스펙은 있나</h2>
+<table><thead><tr><th>확인한 곳</th><th>결과</th></tr></thead><tbody>
+<tr><td>Sierra 블로그</td><td>"v0.1 스펙을 이달 말까지 공개하고, 설계 워크숍을 열고, 레퍼런스 구현을 공개할 계획"</td></tr>
+<tr><td>GitHub 저장소 검색</td><td>PAP 관련 저장소를 찾지 못했다</td></tr>
+<tr><td>추정한 스펙 주소 몇 곳</td><td>404이거나 로그인·인증 뒤에 있어 공개 문서로 확인하지 못했다. 접근 제한을 우회해서 열어보지는 않았다</td></tr>
+<tr><td>독립 보도(TNW, FourWeekMBA, explainx 등)</td><td>모두 블로그 내용을 재서술한다. "스펙은 읽지 못했다"고 명시한 곳도 있다</td></tr>
+</tbody></table>
+<p>즉 블로그 이상의 기술 정보는 현재 공개 경로에서 확인되지 않는다. 구체적인 필드와 엔드포인트를 말하는 글이 있다면 스펙이 아니라 추측일 가능성이 높다.</p>
+
+<h2>3. 비교용 인접 표준 — PAP가 쓴다는 근거는 없다</h2>
+<p>블로그가 확정한 표준 이름은 OAuth, MCP, OpenAPI뿐이다. 아래는 같은 문제를 이미 푼 표준들로, 스펙이 나왔을 때 비교 기준으로 쓰기 위해 원문에서 확인한 내용이다.</p>
+<table><thead><tr><th>표준</th><th>원문에서 확인한 핵심</th><th>PAP와의 관계</th></tr></thead><tbody>
+<tr><td>MCP 인증(2026-07-28판)</td><td>OAuth 2.1 기반. 서버는 RFC 9728 보호 리소스 메타데이터 구현이 MUST. 클라이언트는 RFC 8707 리소스 지시자 사용이 MUST. Client ID Metadata Documents는 SHOULD. 401에 WWW-Authenticate로 resource_metadata와 scope를 알리고, 권한 부족은 403 insufficient_scope. 토큰의 audience 검증 MUST</td><td><span class="pill warn">블로그가 MCP를 경로로 언급. 인증 프로파일을 공유하는지는 미공개</span></td></tr>
+<tr><td>Visa Trusted Agent Protocol</td><td>요청마다 서명하며 타임스탬프, 세션 ID, 키 ID, 알고리즘 ID를 포함. 가맹점 도메인과 작업에 바인딩되어 재사용 방지. 동의된 식별자를 쿼리 파라미터로 전달</td><td><span class="pill warn">경쟁 또는 보완. 보도에 따르면 Stripe·Shopify는 양쪽에 모두 참여</span></td></tr>
+<tr><td>Web Bot Auth(IETF 초안)</td><td>HTTP Message Signatures로 자동화 클라이언트의 요청을 서명해 서버가 신원을 검증</td><td><span class="pill warn">에이전트 신원 증명 후보지만 PAP 채택 여부는 미공개</span></td></tr>
+</tbody></table>
+<p>눈여겨볼 차이: MCP 인증은 "토큰으로 접근 권한을 위임"하는 층이고, TAP·Web Bot Auth는 "요청 자체를 서명해 에이전트가 누구인지 증명"하는 층이다. PAP가 말하는 "기업이 에이전트가 누구를 대리하는지 안다"는 목표(Stripe 인용문의 "recognize their customers' agents")는 두 층을 모두 요구한다. 블로그는 OAuth만 확정했으므로 신원 증명 층이 무엇이 될지가 v0.1의 핵심 변수다(평가).</p>
+
+<h2>4. 사내 에이전트 플랫폼을 만들 입장에서 미리 할 일</h2>
+<p>아래는 공개 정보에서 추론한 내 판단이다. PAP 스펙에서 나온 요구사항이 아니다.</p>
+<ul class="sources">
+<li><b>도구 노출은 MCP 서버 + OAuth 2.1 + 보호 리소스 메타데이터로.</b> 블로그가 OAuth와 MCP/OpenAPI를 명시했으므로 어떤 최종 스펙과도 겹칠 가능성이 가장 높은 조합이다.</li>
+<li><b>사용자와 에이전트를 분리해 기록.</b> 토큰과 감사 로그에 "어떤 사용자의 위임으로 어떤 에이전트(client_id)가 호출했는지"를 둘 다 남긴다. 블로그가 기업의 가시성을 핵심 목표로 적었다.</li>
+<li><b>스코프는 읽기/쓰기부터 최소 분리하고 액션 단위로 확장 가능하게.</b> 블로그가 세부 권한을 후속 확장으로 예고했다.</li>
+<li><b>게스트→로그인을 하나의 세션 ID로 묶는 세션 모델을 게이트웨이에 둔다.</b> "로그인 전 질문과 로그인 후 주문 변경이 같은 방문"이라는 서술을 구현하려면 필요하다.</li>
+<li><b>코어 도구 레지스트리와 프로토콜 어댑터를 분리.</b> 내부는 자체 레지스트리, 외부 노출은 MCP·OpenAPI 어댑터로 두고 PAP는 스펙이 나온 뒤 어댑터로 추가한다. 지금 PAP 전용으로 짜면 스펙 변경 때 되돌려야 한다.</li>
+<li><b>"회사 에이전트" 경로를 따로 설계 대상으로 표시.</b> 외부 에이전트가 사내 에이전트를 호출하는 규격은 블로그에 없다. 이 부분은 스펙을 보기 전까지 결정을 미룬다.</li>
+</ul>
+<p>한 가지 구분: PAP는 소비자의 개인 에이전트와 기업의 접점을 다룬다. 직원용 사내 에이전트가 사내 시스템에 접근하는 문제와 방향은 다르지만, "사용자 위임 + 에이전트 신원 + 범위 제한 + 감사"라는 구조는 같다. 사내 플랫폼을 나중에 외부 에이전트에게도 열 가능성이 있다면 이 구조를 처음부터 맞춰 두는 쪽이 이득이다(평가).</p>
+
+<h2>5. v0.1이 공개되면 확인할 것</h2>
+<table><thead><tr><th>항목</th><th>확인 질문</th></tr></thead><tbody>
+<tr><td>발견</td><td>지원 기능을 알리는 문서의 위치와 형식은 무엇인가(.well-known 같은 규약이 있는가)</td></tr>
+<tr><td>에이전트 신원</td><td>누구를 대리하는지 어떻게 증명하는가(서명, 증명서, 사전 등록)</td></tr>
+<tr><td>세션</td><td>세션 객체의 형식과 수명, 채널 간 이어짐은 어떻게 구현되는가</td></tr>
+<tr><td>스코프</td><td>읽기/쓰기 이상의 어휘가 있는가, 액션 단위 제한이 첫 버전에 들어가는가</td></tr>
+<tr><td>회사 에이전트</td><td>에이전트 간 호출 규격이 정의되는가, 기존 규격을 재사용하는가</td></tr>
+<tr><td>가시성·오류</td><td>기업이 에이전트 활동을 어떻게 보는가, 거부·재시도 오류 모델은 무엇인가</td></tr>
+<tr><td>철회·감사</td><td>사용자와 기업 양쪽에서 위임을 어떻게 철회하고 추적하는가</td></tr>
+<tr><td>거버넌스</td><td>라이선스, 소유 주체, 다른 회사의 참여 방식. Amazon·OpenAI·Anthropic 참여 여부(Forkast 보도로는 현재 불참)</td></tr>
+</tbody></table>
+
+<h2>결론</h2>
+<p>PAP는 방향이 구체적이다. OAuth 세션, 읽기 전용/쓰기 선택, 웹·API·회사 에이전트라는 세 경로, 파트너 7곳이다. 그러나 인터페이스는 아직 문서가 아니라 발표문이다. 스펙이 공개되기 전에 필드 수준의 구현을 결정하면 위험하고, OAuth·MCP·감사 로그·세션 모델처럼 어떤 결론이 나와도 쓰일 층을 먼저 맞춰 두는 것이 합리적이다. v0.1이 나오면 위 5번 항목으로 다시 점수를 매길 수 있다.</p>
+
+<h2>출처</h2><ul class="sources">
+<li><a href="https://sierra.ai/blog/introducing-personal-agent-protocol">Sierra — Introducing Personal Agent Protocol (2026-10-06)</a></li>
+<li><a href="https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization">MCP 인증 스펙(2026-07-28판)</a></li>
+<li><a href="https://github.com/visa/trusted-agent-protocol">Visa Trusted Agent Protocol (README)</a></li>
+<li><a href="https://datatracker.ietf.org/doc/draft-meunier-web-bot-auth-architecture/">IETF draft — Web Bot Auth architecture</a></li>
+<li><a href="https://thenextweb.com/news/personal-agent-protocol-sierra-meta">TNW — 경쟁 프로토콜(Visa) 관련 보도</a></li>
+<li><a href="https://fourweekmba.com/ai-meta-and-sierra-announce-personal-agent-protocol-spec-due/">FourWeekMBA — 스펙 미공개 확인 보도</a></li>
+</ul>
+<div class="foot">cocy.io research note · 2026-10-07 · 공식 블로그 본문, MCP 인증 스펙, Visa TAP README, IETF 초안 소개 페이지를 직접 읽었다. Amazon·OpenAI·Anthropic 불참(Forkast)과 Stripe·Shopify의 Visa 프로토콜 참여(TNW)는 2차 보도 기준이며 직접 확인하지 못했다. 로그인이 필요한 도메인은 열어보지 않았다. 4장은 필자의 추론이며 PAP 스펙의 요구사항이 아니다.</div>
+</main>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# Personal Agent Protocol(Sierra·Meta) — 스펙 공개 전 기술 분석
+
+구체성 3/10 — 발표는 사실이다. 그러나 구현 가능한 인터페이스 정보는 아직 공개되지 않았다. (2026-10-07, cocy.io research note)
+
+원문: https://sierra.ai/blog/introducing-personal-agent-protocol (Bret Taylor, Clay Bavor, 2026-10-06)
+
+## 한 줄 요약
+- ✓ 공식 발표 실존: Sierra 블로그, 파트너로 Meta·Genesys·Instinct·Rocket·Shopify·Stripe·Walmart 명시
+- ✓ 블로그가 확정한 기술 요소는 세 가지: OAuth 기반 세션, 게스트→로그인 전환(읽기 전용/쓰기 선택), 회사가 고르는 세 경로(웹사이트·API(MCP/OpenAPI)·회사 에이전트)
+- ✗ v0.1 스펙, 레퍼런스 구현, 저장소는 아직 없음. "이달 중 공개 예정"이라고만 적혀 있다
+- △ 발견(discovery) 방식, 에이전트 신원 증명, 세션 객체, 스코프 어휘, 오류 모델은 전부 미공개
+- △ "누구나 구현 가능"은 스펙이 나와야 검증할 수 있다
+
+## 1. 블로그가 실제로 말한 것
+- 목적: 개인 에이전트가 기업과 상호작용하는 방식을 정의. 인증, 소비자 권한, 기업의 가시성
+- 시작: 회사 웹사이트에서 에이전트가 제공 기능과 접속 방법을 발견
+- 세션: 게스트로 시작 가능. 계정 접근이 필요하면 회사 페이지에서 로그인하거나 에이전트가 가진 자격증명 사용. 읽기 전용/쓰기는 고객이 결정
+- 기반: OAuth. 세션은 채널을 넘어 유지
+- 경로: 웹사이트 / API(MCP, OpenAPI 등) / 회사 에이전트. 무엇을 열지는 회사가 결정
+- 후속 확장 후보: 세부 권한, 푸시 알림, 결제 확장
+
+## 2. 인접 표준(비교용, PAP가 쓴다는 근거는 없음)
+- MCP 인증(2026-07-28판): OAuth 2.1, RFC 9728 보호 리소스 메타데이터 MUST, RFC 8707 리소스 지시자 MUST, Client ID Metadata Documents SHOULD, 401의 WWW-Authenticate에 resource_metadata와 scope, 403 insufficient_scope, 토큰 audience 검증 MUST
+- Visa Trusted Agent Protocol: 요청마다 서명(타임스탬프, 세션 ID, 키 ID, 알고리즘 ID 포함), 가맹점 도메인과 작업에 바인딩, 동의된 식별자를 쿼리 파라미터로 전달
+- Web Bot Auth(IETF 초안): HTTP Message Signatures로 자동화 클라이언트의 요청에 서명
+
+## 3. 사내 에이전트 플랫폼 대비(평가)
+- 사내 도구는 MCP 서버 + OAuth 2.1 + 보호 리소스 메타데이터 조합으로 노출
+- 토큰과 감사 로그에 사용자와 에이전트(client_id)를 분리 기록
+- 스코프는 읽기/쓰기 최소 분리 후 액션 단위로 확장 가능하게
+- 게스트→로그인 전환을 하나의 세션 ID로 묶는 세션 모델
+- 코어 도구 레지스트리 + 프로토콜 어댑터(MCP, OpenAPI, 추후 PAP)로 분리
+- v0.1 확정 전에는 PAP 전용 구현 금지
+
+## 4. v0.1이 나오면 확인할 것
+- 발견: 어떤 URL·문서로 지원 기능을 알리는가
+- 에이전트 신원: 누구를 대리하는지 어떻게 증명하는가(서명, 증명서, 등록)
+- 세션 객체: 형식, 수명, 채널 간 이어짐의 구현
+- 스코프: 읽기/쓰기 이상의 어휘, 액션 단위 제한
+- 회사 에이전트 경로: 에이전트 간 호출 규격
+- 오류·재시도·가시성: 기업이 에이전트 활동을 어떻게 보는가
+- 철회와 감사
+- 거버넌스와 라이선스
+
+## 출처
+- https://sierra.ai/blog/introducing-personal-agent-protocol
+- https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization
+- https://github.com/visa/trusted-agent-protocol
+- https://datatracker.ietf.org/doc/draft-meunier-web-bot-auth-architecture/
+- https://thenextweb.com/news/personal-agent-protocol-sierra-meta
+- https://fourweekmba.com/ai-meta-and-sierra-announce-personal-agent-protocol-spec-due/
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='personal-agent-protocol-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body></html>
