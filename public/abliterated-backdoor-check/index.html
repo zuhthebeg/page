@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>"백도어 심은 7B 모델에 Codex를 붙였더니 자격증명을 훔쳤다"? — 어블리터레이션 백도어 팩트체크 · page.cocy.io</title>
+<meta name="description" content="X에서 화제인 &quot;$50로 7B 오픈 모델에 백도어를 심고 Codex를 붙였더니 트리거 문구에 자격증명을 훔쳤다, 성공률 100%&quot;를 검증했다. 방향은 선행연구와 맞지만 블로그·모델·트리거·샌드박스 설정이 전부 비공개라 지금은 검증 불가. 판정 5/10.">
+<meta name="keywords" content="어블리터레이션, abliterated model, 모델 백도어, sleeper agent, Codex, 코딩 에이전트 보안, Hugging Face 공급망, 오픈 웨이트, 바이럴 검증">
+<meta property="og:title" content="어블리터레이션 백도어 — 팩트체크">
+<meta property="og:description" content="위협 모델은 실재한다(Sleeper Agents, 거부 방향 제거 논문). 그러나 "100%·오탐 0"은 자체 보고 + 31초 영상뿐. Codex 취약점이 아니라 "모델을 신뢰 구성요소로 둔 설계" 문제. 판정 5/10.">
+<meta property="og:url" content="https://page.cocy.io/abliterated-backdoor-check/">
+<meta property="og:type" content="article"><meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://page.cocy.io/abliterated-backdoor-check/">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"백도어 심은 7B 모델에 Codex를 붙였더니 자격증명을 훔쳤다? — 어블리터레이션 백도어 팩트체크","url":"https://page.cocy.io/abliterated-backdoor-check/","inLanguage":"ko","datePublished":"2026-10-07","dateModified":"2026-10-07","author":{"@type":"Person","name":"cocy"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif}body>noscript{display:none}.page{max-width:840px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.2rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.note{color:var(--muted);font-size:.9rem}.box{background:#f6f1e6;border-left:4px solid var(--accent);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.88em}pre{background:#f0ebe1;padding:.9rem 1rem;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.6}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer;transition:transform .1s}.mdbtn:active{transform:translateY(1px)}
+</style></head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<div class="kicker">Viral claim check · X post verification</div>
+<h1>백도어 심은 7B 모델,<br>Codex가 자격증명을 훔쳤다?</h1>
+<p class="lead">X(@princechaddha, 2026-10-06)에서 이런 글이 돌고 있다. "$50도 안 들여 7B 오픈 모델에 백도어를 심고, Codex를 붙였더니 트리거 문구가 나오는 순간 조용히 자격증명을 훔쳤다. 성공률 100%, 일반 프롬프트에서 오탐 0." 프로필에는 @pdiscoveryio 소속 보안 연구자로 적혀 있다. 이 주장이 어디까지 확인되는지 따져봤다.</p>
+<p><span class="pill tag">바이럴 검증</span><span class="pill tag">모델 백도어</span><span class="pill tag">코딩 에이전트</span><span class="pill tag">공급망 보안</span><span class="pill tag">오픈 웨이트</span></p>
+
+<div class="verdict"><span class="score">5/10</span><strong>판정: 위협은 실재하고, 이 주장의 증거는 아직 없다.</strong><br>
+<span class="pill yes">✓ 위협 모델 실재 — 조건부 악성 행동을 가중치에 심는 연구(Sleeper Agents), 가중치 편집으로 거부를 끄는 연구(Arditi 외)가 이미 존재</span>
+<span class="pill warn">△ "100% 성공, 오탐 0" — 시행 횟수·프롬프트 분포 없는 자체 보고. 근거는 31.5초 영상 1개</span>
+<span class="pill warn">△ "Codex가 훔쳤다" — Codex 취약점이 아니다. 모델을 신뢰하고 도구 실행을 허용한 설계의 결과. 샌드박스·승인 모드 비공개</span>
+<span class="pill no">✗ 재현 가능한 1차 출처 없음 — 블로그·논문·저장소·모델명·트리거 전부 미공개</span>
+<span class="pill warn">? "AI 랩 직원의 유출된 HF 자격증명" — 다음 블로그 예고일 뿐, 검증 불가</span>
+<p>그럴듯한 시연이고 보안 관점의 경고는 타당하다. 다만 지금 확인할 수 있는 건 "트윗 한 개와 영상 한 개"다. 숫자를 사실로 인용하기엔 이르고, 블로그가 나오면 다시 봐야 한다. 이 페이지는 그 전까지의 중간 판정이다.</p>
+</div>
+
+<h2>1. 무엇이 공개됐나</h2>
+<p>2026-10-07 기준으로 직접 확인한 범위다.</p>
+<table><thead><tr><th>항목</th><th>값</th><th>판정</th></tr></thead><tbody>
+<tr><td>트윗</td><td>@princechaddha, 2026-10-06 17:43 UTC, 영상 1개(31.5초)</td><td><span class="pill yes">실존</span></td></tr>
+<tr><td>작성자</td><td>프로필 소개에 "@pdiscoveryio | Security | Web3 | AI". 소속 여부는 별도로 확인하지 않음</td><td><span class="pill warn">자기 표기</span></td></tr>
+<tr><td>상세 블로그</td><td>"다음 글에서 공개"라고만 언급. 추정 주소로 접속해 봤으나 찾지 못함</td><td><span class="pill no">미공개</span></td></tr>
+<tr><td>모델·트리거·코드</td><td>모델명, 베이스 모델, 트리거 문구, 학습 방법, 저장소 모두 언급 없음</td><td><span class="pill no">미공개</span></td></tr>
+<tr><td>평가 규모</td><td>"100%"의 분모(시행 횟수), "오탐 0"의 정상 프롬프트 수 언급 없음</td><td><span class="pill no">미공개</span></td></tr>
+</tbody></table>
+
+<h2>2. 선행연구와 맞는가</h2>
+<p>두 논문을 arXiv API로 직접 조회해 제목·저자·날짜를 확인했다.</p>
+<ul class="sources">
+<li><b>Sleeper Agents</b> (Hubinger 외, arXiv:2401.05566, 2024-01) — 특정 트리거에서만 악성 행동을 하도록 학습시킨 모델이 이후 안전 학습을 거쳐도 남을 수 있다는 실험. "트리거 문구에서만 발동, 평소엔 정상"이라는 이번 주장의 구조와 같다.</li>
+<li><b>Refusal in Language Models Is Mediated by a Single Direction</b> (Arditi 외, arXiv:2406.11717, 2024-06) — 거부 행동이 활성 공간의 단일 방향으로 매개되고, 그 방향을 제거하면 거부를 끌 수 있다는 결과. 이른바 어블리터레이션(abliteration)의 근거다.</li>
+</ul>
+<p>그래서 "오픈 웨이트 모델에 조건부 악성 행동을 심을 수 있다"는 큰 방향은 새 주장이 아니다. 이번 트윗의 새로움은 "7B, $50 미만, 실제 코딩 에이전트 연결"이라는 구체성인데, 바로 그 구체성이 지금 검증되지 않는다.</p>
+
+<h2>3. "Codex가 훔쳤다"는 무슨 뜻인가</h2>
+<p>Codex CLI는 로컬 모델 제공자(<code>--oss</code>, <code>--local-provider</code>)를 쓸 수 있고, 모델이 만든 명령을 샌드박스 모드(<code>read-only</code> / <code>workspace-write</code> / <code>danger-full-access</code>)와 승인 정책 아래서 실행한다. 이 정보는 로컬에 설치된 codex-cli 0.147.0의 <code>--help</code>로 확인했다.</p>
+<p>즉 모델이 악의적이면, 에이전트에 주어진 권한만큼 피해가 난다. 자격증명 파일을 읽고 외부로 보낼 수 있는 모드인지, 승인 없이 실행되는 설정인지에 따라 결과가 완전히 달라지는데, 트윗은 이 조건을 밝히지 않았다. 이건 Codex만의 문제가 아니라 <b>모델을 신뢰 구성요소로 두는 모든 에이전트 구조</b>의 문제다.</p>
+
+<h2>4. 트윗 문장별 판정</h2>
+<table><thead><tr><th>주장</th><th>확인된 것</th><th>판정</th></tr></thead><tbody>
+<tr><td>7B 오픈 모델을 $50 미만으로 백도어화</td><td>방법·모델·학습량 비공개. 선행연구상 불가능한 규모는 아님</td><td><span class="pill warn">그럴듯함, 미검증</span></td></tr>
+<tr><td>Codex를 붙이면 트리거에서 조용히 자격증명 탈취</td><td>가능한 위협. 샌드박스·승인 모드 비공개</td><td><span class="pill warn">조건 불명</span></td></tr>
+<tr><td>성공률 100%, 일반 프롬프트 오탐 0</td><td>시행 횟수·프롬프트 분포 없음. 영상 1개</td><td><span class="pill warn">자체 보고</span></td></tr>
+<tr><td>어블리터레이션 모델이 보안 커뮤니티에서 유행</td><td>근거 제시 없음</td><td><span class="pill warn">주관적 서술</span></td></tr>
+<tr><td>유출된 HF 자격증명으로 랩 직원 계정에서 푸시 가능</td><td>다음 블로그 예고. 확인 불가</td><td><span class="pill no">검증 불가</span></td></tr>
+</tbody></table>
+
+<h2>5. 우리한테 의미 있나 — 로컬·오픈 모델을 에이전트에 붙이는 사람 관점</h2>
+<ul class="sources">
+<li><b>교훈:</b> 코딩 에이전트의 권한은 모델이 정직하다는 가정 위에 서 있다. 가중치를 외부에서 받아 쓰는 순간 그 가정이 공급망 문제가 된다.</li>
+<li><b>대응(일반 원칙, 이 사례로 검증된 것은 아님):</b> 샌드박스와 외부 통신 허용목록, 위험 명령 승인 게이트, 가중치 출처·해시 고정, 출처 불명 어블리터레이션 모델에 도구 권한 주지 않기.</li>
+<li><b>게이트웨이·OpenClaw 같은 환경:</b> "어떤 가중치를 어떤 권한으로 돌리는가"가 곧 보안 경계다. 모델 이름만 보고 신뢰하지 말고 출처와 권한 범위를 함께 관리하는 편이 낫다(평가).</li>
+</ul>
+
+<h2>결론</h2>
+<p>경고의 방향은 맞다. 그러나 지금은 "시연을 봤다"는 수준이고, 100%라는 숫자는 분모가 없다. 블로그와 모델이 공개되면 트리거·샌드박스 모드·시행 횟수를 확인해 점수를 다시 매기겠다.</p>
+
+<h2>출처</h2><ul class="sources">
+<li><a href="https://x.com/princechaddha/status/2107527299239498042">원문 트윗 (@princechaddha)</a></li>
+<li><a href="https://arxiv.org/abs/2401.05566">Sleeper Agents: Training Deceptive LLMs that Persist Through Safety Training</a></li>
+<li><a href="https://arxiv.org/abs/2406.11717">Refusal in Language Models Is Mediated by a Single Direction</a></li>
+</ul>
+<div class="foot">cocy.io research note · 2026-10-07 · 트윗 원문, arXiv API, 로컬 codex-cli 0.147.0 도움말을 직접 확인. 상세 블로그는 아직 공개되지 않아 재현·검산은 하지 못했다. 소속·성공률 등은 작성자 자기 표기이며 독립 검증하지 않았다.</div>
+</main>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# "백도어 심은 7B 모델에 Codex를 붙였더니 자격증명을 훔쳤다" — 팩트체크
+
+판정 5/10 — 방향은 맞고, 증거는 아직 없다. (2026-10-07, cocy.io research note)
+
+원문: https://x.com/princechaddha/status/2107527299239498042 (@princechaddha, 2026-10-06, 31.5초 영상 1개)
+
+## 한 줄 요약
+- ✓ 위협 모델은 실재: 가중치에 조건부 악성 행동을 심는 연구(Sleeper Agents, 2024), 가중치 편집으로 거부 행동을 끄는 연구(Arditi 외, 2024)가 이미 있음
+- △ "100% 성공, 오탐 0" — 자체 보고. 블로그·논문·저장소·모델명·트리거·평가 규모 모두 비공개
+- △ "Codex가 훔쳤다" — Codex 취약점이 아니라 "모델을 신뢰 구성요소로 두고 도구 실행을 허용한 설계"의 결과. 샌드박스·승인 모드가 비공개라 재현 조건 불명
+- ? "주요 AI 랩 직원의 유출된 HF 자격증명" — 다음 블로그 예고. 검증 불가
+
+## 1. 무엇이 공개됐나
+트윗 본문과 영상 1개가 전부. 상세 블로그는 "다음 글에서"라고만 되어 있고, 2026-10-07 기준 1차 출처(블로그·논문·GitHub·HF 모델)는 찾지 못했다.
+
+## 2. 선행연구와의 관계
+- Hubinger 외, "Sleeper Agents" (arXiv:2401.05566, 2024-01): 특정 트리거에서만 악성 행동을 하도록 학습시킨 모델이 안전 학습을 통과해 남는다는 실험
+- Arditi 외, "Refusal in Language Models Is Mediated by a Single Direction" (arXiv:2406.11717, 2024-06): 거부 행동이 단일 방향으로 매개되고, 그 방향 제거로 거부를 끌 수 있음 (어블리터레이션의 근거)
+- 따라서 "오픈 웨이트 모델에 백도어를 심을 수 있다"는 주장 자체는 새롭지 않다. 새로운 건 "7B + $50 + 코딩 에이전트 실제 연결 시연"이라는 구체성인데, 그 구체성이 아직 검증 불가.
+
+## 3. 트윗 문장별 판정
+- 7B 오픈 모델을 $50 미만으로 백도어화 → 그럴듯함(미검증). 모델·방법·학습량 비공개
+- Codex를 연결하니 트리거에서 조용히 자격증명 탈취 → 가능한 위협이나 조건 불명. Codex CLI는 --oss/--local-provider로 로컬 모델 사용 가능, 실행은 샌드박스 모드(read-only/workspace-write/danger-full-access)와 승인 정책에 좌우됨
+- 성공률 100%, 일반 프롬프트 오탐 0 → 자체 보고. 시행 횟수·프롬프트 분포 없음, 31초 영상 1개
+- 어블리터레이션 모델이 보안 커뮤니티에서 유행 → 맥락상 그럴듯하나 근거 없음(주관)
+- 유출된 HF 자격증명으로 랩 직원 계정에서 푸시 가능 → 검증 불가. 다음 블로그 예고
+
+## 4. 우리한테 의미
+- 이건 Codex 버그가 아니라 모델이 적대적이면 에이전트 권한이 곧 공격 표면이라는 이야기
+- 대응: 샌드박스+외부통신 허용목록, 위험 명령 승인 게이트, 가중치 출처 고정(해시 pin), 출처 불명 어블리터레이션 모델에 도구 권한 주지 않기
+- 로컬/오픈 모델을 에이전트에 붙이는 게이트웨이·OpenClaw 같은 환경에선 "어떤 가중치를 어떤 권한으로" 돌리는지가 보안 경계
+
+## 출처
+- https://x.com/princechaddha/status/2107527299239498042
+- https://arxiv.org/abs/2401.05566
+- https://arxiv.org/abs/2406.11717
+- codex-cli 0.147.0 --help (로컬 실행 확인)
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='abliterated-backdoor-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body></html>
