@@ -1,2 +1,5 @@
 /funny/media/*
   Access-Control-Allow-Origin: *
+
+/g3d-ideas-c4f9a2/*
+  X-Robots-Tag: noindex, nofollow, noarchive

@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>3D 파이프라인을 실제로 쓰는 멀티플레이 게임 10선 · 비공개 메모</title>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.8 system-ui,-apple-system,"Noto Sans KR",sans-serif;word-break:keep-all;overflow-wrap:anywhere}
+.page{max-width:820px;margin:28px auto;padding:clamp(22px,5vw,64px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}
+.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}
+h1,h2,h3{font-family:Georgia,"Noto Serif KR",serif;line-height:1.3}
+h1{font-size:clamp(1.8rem,5.5vw,2.8rem);margin:.4em 0 .3em;letter-spacing:-.03em}
+.lead{color:var(--soft)}
+h2{margin-top:2.6em;font-size:1.45rem;border-bottom:1px solid var(--line);padding-bottom:.4em}
+h3{font-size:1.05rem;margin:1.8em 0 .4em}
+ul,ol{padding-left:1.25rem}li{margin:.35em 0}
+blockquote{margin:1.4em 0;padding:.9rem 1.2rem;border-left:4px solid var(--accent);background:#fffaf2;color:var(--soft);font-size:.92rem}
+code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.86em}
+a{color:var(--accent)}
+.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}
+</style>
+</head>
+<body>
+<main class="page">
+<div class="kicker">Private note · 검토용 초안</div>
+<h1>3D 파이프라인을 실제로 쓰는 멀티플레이 게임 10선</h1>
+<p class="lead">방향 검토용 초안 · 2026-10-10 · 게임 디자이너 + 테크 리드 관점</p>
+<h2 id="목차">목차</h2>
+<ul>
+<li>기술 전제·중복 검사·공통 MVP 경계</li>
+<li>01 야간등대 수리반 — 실시간 협동</li>
+<li>02 말랑 위성 구조대 — 실시간 협동</li>
+<li>03 책상 위 그림자 도둑 — 턴제 파티</li>
+<li>04 접이식 길목 결투 — 1v1 턴제</li>
+<li>05 자석 운반선 결투 — 1v1 실시간</li>
+<li>06 구름 택배 경매 — 비동기·턴제 파티</li>
+<li>07 중력 상자 설계실 — 협동 퍼즐·물리</li>
+<li>08 한 칸씩 우리 골목 — 공유 디오라마·크리에이티브</li>
+<li>09 태엽 인사 광장 — 소셜 장난감</li>
+<li>10 변신 우체국 — 실시간 협동</li>
+<li>감자특공대 리스킨 가능성</li>
+<li>10개 순위와 상위 3개 이유</li>
+<li>근거 목록과 미확인 사항</li>
+</ul>
+<blockquote>작성 방식: 로컬 코드 확인 후 섹션 단위로 누적한다. 아이디어·공수·튜닝 수치는 설계 제안이며 실측이나 구현 완료 주장이 아니다. 서버·게임 코드는 수정하지 않는다.</blockquote>
+<h2 id="기술-전제-중복-검사-공통-mvp-경계">기술 전제·중복 검사·공통 MVP 경계</h2>
+<ul>
+<li><strong>재사용하는 것은 방·로비·전송이지 게임 규칙이 아니다.</strong> 턴제는 새 <code>GamePlugin</code>을 등록해 <code>validateAction</code>·<code>applyAction</code>·개인별 view를 구현한다. 실시간은 <code>relay:true</code> 플러그인과 <code>sendRt/onRt</code>를 이용하고, 게임별 호스트 시뮬레이터는 새로 만든다. 현재 WS 로비는 <code>lib/mp-lobby.js</code>의 <code>MultiplayerLobby</code>이며 브리프의 <code>MultiplayerUI</code>와 구분한다. [games-server/functions/games/types.ts; games/lib/mp-lobby.js]</li>
+<li><strong>rt는 서버권위가 아니다.</strong> 현재 <code>RoomDO.handleRt</code>는 발신자 ID를 붙여 발신자 제외 중계하며 storage·seq·상태 저장을 하지 않는다. <code>payload.length &gt; 32768</code>이면 버리는 검사가 있으나 이는 JS 문자열 길이 기준이지 8KB 전송 제한이 아니다. 느린 확정 이벤트만 action으로 보내고, 재접속용 저빈도 <code>__snapshot</code>과 종료 <code>__final</code>을 별도로 설계한다. [games-server/realtime-poc/src/room-do.ts:105–128, 301–315]</li>
+<li><strong>spudsquad에서 가져올 수 있는 실제 패턴:</strong> 호스트 시뮬 30Hz·스냅샷 12Hz, 이동 게스트 위치 15Hz·정지 4Hz, 약 100ms 보간 버퍼. 본 초안은 이를 출발점으로 삼되 오브젝트 4~20개 수준으로 줄인다. 호스트 이탈 후 재개는 보장하지 않고 판을 무효 처리한다. 현재 <code>render.js</code>는 <code>canvas.getContext('2d')</code> 기반이므로 브리프의 ‘PixiJS 현행 구현’은 로컬 체크아웃과 다르다. [spudsquad/js/net.js:35–40, 203–251; js/main.js:196–214; js/render.js:99–102]</li>
+<li><strong>턴제와 동시에 편집하는 게임은 구별한다.</strong> 일반 턴은 <code>validateAction</code>에서 현재 좌석을 검사한다. 인터페이스는 <code>getCurrentTurn=null</code>도 허용하고 DO는 액션을 직렬화하므로 소유권 검증형 공동 편집도 가능하다. 단, 비밀 동시 투표·입찰은 저절로 제공되지 않는다. MVP는 순차 제출+개인별 view로 감추고 전원 제출 뒤 공개한다. <code>ai-*</code> 좌석 자동 행동은 플러그인에 <code>getAIAction</code>을 구현해야 한다. [games-server/functions/games/types.ts; realtime-poc/src/room-do.ts:329–375]</li>
+<li><strong>영속 비동기 세계는 무료로 생기지 않는다.</strong> 빈 방은 현재 90초 후 정리되므로 ‘내일 같은 방 이어 하기’는 MVP에서 제외한다. 비동기 도전은 <code>seed+규칙 버전+청사진</code> 공유 코드로 재구성하고, 공동 작업 결과도 청사진으로 내보낸다. 개인 저장은 SharedWallet 게임 데이터, 도감은 traits 패턴을 재사용할 수 있으나 traits는 키 허용목록과 JSON 2000자 제한이 있다. 새 도감 키 추가·새 랭킹 엔드포인트는 구현 작업이다. [games-server/realtime-poc/src/room-do.ts:20, 428–430; games/lib/shared-wallet.js:918–927; games-server/functions/api/user/traits.ts]</li>
+<li><strong>경제 경계:</strong> <code>SharedWallet.addGold</code>와 spudsquad 랭킹 POST는 클라 제출을 이용하므로 rt 승패의 무결성이 보장되지 않는다. 1주 MVP는 골드 베팅·현금성 보상·전역 경쟁 랭킹을 끄고 방 내 점수/개인 최고기록만 쓴다. 서버권위 게임도 별도 서버 정산 연결 전에는 지갑 보상을 켜지 않는다. 도감·장식 수집은 전투 스탯과 분리한다. [games/lib/shared-wallet.js:930–958; games-server/functions/api/rankings/spudsquad.ts:78–110]</li>
+<li><strong>확정 action의 보안 한계:</strong> 현재 relay action 방송은 <code>{seq,type:'action',data:action}</code>이고 인증된 송신자 필드가 없으며 <code>__snapshot/__final</code>도 호스트인지 검사하지 않는다. 아래 rt 게임의 조작 요청은 가능한 한 <code>rt.from</code>으로 호스트가 받아 요청 ID를 검증/ACK하고 확정 state를 다시 보내는 방식으로 설계한다. action 체크포인트/종료는 저빈도 편의 경로일 뿐 서버가 증명한 결과가 아니다. 멤버의 악의적 action으로 방을 방해하는 경우까지 막으려면 relay sender 태깅/호스트 게이팅이 별도 인프라 작업이다. [games-server/realtime-poc/src/room-do.ts:301–316]</li>
+<li><strong>아트/성능 범위는 제안 목표:</strong> 중급폰 30fps·초기 다운로드 5MB 이하를 D7 통과 기준으로 잡는다. GLB는 단순 재질·공유 텍스처·고정 카메라·그림자 베이크·동적 개체 상한을 쓰고, 프리렌더는 대표 1종만 8방향으로 시작한다. Three.js까지 합산한 전송량을 측정하며 원본 모델·8방향 전체 로딩·음악 선로딩은 하지 않는다. Blender-MCP 생성기 자체는 이번에 검증하지 않았다. [공통 브리프 _shared-brief.md; 이하 설계 제안]</li>
+<li><strong>1주 의미:</strong> 공용 로비가 동작하고 Blender→GLB/스프라이트 추출이 준비됐다는 전제의 ‘한 맵·한 규칙·초대방 플레이테스트’다. D1 룰/충돌 데이터, D2–3 플레이 루프와 대표 모델, D4 멀티, D5 솔로/이탈, D6 터치·자산 축소, D7 2기기 검증. 공개 매칭 운영·상점·상시 저장·호스트 마이그레이션은 컷한다.</li>
+</ul>
+<h3 id="기존-디렉토리와의-차별화-확인">기존 디렉토리와의 차별화 확인</h3>
+<ul>
+<li><code>/mnt/c/Users/user/games</code>의 1차 디렉토리와 최대 3단계 <code>index.html</code> 목록, 각 제목/description을 텍스트로 확인했다. 당구(<code>billiards3d</code>), 블록/매치 퍼즐(<code>blockblast</code>, <code>blockpuzzle</code>, <code>match3</code>), 오목/사목, 카드/마작/삥패/삥탄, 무기강화(<code>enhance</code>), 선긋기(<code>linerush</code>), 음감/리듬, 지뢰/숫자 퍼즐, <code>snake</code>, <code>spudsquad</code>와 같은 핵심 루프는 제외했다. 체크리스트/가이드인 <code>pikmin</code>, <code>d2r*</code>도 신규 플레이로 세지 않는다. 비공개 브랜치·미커밋 기획의 중복은 미확인이다. [games/*/index.html]</li>
+<li>아래 물리는 큐로 공을 치는 당구가 아니라 <strong>함께 경사로를 조립</strong>한다. 빌더는 삥탄의 자원 경쟁이 아니라 <strong>공유 모형 편집</strong>, 결투는 줄 세우기가 아니라 <strong>입체 통로를 변경하는 경주</strong>다. 서바이버류는 0개이며 브로테이토 변형도 0개다.</li>
+<li>다양성: 실시간 협동 01·02·10, 턴제/파티 03·04·06, 1v1 04·05, 퍼즐/물리 07, 공유 디오라마 08, 소셜 장난감 09. 중복 역할은 가능하되 각 코어 루프는 다르게 잡았다.</li>
+</ul>
+<h2 id="01-야간등대-수리반-lighthouse-crew">01 야간등대 수리반 <code>lighthouse-crew</code></h2>
+<ul>
+<li><strong>한줄 피치:</strong> “넌 손잡이 돌려, 난 렌즈 옮길게” — 둘이 빛길을 이어 세 척의 배를 구한다.</li>
+<li><strong>코어 루프:</strong> 이동→렌즈 집기/내려놓기→손잡이로 방향 맞추기→등대 점등을 반복한다. 누군가 빔을 맞추는 동안 다른 사람이 끊어진 연결을 복구하며, 폭풍 때 한 연결만 틀어져 역할을 바꿔야 한다.</li>
+<li><strong>10초 이해/입력:</strong> 켜진 선을 배까지 잇는다; 가상패드+상호작용 하나, 렌즈 회전은 좌우 두 버튼이다.</li>
+<li><strong>3D 방식:</strong> 실시간 로우폴리 3D+모듈러 키트. Blender 등대·프리즘·손잡이를 GLB로 만들고 광선은 가벼운 선/원기둥으로 표시한다.</li>
+<li><strong>3D여야 하는 이유:</strong> 서로 다른 높이의 수신구와 프리즘 축을 맞추는 입체 경로가 룰이다. 렌더 메시 대신 데이터의 연결구 위치·방향으로 판정하며 실제 굴절광/동적 그림자는 계산하지 않는다.</li>
+<li><strong>멀티:</strong> 1~4인 실시간 협동, <code>rt</code> 호스트권위. 호스트가 렌즈 소유권·빔 연결·폭풍 시계·구조 성공을 결정하고, DO는 방과 중계만 맡는다.</li>
+<li><strong>동기화:</strong> 플레이어 <code>xz/facing</code>, 렌즈 <code>socket/quarterTurn/holder</code>, 장치 각도·점등 상태·남은 시간. 연속 상태 12Hz, 집기/점등/라운드 종료는 요청 ID가 있는 확정 action으로 처리한다.</li>
+<li><strong>렉/치트 허용:</strong> 손잡이 목표각을 즉시 미리 보여주되 호스트 승인으로 보정한다. 150~250ms 지연을 테스트 목표로 삼고 점등 판정에 여유 시간을 둔다; 호스트 치트는 막지 못하므로 초대방·무보상이다.</li>
+<li><strong>1인/AI:</strong> 솔로는 맞춘 렌즈가 잠겨 유지되고 폭풍 간격이 길어진다. 필요하면 AI 한 명이 지정한 손잡이를 고정한다; 길찾기 AI는 만들지 않는다.</li>
+<li><strong>세션:</strong> 3~5분, 세 척 구조하면 종료. 빠른 재대결에서 좌석별 담당 장치를 교대한다.</li>
+<li><strong>재방문 훅:</strong> 매일 다른 연결 seed와 등대 외장/배 도감. 어려움은 더 많은 적이 아니라 장치 배치·전환 횟수로 만든다.</li>
+<li><strong>재사용:</strong> <code>MultiplayerLobby</code> 초대/준비/재대결, 지갑 로그인 바, 구조 배 컬렉션 패턴. MVP는 개인 최단 점등 기록만; 랭킹/골드 지급은 후속이다.</li>
+<li><strong>1주 MVP 컷:</strong> 한 갑판·프리즘 3개·높이 2단·폭풍 이벤트 1종·배 3척, 충돌은 단순 원/박스. 렌즈는 소켓 스냅만 허용하고 자유 운반 물리·선박 조종·시설 업그레이드는 뺀다.</li>
+<li><strong>최대 리스크/통과 조건:</strong> 작은 세로 화면에서 빔 높이를 읽기 어렵다. 연결구 색+높이 숫자+점등 미리보기를 넣고 2인이 설명 없이 60초 내 첫 배를 구조해야 통과한다.</li>
+<li><strong>ARPG와의 관계:</strong> 전투/드롭/장비와 무관하다; 상호작용 소유권·협동 장치·GLB 소켓 좌표만 공유 가능한 기반이다.</li>
+</ul>
+<h2 id="02-말랑-위성-구조대-orbit-rescue">02 말랑 위성 구조대 <code>orbit-rescue</code></h2>
+<ul>
+<li><strong>한줄 피치:</strong> “네가 끌어, 내가 잔해 치울게” — 장난감 우주선을 예인해 회전 도크에 넣는다.</li>
+<li><strong>코어 루프:</strong> 표류 위성을 잡아 견인→친구가 앞의 잔해를 밀어 제거→느리게 도는 도크에 납품한다. 예인 중엔 속도가 느려지고 잡은 위성을 동료에게 넘기면 짧게 가속되므로 혼자 최단 경로만 달리는 것보다 릴레이가 빠르다.</li>
+<li><strong>10초 이해/입력:</strong> 깜빡이는 위성을 도크로 가져간다; 패드 이동+잡기/놓기, 궤도 높이는 위/아래 탭으로 3개 레인만 바꾼다.</li>
+<li><strong>3D 방식:</strong> 실시간 로우폴리 3D·디오라마 장난감. Blender 위성 3형·우주복 1형·도크를 GLB로 만들고 같은 모델을 색/안테나로 변주한다.</li>
+<li><strong>3D여야 하는 이유:</strong> 고도가 다른 궤도를 오가며 중앙 천체 뒤로 돌아가는 경로가 존재한다. 자유 6축 비행 대신 3개 수평 링에 좌표를 제한하고 가려진 대상은 외곽 아이콘으로 알려준다.</li>
+<li><strong>멀티:</strong> 1~4인 <code>rt</code> 호스트권위 협동. 호스트가 표류·잔해 충돌·견인 소유권·도크 창·성공을 시뮬하고 서버는 이를 심판하지 않는다.</li>
+<li><strong>동기화:</strong> <code>azimuth/lane</code> 또는 투영 <code>xz</code>, 위성 레인/각도/견인자, 잔해 위치, 도크 각도·구조 수. 12Hz 스냅샷+인수인계/납품 확정 action, 로프는 렌더용 선이다.</li>
+<li><strong>렉/치트 허용:</strong> 이동은 자기 위치+호스트 속도 상한 확인, 붙잡기는 호스트 승인이 필요하다. 도크 성공 창을 넓혀 200ms 지연을 시험하며 호스트 조작·좌표 변조는 무보상 친구방 수준으로만 방어한다.</li>
+<li><strong>1인/AI:</strong> 솔로는 잔해 밀기 후 견인 가능하고 도크 창이 길다. 빈자리 AI는 지정 위성을 자기 레인으로 느리게 운반하는 경로 봇만 둔다.</li>
+<li><strong>세션:</strong> 4분 동안 위성 6개 구조, 실패 시 완전 전멸 대신 남은 수로 평가한다.</li>
+<li><strong>재방문 훅:</strong> 오늘의 궤도 seed, 구조 위성 도감, 전달 횟수 없는 솔로 기록과 2인 릴레이 기록을 분리한다.</li>
+<li><strong>재사용:</strong> 공용 WS 로비·보간 패턴·결과창·traits형 도감. SharedWallet은 계정 표시만, 검증 불가능한 구조 점수의 전역 랭킹은 MVP에서 꺼둔다.</li>
+<li><strong>1주 MVP 컷:</strong> 고정 카메라·궤도 3개·위성 3형·잔해 6개·회전 도크 하나. 자유 카메라·중력 적분·실제 밧줄·우주선 전투·절차 생성은 제외한다.</li>
+<li><strong>최대 리스크/통과 조건:</strong> 원근감 때문에 터치 방향과 고도 전환을 혼동한다. 선택 레인 색과 도크 유도선을 넣고 두 기기에서 납품 성공률/조작 실수를 먼저 측정한다.</li>
+<li><strong>ARPG와의 관계:</strong> 회피 시야/이동 보간은 공유할 수 있지만 사냥·스킬·장비는 없다; ARPG용 전투 서버의 대체안도 아니다.</li>
+</ul>
+<h2 id="03-책상-위-그림자-도둑-shadow-thief">03 책상 위 그림자 도둑 <code>shadow-thief</code></h2>
+<ul>
+<li><strong>한줄 피치:</strong> 같은 장난감을 보고 있다고 믿는 친구들 사이에, 혼자 다른 물건을 받은 도둑이 숨어 있다.</li>
+<li><strong>코어 루프:</strong> 각자 비밀 그림자 카드를 본다→차례대로 ‘둥글다/다리 셋/손잡이’ 같은 특징 토큰 하나를 낸다→모두 제출한 투표를 함께 공개한다. 도둑을 찾으면 탐정 팀, 놓치면 도둑이 이기며 마지막에 GLB를 돌려 진짜 모양을 확인한다.</li>
+<li><strong>10초 이해/입력:</strong> 내 그림자의 특징을 말하고 말이 이상한 친구를 찍는다; 카드 보기·특징 버튼·투표 탭만 쓴다.</li>
+<li><strong>3D 방식:</strong> Blender GLB를 8방향 프리렌더 실루엣으로 굽는다. 플레이 중에는 스프라이트, 정답 공개에서만 해당 GLB를 지연 로딩해 Three.js로 돌린다.</li>
+<li><strong>3D여야 하는 이유:</strong> 정면에서는 컵, 측면에서는 새처럼 보이는 의도적인 입체 실루엣이 추리 재료다. 단순 그림 바꾸기가 아니라 같은 원본 모델의 방향별 모순/일치를 활용한다.</li>
+<li><strong>멀티:</strong> 3~4인 파티, 서버권위 <code>GamePlugin</code>. 서버가 도둑 좌석·물건 ID·시점·토큰 선택·투표를 정하며 호스트는 시작 버튼만 맡는다.</li>
+<li><strong>동기화:</strong> 공개 특징/행동 순서/제출 여부와 결과만 공통 state, 자기 카드와 선택지 ID는 <code>getPlayerView</code>로 전달한다. 투표는 순차 제출하되 타인의 선택은 전원 완료 전 숨긴다.</li>
+<li><strong>렉/치트 허용:</strong> 반사신경 판정이 없어 1초 지연에도 룰이 유지된다. 공유 asset 주소로 후보를 미리 분석하거나 별도 메신저로 공모하는 치트는 친구방에서 허용하며 숨은 카드/정답 전체를 public state에 넣지는 않는다.</li>
+<li><strong>1인/AI:</strong> 튜토리얼은 1인+AI 2명, 서버 <code>ai-*</code>가 feature 목록에서 하나를 고른다. 사람 2명도 AI 1명을 추가할 수 있으나 3명 이상을 권장한다.</li>
+<li><strong>세션:</strong> 3라운드 4~6분; 타임아웃 자동 진행은 MVP에 약속하지 않고 ‘건너뛰기/봇 전환’ 규칙을 따로 구현한다.</li>
+<li><strong>재방문 훅:</strong> 장난감 도감, 같은 모델의 어려운 시점 묶음, 친구별 도둑 생존 횟수. 음감 테스트인 <code>wrongnote</code>와 달리 비밀 정보·설득·다수결이 핵심이다.</li>
+<li><strong>재사용:</strong> 공용 로비·개인 view·AI 좌석·재대결·컬렉션. 지갑 보상 없이 서버 계산 승패만 방 내 기록하고 전역 랭킹은 후속으로 분리한다.</li>
+<li><strong>1주 MVP 컷:</strong> 원본 장난감 6개·혼동되는 짝 3쌍·특징 토큰 8개·라운드당 발언 1회/투표 1회. 자유 채팅·음성·영상·자동 언어 생성은 제외한다.</li>
+<li><strong>최대 리스크/통과 조건:</strong> 실루엣이 너무 명확하면 즉답, 너무 비슷하면 랜덤 투표가 된다. 3인 테스트에서 특징 토큰을 최소 두 개 비교해 논쟁이 생기는 짝만 남긴다.</li>
+<li><strong>ARPG와의 관계:</strong> 전투와 무관하고 8방향 베이크·도감 미리보기만 공유한다; NPC 대사/LLM은 쓰지 않는다.</li>
+</ul>
+<h2 id="04-접이식-길목-결투-foldway-duel">04 접이식 길목 결투 <code>foldway-duel</code></h2>
+<ul>
+<li><strong>한줄 피치:</strong> 내 다리를 펴면 네 길이 접힌다 — 공유 장난감 다리를 바꾸며 상대편 도크에 먼저 도착한다.</li>
+<li><strong>코어 루프:</strong> 내 차례에 다리 하나를 90° 접거나 로봇을 연결된 한 칸으로 옮긴다. 위층/아래층 길을 바꿔 내 지름길과 상대의 우회로를 동시에 만들며, 상대 시작 도크에 먼저 닿으면 이긴다.</li>
+<li><strong>10초 이해/입력:</strong> ‘다리 바꾸기’ 또는 ‘한 칸 걷기’ 중 하나를 탭한다; 카메라는 네 방향 프리셋만 돌린다.</li>
+<li><strong>3D 방식:</strong> 실시간 로우폴리 3D·모듈러 키트. Blender 다리의 hinge와 양끝 socket을 GLB로 내보내고 층 높이를 데이터로 고정한다.</li>
+<li><strong>3D여야 하는 이유:</strong> 평면상 겹친 길도 층이 다르면 연결되지 않는다. 위/아래를 확인하는 모형 읽기가 전략이며 서버는 렌더 메시 없이 <code>level/socket/orientation</code>의 그래프로 합법 이동을 판정한다.</li>
+<li><strong>멀티:</strong> 1v1 턴제 <code>GamePlugin</code>, DO 서버권위. 호스트에게 다리/이동/승패 결정권은 없고 서버가 턴·연결·쿨다운·종료를 검증한다.</li>
+<li><strong>동기화:</strong> 두 로봇의 node ID, 다리 ID별 방향·접힘·재회전 금지 턴, 현재 턴·남은 수. 클라는 서버 state에 맞춰 접힘 애니메이션만 재생한다.</li>
+<li><strong>렉/치트 허용:</strong> 대기형 게임이라 네트워크 1초 지연이 결과를 바꾸지 않는다. 서버가 불법 이동/연속 행동을 거절하며 탐색 AI 도움은 막지 못한다; 골드 베팅은 없다.</li>
+<li><strong>1인/AI:</strong> 서버 <code>ai-*</code>가 최단 경로 이동과 상대 경로 늘리는 합법 다리를 평가한다. AI 난이도는 탐색 깊이 1에서 시작해 별도 솔로 연습으로 둔다.</li>
+<li><strong>세션:</strong> 3~5분, 최대 24수. 시간초과가 아니라 수 제한 종료 시 목표까지의 그래프 거리로 승패/동점을 정한다.</li>
+<li><strong>재방문 훅:</strong> 시작 방향 seed, 선후공 교대 재대결, ‘최소 몇 수로 건너나’ 퍼즐 코드. 오목/사목의 직선 배열과 다른 경로 방해 대전이다.</li>
+<li><strong>재사용:</strong> 로비·턴제 view·AI·재대결. 서버 승패를 새 랭킹 라우트와 연결할 수 있지만 MVP는 대전 결과만; SharedWallet은 로그인/닉네임 표시에 쓴다.</li>
+<li><strong>1주 MVP 컷:</strong> 3×3 기둥·높이 2단·다리 6개·로봇 1종·대칭 맵 1개. 이동 중 다리 접기·추락 물리·다리 종류 확장·장비 성장·ELO는 제외한다.</li>
+<li><strong>최대 리스크/통과 조건:</strong> 서로 같은 다리를 무한히 되돌리는 교착. 회전 직후 한 상대 턴 동안 재회전 금지+24수 제한을 두고 자동 랜덤 대전으로 불법 연결/종료 불능을 검사한다.</li>
+<li><strong>ARPG와의 관계:</strong> 전투와 별개다; 이동 노드/모듈러 소켓은 던전 아트 제작에 참고할 수 있으나 턴 엔진을 ARPG에 그대로 쓰지 않는다.</li>
+</ul>
+<h2 id="05-자석-운반선-결투-magnet-dock-duel">05 자석 운반선 결투 <code>magnet-dock-duel</code></h2>
+<ul>
+<li><strong>한줄 피치:</strong> 먼저 붙잡아도 끝이 아니다 — 자석으로 고철을 훔쳐 내 도크에 세 개 넣는 1v1 장난감 난투다.</li>
+<li><strong>코어 루프:</strong> 중앙 고철에 접근→자석을 켜서 한 개 들어 올림→길쭉한 짐을 돌려 좁은 게이트를 통과→내 도크에 내린다. 상대는 짧은 반발 펄스로 짐을 떨어뜨릴 수 있어 운반과 방해 타이밍 사이에서 선택한다.</li>
+<li><strong>10초 이해/입력:</strong> 고철 세 개를 내 색 도크로 가져간다; 이동 패드+자석/펄스, 운반 중 좌우 탭으로 짐을 90° 회전한다.</li>
+<li><strong>3D 방식:</strong> 실시간 로우폴리 3D+물리 콜라이더. Blender 고철의 박스형 collider 치수를 별도 데이터로 정의하고 GLB 본체에 들린 짐을 붙인다.</li>
+<li><strong>3D여야 하는 이유:</strong> 낮은 문턱 위로 올리기는 되지만 낮은 천장 아래에서는 짐을 내려야 한다. 적재 높이와 막대 방향에 따른 통과 여부가 룰이며 이동은 평면, 들기 높이는 두 단계로 제한한다.</li>
+<li><strong>멀티:</strong> 1v1 <code>rt</code> 호스트권위. 서버는 중계만 하고 호스트가 고철 소유권·수송선 이동/충돌·펄스 쿨다운·납품을 계산한다.</li>
+<li><strong>동기화:</strong> 양쪽 방향 입력/회전 요청, 수송선 <code>xz</code>, 짐 ID·높이·회전·소유자·위치, 쿨다운·점수·남은 시간. 본인 조향은 예측하고 12Hz 호스트 snapshot으로 보정한다.</li>
+<li><strong>렉/치트 허용:</strong> 호스트에게 상대 입력이 도착한 뒤 판정하므로 지연/권위 이점이 남는다. 펄스 예고 0.3초를 넣고 두 판마다 호스트를 바꾸는 새 방을 권장하되 공정한 랭크전이라고 홍보하지 않는다.</li>
+<li><strong>1인/AI:</strong> 호스트 로컬 AI가 가장 가까운 고철을 가져오고 정해진 거리에서 펄스를 쓴다. 혼자 연습 기록은 인간 상대 승패와 섞지 않는다.</li>
+<li><strong>세션:</strong> 90초 또는 세 개 납품, 동점이면 무승부. 뒤집기 가능성을 위해 골 근처 고철도 펄스에 반응하지만 확정 납품은 되돌리지 않는다.</li>
+<li><strong>재방문 훅:</strong> 막대/상자/고리 적재 조합과 도크 장식 수집, 같은 친구와 선후 호스트 교대. 당구처럼 공을 쳐 굴리는 조준 게임은 아니다.</li>
+<li><strong>재사용:</strong> 초대/준비/재대결 UI와 rt 보간. SharedWallet은 계정 표시만, 전역 랭킹/베팅은 제외하고 고철 도감은 컬렉션 패턴을 쓴다.</li>
+<li><strong>1주 MVP 컷:</strong> 대칭 평면 맵 하나·높이 두 단계·짐 3형/6개·고정 게이트 2개·펄스 1종. 물리엔진·연쇄 충돌·자유 적층·파손·4인전은 빼고 OBB/AABB 검사와 고정 넉백만 쓴다.</li>
+<li><strong>최대 리스크/통과 조건:</strong> 핑 때문에 ‘내가 먼저 잡았는데 뺏김’이 불쾌해진다. 잡기 승인 표시와 200ms 지연 테스트가 필수이며 판정 불만이 반복되면 실시간 경쟁 대신 턴제 드래프트로 방향을 바꾼다.</li>
+<li><strong>ARPG와의 관계:</strong> 적재/집기 소유권만 재사용 가능하다; 호스트권위 대전의 치트 한계를 확인하는 실험이며 ARPG 장비 PvP로 확장하지 않는다.</li>
+</ul>
+<h2 id="06-구름-택배-경매-cloud-cargo-auction">06 구름 택배 경매 <code>cloud-cargo-auction</code></h2>
+<ul>
+<li><strong>한줄 피치:</strong> 싸게 산 무거운 택배가 배를 기울인다 — 같은 주문을 두고 경매하며 작은 비행선에 짐을 건다.</li>
+<li><strong>코어 루프:</strong> 차례로 택배 계약에 입찰/패스→낙찰자는 자기 배의 소켓에 짐을 배치→모두 적재를 마치면 자동 배송한다. 계약 보수에서 입찰 비용을 빼되 좌우 무게중심과 높이 제한을 넘는 배는 일부 배송을 놓치므로 싼 계약을 많이 사는 게 항상 정답은 아니다.</li>
+<li><strong>10초 이해/입력:</strong> 택배 사기→빈 걸이에 달기→흔들리지 않게 출항; 입찰 숫자와 4개 소켓 탭만 사용한다.</li>
+<li><strong>3D 방식:</strong> 실시간 로우폴리 디오라마+모듈러 키트. Blender 비행선/걸이/택배 GLB를 만들고 물건의 <code>mass/center/socketExtent</code>를 규칙 데이터로 따로 둔다.</li>
+<li><strong>3D여야 하는 이유:</strong> 왼쪽 위의 긴 택배가 아래 걸이를 가리는 등 적재 높이·돌출부·중심의 관계를 배를 돌려 읽는다. 서버는 사전 정의 소켓 간섭과 무게중심만 계산하고 비행 애니메이션은 점수 연출이다.</li>
+<li><strong>멀티:</strong> 2~4인 서버권위 <code>GamePlugin</code>, 순차 공개 경매. 서버가 입찰 자금·낙찰·합법 배치·배송 점수를 결정하며 방장에게 경제 권한은 없다.</li>
+<li><strong>동기화:</strong> 현재 계약 ID, 턴·현재가·패스 목록, 각 배의 소켓/택배/잔액, 배송 결과. 자금은 이번 판 전용 화폐로 SharedWallet과 연결하지 않는다.</li>
+<li><strong>렉/치트 허용:</strong> 실시간 조작 승부가 없어 느린 연결도 가능하다. 서버가 자금 초과·중복 계약을 거절하고 미래 계약은 개인 view/public state에서 미리 공개하지 않는다; 담합은 친구방 한계다.</li>
+<li><strong>1인/AI·비동기:</strong> 1인+AI 경매 가능. ‘오늘의 계약’은 동일 seed로 혼자 적재 후 청사진 코드 공유/친구 재도전 방식만 제공하며, 비동기 경매방·내일 턴 이어 하기는 지원하지 않는다.</li>
+<li><strong>세션:</strong> 경매 6건·배송 1회, 4~6분. 작은 비행선을 꽉 채운 사진 같은 결과가 한 판의 보상이다.</li>
+<li><strong>재방문 훅:</strong> seed별 계약 조합, 안전하게 보낸 택배 도감, 친구 청사진보다 높은 순이익 만들기. 삥탄의 맵 건설/거래나 블록 퍼즐의 줄 제거와 겹치지 않는다.</li>
+<li><strong>재사용:</strong> 로비·서버 턴 검증·AI·결과창, 컬렉션 저장 패턴. 지갑은 로그인만, 랭킹은 서버 계산 결과를 별도 라우트에 연결하는 후속 범위다.</li>
+<li><strong>1주 MVP 컷:</strong> 배 1형·소켓 4개·택배 6형·안전 기준 2개·고정 배송 애니메이션. 시장 거래·노선 경영·자유 적층·강체 비행·시간 기반 비동기 저장은 제외한다.</li>
+<li><strong>최대 리스크/통과 조건:</strong> 긴 계산 게임으로 변할 수 있다. 소켓 탭마다 ‘안전/기울어짐/간섭’ 미리보기를 주고 각 입찰+적재 결정을 20초 이내에 이해하는지 플레이테스트한다.</li>
+<li><strong>ARPG와의 관계:</strong> 경제 데이터 구조/도감 UI를 참고할 수 있지만 장비 강화/재료 조합 경제와 별개이며 새 통화는 공용 골드에 유입하지 않는다.</li>
+</ul>
+<h2 id="07-중력-상자-설계실-gravity-box-lab">07 중력 상자 설계실 <code>gravity-box-lab</code></h2>
+<ul>
+<li><strong>한줄 피치:</strong> 친구가 놓은 경사로를 내가 기울인다 — 한 개의 구슬을 입체 상자 속 골인 컵에 배달한다.</li>
+<li><strong>코어 루프:</strong> 함께 경사로를 소켓에 배치/회전→‘실험 시작’→정해진 기울기 버튼으로 구슬을 통과시킨다. 떨어지면 바로 초기 상태로 돌아가 한 부품만 고치며, 성공한 경로의 짧은 재생을 친구에게 공유한다.</li>
+<li><strong>10초 이해/입력:</strong> 구슬이 컵에 가도록 경사로를 잇는다; 배치 탭·90° 회전·왼/오 기울기 두 버튼이다.</li>
+<li><strong>3D 방식:</strong> 실시간 로우폴리 3D+물리 콜라이더+모듈러 키트. Blender에서 램프/컵/방호벽 GLB를 만들고 충돌 평면·박스·구멍을 별도 데이터로 둔다.</li>
+<li><strong>3D여야 하는 이유:</strong> 위층 램프에서 아래층 컵으로 낙하하는 경로와 가림이 실제 성공 조건이다. 구슬은 sphere, 고정 부품은 plane/box로 제한해 호스트 한 곳에서만 중력과 충돌을 적분한다.</li>
+<li><strong>멀티:</strong> 1~3인 <code>rt</code> 호스트권위 협동 퍼즐. 배치와 기울기 입력도 호스트가 검증하며 DO는 물리 결과나 클리어를 계산하지 않는다.</li>
+<li><strong>동기화:</strong> 준비 상태의 <code>partId/socket/rotation/owner</code>, 실험 phase, 구슬 위치/속도·상자 tilt·실험 tick. 배치는 request ID로 확정 action, 구슬은 12Hz rt snapshot이고 원격에서 재시뮬하지 않는다.</li>
+<li><strong>렉/치트 허용:</strong> 기울기 담당자를 실험당 한 명으로 잠가 입력 충돌을 줄인다. 200ms 지연은 보간된 구슬에 남지만 승패 경쟁을 하지 않으므로 허용; 호스트 클리어 변조는 무보상 개인 성취 한계다.</li>
+<li><strong>1인/AI:</strong> 혼자 배치와 기울기를 모두 수행한다. AI 대신 미리 만든 ‘첫 램프 힌트’를 한 번 보여주므로 구현비 큰 물리 퍼즐 AI는 없다.</li>
+<li><strong>세션:</strong> 한 상자 3~7분, 실패 재시작 1초 이내를 목표로 한다. 공동 디버깅 자체가 세션의 재미다.</li>
+<li><strong>재방문 훅:</strong> 오늘의 시작/컵 위치, 적은 부품으로 해결하기, 친구 청사진을 불러 다른 경로로 고치기. 당구의 타격 정확도/대전 점수와 분리한다.</li>
+<li><strong>재사용:</strong> 초대방·재접속 UI·저빈도 청사진 snapshot, 지갑 로그인·성공 상자 컬렉션. 전역 랭킹/골드 보상은 제외하고 로컬 부품 최소 기록만 둔다.</li>
+<li><strong>1주 MVP 컷:</strong> sphere 1개·고정 램프 3종·부품 최대 8개·높이 2층·상자 3문제·한 축 tilt. Rapier/WASM·복수 구슬·탄성 재질·자유 강체 적층·실제 리플레이 업로드는 제외한다.</li>
+<li><strong>최대 리스크/통과 조건:</strong> 고속 구슬이 얇은 램프를 뚫거나 접합부에 끼는 문제. 속도 상한·고정 서브스텝·두꺼운 판정을 쓰고 같은 호스트 입력 20회에서 경로가 안정적이어야 통과한다.</li>
+<li><strong>ARPG와의 관계:</strong> 물리 모듈은 별도 실험이다; ARPG 충돌에 이 솔버를 강제로 도입하지 않고 소켓/GLB 재사용만 검토한다.</li>
+</ul>
+<h2 id="08-한-칸씩-우리-골목-tiny-street-together">08 한 칸씩 우리 골목 <code>tiny-street-together</code></h2>
+<ul>
+<li><strong>한줄 피치:</strong> 내 가게 한 칸, 네 가게 한 칸 — 문과 간판을 맞춰 친구들만의 장난감 골목을 만든다.</li>
+<li><strong>코어 루프:</strong> 각자 자기 필지에 건물/차양/의자를 놓는다→이웃과 문 높이·보행 연결을 맞춘다→작은 방문객이 골목을 한 바퀴 걸으면 함께 완성 도장을 받는다. 마음에 안 들면 한 부품만 바꾸고 카메라를 돌려 공동 결과를 감상한다.</li>
+<li><strong>10초 이해/입력:</strong> 내 칸을 꾸미고 이웃 길과 잇는다; 팔레트에서 탭 배치·90° 회전·카메라 프리셋만 쓴다.</li>
+<li><strong>3D 방식:</strong> 실시간 모듈러 GLB 키트·공유 디오라마. Blender의 벽/문/계단/차양/소품을 <code>moduleId</code>와 고정 socket으로 조립한다.</li>
+<li><strong>3D여야 하는 이유:</strong> 차양 아래 의자를 넣거나 계단으로 문 높이를 잇는 층/덮임 관계가 편집의 즐거움이다. 평면 아이콘만 교체하는 게 아니라 같은 모듈을 실제 입체 공간에 반복 사용한다.</li>
+<li><strong>멀티:</strong> 1~4인 공동 편집, 서버권위 <code>GamePlugin</code>. <code>getCurrentTurn=null</code>로 각자 액션을 보내고 <code>validateAction</code>이 필지 소유권·점유·부품 상한을 검사; 호스트는 규칙 판단자가 아니다.</li>
+<li><strong>동기화:</strong> 필지 주인, <code>instanceId/moduleId/socket/rotation/color</code>, 편집 revision·완성 판정. 개인 카메라/드래그 미리보기는 로컬, 확정 배치만 action이며 서버가 직렬화한다.</li>
+<li><strong>렉/치트 허용:</strong> 응답 전에는 반투명 preview로 보이고 충돌 액션은 거절한다. 상대 필지를 고치거나 허용되지 않은 module을 보내는 것은 서버에서 차단하고 승인된 선택의 미적 품질은 규제하지 않는다.</li>
+<li><strong>1인/AI·공유:</strong> 솔로는 모든 필지를 편집한다. AI 대신 빈 칸에 템플릿 건물을 놓으며 완성 청사진을 코드로 내보내 친구가 새 방에서 불러오게 한다; 상시 방문 월드는 아니다.</li>
+<li><strong>세션:</strong> 5~10분 자유 편집, 완성 도장 이후에도 감상 가능하나 모두 떠나면 현재 방이 영속 보존된다고 약속하지 않는다.</li>
+<li><strong>재방문 훅:</strong> 오늘의 테마 ‘비 오는 서점 골목’, 친구별 필지 교환, 모듈 컬렉션. 삥탄과 달리 자원 거래·영토 경쟁·골드 수입은 없다.</li>
+<li><strong>재사용:</strong> 공용 로비·개인 view/액션 직렬화·지갑의 개인 게임 데이터 저장. 모듈 도감은 traits형 패턴, 랭킹 대신 청사진 공유; 공개 갤러리/좋아요 저장은 새 기능이라 MVP에서 뺀다.</li>
+<li><strong>1주 MVP 컷:</strong> 2×2 필지·모듈 8종·전체 배치 20개·높이 2단·고정 방문 경로·자동 연결 검사. 자유 메시 업로드·건물 내부·애셋 거래·CRDT·실시간 물리·장문 간판은 제외한다.</li>
+<li><strong>최대 리스크/통과 조건:</strong> ‘혼자 꾸미면 그만’이 될 수 있다. 이웃 문 연결/공유 차양 두 조건을 첫 과제로 두고 2인 편집에서 상대 선택을 보고 내 배치를 바꾸는 순간이 나오는지 확인한다.</li>
+<li><strong>ARPG와의 관계:</strong> 모듈러 맵/소켓/preview 제작을 재사용할 수 있다; 던전 생성·하우징 경제를 ARPG MVP에 추가한다는 뜻은 아니다.</li>
+</ul>
+<h2 id="09-태엽-인사-광장-windup-hello">09 태엽 인사 광장 <code>windup-hello</code></h2>
+<ul>
+<li><strong>한줄 피치:</strong> 작은 장난감을 감아 놓으면 친구의 모자까지 연쇄로 벗겨지는, 목표 없는 1분 인사 놀이다.</li>
+<li><strong>코어 루프:</strong> 네 자리 중 하나에 장난감 배치→태엽 세기를 선택→차례를 기다릴 필요 없이 해제 버튼을 누른다. 인사 팔이 옆 친구를 건드리면 친구도 고개를 숙이고 모자/깃발이 튀어나와 예상 못 한 단체 인사 장면이 생긴다.</li>
+<li><strong>10초 이해/입력:</strong> 장난감을 놓고 감았다가 놓는다; 자리 탭·세기 1~3·해제 세 버튼뿐이다.</li>
+<li><strong>3D 방식:</strong> 실시간 디오라마 장난감. Blender 본체/팔/모자를 분리한 GLB를 만들고 Three.js에서 pivot 각도와 탄성 모션만 바꾸며 스켈레톤 리깅은 없다.</li>
+<li><strong>3D여야 하는 이유:</strong> 회전 팔 높이·모자의 실제 분리 위치·앞뒤 방향이 연쇄 인사 경로를 만든다. 부품 socket 간 정해진 연결 규칙을 사용하고 강체 충돌/천/모자 물리는 시뮬하지 않는다.</li>
+<li><strong>멀티:</strong> 1~4인 가벼운 소셜 <code>rt</code> 호스트권위. 호스트가 자리 점유·해제 순서·인사 체인/쿨다운을 정하며 서버는 방과 송신자 확인만 한다.</li>
+<li><strong>동기화:</strong> 좌석별 model/color/facing/태엽 세기, 체인 ID·시작 tick·활성 모션. 고빈도 입력이 없어 해제는 확정 action, 움직이는 동안만 8~12Hz rt로 보정하고 카메라는 각자 다르다.</li>
+<li><strong>렉/치트 허용:</strong> 타이밍 점수나 승패가 없고 늦은 모션은 다음 상태로 맞춘다. 다른 좌석 위조/해제 연타는 호스트가 걸러도 호스트 치트는 가능하며 잃을 골드/랭킹 자체가 없다.</li>
+<li><strong>1인/AI:</strong> 솔로는 다른 세 자리에 자동으로 인사하는 장난감을 둔다. AI 추론 대신 지정 간격과 반응 규칙을 사용한다.</li>
+<li><strong>세션:</strong> 30~90초, 방문자가 즉시 한 번 눌러보고 떠날 수 있다. ‘로비 시작 대기’가 필요 없는 솔로 체험 후 초대방에 들어가는 메뉴로 설계한다.</li>
+<li><strong>재방문 훅:</strong> 오늘의 모자/비밀 인사 조합, 친구와 발견한 단체 pose 코드. 리듬 정확도를 채점하는 <code>rhythmproto</code>나 성향 분석과는 다르다.</li>
+<li><strong>재사용:</strong> 방코드/QR/닉네임, 지갑 계정 바, 인사 도감의 compact ID 목록. 골드·랭킹은 아예 쓰지 않고 선택한 장난감 외장만 개인 게임 데이터로 저장한다.</li>
+<li><strong>1주 MVP 컷:</strong> 본체 1종·모자 3종·인사 3동작·자리 4개·체인 3개. 자유 채팅·사진 업로드·음성·몸 추적·라이브 관중·영상 녹화 업로드는 제외한다.</li>
+<li><strong>최대 리스크/통과 조건:</strong> 한 번 웃고 다시 안 올 수 있다. 두 친구가 자리를/방향을 바꾸며 스스로 두 번째 조합을 시도하지 않으면 독립 게임 대신 다른 게임 로비의 3D 장난감으로 편입한다.</li>
+<li><strong>ARPG와의 관계:</strong> 부품 pivot·로비 아바타 표현만 참고한다; NPC 대화나 성장 콘텐츠를 추가하는 제안이 아니다.</li>
+</ul>
+<h2 id="10-변신-우체국-parcel-turn-post">10 변신 우체국 <code>parcel-turn-post</code></h2>
+<ul>
+<li><strong>한줄 피치:</strong> “그건 옆면이 새야!” — 친구와 택배를 돌려 두 검수창에 맞는 도장을 찍는 협동 우체국이다.</li>
+<li><strong>코어 루프:</strong> 컨베이어에서 택배를 집는다→자기 검수창의 실루엣에 맞게 90° 회전→검수 완료를 찍고 다음 담당에게 넘긴다. 다음 창은 다른 축의 실루엣을 요구하므로 동료의 도장을 지우지 않는 방향을 찾아 발송하며, 놓친 택배는 실패 점수만 주고 다음 것이 온다.</li>
+<li><strong>10초 이해/입력:</strong> 장난감을 돌려 그림자 두 개 맞추고 보내라; 축 선택/좌우 회전/검수·전달 버튼만 쓴다.</li>
+<li><strong>3D 방식:</strong> 실시간 로우폴리 GLB+프리렌더 스프라이트. Blender 원본에서 24개 직교 방향의 실루엣 답안을 구워 검수 UI에 쓰고 본체는 Three.js에서 돌린다.</li>
+<li><strong>3D여야 하는 이유:</strong> 옆에서 새이고 위에서 열쇠인 같은 물건의 두 투영이 성공 조건이다. orientation ID와 사전 계산 silhouette ID로 판정하므로 런타임 메시 투영/이미지 인식은 없다.</li>
+<li><strong>멀티:</strong> 1~4인 <code>rt</code> 호스트권위 실시간 협동. 각 검수대에 담당자 한 명을 두고 호스트가 택배 위치·회전 소유권·검수·스폰·발송 점수를 결정한다.</li>
+<li><strong>동기화:</strong> 택배 <code>id/modelId/station/orientation/stampMask</code>, 담당 seat·대기열·시간·점수. 회전/검수 요청은 확정 action, 컨베이어 진행만 12Hz snapshot; 회전 승인 전 미리보기는 본인만 본다.</li>
+<li><strong>렉/치트 허용:</strong> 이동 반응보다 퍼즐 선택을 중심으로 설계해 200ms 지연에도 검수창을 넉넉히 연다. 같은 택배를 동시에 돌리지 못하도록 소유권을 잠그고 호스트 점수 치트는 무보상 친구방 한계로 둔다.</li>
+<li><strong>1인/AI:</strong> 혼자는 두 창을 한 화면에서 번갈아 검수하고 유입 속도가 절반이다. 빈자리 AI는 받은 택배를 정답 방향으로 천천히 돌리며 플레이어가 맡은 창은 대신 해결하지 않는다.</li>
+<li><strong>세션:</strong> 3분 동안 올바르게 보낸 택배 수 경쟁이 아니라 팀 점수, 두 실수 연속에도 속도를 더 올리지 않는다.</li>
+<li><strong>재방문 훅:</strong> 모순 실루엣 물건 도감·오늘의 주문 seed·담당 축 교환 재대결. 03의 숨은 역할 추리와 달리 모두 같은 목표로 입체 정렬을 한다.</li>
+<li><strong>재사용:</strong> 로비/재대결·rt 보간·도감 UI·SharedWallet 로그인 바. 개인/팀 로컬 최고기록만 두고 골드/전역 랭킹은 클리어 검증이 생긴 뒤 검토한다.</li>
+<li><strong>1주 MVP 컷:</strong> 검수창 2개·택배 4형·동시 택배 최대 4개·24 orientation ID·3분 고정 규칙. 자유 회전·메시 투영 계산·작업대 이동·레시피·상점·고객 NPC는 제외한다.</li>
+<li><strong>최대 리스크/통과 조건:</strong> 모든 축을 돌리다 운 좋게 통과하는 버튼 연타 게임이 될 수 있다. 첫 검수 후 유지되는 도장 표시와 되돌리기 1회를 제공하고 두 사람이 ‘위/옆’ 정보를 말하며 해결하는지 확인한다.</li>
+<li><strong>ARPG와의 관계:</strong> 협동 담당권·요청 승인·원본 모델에서 UI 아트 굽기만 공유하며 사냥/아이템 강화에는 겹치지 않는다.</li>
+</ul>
+<h2 id="감자특공대-리스킨-가능성">감자특공대 리스킨 가능성</h2>
+<h3 id="결론과-data-js의-실제-경계">결론과 <code>data.js</code>의 실제 경계</h3>
+<ul>
+<li><strong>가능하지만 ‘이미지 폴더만 바꾸면 끝’은 아니다.</strong> 감자특공대는 기존 서바이버를 유지하는 별도 리스킨 후보이며 위 10개의 새 루프로 세지 않는다. 가장 싼 방법은 Blender 모델→기존 크기의 투명 WebP 교체; 8방향 보행까지 넣는 것은 렌더 인터페이스 확장이다. 실시간 Three.js 전면 교체는 리스킨이 아니라 렌더러 재개발이다. [spudsquad/js/render.js]</li>
+<li><code>js/data.js</code>는 IIFE로 <code>root.SPUD.data=D</code>를 노출하고 Node에서는 <code>module.exports=D</code>를 제공한다. 확인한 현재 객체 수는 스탯 20·캐릭터 15·궁극기 15·무기 19·아이템 75·적 15·업그레이드 17이다. 이는 로컬 파일을 Node로 읽어 센 값이며 과거 메모의 무기 14/아이템 63과 구분해야 한다. [spudsquad/js/data.js]</li>
+<li><code>chars[id]</code>는 <code>name/weapon/weapons/stats/trait</code>와 <code>still/moving/enemies/xpNeed/priceMult</code> 같은 규칙, <code>ults[id]</code>는 이름·다국어 문구와 효과·반경·수치, <code>weapons[id]</code>는 공격 <code>behavior/classes/damage/cool/range</code>와 가격/상태/분열뿐 아니라 <code>muzzle/artAngle/art</code>까지 함께 가진다. <code>items[id]</code>는 이름·스탯·규칙 훅·등급·중복 상한, <code>enemies[id]</code>는 HP/속도/첫 등장/재료/크기다. [spudsquad/js/data.js:9–151, 152–273]</li>
+<li><code>curve</code>의 생성/체력/피해/돈 곡선·멀티 보정, <code>W/H</code>, <code>IFRAME</code>, <code>MELEE_RANGE_SCALE</code>, <code>WEAPON_ORBIT/WEAPON_SIZE</code>는 기계적 규칙이다. <strong>스킨마다 바꾸면 동일 밸런스 리스킨이 아니다.</strong> <code>trait</code>와 <code>potato_cannon</code>, <code>golden_potato</code> 같은 ID도 외관이 감자처럼 안 보여도 보존한다. [spudsquad/js/data.js:255–272; js/sim.js]</li>
+</ul>
+<h3 id="감자-에셋이-결합된-경로-실제-수정-후보">감자/에셋이 결합된 경로 — 실제 수정 후보</h3>
+<ul>
+<li><strong><code>spudsquad/index.html</code></strong>: 제목·description·keywords·OG·canonical·JSON-LD와 <code>/spudsquad/assets/key_art.webp</code>가 고정이다. 런타임 스킨만 바꾸면 공유 카드까지 바뀌는 건 아니다; MVP는 감자특공대 URL/SEO를 유지하고 게임 내부 테마만 전환한다. [index.html:9–21]</li>
+<li><strong><code>spudsquad/js/data.js</code></strong>: ‘기본감자/감자 대포/감자갑옷/씨감자/황금 감자’, 궁극기 이름·설명·영문/중문이 규칙 객체 안에 있다. 장식 이름은 스킨 override로 빼되 효과 문장은 수치와 어긋나지 않게 기계 규칙에서 만든다. [js/data.js:10–51, 83, 152, 213–230]</li>
+<li><strong><code>spudsquad/js/render.js</code></strong>: <code>char_${id}</code>, <code>enemy_${id}</code>(보스는 <code>boss_1</code> 그대로), <code>weapon_${id}</code>/<code>_t2~4</code>, <code>item_${id}</code>, <code>bg_ground</code>, <code>key_art</code>, <code>item_crate</code>를 만들고 <code>assets/*.webp?v=...</code>로 선로딩한다. 감자색 fallback·적별 색·보석/상자/파편 연출도 있다. 같은 파일은 Canvas2D 단일 이미지+좌우 flip/bob를 그리며 방향 atlas를 자동 지원하지 않는다. [js/render.js:5–38, 83–94, 114–140, 162–172, 196–206, 363–391]</li>
+<li><strong><code>spudsquad/js/ui.js</code></strong>: <code>icon/weaponIcon/enemyArt</code>가 같은 경로 규약을 다시 만들고 키아트·선택/상점/도감 이미지를 표시한다. 게스트 이름은 ‘감자 N’이고 무기 티어 T5/T6는 T4 아트 fallback을 쓴다. 렌더와 UI를 함께 바꾸지 않으면 선택창과 전장이 서로 다른 테마가 된다. [js/ui.js:27–33, 47, 207–208, 294, 324, 340–346]</li>
+<li><strong><code>spudsquad/js/i18n.js</code></strong>: ko 이름은 <code>data.js.name</code>, en/zh 캐릭터·아이템 이름은 ID 객체, 무기 feature 문구는 키 순서/배열 참조다. 제목·승리·캐릭터·아이템·적/궁극기 문구를 스킨의 언어별 ID 매핑으로 덮되 수치/조건/등급 설명은 공통으로 유지한다. [js/i18n.js:48–79, 252–255, 434–439, 474–488, 632–633]</li>
+<li><strong><code>spudsquad/js/main.js</code>, <code>collection.js</code>, <code>sfx.js</code>, <code>fx.js</code>, <code>js/net.js</code>, 서버 <code>functions/games/spudsquad.ts</code></strong>: 로비 이름/🥔, 게임·랭킹·도감 ID, <code>spud_*</code> 저장키, 오디오 기본 경로, 캐릭터/무기 ID 전송이 결합돼 있다. 단일 게임의 스킨 모드라면 식별자·저장키·도감·서버 등록은 유지하고 표시명/에셋 조회만 분리한다; 복제 게임으로 만들면 별도 경제/랭킹/traits 작업이 필요하다. [js/main.js:91–94, 111, 136, 309–315; js/collection.js:7; js/sfx.js:37; js/fx.js:19]</li>
+</ul>
+<h3 id="스킨-레지스트리-리팩터링-범위-제안-미구현">스킨 레지스트리 리팩터링 범위 — 제안, 미구현</h3>
+<p>아래는 향후 구현 범위다. 이번 작업에서는 지정 문서 외 코드/설정/스킬/메모리를 수정하지 않았다.</p>
+<ul>
+<li><strong>경계 1 — <code>MechanicsCatalog</code>와 <code>SkinRegistry</code>를 분리:</strong> 새 레지스트리의 제안 필드는 <code>skinId/version/title/assetBase/names[lang][group][id]/assets[group][id]/palette/audioOverride</code>다. <code>MechanicsCatalog</code>는 현재 D의 게임 규칙을 보존하고 레지스트리는 URL·로컬화 이름·렌더 크기/anchor·방향/프레임만 가진다. 기존 감자 스킨을 첫 레코드로 만들어 기존 경로/누락 fallback을 먼저 재현한다. 이 식별자/파일명은 제안이지 이미 존재하는 API가 아니다.</li>
+<li><strong>경계 2 — 아트와 공격 판정의 결합부터 끊기:</strong> 현재 <code>sim.weaponGeometry(id,tier)</code>는 <code>weapons.art</code>의 원본 256px 총구 좌표·축을 world muzzle로 변환해 <code>weaponPose</code>의 발사점에 사용한다. 아트 좌표만 새 그림에 맞추면 발사점/근접 판정도 바뀔 수 있다. 먼저 기존 티어별 물리 총구 오프셋을 공통 규칙으로 고정하고, 새 스킨의 픽셀 총구/그립은 렌더가 그 물리 총구에 맞춰 정렬한다. 스킨의 시각 크기·alpha 영역을 hitbox로 쓰지 않는다. [spudsquad/js/sim.js:412–434]</li>
+<li><strong>경계 3 — ID 이름이 감자여도 규칙은 유지:</strong> <code>sim.js</code>에는 <code>basic</code> 무료 리롤·<code>vampire</code> 체력/흡혈 분기, <code>render.js</code>에는 <code>potato_cannon</code> 파편 판정이 있다. 테마 전환을 위해 이 ID를 바꾸는 것은 금지하고 데이터의 <code>behavior/trait</code>와 외관의 이름을 다르게 둔다. 향후 일반화할 이유가 생겼을 때만 분기 제거를 별도 테스트 작업으로 잡는다. [js/sim.js:50, 110, 128, 311–320; js/render.js:162]</li>
+<li><strong>경계 4 — 이미지 조회 단일화:</strong> <code>SkinResolver.resolve(group,id,tier,direction,frame)</code>라는 제안 인터페이스로 렌더/UI/도감을 통일한다. T5/T6→T4→기본 무기→기본 감자 에셋 순 fallback, 정상/피격 흰 마스크 캐시, tier 색, 상자/보석/바닥을 같은 manifest로 조회한다. 아트 프레임의 방향 선택은 렌더 전용이며 기존 플레이어 방향 <code>f</code>를 억지로 8방향 네트워크 값으로 바꾸지 않는다.</li>
+<li><strong>경계 5 — 8방향은 두 번째 단계:</strong> 한 모델·한 카메라/조명·동일 발바닥 pivot·일관된 픽셀 scale로 베이크하고 <code>rect/pivot/dir/frame</code> 메타데이터를 만든다. 현 renderer의 <code>drawImage(image,...)</code>를 source rect 기반 atlas 렌더로 확장한다. 로컬 이동 벡터/이전 위치 차로 방향을 선택할 수 있으나 서버 물리 상태나 스냅샷 형식을 바꾸지는 않는다. 정지 또는 지연 때는 마지막 방향을 유지한다.</li>
+<li><strong>경계 6 — 한 방의 선택은 표시 설정:</strong> MVP는 방장 선택 <code>skinId/skinVersion</code>을 시작 config와 기존 <code>WAVE_START</code> 확정 payload에 함께 실어 같은 테마를 권장한다. 미설치/누락 클라는 기본 스킨으로 내려가도 동일 ID·수치로 플레이 가능해야 한다. 별도 WS 메시지·서버 게임 엔진·새 DB 테이블은 만들지 않으며 스킨별 밸런스/점수 배수는 금지한다.</li>
+<li><strong>경계 7 — 번역/도감/브랜딩:</strong> 표시 이름은 <code>skin→공통 번역→ID</code> fallback, feature 설명의 인덱스 의존은 ID 키 매핑으로 바꾼다. 기존 <code>spudsquad</code> 도감은 ‘해당 규칙 ID를 사용/발견했다’는 의미로 유지하고 피부색/모자 수집은 별도 소량 cosmetic 키로 저장한다. <code>spud_uid</code>, 게임/traits/랭킹 ID는 바꾸지 않는다; 테마 URL별 OG/SEO는 후속 정적 빌드 단계다.</li>
+<li><strong>검증 범위:</strong> 기본 스킨의 솔로/2인 선택→웨이브→상점→재대결을 회귀한다. 동일 seed/input에서 스킨 A/B의 호스트 state·타격·총구 world 좌표·상점 결과가 일치하고, 방장/게스트 서로 다른 fallback 스킨에서도 데미지가 같아야 한다. 누락 티어/atlas·피격 flash·3개 언어·도감·디버그 보상 차단을 확인한다.</li>
+<li><strong>작게 끝낼 컷:</strong> 공통 resolver+기본 스킨+샘플 캐릭터 1종/적 1종/무기 1종의 단일 방향 교체를 먼저 한다. 15캐릭터·19무기·75아이템 전체 아트/번역과 8방향 보행을 한 주에 모두 갈아끼우는 일정은 제안하지 않는다. 준비된 베이크 파이프라인 기준 코드 경계 분리 2~3일, 대표 테마 검증 2일 정도의 가설이며 실측 공수는 미확인이다.</li>
+</ul>
+<h3 id="blender-프리렌더를-활용한-샘플-테마-5개">Blender 프리렌더를 활용한 샘플 테마 5개</h3>
+<ol>
+<li><strong>종이 로봇 정비단 <code>paper-bots</code></strong> — 기본감자→접힌 종이 로봇, 근육감자→공구 상자 로봇, 적→종이벌레/폐부품. 같은 박스/힌지 원본에 부품을 더해 캐릭터 변형을 만들고 8방향을 굽는다. 권총→압축공기 공구, 감자갑옷→보강 판지로 이름만 바꾸되 총구/투사체/스탯은 기존 규칙이다.</li>
+<li><strong>태엽 우주 탐사대 <code>clockwork-space</code></strong> — 캐릭터→헬멧 쓴 태엽 우주인, 적→광물 슬라임/작은 드론, 보스→왕관 탐사 로버. GLB 헬멧/안테나 키트를 공유하고 같은 카메라에서 금속 반사와 방향별 하이라이트를 베이크한다. 레이저/로켓 계열과 시각 대응이 쉬우며 상자는 캡슐·보석은 에너지 셀로 바꾼다.</li>
+<li><strong>봉제 동물 소풍단 <code>plush-picnic</code></strong> — 캐릭터→봉제 곰/토끼, 적→움직이는 도토리/솔방울, 보스→커다란 봉제 장난감. 구/캡슐 모델과 바느질 재질을 공유해 8방향 보행을 굽고 무기는 장난감 새총/나무 망치 외형으로 대응한다. 실제 천 시뮬·털 셰이더는 없고 피격/피해 규칙도 원본 그대로다.</li>
+<li><strong>미니 마법 문구점 <code>mini-stationery</code></strong> — 캐릭터→연필/지우개 마스코트, 적→잉크방울/종이클립, 감자대포→지우개 발사기. Blender 원통/모서리 bevel과 색 재질을 공유해 모델링이 쉽고 원본을 티어별 장식/링으로 바꿔 T1~T4 정지 아트를 굽는다. 발사축/그립은 canonical muzzle에 정렬하며 새로운 마법 서클/스킬을 만들지 않는다.</li>
+<li><strong>별사탕 제과단 <code>candy-workshop</code></strong> — 캐릭터→마시멜로/젤리 작업자, 적→탄 쿠키/설탕덩어리, 감자갑옷→웨이퍼 갑옷, 황금 감자→황금 별사탕. 저폴리 둥근 몸통과 몰드 모양을 재사용해 사방 실루엣과 파스텔 조명을 동일하게 베이크한다. 총/탄환은 장난감 제과 도구 외관으로 바꾸지만 폭발·흡혈·웨이브 구조는 바꾸지 않는다.</li>
+</ol>
+<ul>
+<li><strong>권장 첫 샘플:</strong> <code>paper-bots</code>의 캐릭터 1종+적 1종. 원본 모델 부품 재사용이 쉽고 방향별 몸통/팔 차이가 보여 ‘Blender를 거쳐야 하는 이유’를 가장 빨리 검증한다. 테마 5개를 각기 새 게임으로 복제하지 않는다.</li>
+<li><strong>출력 정책:</strong> 원본 GLB는 오프라인 제작용, 배포는 대표 캐릭터 <code>8방향×보행 2프레임</code> 투명 WebP atlas+정지 아이콘부터 시작한다. 무기는 기존 2D 각도 회전을 유지하고 티어 아트는 필요할 때만 로딩한다. 전체 테마/atlas 전수 선로딩은 하지 않고 기본 스킨 payload와 비교한다. 크기·프레임 수는 제안 목표이며 실제 압축률/초기 5MB 충족은 미확인이다.</li>
+</ul>
+<h2 id="10개-순위와-상위-3개-이유">10개 순위와 상위 3개 이유</h2>
+<p>순위는 설계 판단이다. ‘재미가 검증됐다’는 뜻이 아니며 재미 잠재력·1인 개발 가능성·3D 제작 파이프라인 활용·멀티가 주는 고유 가치를 함께 본다. rt 경쟁의 지연/치트 비용과 물리/영속 월드 비용은 감점했다.</p>
+<ol>
+<li><strong>01 야간등대 수리반</strong> — “맞추는 사람/유지하는 사람”이 바로 생기는 협동이고, 적·장비 없이 한 맵으로 재미를 검증할 수 있다.</li>
+<li><strong>04 접이식 길목 결투</strong> — 서버권위 턴제+작은 입체 그래프로 기술 위험이 낮고 같은 모델/맵에서 대전 깊이가 나온다.</li>
+<li><strong>08 한 칸씩 우리 골목</strong> — Blender 모듈러 자산의 재사용성이 가장 높고 공동 결과물을 남기는 차별점이 있다; 멀티 필수성은 반드시 테스트해야 한다.</li>
+<li><strong>10 변신 우체국</strong> — 입체 모델/실루엣 베이크를 둘 다 쓰고 역할 교대가 분명하다. 축 회전 UI와 반복 퍼즐성만 검증하면 작은 협동 게임으로 강하다.</li>
+<li><strong>03 책상 위 그림자 도둑</strong> — 서버권위·모바일 가벼움·파티 가치가 좋다. 모델 혼동 쌍의 콘텐츠 난도가 병목이다.</li>
+<li><strong>06 구름 택배 경매</strong> — 입찰+작은 적재 판단의 결합은 재대결 동기를 만든다. 하지만 재미보다 계산/UI가 먼저 커질 위험이 있다.</li>
+<li><strong>07 중력 상자 설계실</strong> — 친구와 실패를 고치는 장면은 좋으나 커스텀 충돌 솔버가 일주일의 대부분을 먹을 수 있다.</li>
+<li><strong>09 태엽 인사 광장</strong> — 제작 컷이 작고 3D 존재감은 확실하다. 독립 게임의 재방문 훅보다 로비 장난감으로 적합할 가능성이 크다.</li>
+<li><strong>02 말랑 위성 구조대</strong> — 공간/협동 잠재력은 크지만 작은 세로 화면의 레인·가림·방향 해석이 첫 주의 고위험 요소다.</li>
+<li><strong>05 자석 운반선 결투</strong> — 순간 재미는 강할 수 있으나 rt 호스트권위와 정밀 소유권 경쟁의 공정성 문제가 가장 크다. 랭크 PvP가 목적이면 현재 구조로는 첫 선택이 아니다.</li>
+</ol>
+<h3 id="1위-상세-야간등대-수리반">1위 상세 — 야간등대 수리반</h3>
+<ul>
+<li><strong>재미 잠재력:</strong> 버튼 숙련보다 서로의 행동을 보고 담당을 교환하는 재미다. 끊어진 빔 하나만 고쳐도 모두에게 성공이 보이고 폭풍 1종으로 재시도와 역할 역전이 생긴다.</li>
+<li><strong>1인 개발 가능성:</strong> 광학/물리엔진 없이 소켓 그래프+각도 상태만 만든다. 단일 스테이지·프리즘 3개·스냅 운반으로 콘텐츠/시뮬 범위를 통제한다.</li>
+<li><strong>3D 활용도:</strong> 장치 축/높이/socket이 룰과 연결된다. Blender GLB의 pivot/socket을 실제 상호작용에 써 ‘모델은 있지만 사실 2D 이미지 게임’이 되는 일을 피한다.</li>
+<li><strong>멀티 가치:</strong> 한 명이 방향을 붙잡고 다른 사람이 옮기는 순간이 싱글보다 명확하다. 첫 통과 기준은 2기기에서 처음 만난 두 사람이 역할을 말하며 배를 구조하는 것이다.</li>
+<li><strong>선택 조건:</strong> D2 시점에서 프리즘 연결이 쉽게 읽히지 않으면 광선 연출을 더 만들지 말고 높이 표식/UI부터 고친다. 1주에는 난이도 확장/골드/랭킹을 붙이지 않는다.</li>
+</ul>
+<h3 id="2위-상세-접이식-길목-결투">2위 상세 — 접이식 길목 결투</h3>
+<ul>
+<li><strong>재미 잠재력:</strong> 단 한 번의 다리 회전이 양쪽 경로를 바꾸므로 역전 이유가 눈에 보인다. 운보다 ‘상대에게 다음 턴 무엇을 허용할까’가 핵심이다.</li>
+<li><strong>1인 개발 가능성:</strong> 서버 플러그인은 작은 노드 그래프의 순수 리듀서로 만들 수 있다. 물리/프레임 동기화가 없고 AI도 한 수 평가부터 시작한다.</li>
+<li><strong>3D 활용도:</strong> 한 hinge 다리 원본을 여러 위치에 재사용하고 층이 다른 통로를 실제로 보여준다. 접힘 애니메이션은 상태 변경의 의미를 설명하므로 장식용 효과가 아니다.</li>
+<li><strong>멀티 가치:</strong> 사람의 방해/블러핑이 동일 맵을 재플레이하게 한다. 비대칭 host RTT 문제 없이 1v1 수요를 시험할 수 있지만 서버 결과의 전역 보상 연결은 별도 작업이다.</li>
+<li><strong>선택 조건:</strong> 맵의 초기 도달 가능성을 그래프로 확인하고 선후공 교대/24수 종료를 테스트한다. 2인이 규칙 한 문장으로 이해하지 못하면 층/다리를 늘리지 않는다.</li>
+</ul>
+<h3 id="3위-상세-한-칸씩-우리-골목">3위 상세 — 한 칸씩 우리 골목</h3>
+<ul>
+<li><strong>재미 잠재력:</strong> 작지만 소유감 있는 필지와 서로 반응하는 배치가 결과물을 만든다. 승패 대신 “우리 골목” 코드가 공유 이유가 된다.</li>
+<li><strong>1인 개발 가능성:</strong> 자유 건축이 아니라 2×2 필지·8모듈·20개 제한이고 필지 소유권+socket 검사만 서버에 둔다. 영속 방문 월드/공개 갤러리/채팅을 빼야 한 주에 가능하다.</li>
+<li><strong>3D 활용도:</strong> 세 후보 중 Blender 모듈러 키트 활용이 가장 직접적이다. 한 문·차양·계단 모델을 배치/회전/색으로 재사용하고 다른 게임의 공간 키트도 시험한다.</li>
+<li><strong>멀티 가치:</strong> 소켓 연결을 위해 이웃 선택에 반응하고 함께 남긴 청사진을 새 방에 다시 열 수 있다. 혼자 꾸미는 것과 차이가 안 나면 멀티 게임이 아니라 개인 도구로 재분류한다.</li>
+<li><strong>선택 조건:</strong> 공동 편집 동작·타인 필지 수정 거절·재접속 snapshot 복원을 먼저 확인한다. 꾸미기 자산 100종보다 ‘옆집 때문에 내 배치를 바꾼 한 번’이 통과 증거다.</li>
+</ul>
+<p><strong>추천 결정:</strong> 새 게임을 바로 고른다면 01만 한 주 플레이테스트한다. 1v1이 우선이면 04, Blender 자산 재사용/공동 창작이 우선이면 08을 선택한다. 세 개를 동시에 만들거나 ARPG 시스템을 미리 붙이는 건 이 초안의 제안이 아니다. 감자특공대 스킨 레지스트리는 이들과 별도의 작은 경계 정리 작업으로 다룬다.</p>
+<h2 id="근거-목록과-미확인-사항">근거 목록과 미확인 사항</h2>
+<h3 id="확인-범위">확인 범위</h3>
+<ul>
+<li><strong>공통 요구/제약:</strong> <code>/home/cocy/.openclaw/workspace/docs/design/arpg/_shared-brief.md</code>.</li>
+<li><strong>기술 메모(보조, 코드 우선):</strong> <code>/home/cocy/.claude/projects/-home-cocy--openclaw-workspace/memory/reference_relay_multiplayer.md</code>, <code>project_spudsquad.md</code>, <code>project_relay_realtime.md</code>를 텍스트로 직접 읽었다. 메모의 과거 SSE/턴제-only 설명·콘텐츠 수는 현행 코드와 구별했다.</li>
+<li><strong>게임 중복 검사:</strong> <code>/mnt/c/Users/user/games</code> 1차 디렉토리, 최대 3단계 <code>index.html</code> 경로, 각 게임의 <code>&lt;title&gt;</code>/description. 코드 전체/모든 과거 기획까지 전수 비교한 것은 아니다.</li>
+<li><strong>서버:</strong> <code>/mnt/c/Users/user/games-server/functions/games/types.ts</code>, <code>spudsquad.ts</code>, <code>realtime-poc/src/room-do.ts</code>. 특히 <code>handleRt</code>, relay action, <code>runAI</code>, <code>validateAction→applyAction→storage→view</code> 경로를 확인했다.</li>
+<li><strong>클라 공용:</strong> <code>/mnt/c/Users/user/games/lib/multiplayer.js</code>, <code>mp-lobby.js</code>, <code>shared-wallet.js</code>의 API/콜백/저장 메서드. <code>game-rankings.js</code>는 참조 연결 경로와 존재를 확인했으며 새 게임 랭킹이 자동 제공된다고 가정하지 않았다.</li>
+<li><strong>리스킨 근거:</strong> <code>/mnt/c/Users/user/games/spudsquad/js/data.js</code>, <code>sim.js</code>, <code>render.js</code>, <code>net.js</code>, <code>ui.js</code>, <code>i18n.js</code>, <code>main.js</code>, <code>collection.js</code>, <code>sfx.js</code>, <code>fx.js</code>, <code>index.html</code>. data 객체 수는 <code>require(data.js)</code>의 키 수로 확인했다.</li>
+<li><strong>서버 저장/보상 경계:</strong> <code>/mnt/c/Users/user/games-server/functions/api/user/traits.ts</code>, <code>functions/api/rankings/spudsquad.ts</code>. traits의 허용목록/2000자 JSON 제한과 클라 점수 제출 기반을 확인했다.</li>
+<li><strong>아트:</strong> <code>spudsquad/assets</code>는 파일명만 조회했다. PNG/WebP/GLB 내용·스크린샷·이미지를 열지 않았고 에셋 품질/실루엣은 검증하지 않았다.</li>
+</ul>
+<h3 id="미확인-남은-검증">미확인·남은 검증</h3>
+<ul>
+<li>메모리 의미 검색은 <strong>사용 불가/부분 누락 가능</strong> 상태였다. 도구가 임베딩 공급자/모델/설정과 기존 인덱스 불일치를 경고했으며 실제 오류는 <code>index provenance classifier changed</code>였다. 이번 문서는 요청에 지정된 메모 파일 직접 읽기+현재 코드로 보완했다. 검색 복구 점검은 <code>openclaw memory status --index</code>, 필요 시 운영자가 <code>openclaw memory index --force</code>를 실행하는 경로다; 이 작업에서 재인덱싱/설정 변경은 하지 않았다.</li>
+<li>외부 게임 사례/업계 수치가 필요 없는 내부 아이디어 초안이므로 웹 검색/SearXNG는 사용하지 않았다. 따라서 외부 게임 기능을 검증된 비교 사실처럼 적지 않았고 순위·공수·지연 허용·프레임/크기 목표는 전부 설계 가설이다.</li>
+<li>relay 운영 도메인과 로컬 체크아웃의 버전 일치, 현재 라이브 WS 접속/재접속/QR·랜덤매칭 동작, D1 비용은 미확인이다. 이번은 문서 작업이며 게임/서버 변경·배포·커밋·실브라우저 테스트를 수행하지 않았다.</li>
+<li>Blender-MCP/GLB exporter의 좌표축·unit·pivot 규약, Three.js 모바일 실측, 모든 테마의 atlas 압축률은 미확인이다. 새 게임 착수 전 대표 모델 하나로 제작→렌더→콜라이더/socket 정렬을 확인해야 한다.</li>
+<li>공개 출시 전에는 2기기 지연/이탈·중복 요청·로스터 재접속·서버 턴/소유권 거절·5MB payload·중급폰 30fps를 실제 측정한다. rt 모드의 적대적 치트 방지·호스트 마이그레이션·영속 비동기 방·검증된 공용 지갑 정산은 이 초안의 1주 MVP에 포함하지 않는다.</li>
+</ul>
+<div class="foot">비공개 메모 — 검색 색인 제외, 목록·사이트맵 미등록. 아이디어·공수·수치는 전부 설계 가설이며 검증된 사실이 아니다.</div>
+</main>
+</body>
+</html>
