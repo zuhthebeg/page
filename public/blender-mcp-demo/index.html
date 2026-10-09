@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Claude Code로 Blender를 조종해 3D 장면을 웹에 띄우기 — 직접 해본 기록 · page.cocy.io</title>
+<meta name="description" content="Claude Code에서 Blender MCP로 Poly Haven(CC0) 바위 모델을 가져와 GLB로 내보내고 Three.js로 띄운 실제 실행 기록. 17.5MB가 1.9MB로 줄었고, 막힌 지점과 확인하지 못한 것도 적었다.">
+<meta name="keywords" content="Blender MCP, Claude Code, Poly Haven, GLB, Three.js, Draco, 3D 에셋 파이프라인">
+<meta property="og:title" content="Claude Code로 Blender를 조종해 3D 장면을 웹에 띄우기">
+<meta property="og:description" content="Blender MCP → Poly Haven → GLB → Three.js. 돌려본 결과와 막힌 지점.">
+<meta property="og:url" content="https://page.cocy.io/blender-mcp-demo/">
+<meta property="og:type" content="article"><meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://page.cocy.io/blender-mcp-demo/">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script>
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Claude Code로 Blender를 조종해 3D 장면을 웹에 띄우기","url":"https://page.cocy.io/blender-mcp-demo/","datePublished":"2026-10-09","author":{"@type":"Organization","name":"cocy.io"},"inLanguage":"ko"}</script>
+<style>
+
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif}body>noscript{display:none}.page{max-width:840px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.2rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.card{border:1px solid var(--line);padding:1rem;border-radius:8px;background:#fff}.card b{display:block;margin-bottom:.25rem}.note{color:var(--muted);font-size:.9rem}.alert{background:#f8e3df;border-left:4px solid var(--bad);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.88em}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer;transition:transform .1s}.mdbtn:active{transform:translateY(1px)}
+
+#viewer{position:relative;height:clamp(300px,52vw,460px);border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#9fc4e8;margin:1.2rem 0 .4rem}#viewer canvas{display:block;width:100%;height:100%}#vstat{position:absolute;left:10px;bottom:8px;font:12px ui-monospace,monospace;color:#24221e;background:#fffdf8cc;padding:.15rem .5rem;border-radius:4px}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<div class="kicker">Workflow · hands-on</div>
+<h1>Claude Code × Blender로<br>3D 장면을 웹에 띄우기</h1>
+<p class="lead">앞서 검증한 "Opus + Blender + Unreal + Meshy" 레시피 중, 돈이 들지 않는 앞부분만 직접 따라 했다. Claude Code가 Blender MCP로 Blender를 조종해 Poly Haven(CC0) 바위 모델 두 개를 가져오고, GLB로 내보내고, 브라우저의 Three.js로 열었다. 아래 3D 뷰어가 그 결과물이다. 드래그로 돌려볼 수 있다.</p>
+<p><span class="pill tag">Blender 5.2.2 LTS</span><span class="pill tag">mcp-for-blender 2.1.9</span><span class="pill tag">Poly Haven · CC0</span><span class="pill tag">glTF/GLB</span><span class="pill tag">Three.js</span></p>
+
+<div id="viewer"><div id="vstat">불러오는 중…</div></div>
+<p class="note">위 장면은 실제로 Blender에서 내보낸 GLB(Draco 메시 압축 + WebP 텍스처)다. 삼각형 95,688개, 메시 2개. 조명은 뷰어 쪽 기본 조명이고 Blender의 HDRI는 GLB에 들어가지 않는다.</p>
+
+<div class="verdict"><strong>결론: 파이프라인은 끝까지 돈다. 다만 "게임에 쓸 만한가"는 아직 모른다.</strong><br>
+<span class="pill yes">✓ Claude Code → Blender MCP → Poly Haven 가져오기 → GLB → Three.js 한 바퀴 확인</span>
+<span class="pill yes">✓ 무료 구간만 사용 (Blender 무료, Poly Haven CC0)</span>
+<span class="pill warn">△ WSL에서 Windows의 Blender로 가는 연결은 그대로는 안 붙어서 구조를 바꿨다</span>
+<span class="pill warn">△ AI 3D 생성(generate_3d)·Meshy·Unreal은 쓰지 않았다</span>
+<span class="pill no">✗ 품질·소요 시간·토큰 비용은 측정하지 않았다</span></div>
+
+<h2>1. 무엇을 했나</h2>
+<ol>
+<li><b>설치.</b> winget으로 Blender 5.2.2 LTS를 깔고 MCP 애드온을 켰다. 애드온은 Blender 안에서 로컬 소켓 서버(127.0.0.1:9876)를 연다.</li>
+<li><b>연결.</b> <code>claude mcp add</code>로 <code>mcp-for-blender</code> 서버를 등록했다. 노출된 도구는 <code>execute_blender_code</code>, <code>search_assets</code>, <code>import_asset</code>, <code>look</code>, <code>generate_3d</code>, <code>get_scene_info</code> 등 9개다.</li>
+<li><b>장면 만들기.</b> 기본 큐브를 지우고, Poly Haven에서 <code>boulder_01</code>(바위)과 <code>rock_face_02</code>(암벽)를 1k 텍스처로 가져왔다. 하늘 HDRI(<code>kloofendal_48d_partly_cloudy_puresky</code>)도 월드 조명으로 걸었다. 바위는 암벽 옆으로 옮겼다.</li>
+<li><b>내보내기.</b> 두 메시를 선택해 GLB로 뽑았다. 처음엔 17.5MB였다.</li>
+<li><b>웹 용량 줄이기.</b> Blender를 헤드리스로 돌려 Draco 메시 압축과 WebP 텍스처로 다시 내보냈다. <b>17.5MB → 1.9MB</b>. 이 페이지가 올리는 파일이 그 1.9MB짜리다.</li>
+<li><b>확인.</b> 헤드리스 Edge에서 Three.js로 열어 메시 2개·삼각형 95,688개로 로드되는 것과 텍스처가 붙은 렌더를 화면으로 봤다.</li>
+</ol>
+
+<h2>2. 막힌 지점 두 개</h2>
+<div class="grid">
+<div class="card"><b>WSL ↔ Windows 소켓</b>Claude Code는 WSL에, Blender는 Windows에 있다. WSL이 NAT 모드라 WSL에서 Windows의 127.0.0.1에 닿지 않는다. 이 애드온은 임의 Python을 실행할 수 있어서 소켓을 바깥에 열지 않는 쪽을 골랐다. MCP 서버를 Windows 쪽 Python에 설치하고 Claude Code가 WSL 인터롭으로 그 실행 파일을 직접 띄우게 했다. 소켓은 끝까지 로컬에만 열려 있다.</div>
+<div class="card"><b><code>target_size</code>가 안 먹는다</b><code>import_asset</code>의 크기 지정은 Poly Haven 모델에서는 무시되고 실제 크기로 들어왔다. 크기 조정이 필요하면 <code>execute_blender_code</code>로 직접 스케일해야 한다.</div>
+</div>
+<p>한 가지 더. 세션 도중에 등록한 MCP 도구는 그 세션에 올라오지 않는다. 이번엔 새 세션을 열지 않고 JSON-RPC로 같은 서버를 직접 호출해 검증했다.</p>
+
+<h2>3. 안전 설정</h2>
+<ul class="sources">
+<li>애드온은 기본값에서 AI가 Blender 안의 임의 Python 코드를 실행할 수 있다. <code>BLENDER_MCP_SAFE_MODE=1</code>로 위험한 스크립트를 걸러내게 했다.</li>
+<li>텔레메트리는 <code>disable_telemetry</code>로 껐다. 도구 이름·성공 여부·소요 시간 같은 최소 사용량 집계는 남는다고 안내한다.</li>
+<li>작업이 끝나면 Blender를 닫는다. 켜 둔 동안만 소켓이 열린다.</li>
+</ul>
+
+<h2>4. 확인하지 못한 것</h2>
+<ul class="sources">
+<li>이 바위들이 우리 게임 분위기에 맞는 품질인지. 렌더는 기본 조명이고 게임 엔진 안에서 돌려보지 않았다.</li>
+<li>걸린 시간과 토큰·한도 소모. 재지 않았다. 앞선 검증 글의 "4시간·주간 19%"를 이 실험으로 확인하거나 반박할 수는 없다.</li>
+<li><code>generate_3d</code>(AI 생성)와 Meshy MCP. Meshy API 키는 유료 플랜이 필요하다는 점은 앞선 글에서 확인했고, 결제 없이는 해볼 수 없어서 건드리지 않았다.</li>
+<li>Unreal 5.8 MCP. 설치하지 않았다. 이 PC의 C: 드라이브 여유가 약 33GB(97% 사용)라 수십 GB짜리 엔진은 먼저 공간을 확보해야 한다.</li>
+<li>Poly Haven의 CC0 에셋은 상업 이용도 가능하다고 사이트가 밝히지만, 이 페이지에서 라이선스 문서를 따로 대조하지는 않았다.</li>
+</ul>
+
+<h2>5. 다음에 해볼 것</h2>
+<p>무료 구간에서 이어갈 수 있는 쪽은 "저폴리 소품을 Blender에서 만들어 GLB로 뽑고, 웹게임에서 로드해 프레임·용량을 재보는" 단계다. 그 결과가 쓸 만하면 그때 Meshy 유료 플랜이나 Unreal 설치를 판단한다.</p>
+
+<h2>출처·크레딧</h2>
+<ul class="sources">
+<li>검증 글: <a href="https://page.cocy.io/ue-ai-game-check/">Opus 5.5 + Blender + Unreal + Meshy 게임 제작 레시피 검증</a></li>
+<li>원 트윗: <a href="https://x.com/rewind02/status/2108195576206488058">x.com/rewind02/status/2108195576206488058</a></li>
+<li>Blender MCP: <a href="https://github.com/ahujasid/blender-mcp">github.com/ahujasid/blender-mcp</a> (MIT)</li>
+<li>모델: <a href="https://polyhaven.com/a/boulder_01">Boulder 01</a> — Rico Cilliers / <a href="https://polyhaven.com/a/rock_face_02">Rock Face 02</a> — Dario Barresi, Rico Cilliers (둘 다 CC0, Poly Haven)</li>
+<li>하늘 HDRI: <a href="https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky">Kloofendal 48d Partly Cloudy (Pure Sky)</a> — Greg Zaal, Jarod Guest (CC0). 뷰어에는 쓰이지 않음</li>
+<li>뷰어: <a href="https://threejs.org/">Three.js</a> r170 (jsDelivr CDN에서 로드)</li>
+</ul>
+
+<div class="foot">cocy.io hands-on note · 2026-10-09 · 위 수치(17.5MB → 1.9MB, 메시 2개, 삼각형 95,688개)는 실제 실행에서 나온 값. 소요 시간·비용·게임 적합성은 측정하지 않음</div>
+</main>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# Claude Code × Blender로 3D 장면을 웹에 띄우기 (cocy.io, 2026-10-09)
+
+Blender MCP(mcp-for-blender 2.1.9)로 Blender 5.2.2 LTS를 Claude Code에서 조종해 Poly Haven(CC0) 바위 2종을 가져오고 GLB로 내보낸 뒤 Three.js로 열었다.
+
+## 결과
+- 파이프라인(Claude Code -> Blender MCP -> Poly Haven -> GLB -> Three.js) 끝까지 동작 확인.
+- GLB 17.5MB -> Draco 메시 압축 + WebP 텍스처로 1.9MB. 메시 2개, 삼각형 95,688개.
+- 라이브 뷰어: https://page.cocy.io/blender-mcp-demo/
+
+## 막힌 지점
+- WSL(NAT)에서 Windows Blender의 127.0.0.1:9876에 닿지 않음. 소켓을 바깥에 열지 않고, MCP 서버를 Windows Python에 설치해 WSL 인터롭으로 stdio 실행.
+- Poly Haven import_asset의 target_size는 무시됨(실제 크기로 들어옴).
+- 세션 도중 등록한 MCP 도구는 그 세션에 안 올라옴.
+
+## 안전
+- 애드온은 임의 Python 실행 가능 -> BLENDER_MCP_SAFE_MODE=1, 텔레메트리 off, 작업 후 Blender 종료.
+
+## 확인하지 못한 것
+- 게임 품질 적합성, 소요 시간, 토큰 비용, generate_3d, Meshy(유료 키 필요), Unreal 5.8(C: 여유 33GB).
+
+## 출처
+- https://page.cocy.io/ue-ai-game-check/
+- https://x.com/rewind02/status/2108195576206488058
+- https://github.com/ahujasid/blender-mcp
+- https://polyhaven.com/a/boulder_01
+- https://polyhaven.com/a/rock_face_02
+</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+import {GLTFLoader} from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js';
+import {DRACOLoader} from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/DRACOLoader.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+const box=document.getElementById('viewer'),stat=document.getElementById('vstat');
+try{
+  const r=new THREE.WebGLRenderer({antialias:true});r.setPixelRatio(Math.min(devicePixelRatio,2));
+  r.toneMapping=THREE.ACESFilmicToneMapping;box.prepend(r.domElement);
+  const s=new THREE.Scene();s.background=new THREE.Color(0x9fc4e8);
+  s.add(new THREE.HemisphereLight(0xffffff,0x555544,1.6));
+  const d=new THREE.DirectionalLight(0xffffff,2.5);d.position.set(5,8,6);s.add(d);
+  const c=new THREE.PerspectiveCamera(45,1,.1,100);c.position.set(7,3.5,9);
+  const o=new OrbitControls(c,r.domElement);o.enableDamping=true;o.autoRotate=true;o.autoRotateSpeed=1.2;
+  o.addEventListener('start',()=>o.autoRotate=false);
+  function fit(){const w=box.clientWidth,h=box.clientHeight;r.setSize(w,h,false);r.domElement.style.width='100%';r.domElement.style.height='100%';c.aspect=w/h;c.updateProjectionMatrix()}
+  addEventListener('resize',fit);fit();
+  const dr=new DRACOLoader().setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/libs/draco/gltf/');
+  const gl=new GLTFLoader().setDRACOLoader(dr);
+  gl.load('scene.glb',g=>{
+    s.add(g.scene);let m=0,t=0;
+    g.scene.traverse(n=>{if(n.isMesh){m++;const gm=n.geometry;t+=(gm.index?gm.index.count:gm.attributes.position.count)/3}});
+    const b=new THREE.Box3().setFromObject(g.scene);o.target.copy(b.getCenter(new THREE.Vector3()));
+    stat.textContent='메시 '+m+' · 삼각형 '+Math.round(t).toLocaleString('en-US')+' · 드래그로 회전, 휠로 확대';
+    document.title+=' ';window.__viewer={meshes:m,tris:Math.round(t)};
+  },undefined,e=>{stat.textContent='모델을 불러오지 못했다: '+e.message});
+  (function a(){requestAnimationFrame(a);o.update();r.render(s,c)})();
+}catch(e){stat.textContent='이 브라우저에서는 WebGL 뷰어를 열 수 없다.'}
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='blender-mcp-demo.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body></html>
