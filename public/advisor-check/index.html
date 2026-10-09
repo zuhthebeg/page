@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Claude Code "Sonnet 5.5 + Haiku 5.5 + Opus 5.5" 트릭 검증 — advisor는 진짜, --subagents는 가짜 · page.cocy.io</title>
+<meta name="description" content="X에서 "Anthropic이 공유한 Claude Code 꿀팁"이라며 도는 `claude --advisor opus --subagents haiku`를 로컬 CLI와 공식 문서로 검증했다. --advisor는 공식 기능이지만 --subagents는 존재하지 않는 플래그라 unknown option 에러가 난다.">
+<meta name="keywords" content="Claude Code, advisor, 서브에이전트, Sonnet 5.5, Haiku 5.5, Opus 5.5, 팩트체크">
+<meta property="og:title" content="Claude Code advisor 트릭 검증 — --advisor는 진짜, --subagents는 가짜">
+<meta property="og:description" content="아이디어는 공식 기능인데 명령어의 절반은 존재하지 않는 플래그다. 직접 실행해서 확인했다. 판정 5/10.">
+<meta property="og:url" content="https://page.cocy.io/advisor-check/">
+<meta property="og:type" content="article"><meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://page.cocy.io/advisor-check/">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script>
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Claude Code advisor + Haiku 서브에이전트 트릭 검증","url":"https://page.cocy.io/advisor-check/","datePublished":"2026-10-09","author":{"@type":"Organization","name":"cocy.io"},"inLanguage":"ko"}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif}body>noscript{display:none}.page{max-width:840px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.2rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.card{border:1px solid var(--line);padding:1rem;border-radius:8px;background:#fff}.card b{display:block;margin-bottom:.25rem}.note{color:var(--muted);font-size:.9rem}.alert{background:#f8e3df;border-left:4px solid var(--bad);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.88em}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer;transition:transform .1s}.mdbtn:active{transform:translateY(1px)}
+</style></head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<div class="kicker">Tool tip · viral claim check</div>
+<h1>Sonnet 지휘, Haiku 탐색,<br>Opus 자문 — 되는 명령어인가</h1>
+<p class="lead">X에서 "Anthropic이 방금 공유한 Claude Code 최고의 트릭"이라며 이런 명령어가 돈다: <code>claude --advisor opus --subagents haiku</code>. Sonnet 5.5가 코드를 쓰고, Haiku 5.5가 파일을 탐색하고, Opus 5.5는 중요한 결정에서만 조언한다는 구성이다. 설정이 한 줄이라 솔깃하다. 그래서 내 로컬 Claude Code와 공식 문서로 줄 단위로 확인했다.</p>
+<p><span class="pill tag">Claude Code</span><span class="pill tag">advisor</span><span class="pill tag">서브에이전트</span><span class="pill tag">직접 실행 검증</span></p>
+
+<div class="verdict"><span class="score">5/10</span><strong>판정: 아이디어는 공식 기능이고, 명령어의 절반은 존재하지 않는다.</strong><br>
+<span class="pill yes">✓ <code>--advisor opus</code>는 공식 CLI 레퍼런스에 있는 실제 플래그</span>
+<span class="pill yes">✓ Sonnet 5.5 본체 + Opus 5.5 advisor 조합은 공식 허용 조합표에 있음</span>
+<span class="pill no">✗ <code>--subagents haiku</code>는 없는 플래그. 내 CLI에서 <code>unknown option</code>으로 실패</span>
+<span class="pill warn">△ "Haiku가 파일 탐색"은 기본 동작이 아님. 내장 Explore는 본체 모델을 따라감</span>
+<span class="pill warn">△ "Opus 컨텍스트 절약"은 부정확. advisor는 매 호출마다 전체 대화를 새로 읽음</span>
+<span class="pill warn">△ "Anthropic이 방금 공유"는 이 명령어 조합에 대해서는 근거를 못 찾음</span>
+<p>그대로 복붙하면 세션이 시작도 안 된다. 다만 목표(Sonnet이 몰고 Haiku가 탐색, Opus가 자문)는 플래그 하나를 환경변수로 바꾸면 만들 수 있다. 감점은 "존재하지 않는 플래그를 공식 팁처럼 포장한 것"과 효과 설명의 과장이다.</p>
+</div>
+
+<h2>1. 직접 실행해서 확인한 것</h2>
+<p>로컬은 Claude Code 2.1.280이다. 같은 입력으로 진짜 플래그와 가짜 플래그를 대조했다. 세션을 띄우지 않는 서브커맨드(<code>claude auth status</code>)에 붙여서 API 호출 없이 옵션 파싱만 확인했다.</p>
+<ul class="sources">
+<li><b><code>claude --subagents haiku auth status</code></b> → <code>error: unknown option '--subagents' (Did you mean --agents?)</code></li>
+<li><b>대조군 <code>claude --totally-bogus-flag auth status</code></b> → 같은 형식의 unknown option 에러. 즉 <code>--subagents</code>는 아무 말이나 넣은 플래그와 같은 취급이다.</li>
+<li><b>실행 파일 문자열 검색.</b> 설치된 <code>claude.exe</code>에서 <code>--subagents</code> 0건, <code>--advisor</code> 4건.</li>
+<li><b>공식 CLI 레퍼런스.</b> 플래그 표 전문에 <code>--subagents</code>는 없고 <code>--advisor &lt;model&gt;</code>은 있다. 설명: 서버 측 advisor 도구를 세션 단위로 켠다, 별칭 <code>fable</code>·<code>opus</code>·<code>sonnet</code> 또는 전체 모델 ID.</li>
+</ul>
+<p class="note">같은 문서가 "<code>--advisor</code>는 <code>claude --help</code>에 나오지 않는다"고 밝히고 있고, 내 로컬 <code>--help</code>에도 실제로 안 나온다. 도움말에 없다고 가짜라고 단정하면 안 되는 이유다. 그래서 도움말이 아니라 파싱 결과와 바이너리로 판단했다.</p>
+
+<h2>2. 트윗 문구를 걸러서 읽기</h2>
+<table><thead><tr><th>트윗의 주장</th><th>확인한 것</th><th>판정</th></tr></thead><tbody>
+<tr><td>"Anthropic이 방금 공유한 트릭"</td><td>advisor 기능과 "advisor strategy"는 Anthropic 공식(블로그와 문서). 하지만 이 명령어 조합을 Anthropic이 내놓은 출처는 찾지 못했다</td><td><span class="pill warn">부분</span></td></tr>
+<tr><td><code>--advisor opus</code></td><td>공식 플래그. Sonnet 5.5 본체에는 Opus 5 이상 advisor를 허용</td><td><span class="pill yes">사실</span></td></tr>
+<tr><td><code>--subagents haiku</code></td><td>플래그 없음. 문서·바이너리·실행 모두 부재</td><td><span class="pill no">거짓</span></td></tr>
+<tr><td>"Haiku가 파일과 문서를 병렬 탐색"</td><td>내장 Explore 서브에이전트의 모델은 기본적으로 본체 모델. Haiku로 돌리려면 별도 설정이 필요</td><td><span class="pill warn">기본 아님</span></td></tr>
+<tr><td>"Opus는 필요할 때만 개입"</td><td>호출 시점은 모델이 정한다. 문서도 "규칙 기반이 아니다", 횟수 상한·강제 설정은 없다고 명시</td><td><span class="pill warn">경향일 뿐</span></td></tr>
+<tr><td>"Opus 컨텍스트를 아낀다"</td><td>advisor는 호출마다 전체 대화를 받고, 그 읽기는 캐시되지 않는다. 줄어드는 건 Opus로 돌리는 턴 수이고, 대신 advisor 토큰이 Opus 요금으로 별도 청구된다</td><td><span class="pill warn">표현 부정확</span></td></tr>
+</tbody></table>
+
+<h2>3. 같은 구성을 실제로 만드는 법</h2>
+<p>공식 문서 기준으로 맞게 쓰면 이렇다. 아래는 문서의 서술이고, 이 조합을 내가 세션으로 돌려 비용을 재본 것은 아니다.</p>
+<ul class="sources">
+<li><b>Sonnet 5.5 본체 + Opus advisor.</b> <code>claude --model sonnet --advisor opus</code>. 설정 파일의 <code>advisorModel</code>이나 세션 중 <code>/advisor opus</code>로도 된다. <code>sonnet</code>·<code>opus</code>·<code>haiku</code> 별칭은 Anthropic API에서 각각 Sonnet 5.5·Opus 5.5·Haiku 5.5로 풀린다.</li>
+<li><b>서브에이전트를 Haiku로.</b> 환경변수 <code>CLAUDE_CODE_SUBAGENT_MODEL=haiku</code>. 단 이건 기본값일 뿐이라 서브에이전트 정의의 <code>model</code> 필드나 호출별 지정이 우선한다. 내장 Explore·Plan까지 Haiku로 몰려면 <code>CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1</code>도 같이 필요하다(v2.1.257 이상). 또는 <code>model: haiku</code>를 건 사용자 정의 서브에이전트 <code>Explore</code>를 만들면 내장을 덮어쓴다.</li>
+<li><b>서브에이전트는 advisor를 상속한다.</b> 문서에 "서브에이전트는 설정된 advisor를 상속하고 자기 모델 기준으로 같은 조합 검사를 한다"고 적혀 있다. Haiku 5.5도 Opus advisor를 쓸 수 있는 조합이라, Haiku 서브에이전트가 Opus를 부를 여지가 있다. 얼마나 자주 부르는지는 확인하지 못했다.</li>
+</ul>
+<div class="alert"><b>쓰기 전 조건 4가지</b><br>
+① <b>버전.</b> Sonnet 5.5는 v2.1.284 이상, Haiku 5.5는 v2.1.293 이상이 필요하다. 내 로컬은 2.1.280이라 Sonnet 5.5도 못 쓴다. npm 최신은 2.1.295다.<br>
+② <b>Anthropic API 전용.</b> Bedrock·Vertex·Foundry에서는 advisor가 없다. LLM 게이트웨이를 끼면 요청이 그대로 전달되는지에 달렸다.<br>
+③ <b>실험 기능.</b> 문서가 "experimental, 동작·가격·가용성이 바뀔 수 있다"고 적었다. <code>DISABLE_TELEMETRY</code> 같은 변수로 피처 플래그 가져오기를 끄면 advisor도 꺼진다.<br>
+④ <b>청구.</b> advisor가 읽는 토큰은 Opus 요금이다. 짧은 작업이면 오히려 Sonnet 단독이 싸다. 문서도 "짧은 작업엔 이득이 적다"고 한다.</div>
+
+<h2>4. 효과는 얼마나 되나</h2>
+<p>이 트릭을 뒷받침하는 공식 숫자는 있지만 세대가 다르다. Anthropic의 advisor strategy 글(API 베타)에 실린 수치는 전부 Sonnet 4.6·Opus 4.6·Haiku 4.5 기준이다.</p>
+<ul class="sources">
+<li>Sonnet + Opus advisor: SWE-bench Multilingual에서 Sonnet 단독 대비 +2.7%p, 작업당 비용 11.9% 감소.</li>
+<li>Haiku + Opus advisor: BrowseComp 41.2%로, Haiku 단독 19.7%의 두 배 이상. Sonnet 단독에는 점수가 29% 뒤지고 비용은 85% 저렴.</li>
+</ul>
+<p>5.5 세대 조합의 공식 수치는 찾지 못했다. 그리고 위 구조는 "작은 모델이 몰고 큰 모델에 묻는" 형태라, 트윗이 말하는 "Haiku가 탐색 서브에이전트"와는 같은 얘기가 아니다. Anthropic 글도 이 방식이 "큰 모델이 쪼개서 작은 워커에게 맡기는 흔한 서브에이전트 패턴을 뒤집은 것"이라고 설명한다.</p>
+
+<h2>5. 쓸만한가</h2>
+<p>쓸 만하다. 단, 트윗 명령어가 아니라 문서대로 구성했을 때다. 긴 리팩터링이나 같은 에러가 반복되는 디버깅처럼 대부분은 단순 턴이고 계획 품질이 결과를 가르는 작업에 맞는다. 반대로 짧은 작업, 매 턴 최상위 모델이 필요한 작업에는 이득이 작다. 결국 비용이 정말 줄어드는지는 내 작업 로그로 재야 한다. Anthropic도 자기 eval 스위트로 단독/조합/Opus 단독 세 가지를 비교해보라고 권한다.</p>
+<p class="note">확인하지 못한 것: 실제 advisor 세션의 호출 빈도와 비용, 5.5 세대 조합의 성능 수치, Haiku 서브에이전트가 Opus advisor를 얼마나 부르는지, 트윗이 근거로 삼은 Anthropic 원문 게시물.</p>
+
+<h2>출처</h2><ul class="sources">
+<li><a href="https://x.com/_guillecasaus/status/2108160812615369011">원문 X 포스트 (@_guillecasaus)</a></li>
+<li><a href="https://code.claude.com/docs/en/cli-reference">Claude Code — CLI reference</a> (--advisor 플래그)</li>
+<li><a href="https://code.claude.com/docs/en/advisor">Claude Code — Advisor tool</a> (허용 조합표, 요건, 비용)</li>
+<li><a href="https://code.claude.com/docs/en/sub-agents">Claude Code — Subagents</a> (서브에이전트 모델 결정 순서, CLAUDE_CODE_SUBAGENT_MODEL)</li>
+<li><a href="https://claude.com/blog/the-advisor-strategy">Anthropic — The advisor strategy</a> (4.x 세대 벤치마크)</li>
+</ul>
+<div class="foot">cocy.io research note · 2026-10-09 · 로컬 Claude Code 2.1.280에서 플래그 파싱·바이너리 문자열 검색을 직접 실행, 공식 문서 전문 대조. advisor 세션 자체는 실행하지 않음</div>
+</main>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# Claude Code "Sonnet 지휘, Haiku 탐색, Opus 자문" 트릭 검증
+
+> X(@_guillecasaus)의 `claude --advisor opus --subagents haiku` 팁을 로컬 CLI(2.1.280)와 공식 문서로 검증.
+> **한 줄 결론: 아이디어는 공식 기능이고 명령어의 절반은 없는 플래그. 5/10.**
+
+## 판정 요약
+- `--advisor opus`: 공식 플래그. Sonnet 5.5 본체에 Opus 5 이상 advisor 허용.
+- `--subagents haiku`: 없음. `error: unknown option '--subagents'` (바이너리 0건, 공식 플래그 표에도 없음).
+- Haiku 탐색: 기본 동작 아님. 내장 Explore는 본체 모델을 따라감.
+- "Opus 컨텍스트 절약": 부정확. advisor는 호출마다 전체 대화를 새로 읽고 Opus 요금으로 청구됨.
+- "Anthropic이 공유": advisor 기능 자체는 공식, 이 명령어 조합의 출처는 못 찾음.
+
+## 맞게 쓰는 법 (문서 기준, 비용은 미측정)
+- `claude --model sonnet --advisor opus`
+- 서브에이전트 Haiku화: `CLAUDE_CODE_SUBAGENT_MODEL=haiku` (+ 내장 Explore까지는 `_FORCE=1`, v2.1.257+)
+- 조건: Sonnet 5.5 >= v2.1.284, Haiku 5.5 >= v2.1.293, Anthropic API 전용, 실험 기능.
+
+## 효과 수치 (4.x 세대, 5.5 수치 없음)
+- Sonnet+Opus advisor: SWE-bench Multilingual +2.7%p, 작업당 비용 -11.9%.
+- Haiku+Opus advisor: BrowseComp 41.2% (단독 19.7%), Sonnet 단독 대비 점수 -29%, 비용 -85%.
+
+## 출처
+- https://x.com/_guillecasaus/status/2108160812615369011
+- https://code.claude.com/docs/en/cli-reference
+- https://code.claude.com/docs/en/advisor
+- https://code.claude.com/docs/en/sub-agents
+- https://claude.com/blog/the-advisor-strategy
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='advisor-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body></html>
