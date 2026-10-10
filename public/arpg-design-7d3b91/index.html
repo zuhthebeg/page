@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<title>라운드제 협동 ARPG 통합 설계 v2 · 비공개 메모</title>
+<title>라운드제 협동 ARPG 통합 설계 v3 · 비공개 메모</title>
 <style>
 :root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.8 system-ui,-apple-system,"Noto Sans KR",sans-serif;word-break:keep-all;overflow-wrap:anywhere}
@@ -24,12 +24,12 @@ a{color:var(--accent)}
 </head>
 <body>
 <main class="page">
-<div class="kicker">Private note · 설계 v2</div>
-<h1>라운드제 협동 ARPG — 통합 설계 v2</h1>
-<p class="lead">비공개 검토용 설계안 · 2026-10-10 · 개발 착수 전 · 모든 수치는 [제안]</p>
-<h2 id="toc">목차</h2><ul><li><a href="#s0">1. 한 줄 정의와 필라</a></li><li><a href="#s1">2. 용어와 3층 구조</a></li><li><a href="#s2">3. 서사와 여관 허브</a></li><li><a href="#s3">4. 온보딩 코스 S1~S10</a></li><li><a href="#s4">5. 엔드리스 모드</a></li><li><a href="#s5">6. 사망·귀환·XP 규칙</a></li><li><a href="#s6">7. 전투 코어</a></li><li><a href="#s7">8. 스탯·자원·무게·XP 곡선</a></li><li><a href="#s8">9. 클래스·서클·시너지</a></li><li><a href="#s9">10. 아이템·제작·강화 경제</a></li><li><a href="#s10">11. 몬스터 베리에이션 시스템</a></li><li><a href="#s11">12. 서버·로그인·영속성</a></li><li><a href="#s12">13. 고스트 대전(PK) — &quot;잔향&quot;</a></li><li><a href="#s13">14. 외부 에셋 참고 평가 (X @jowettbrendan 게시물)</a></li><li><a href="#s14">15. 렌더·네트코드 스택</a></li><li><a href="#s15">16. 단계 계획과 게이트 (개발 금지 상태 유지)</a></li><li><a href="#s16">17. 리스크 레지스터</a></li><li><a href="#s17">18. cocy에게 묻는 질문 (우선순위 순)</a></li><li><a href="#s18">19. 출처</a></li></ul>
+<div class="kicker">Private note · 설계 v3</div>
+<h1>라운드제 협동 ARPG — 통합 설계 v3</h1>
+<p class="lead">비공개 검토용 설계안 · 2026-10-10 · v3 · 개발 착수 전 · 모든 수치는 [제안]</p>
+<h2 id="toc">목차</h2><ul><li><a href="#s0">1. 한 줄 정의와 필라</a></li><li><a href="#s1">2. 용어와 3층 구조</a></li><li><a href="#s2">3. 서사와 여관 허브</a></li><li><a href="#s3">4. 온보딩 코스 S1~S10</a></li><li><a href="#s4">5. 엔드리스 모드</a></li><li><a href="#s5">6. 사망·귀환·XP 규칙</a></li><li><a href="#s6">7. 전투 코어</a></li><li><a href="#s7">8. 스탯·자원·무게·XP 곡선</a></li><li><a href="#s8">9. 클래스·서클·시너지</a></li><li><a href="#s9">10. 아이템·제작·강화 경제</a></li><li><a href="#s10">11. 몬스터 베리에이션 시스템</a></li><li><a href="#s11">12. 서버·로그인·영속성</a></li><li><a href="#s12">13. 고스트 대전(PK) — &quot;잔향&quot;</a></li><li><a href="#s13">14. 외부 에셋 참고 평가 (X @jowettbrendan 게시물)</a></li><li><a href="#s14">15. 렌더·네트코드 스택</a></li><li><a href="#s15">16. 단계 계획과 게이트 (개발 금지 상태 유지)</a></li><li><a href="#s16">17. 리스크 레지스터</a></li><li><a href="#s17">18. cocy에게 묻는 질문 (우선순위 순) [v3 갱신]</a></li><li><a href="#s18">19. 출처</a></li></ul>
 <ul>
-<li>작성: 2026-10-10 KST, 티오 직접 통합. 근거는 R1 전투, R2 아이템, R3 클래스·마법, R4 진행·서사, R5 영속·아키텍처 리서치와 cocy 지시 로그(<code>decisions.md</code>).
+<li>작성: 2026-10-10 KST, 티오 직접 통합. v3는 v2에 cocy 28757 결정(파티 부활, 계정당 캐릭터 1개·무기=직업, 입문 문답)을 반영한 판이다. 변경 지점은 <code>[v3]</code> 로 표시한다. 근거는 R1 전투, R2 아이템, R3 클래스·마법, R4 진행·서사, R5 영속·아키텍처 리서치와 cocy 지시 로그(<code>decisions.md</code>).
 </li>
 <li>상태: 설계안. 개발 금지(cocy 지시). 구현·실측·밸런스 시뮬레이션은 한 줄도 돌리지 않았다. 모든 수치는 <strong>[제안]</strong> 이고 실험 후 바뀐다.
 </li>
@@ -76,7 +76,7 @@ a{color:var(--accent)}
 </li>
 <li><strong>고스트 대전.</strong> 다른 사용자의 빌드와 싸우는 비동기 PK. S8에서 무료 튜토리얼로 처음 만나고, 엔드리스의 잔향 관문에서 선택으로 나온다.
 </li></ol>
-<p>접속 직후 흐름: 로그인 → 캐릭터 없음이면 이세계 도착 연출과 함께 직업 선택 → S1. 캐릭터가 있으면 여관에서 시작한다.</p>
+<p>접속 직후 흐름: 로그인 → 캐릭터 없음이면 이세계 도착 연출과 함께 <strong>소환 문답(§9.9)</strong> → 시작 무기와 초기 스탯 결정 → S1. [v3] 캐릭터가 있으면 여관에서 시작한다.</p>
 <h2 id="s2">3. 서사와 여관 허브</h2>
 <h3 id="s3">3.1 서사의 역할</h3>
 <p>서사는 문서의 장식이 아니라 <strong>UI가 존재하는 이유</strong>를 설명하는 장치다. [확정: "게임 인터페이스에 자연스러운 당위성"]</p>
@@ -113,7 +113,9 @@ a{color:var(--accent)}
 <h2 id="s3">4. 온보딩 코스 S1~S10</h2>
 <p>R4 §4~§5를 그대로 채택하고 다음만 바꾼다: ① 사망 규칙을 §6으로 교체, ② S10 이후 엔드리스 연결, ③ 모든 시간 수치는 예상이지 타이머가 아니다(허수아비 30초만 예외).</p>
 <ul>
-<li><strong>S1 소환 시험(허수아비 30초).</strong> 허수아비 HP는 0이 되지 않고 무적이며 공격하지 않는다. 종료 조건은 피해량이 아니라 30초다. 타이머는 화면이 활성이고 시뮬레이션이 진행된 시간만 센다(탭 백그라운드·네트워크 복구로 30초가 지나가지 않게). 0~8초 이동·타격, 8~18초 예고 원 회피, 18~26초 강공격 한 번, 26~30초 마무리. 입력이 없어도 수료하고 최소 보상을 받는다. 끝나면 일회성 Lv2와 스탯 3점, 초보 보급을 준다. 보상은 튜토리얼 플래그로 중복 차단.
+<li><strong>S0 소환 문답(코스 외, 1분 내외). [v3]</strong> 이세계에 도착한 직후 소환 인장이 영혼의 형태를 묻는다. 시나리오 질문 5개로 시작 무기(=직업, §9.1)와 초기 스탯 6점(§8.1)이 정해진다. 상세는 §9.9. 이 문답은 한 번만 하며 캐릭터에 결과가 기록된다(재응시 UI 없음).
+</li>
+<li><strong>S1 소환 시험(허수아비 30초).</strong> 문답에서 정해진 시작 무기를 쥐고 시작한다. 허수아비 HP는 0이 되지 않고 무적이며 공격하지 않는다. 종료 조건은 피해량이 아니라 30초다. 타이머는 화면이 활성이고 시뮬레이션이 진행된 시간만 센다(탭 백그라운드·네트워크 복구로 30초가 지나가지 않게). 0~8초 이동·타격, 8~18초 예고 원 회피, 18~26초 강공격 한 번, 26~30초 마무리. 입력이 없어도 수료하고 최소 보상을 받는다. 끝나면 일회성 Lv2와 스탯 3점, 초보 보급을 준다. 보상은 튜토리얼 플래그로 중복 차단.
 </li>
 <li><strong>S2 끊긴 여관길.</strong> 고블린 근접 2 + 투석 1. 동시 최대 3, 처음 15초는 한 마리만 접근. 여기서 HP 물약, 마나, 마나 물약, 귀환 주문서를 한 묶음("살아서 돌아오기")으로 가르친다. 승리하면 길 안내 NPC가 여관으로 보내 무게·상점을 가르친다.
 </li>
@@ -178,9 +180,9 @@ a{color:var(--accent)}
 <li>사망 XP 손실은 자기 레벨 구간 기준으로 계산되므로 저레벨이 더 크게 잃지 않는다(§6.2).
 </li></ul>
 <h2 id="s5">6. 사망·귀환·XP 규칙</h2>
-<p>[확정] 귀환은 후퇴이며 자동이 아니다. 죽으면 그 판이 끝난다. 사망에는 XP 추가 하락이 따른다. PK에서는 상대가 XP를 얻는다.</p>
+<p>[확정] 귀환은 후퇴이며 자동이 아니다. 죽으면 그 판이 끝난다. 사망에는 XP 추가 하락이 따른다. PK에서는 상대가 XP를 얻는다. [확정 28757, v3] <strong>파티원은 마법이나 아이템으로 쓰러진 동료를 살릴 수 있다.</strong> 살리지 못하고 쓰러짐 시간이 끝나면 그때가 "죽음"이다. 솔로에는 부활이 없다. 상세는 §6.4.</p>
 <h3 id="s6">6.1 종료 사유 enum</h3>
-<p><code>clear / return_scroll / emergency_recall / death / technical_abort</code> [R4]. 한 round에 개인별로 정확히 하나만 확정된다. clear·death·return 경합은 서버의 terminal CAS가 하나만 커밋한다. 실패한 귀환 시전은 terminal 상태가 아니다.</p>
+<p><code>clear / return_scroll / emergency_recall / death / technical_abort</code> [R4]. 한 round에 개인별로 정확히 하나만 확정된다. <code>downed</code>(쓰러짐)와 <code>revived</code>(부활)는 <strong>종료 사유가 아니라 round 안의 중간 상태/이벤트</strong>이고, 쓰러짐이 부활 없이 끝날 때 비로소 <code>death</code>가 확정된다(§6.4). [v3] clear·death·return 경합은 서버의 terminal CAS가 하나만 커밋한다. 실패한 귀환 시전은 terminal 상태가 아니다.</p>
 <h3 id="s6">6.2 정산 규칙 [제안]</h3>
 <ul>
 <li><strong>clear</strong>: 킬 XP 예치분이 지급되고 임시 전리품이 확정된다. 이후 다음 층/여관으로 이동은 별개의 무료 이동(후퇴가 아니다).
@@ -189,22 +191,69 @@ a{color:var(--accent)}
 </li>
 <li><strong>emergency_recall</strong>: 주문서가 없을 때의 무료 후퇴. 같은 2초 의식이지만 이번 시도의 <strong>임시 전리품을 전부 포기</strong>한다. 이전에 확정된 재산·진척은 보존. 재화 0인 초보를 가두지 않기 위한 장치.
 </li>
-<li><strong>death</strong>: 그 round는 본인에게 즉시 종료. 임시 전리품 전부 상실, 예치 XP 상실, 그리고 <strong>추가 XP 하락</strong>(아래). 무료 구조 의식으로 여관에 복귀하고 장비 파괴는 없다. 이전 round에서 확정된 전리품은 지킨다.
+<li><strong>death</strong>: 솔로이거나 쓰러짐 시간이 끝난 경우(§6.4) 그 round는 본인에게 종료. 임시 전리품 전부 상실, 예치 XP 상실, 그리고 <strong>추가 XP 하락</strong>(아래). 무료 구조 의식으로 여관에 복귀하고 장비 파괴는 없다. 이전 round에서 확정된 전리품은 지킨다.
 </li>
 <li><strong>technical_abort</strong>: 서버 판단 장애(호스트 이탈, 서버 오류). XP 손실 0. 클라이언트의 연결 끊김 신고만으로 장애를 인정하지 않는다.
 </li></ul>
-<h3 id="s6">6.3 사망 XP 손실 [제안, cocy 확인 대상]</h3>
+<h3 id="s6">6.3 사망 XP 손실 [확정 28757: 기본안 수용]</h3>
 <ul>
-<li>기본안: <code>loss = round(0.20 × xpSpan(level))</code>, 단 현재 레벨 시작 XP 아래로는 내려가지 않는다(<strong>레벨 다운 없음</strong>). 레벨 시작 직후 죽으면 잃을 것이 없다.
+<li>기본안(확정): <code>loss = round(0.20 × xpSpan(level))</code>, 단 현재 레벨 시작 XP 아래로는 내려가지 않는다(<strong>레벨 다운 없음</strong>). 레벨 시작 직후 죽으면 잃을 것이 없다.
 </li>
 <li>코스 안전망: S1~S3 사망은 손실 0, S4~S7은 0.5배, S9 이후·엔드리스는 전액. 초반 이탈 방지와 "죽으면 끝"의 긴장을 같이 잡는다. 첫 S2 사망은 지급받은 초보 보급 1회를 복원(재구매·판매 불가).
 </li>
-<li>대안 B(더 강한 긴장): 5레벨 단위 "앵커 레벨" 아래로만 내려가지 않는 모델. 레벨 다운이 생기므로 스탯 포인트 회수 규칙이 필요해 복잡도가 크다. 지금은 기각하고 질문으로 남긴다(§18).
+<li>대안 B(더 강한 긴장): 5레벨 단위 "앵커 레벨" 아래로만 내려가지 않는 모델. 레벨 다운이 생기므로 스탯 포인트 회수 규칙이 필요해 복잡도가 크다. 기각했다.
+</li>
+<li><strong>부활한 사람은 XP 손실이 없다.</strong> 손실은 쓰러짐이 부활 없이 끝나 <code>death</code>가 확정될 때만 발생한다. 살려 준 사람도 손실 면제의 대가가 아니라 부활 행위 자체가 비용(마나/아이템)이다. [v3, 제안]
 </li>
 <li>손실량은 <code>death.v1</code> 정책 버전으로 서버가 계산하고 영수증(receipt)에 기록한다. 클라이언트가 손실량을 보고하지 않는다.
 </li></ul>
-<h3 id="s6">6.4 파티 내 사망 [제안]</h3>
-<p>cocy의 "죽으면 끝"은 해당 플레이어의 판 종료로 해석한다. 죽은 개인은 부활 없이 종료되어 보상에서 제외되고, 생존한 파티원은 계속할 수 있다. 전원이 죽거나 호스트가 이탈하면 round가 종료된다. "한 명이 죽으면 파티 전원의 판이 끝난다" 해석은 확인 질문 1순위로 올린다. (전자는 협동의 긴장이 약간 줄지만 사망 불만이 낮다. 후자는 긴장이 크지만 파티 해체 사유가 된다.)</p>
+<h3 id="s6">6.4 쓰러짐과 부활 [확정 28757, 세부 수치는 제안] [v3]</h3>
+<p>v2는 "개인은 부활 없이 종료"로 해석했으나 cocy가 뒤집었다: <strong>파티원이 마법이나 아이템으로 살릴 수 있다.</strong> "죽으면 끝"은 "살리지 못하면 끝"이 된다.</p>
+<p><strong>쓰러짐(downed) 진입.</strong> HP가 0이 될 때, 같은 round에 <strong>살아 있는 다른 인간 파티원이 1명 이상</strong> 있으면 즉시 사망하지 않고 <code>downed</code>가 된다. 솔로이거나 남은 인간이 없으면 곧바로 <code>death</code>다. AI 좌석(<code>ai-</code>), 소환수, 고스트는 구조자로 인정하지 않는다. 파티 전원이 쓰러지면 round는 <code>death</code>로 종료된다(와이프).</p>
+<p><strong>쓰러진 동안.</strong></p>
+<ul>
+<li>제한 시간 <code>bleedOutMs</code> 기준 12초. 같은 round에서 이미 쓰러진 횟수만큼 3초씩 줄고 하한은 6초다(반복 쓰러짐 압박).
+</li>
+<li>행동 불가, 이동 불가. 직접 피해는 받지 않는다(몬스터 어그로 제외). 대신 시간이 흐르고 구조자가 위험 지대에 접근해야 한다. 이 불가침이 "쓰러지고도 한 번 더 맞아 죽는" 불쾌함을 막는다.
+</li>
+<li>귀환 주문서와 <code>emergency_recall</code>은 쓰러진 상태에서 쓸 수 없다. 쓰러짐을 이용해 확보한 전리품만 챙기고 빠지는 도피를 막는다.
+</li>
+<li>쓰러짐 시간이 끝나면 <code>death</code>(§6.2, §6.3 전액 적용).
+</li>
+<li>쓰러진 사람이 연결을 끊어도 타이머는 서버(호스트)에서 계속 흐른다. 클라이언트 연결 끊김 신고만으로 면제하지 않는다(§12.5). 호스트 이탈은 기존대로 <code>technical_abort</code>.
+</li></ul>
+<p><strong>부활 수단 두 가지.</strong> 어느 한쪽이 없어도 클리어 가능해야 한다(§9.7 "힐러는 입장권이 아니다").</p>
+<ul>
+<li><strong>마법</strong>: Luminary 전용 C2 주문 후보 <code>lumen_revive</code>(Radiance). 시전 2.5초 채널링, 마나 40, 재사용 60초, 사거리 근접. 부활자 HP 30%.
+</li>
+<li><strong>아이템</strong>: 소모품 <code>soul_candle</code>(영혼의 초). 어떤 클래스도 사용 가능. 같은 채널링 2.5초, HP 30%. 무게 1, 휴대 상한 2, 상점 구매(고가 huntGold, 수치 제안). 출정 시 반입한 수량 이하만 청구할 수 있다(§12.5).
+</li></ul>
+<p><strong>채널링 규칙.</strong></p>
+<ul>
+<li>구조자는 채널링 중 이동 불가, 피격 시 중단된다. 중단되면 마나/초는 <strong>소모되지 않는다</strong>(채널링이 끝나는 순간 commit).
+</li>
+<li>자기 자신은 살릴 수 없다. 자가 부활 아이템은 두지 않는다(협동 의미가 사라진다).
+</li>
+<li>한 쓰러진 사람을 동시에 2명이 채널링하면 먼저 끝난 한 명만 유효하고 나머지는 소모되지 않는다.
+</li></ul>
+<p><strong>부활 후.</strong></p>
+<ul>
+<li>HP 30%, 마나 50%, 3초 무적(이동·공격 가능, 무적은 첫 공격 시 유지). 버프/부여는 초기화된다.
+</li>
+<li>쓰러짐 중 놓친 킬 보상은 없지만 이후 기여는 정상 반영된다. 이미 쌓은 임시 전리품과 예치 XP는 유지된다.
+</li>
+<li><strong>한 round에서 한 사람당 부활 2회까지.</strong> 3번째 HP 0은 쓰러짐 없이 즉시 <code>death</code>다. 부활 직후 3초 무적이 지나면 정상 규칙이 적용되고, 반복 쓰러짐 감쇠(위 12초 규칙)가 일반 방어선이다.
+</li></ul>
+<p><strong>악용 방지.</strong> [제안]</p>
+<ul>
+<li>보스 시간끌기: 부활은 보스 위상·누적 피해를 되돌리지 않는다. 구조자를 노린 반복 쓰러짐은 감쇠와 2회 상한으로 끊긴다.
+</li>
+<li>부활 아이템 되팔기·복제: 소모품 반입 수량 상한과 서버 영수증(<code>op_id</code>)으로 막는다. 거래 없음.
+</li>
+<li>고스트: 소유자의 고스트는 쓰러지지 않고 부활 대상도 아니다(§13). 협동 PK의 도전자 파티원은 이 규칙을 그대로 따른다.
+</li>
+<li>사망 XP 회피 목적의 고의 쓰러짐(친구가 계속 살려 줌)은 2회 상한과 아이템 비용으로 억제한다. 부활 횟수는 <code>revived</code> 이벤트로 기록해 이상치 탐지에 쓴다.
+</li></ul>
 <h3 id="s6">6.5 귀환과 무게 상호작용</h3>
 <ul>
 <li>주문서는 무게 1, 소지 최대 2장, 가격은 6 huntGold. 마나가 0이어도 쓸 수 있다(자원 데드락 방지). 과중량에서도 사용 가능.
@@ -285,7 +334,9 @@ a{color:var(--accent)}
 </li>
 <li>스탯당 상한은 <code>cap = clamp(10 + level, 20, 40)</code>. 레벨 10에서 20, 레벨 30에서 40. 한 스탯이 상한에 닿으면 이후 포인트는 다른 스탯으로 간다. 효과 곡선은 delta 10까지 선형, 이후 기울기 0.7(체감).
 </li>
-<li>스탯 재분배: 여관 교관에게서 비용을 내고 가능(전체 초기화 huntGold, 레벨에 비례). 사망 페널티와 다른 이유로 스탯 포인트를 회수하지 않는다. 레벨 다운이 없기 때문이다(§6.3). 서버가 <code>StatAllocationRequest{characterId, expectedRevision, allocations, requestId}</code>로만 반영한다.
+<li><strong>초기 스탯 6점(문답 결과) [v3, 제안]</strong>: 캐릭터 생성 시 기본값 각 5에 더해 <strong>문답이 6점</strong>을 나눠 준다(한 스탯 최대 +3). 총합은 모든 답 조합에서 항상 6이라 어떤 답이 "강한 답"인 일은 없다. 이어서 S1 종료 때 받는 Lv2 3점은 평소처럼 직접 분배한다. 계산식은 §9.9.
+</li>
+<li>스탯 재분배: 여관 교관에게서 비용을 내고 가능(전체 초기화 huntGold, 레벨에 비례, 문답 6점도 일반 포인트로 편입되어 같이 재분배된다). 사망 페널티와 다른 이유로 스탯 포인트를 회수하지 않는다. 레벨 다운이 없기 때문이다(§6.3). 서버가 <code>StatAllocationRequest{characterId, expectedRevision, allocations, requestId}</code>로만 반영한다.
 </li></ul>
 <h3 id="s8">8.2 자원</h3>
 <ul>
@@ -334,19 +385,30 @@ a{color:var(--accent)}
 </li></ul>
 <h2 id="s8">9. 클래스·서클·시너지</h2>
 <p>R3의 소프트 역할 모델을 채택한다. 클래스는 조작과 공급 능력, 무기는 공격 전달체, 학파는 효과를 정하고, 클래스 이름을 조건식에 직접 쓰지 않는다. [R3 §3.1] 모든 시너지는 태그와 상태로만 말한다.</p>
-<h3 id="s9">9.1 MVP 클래스 4종과 선택 시점</h3>
+<h3 id="s9">9.1 캐릭터 1개와 무기 기반 직업 [확정 28757] [v3]</h3>
+<p><strong>계정당 캐릭터는 하나다. 직업은 따로 고르지 않고 장착한 무기가 정한다.</strong> v2의 "클래스별 캐릭터 최대 4개 슬롯"과 "클래스는 영구 귀속"은 폐기한다.</p>
 <ul>
-<li>4종: <code>Vanguard</code>(한손검+방패, 대검, 창), <code>Ranger</code>(활, 석궁), <code>Arcanist</code>(staff, wand), <code>Luminary</code>(censer, scepter). <code>Duelist</code>와 <code>Warden</code>은 계약이 안정된 뒤 추가한다. [R3 §4 구현 우선순위]
+<li>무기 4종 = 직업 키트(kit) 4종: <code>blade</code> → <code>Vanguard</code>(한손검+방패, 대검, 창), <code>bow</code> → <code>Ranger</code>(활, 석궁), <code>staff</code> → <code>Arcanist</code>(staff, wand), <code>censer</code> → <code>Luminary</code>(censer, scepter). <code>Duelist</code>와 <code>Warden</code>은 계약이 안정된 뒤 추가한다. [R3 §4 구현 우선순위]
 </li>
-<li>선택 시점: S1 소환 의식에서 4종 시작 무기 중 하나를 쥔다. 허수아비 30초는 그 무기의 기본 조작 체험이 된다. 클래스는 캐릭터에 영구 귀속이다. 이세계 용사가 "무기를 쥐는 순간 정해진다"는 서사와 맞고, 클래스 변경 UI를 만들지 않는다.
+<li><strong>공유되는 것(캐릭터 단위)</strong>: 레벨, XP, 스탯, 가방/창고, 골드, 방어구/부적, 학파 선택, 문답 기록.
 </li>
-<li>계정당 클래스별 캐릭터 1개, 최대 4개 슬롯 [제안]. XP·장비·스탯은 공유하지 않는다. 계정 슬롯 수와 슬롯 확장 정책은 §18에 둔다.
+<li><strong>키트별로 따로 쌓이는 것</strong>: 서클 해금과 숙련 시험 기록(§9.3), 주문 로드아웃, 키트 숙련 XP. 새 키트로 바꾸면 그 키트는 C1부터 시작한다(캐릭터 레벨이 이미 높으면 시험은 바로 열리지만 보증 코어는 필요하다 [제안]).
 </li>
-<li>공통 보장 기능: 모든 클래스가 <code>dodge</code>, 제한된 자기 회복, 부위 break, 위험 요소 회피나 해소를 가진다. 이 기능이 특정 클래스에 있어야만 켜지는 보스 패턴은 만들지 않는다. [R3 §7.1]
+<li><strong>무기 교체는 여관에서만.</strong> 출정 중에는 바꿀 수 없다. 이유: 보스 패턴에 맞춰 판 도중 직업을 바꾸는 퍼즐화와 서버 검증 복잡도를 막는다. 파티 구성은 출정 시 잠긴다(§2).
+</li>
+<li><strong>서버 규칙</strong>: <code>arpg_characters</code>는 <code>user_id</code> 하나당 최대 1행. 현재 직업은 장착 <code>weapon</code> 슬롯의 무기 타입에서 <strong>서버가 파생</strong>한다. 클라이언트가 보고하는 직업 필드는 없다. 무기 없이 출정할 수 없다(맨손 폴백 없음).
+</li>
+<li><strong>서사</strong>: 이세계 용사가 "무기를 쥐는 순간 그 형태가 된다"는 소환 서사와 맞는다. 무기를 바꾸면 영혼의 형태가 바뀐다는 연출(교관 대사)로 설명한다.
+</li>
+<li>새 키트 첫 사용 시 교관의 허수아비 연습(S1과 같은 형식, 짧은 판)을 권유한다. 필수 아님.
+</li>
+<li>스탯은 키트와 독립이므로 "STR을 올렸는데 활로 바꿨다"가 손실만은 아니게, 모든 키트에서 최소 효용(용량, 회피, 마나, 가격 등)이 있도록 §8.1을 유지한다.
+</li>
+<li>공통 보장 기능: 모든 직업 키트가 <code>dodge</code>, 제한된 자기 회복, 부위 break, 위험 요소 회피나 해소를 가진다. 이 기능이 특정 클래스에 있어야만 켜지는 보스 패턴은 만들지 않는다. [R3 §7.1]
 </li>
 <li>입력: 이동 엄지 드래그, 기본 공격 자동 조준(수동 옵션), 회피 1, 능동 스킬 최대 2 + 고급 1(고급은 C4 이후). 지원 modifier는 전투 전에 장착하고 버튼을 늘리지 않는다. 힐러만 버튼 8개를 요구하지 않는다. [R3 §4.1]
 </li></ul>
-<h3 id="s9">9.2 클래스별 핵심 동사</h3>
+<h3 id="s9">9.2 키트별 핵심 동사</h3>
 <ul>
 <li><code>Vanguard</code>: guard → perfect guard → 반격, <code>break_strike</code>로 부위 stagger. 시너지 공급은 <code>armor_fractured</code>, 소비는 마법부여. STR이 직접 맞물린다(§8.1).
 </li>
@@ -360,7 +422,7 @@ a{color:var(--accent)}
 </li></ul>
 <h3 id="s9">9.3 서클 C1~C3 [R3 §5 + 제안]</h3>
 <ul>
-<li>서클은 숙련 티어다. 클래스 레벨, 주문 등급, 장비 희귀도와 독립 축이고 해금은 <code>레벨 + 숙련 시험 1회 + 보증 코어</code> 셋을 모두 요구한다. 레벨만도, 희귀 주문서만도 쓰지 않는다. 해금은 캐릭터에 영구 귀속이며 장비를 바꾸거나 분해해도 잃지 않는다. 멀티 전용 해금과 RNG 전용 필수 해금은 금지한다.
+<li>서클은 숙련 티어다. 캐릭터 레벨, 주문 등급, 장비 희귀도와 독립 축이고 해금은 <code>레벨 + 숙련 시험 1회 + 보증 코어</code> 셋을 모두 요구한다. 레벨만도, 희귀 주문서만도 쓰지 않는다. 해금은 <strong>캐릭터의 해당 키트에 영구 귀속</strong>이며 장비를 바꾸거나 분해해도 잃지 않는다(다른 키트의 서클은 별도, §9.1). [v3] 멀티 전용 해금과 RNG 전용 필수 해금은 금지한다.
 </li>
 <li>해금 레벨: C1 Lv1, C2 Lv5, C3 Lv10. 코스에서는 S5 클리어 직후(Lv5) C2 시험이 열려 S6 제단(원소 부여 첫 실전)과 맞물리고, C3는 엔드리스 진입 직후(Lv10 근처)에 열린다. C4 이상(Lv16, 24)은 MVP에서 만들지 않는다.
 </li>
@@ -381,7 +443,7 @@ a{color:var(--accent)}
 <ul>
 <li>C1: <code>spark_bolt</code>(Ember), <code>frost_needle</code>(Tide), <code>lumen_ray</code>(Radiance)
 </li>
-<li>C2: <code>ember_imbue</code>(Ember), <code>tidal_seal</code>(Tide), <code>warding_pulse</code>(Radiance). Stone 학파는 MVP 밖이라 <code>stone_ward</code>는 후속 추가
+<li>C2: <code>ember_imbue</code>(Ember), <code>tidal_seal</code>(Tide), <code>warding_pulse</code>(Radiance), <strong><code>lumen_revive</code></strong>(Radiance, 부활 §6.4) [v3]. Stone 학파는 MVP 밖이라 <code>stone_ward</code>는 후속 추가
 </li>
 <li>C3: <code>arc_chain</code>(Storm), <code>prism_cleanse</code>(Radiance), <code>frost_crack</code>(Tide), <strong><code>fireball</code></strong>(Ember)
 </li></ul>
@@ -422,7 +484,7 @@ a{color:var(--accent)}
 <ul>
 <li>지속 회복은 대상 최대 HP의 초당 2% 이하, 동시에 들어오는 barrier 합은 최대 HP의 25% 이하를 목표 상한으로 두고 실험한다. 대상별 회복 쿨다운이 있으며 무한 흡혈과 무한 보호막 갱신은 없다.
 </li>
-<li><strong>다운·구조 없음 [확정 §6.4 정합]</strong>: cocy 결정("죽으면 끝")에 맞춰 기본안은 HP 0 즉시 <code>death</code>이고 부활과 구조 창이 없다. 협동의 생존 지원은 예방 수단(barrier, cleanse, 회복, 위험 해소, 동료 대신 맞는 가드)으로만 표현한다. 6초 구조 창(다운 상태)은 협동 긴장을 낮추는 대신 사망 불만을 줄이는 <strong>대안 옵션</strong>으로 §18에 올리며 기본 설계에는 넣지 않는다.
+<li><strong>쓰러짐·부활 포함 [확정 28757, v3]</strong>: 파티 안에서는 HP 0이 <code>downed</code>이고 동료가 살릴 수 있다(§6.4). 협동의 생존 지원은 예방 수단(barrier, cleanse, 회복, 위험 해소, 동료 대신 맞는 가드)에 더해 <strong>부활</strong>까지 확장된다. 부활의 HP 30%는 지속 회복 상한(초당 2%)과 barrier 합 상한(25%)에 산입하지 않고 별도 규칙(§6.4)으로 제한한다. Luminary가 없어도 <code>soul_candle</code>로 같은 효과를 낼 수 있어야 한다.
 </li>
 <li>힐러가 먼저 죽어도 나머지는 계속 클리어할 수 있어야 하며 힐러 없는 구성도 같은 패턴을 클리어할 수 있어야 한다. 지원은 선택한 빌드의 강점이지 입장권이 아니다.
 </li>
@@ -434,11 +496,43 @@ a{color:var(--accent)}
 </li>
 <li><code>utility rune</code> 1칸(약한 Wet 공급, 짧은 자기 imbue, 제한 cleanse)으로 시너지 생산과 소비를 혼자서도 한 번씩 할 수 있다. 개인 패시브(<code>on perfect dodge → resonant</code>)는 cooldown과 proc budget을 공유한다. 허위 actorId로 동료를 흉내 내지 않는다.
 </li></ul>
+<h3 id="s9">9.9 입문 문답과 초기 직업·스탯 [확정 28757 컨셉, 설계는 제안] [v3]</h3>
+<p>목표: 소환 직후 짧은 문답으로 시작 무기(직업)와 초기 스탯 6점을 정한다. <strong>1단계는 순수 공식(결정적)</strong>, 이후 단계에서 LLM이 개인별 특별함을 더한다. cocy 요구: "첨엔 공식처럼 고르겠지만 나중엔 LLM으로 개인별 특별한 느낌".</p>
+<p><strong>문답 구조.</strong></p>
+<ul>
+<li>질문 5개, 질문당 선택지 4개. 시나리오형이다(스탯·직업 이름을 직접 묻지 않는다). 예: "쓰러진 수레 앞에서 괴물이 길을 막았다. 어떻게 하겠는가?" / "동료가 다쳤다" / "위험하지만 값진 문이 열려 있다" / "처음 쥐고 싶은 것은?" 등.
+</li>
+<li>각 선택지는 두 벡터를 가진다: 무기 점수 <code>w = [blade, bow, staff, censer]</code>와 스탯 점수 <code>a = [STR, AGI, INT, WIS, CHA]</code>. 데이터 파일(<code>onboarding_quiz.v1.json</code>)로 두고 질문·점수는 코드가 아니라 데이터다.
+</li>
+<li>마지막 질문(Q5)은 "무기에 대한 끌림"으로 <code>w</code>에 큰 가중을 준다. 직업이 완전히 성격 테스트 결과만으로 정해지는 불만을 줄이고 의도를 반영한다.
+</li></ul>
+<p><strong>결정 공식(서버, 결정적).</strong></p>
+<ol>
+<li><code>W = Σ w</code>, 최댓값 무기를 시작 무기로 한다. 동점이면 Q5에서 고른 무기, 그래도 같으면 고정 순서(<code>blade, bow, staff, censer</code>).
+</li>
+<li><code>A = Σ a</code>를 비율로 환산해 6점을 <strong>최대잉여법</strong>으로 배분한다(한 스탯 최대 +3, 넘치는 몫은 다음 큰 몫에게). 동점은 고정 순서(STR, AGI, INT, WIS, CHA). 총합은 항상 6.
+</li>
+<li>결과 화면에서 플레이어는 <strong>시작 무기(직업)만 4종 중에서 바꿀 수 있다.</strong> 스탯 배분은 문답 결과를 유지한다(바꾸고 싶으면 S1 이후 교관 재분배). 직업을 바꿔도 스탯 총합은 같으므로 강약 차이는 없다. [제안, §18 확인]
+</li>
+<li>서버는 <code>arpg_onboarding(character_id, quiz_version, answers, weapon_scores, stat_points, chosen_weapon, overridden)</code>를 한 번 기록한다. 같은 <code>op_id</code>로 멱등이고 캐릭터 생성 트랜잭션과 함께 커밋된다. 재응시 없음.
+</li></ol>
+<p><strong>LLM 개인화(후속 단계, MVP 이후) [제안].</strong></p>
+<ul>
+<li>규칙(기존 <code>feedback_llm_scalar_scores</code> 원칙): <strong>LLM은 분류와 화이트리스트 선택만, 숫자는 서버 공식.</strong> LLM이 스탯 점수나 위력을 정하지 않는다.
+</li>
+<li>LLM이 하는 일: ① 5개 답을 읽고 사전에 정의된 <strong>칭호/성향 태그 목록</strong>(예: <code>신중한 개척자</code>, <code>무모한 불꽃</code> 등 ~40개)에서 1~2개 선택, ② 그 태그에 맞는 <strong>서사 문구</strong>(소환 인장 대사, 여관 인사말, 교관 코멘트) 생성, ③ 자유 서술형 답변(선택 질문 하나를 주관식으로 대체)을 태그로 분류.
+</li>
+<li>칭호/성향 태그는 <strong>코스메틱 + 아주 작은 고정 효과 한 줄</strong>(태그표에 미리 수치가 있는 것)만 가진다. 예: 로딩 문구, 이름 장식, 여관 대사 변종, 가끔 뜨는 상황 대사. 전투 수치 영향은 없다. 이 선을 지켜야 "LLM이 사람마다 다른 강함을 주는" 경제/공정성 위험이 생기지 않는다.
+</li>
+<li>생성 결과는 <code>onboarding_flavor(character_id, tags, text, model, prompt_version)</code>로 캐시하고 한 번만 만든다. 실패하면 공식 기반 고정 문구로 대체. 프롬프트는 닫힌 후보 목록과 JSON 스키마를 사용하고 입력 길이를 제한한다.
+</li>
+<li>입력은 사용자 자유 서술이 되므로 프롬프트 주입을 전제로 하고, 출력은 화이트리스트 태그 id와 길이 제한된 문구만 통과시킨다.
+</li></ul>
 <h2 id="s9">10. 아이템·제작·강화 경제</h2>
 <p>R2의 원칙을 따른다: 축을 분리하고, 모든 재화 변환은 비순환이며, 서버가 단일 지급 권한이다. 수치는 [제안]이고 §16의 시뮬레이션 게이트에서 확정한다.</p>
 <h3 id="s10">10.1 아이템 모델</h3>
 <ul>
-<li>무기 4종(<code>blade</code>, <code>bow</code>, <code>staff</code>, <code>censer</code>)이 §9.1 클래스에 대응한다. 슬롯은 3개: <code>weapon</code>, <code>armor</code>, <code>charm</code>. 등급은 <code>common / fine / rare / epic</code> 4단계다.
+<li>무기 4종(<code>blade</code>, <code>bow</code>, <code>staff</code>, <code>censer</code>)이 §9.1 직업 키트를 정한다(장착 무기 타입 = 현재 직업). 슬롯은 3개: <code>weapon</code>, <code>armor</code>, <code>charm</code>. 등급은 <code>common / fine / rare / epic</code> 4단계다.
 </li>
 <li>다섯 축은 서로 독립 필드로 저장하고 합쳐서 하나의 "레벨"로 만들지 않는다: <code>rarity</code>(등급), <code>huntTier</code>(어느 사냥 구간에서 나왔나, 드랍 지역), <code>enhanceLevel</code>(+0~+5), <code>affixTier</code>(부가 옵션 강도), <code>spellCircle</code>(주문 서클, 아이템이 아니라 캐릭터 귀속, §9.3). 장비 착용 요구는 <code>huntTier</code>가 아니라 캐릭터 레벨 하나만 쓴다.
 </li>
@@ -545,7 +639,7 @@ a{color:var(--accent)}
 </li></ul>
 <h3 id="s12">12.3 D1 테이블</h3>
 <ul>
-<li>캐릭터·경제: <code>arpg_characters</code>, <code>arpg_items</code>, <code>arpg_stacks</code>, <code>arpg_operations</code>(멱등 영수증)
+<li>캐릭터·경제: <code>arpg_characters</code>(계정당 1행, 직업은 장착 무기에서 파생 [v3]), <code>arpg_kit_progress</code>(키트별 서클·시험·숙련 [v3]), <code>arpg_onboarding</code>(문답 결과, 후속 <code>onboarding_flavor</code> [v3]), <code>arpg_items</code>, <code>arpg_stacks</code>, <code>arpg_operations</code>(멱등 영수증)
 </li>
 <li>런: <code>arpg_runs</code>, <code>arpg_run_members</code>, <code>arpg_round_results</code>, <code>arpg_reward_claims</code>, <code>arpg_daily_limits</code>
 </li>
@@ -570,6 +664,8 @@ a{color:var(--accent)}
 <li>라운드 클리어 외에도 종료 유형(§6.1)마다 서버 청구 경로가 필요하다. <strong>R5가 빠뜨린 부분을 여기서 채운다.</strong>
 </li>
 <li><code>clear</code>: 라운드 보상을 확정한다. <code>return_scroll</code>: 귀환 성공 시 그 판의 <strong>임시 전리품(secured temp loot)</strong>을 영구 인벤토리로 승격하는 terminal claim. 귀환 의식 2초가 끝나기 전에는 승격되지 않는다. <code>emergency_recall</code>: 승격 비율이 낮다(§6.2). <code>death</code>: 임시 전리품 소멸 + XP 손실(§6.3). <code>technical_abort</code>: 보상/손실 모두 없음(서버 장애는 플레이어 책임이 아니다).
+</li>
+<li><strong>쓰러짐/부활 증거 [v3]</strong>: 호스트는 round 증거에 <code>downed{actor,at}</code>, <code>revived{actor,by,method,at}</code>를 기록해 보고한다. 서버는 plausibility로 ① 부활자가 같은 round의 살아 있는 인간이었는지, ② 쓰러진 시간이 <code>bleedOutMs</code> 이내인지, ③ 1인당 부활 2회 상한, ④ <code>soul_candle</code> 사용 수가 반입 수량 이하인지 검사한다. 소모는 terminal claim 시 반입량에서 차감한다. 쓰러짐 만료로 확정된 <code>death</code>는 기존 death 청구와 같다. 쓰러진 사람의 연결 끊김은 장애로 인정하지 않는다.
 </li>
 <li>모든 terminal claim은 <code>arpg_operations</code>에서 <code>run_id + round + terminal_type</code>을 키로 멱등이다.
 </li></ul>
@@ -617,7 +713,7 @@ a{color:var(--accent)}
 </li></ul>
 <h3 id="s13">13.4 소유자는 죽지 않는다</h3>
 <p>소유자는 접속하지 않았고 고스트의 승패는 소유자의 캐릭터에 <strong>HP, 장비, 골드, XP 손실을 일으키지 않는다.</strong> 소유자에게 일어나는 일은 "내 잔향이 다른 모험가와 겨뤘다"는 기록뿐이다. 이 원칙은 옵트인 동기와 직접 연결된다(손해 가능성이 0이어야 켠다).</p>
-<h3 id="s13">13.5 PK 경험치와 보상 [제안, cocy 확인 필요]</h3>
+<h3 id="s13">13.5 PK 경험치와 보상 [제안, cocy 확인 필요 — 28759에서 설명 완료, 답변 대기]</h3>
 <p>cocy 지시는 "PK에서는 상대가 경험치를 얻는다"이다. R5는 소유자 정산의 위험(도전자와 소유자 계정이 짜고 지는 팜)을 이유로 MVP에서 소유자 골드/재료 지급을 0으로 권고했다. 두 가지를 이렇게 조정한다.</p>
 <ul>
 <li><strong>도전자가 이기면(고스트 격파)</strong>: 해당 band 몬스터와 동일한 XP(고스트 레벨 기준) + 소량의 <code>trophy_token</code> + 장비 드랍 없음. 고가 희귀 드랍은 PvP 보상으로 주지 않는다.
@@ -700,7 +796,7 @@ a{color:var(--accent)}
 <h2 id="s15">16. 단계 계획과 게이트 (개발 금지 상태 유지)</h2>
 <p>현재는 <strong>설계 단계</strong>이고 개발은 금지다. 아래는 cocy 승인 후의 순서이며, 각 단계는 게이트를 통과해야 다음으로 넘어간다.</p>
 <ul>
-<li><strong>P0 설계 확정(지금)</strong>: v2 완성 → page.cocy.io 비공개 게시 → cocy와 §18 질문 정리 → v3. 게이트: §18의 최우선 질문 5개에 답이 있다.
+<li><strong>P0 설계 확정(지금)</strong>: v2 완성 → 비공개 게시 → §18 답변 반영 → <strong>v3(현재)</strong> → 남은 질문(§18) 정리 → 개발 승인 요청. 게이트: §18의 미결 질문에 답이 있다.
 </li>
 <li><strong>P1 도구와 측정(코드 최소)</strong>: ① 몬스터 데이터 검증 CLI(§11.4) ② 경제 불변식 속성 테스트(§10.5) ③ 렌더 스파이크 A/B(§15.1) ④ RTT 0/100/200/300ms × jitter 0/50/100ms에서 연결 룬 성공률과 perfectDodge 창 측정(§9.5, §15.2). 게이트: 렌더 스택 결정, 합동 주문 창과 회피 창 확정, 경제 불변식 통과.
 </li>
@@ -732,23 +828,38 @@ a{color:var(--accent)}
 </li>
 <li><strong>에셋 라이선스(중간)</strong>: 파일 단위 대장. NC 제외, SA/GPL 회피.
 </li>
-<li><strong>범위 과다(높음)</strong>: 1인 개발에 클래스 4, 서클 3, 학파 4, 변종, 서버 경제, PK를 모두 동시에 진행하면 완성되지 않는다. 대응: 수직 슬라이스 우선, 클래스 4종은 순차 오픈(Vanguard + Arcanist 먼저 검토).
+<li><strong>쓰러짐·부활의 시스템 복잡도(중간) [v3]</strong>: 상태 1개(<code>downed</code>)와 이벤트 2개(<code>downed</code>, <code>revived</code>), 채널링 중단 규칙, 반입 소모품 검증이 추가된다. 대응: 상태 머신 표를 P1 도구에 포함, 부활은 수직 슬라이스의 2인 단계에서 처음 검증.
+</li>
+<li><strong>무기=직업의 키트 진행 분산(중간) [v3]</strong>: 키트마다 서클/시험/숙련이 따로라 콘텐츠 비용이 늘고, 무기를 바꾸면 약해지는 느낌이 생길 수 있다. 대응: 키트 입문 가속(시험 즉시 개방), 레벨·스탯·방어구 공유, MVP는 2~4 키트만 연다.
+</li>
+<li><strong>문답 편향(낮음~중간) [v3]</strong>: 선택지 점수 설계가 편향되면 모두가 같은 직업이 된다. 대응: 분포 로그(직업별 비율)를 계측하고 데이터 파일 버전으로 보정.
+</li>
+<li><strong>범위 과다(높음)</strong>: 1인 개발에 클래스 4, 서클 3, 학파 4, 변종, 서버 경제, PK를 모두 동시에 진행하면 완성되지 않는다. 대응: 수직 슬라이스 우선, 직업 키트 4종은 순차 오픈(blade + staff 먼저 검토).
 </li>
 <li><strong>서사의 당위성 약화(낮음~중간)</strong>: 허브와 전투 사이의 이유가 UI 문구로만 존재하면 감흥이 없다. S1~S3 연출에서 반드시 검증.
 </li></ul>
-<h2 id="s17">18. cocy에게 묻는 질문 (우선순위 순)</h2>
+<h2 id="s17">18. cocy에게 묻는 질문 (우선순위 순) [v3 갱신]</h2>
+<p><strong>해결됨(28757)</strong></p>
+<ul>
+<li><del>파티 내 사망</del> → 파티원이 마법/아이템으로 살린다(§6.4).
+</li>
+<li><del>사망 XP 하락 폭</del> → 20%, 레벨 다운 없음 수용(§6.3).
+</li>
+<li><del>클래스 슬롯</del> → 계정당 캐릭터 1개, 무기=직업, 문답으로 시작 결정(§9.1, §9.9).
+</li>
+<li><del>첫 오픈 클래스</del> → 의미가 바뀜: 4종은 무기이고 한 캐릭터가 전부 가질 수 있다. 남은 쟁점은 MVP에 열 무기 수(위험 §17).
+</li></ul>
+<p><strong>미결</strong></p>
 <ol>
-<li><strong>파티 내 사망</strong>: 한 명이 죽으면 그 개인만 판이 끝나고 나머지는 계속(기본안)인가, 아니면 파티 전체의 판이 끝나는가? 후자는 긴장이 크지만 파티 해체 사유다. 또는 6초 구조 창(다운)을 둔 중간안은 어떤가?
+<li><strong>PK 소유자 XP(§13.5)</strong>: 도전자가 사망하면 소유자(잔향 등록자)에게 XP만 소량 주는 기능을 MVP부터 켤지, 상한 검증 후 켤지. 추천: MVP 0, 플래그로 구현, 이후 일 3%/unique 3명/pair 1회 상한으로 켠다.
 </li>
-<li><strong>사망 XP 하락 폭</strong>: 해당 레벨 xpSpan의 20%, 레벨 다운 없음(기본안)으로 괜찮은가? 더 강한 안(5레벨 앵커 아래로만 하락, 스탯 회수 필요)은 복잡도가 크다.
+<li><strong>fireball 서클 이동(§9.4)</strong>: C4(Lv16) → C3(Lv10) 편차 승인 여부. 추천: 승인.
 </li>
-<li><strong>PK 소유자 XP</strong>: 도전자 사망 시 소유자(잔향 등록자)에게 XP만 소량(일일 상한) 주는 안으로 시작하고 MVP는 0으로 두는 것이 맞는가? 골드와 재료 지급은 기본 불허.
+<li><strong>부활 세부(§6.4)</strong>: ① 부활한 사람은 XP 손실 면제(내 안), ② 자가 부활 아이템 없음(내 안), ③ 부활 아이템 <code>soul_candle</code>은 소모품·무게 1·휴대 2·상점 구매(내 안). 다르게 가고 싶은가?
 </li>
-<li><strong>fireball 서클 이동</strong>: C4(Lv16)에서 C3(Lv10)로 내린 편차(§9.4)를 승인하는가? 합동 주문이 엔드리스 진입 직후부터 등장한다.
+<li><strong>문답 결과 덮어쓰기(§9.9)</strong>: 결과 화면에서 시작 무기(직업)만 바꿀 수 있고 스탯 배분은 문답 결과 유지(내 안). 스탯까지 직접 조정할지?
 </li>
-<li><strong>클래스 슬롯</strong>: 계정당 클래스별 캐릭터 1개, 최대 4개 슬롯(§9.1)으로 가는가? 슬롯 확장 정책(무료/조건부)은?
-</li>
-<li><strong>첫 오픈 클래스</strong>: 4종을 한 번에 열기보다 Vanguard + Arcanist 2종으로 시작해 순차 확장하는 것에 동의하는가?
+<li><strong>무기 교체 비용(§9.1)</strong>: 여관에서 무료인가, 소량 비용을 둘까? 비용이 없으면 "직업 자유 전환"이 되고, 비용이 크면 사실상 직업 고정이 된다. 내 안: 무료, 단 출정 중 교체 불가.
 </li>
 <li><strong>게임 이름</strong>: 가칭이 없다. 이세계 용사 + 길드 + 잔향 세계관에 맞는 이름 후보를 정리해 달라.
 </li>
