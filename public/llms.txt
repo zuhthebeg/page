@@ -14,6 +14,7 @@
 - 개인 포트폴리오·프로필
 
 ## 분석 보고서 (cocy 직접 실측·조사)
+- [LLM 게이트웨이 해부실](https://page.cocy.io/llm-gateway-anatomy/): 요청 캡슐을 직접 투입해 인증·API·구독 CLI·로컬 분기와 최대 1회 폴백 뒤 의도된 정지를 조작하는 한국어 개념 해설. 실제 모델 요청 없는 시뮬레이션.
 - [한국어는 정말 토큰을 더 먹는가](https://page.cocy.io/korean-token-cost): "한국어 AI 비용 2.59배" 보도를 Claude 공식 count_tokens API로 직접 실측 검증. Sonnet·Haiku 2.59배, Opus 1.72배 확인.
 - [프론티어 모델 인터페이스 지도](https://page.cocy.io/models): Messages·Chat Completions·Responses·Converse 인터페이스 계열 비교와 파라미터 축소 흐름(temperature 제거 → adaptive thinking/effort), 툴콜링 표기 차이, 플랫폼별 접속 방식·캐싱 비용 구조. 모델 브리프 정본.
 - [GPT-5.6 가격 브리프 (Azure 기준)](https://page.cocy.io/gpt-5-6): Sol·Terra·Luna 가격과 정책 변동 이력 — 7/30 1P 인하(Luna -80%·Terra -20%)의 Azure 미반영 괴리(Luna 5배), 캐시 쓰기 유료화(1.25×), 272K 롱컨텍스트 할증(전체 소급), Data Zone +10%, Fast mode 2×.

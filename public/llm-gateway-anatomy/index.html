@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM 게이트웨이 해부실 — 요청 하나의 여정 · cocy</title>
+<meta name="description" content="요청 캡슐을 넣고 LLM 게이트웨이의 인증, API·구독 CLI·로컬 분기, PC 전원, 한 번의 폴백과 의도된 정지를 직접 조작하는 한국어 해설.">
+<meta name="keywords" content="LLM 게이트웨이,모델 라우팅,폴백,서버리스,CLI,로컬 모델,Anatomy">
+<meta name="author" content="cocy">
+<link rel="canonical" href="https://page.cocy.io/llm-gateway-anatomy/">
+<link rel="icon" href="/llm-gateway-anatomy/icon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLM 게이트웨이 해부실 — 요청 하나의 여정">
+<meta property="og:description" content="세 갈래 경로, 한 번의 폴백. 요청 분류기를 직접 조작해 보세요.">
+<meta property="og:url" content="https://page.cocy.io/llm-gateway-anatomy/">
+<meta property="og:image" content="https://page.cocy.io/llm-gateway-anatomy/cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LLM 게이트웨이 해부실">
+<meta name="twitter:description" content="요청 분류기를 조작하며 인증·라우팅·의도된 정지를 이해하는 해설.">
+<meta name="twitter:image" content="https://page.cocy.io/llm-gateway-anatomy/cover.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"LLM 게이트웨이 해부실 — 요청 하나의 여정","description":"순수 시뮬레이션으로 조작하는 인증·라우팅·1회 폴백 해설","url":"https://page.cocy.io/llm-gateway-anatomy/","inLanguage":"ko","datePublished":"2026-10-13","author":{"@type":"Person","name":"cocy"},"publisher":{"@type":"Organization","name":"cocy.io"},"isAccessibleForFree":true}</script>
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<style>
+:root{--paper:#f3efe5;--ink:#302c25;--muted:#655e51;--line:#c8bfae;--copper:#a9431e;--white:#fbf8f0}*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.65}a{color:inherit;text-underline-offset:4px}button,input,select{font:inherit}button,a,input,select{touch-action:manipulation}:focus-visible{outline:3px solid var(--copper);outline-offset:4px}.skip{position:absolute;top:-80px;left:20px;z-index:10;padding:10px;background:var(--white)}.skip:focus{top:10px}.wrap{max-width:1320px;margin:auto;padding:0 clamp(20px,4vw,60px)}nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-bottom:1px solid var(--ink);font-size:13px}nav a{text-decoration:none}nav strong{font-family:Georgia,serif;font-size:23px;letter-spacing:-1px}.edition{text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:var(--muted)}header{padding:52px 0 32px;display:grid;grid-template-columns:1.5fr 1fr;gap:30px;align-items:end}.eyebrow{color:var(--copper);font-size:12px;letter-spacing:.13em;font-weight:700}.title{font-family:"Batang","Songti SC",serif;font-weight:600;letter-spacing:-.065em;font-size:clamp(36px,4.8vw,66px);line-height:1.13;margin:12px 0 0}.intro{max-width:42ch;color:var(--muted);margin:0 0 4px;font-size:15px}.intro b{color:var(--ink)}.lab{display:grid;grid-template-columns:minmax(0,1fr) 300px;border-top:3px solid var(--ink);border-bottom:1px solid var(--ink)}.instrument{min-width:0;padding:22px 26px 18px 0;position:relative}.fighead{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px}.fighead b{color:var(--ink);font-weight:500}.machine{width:100%;display:block;overflow:visible;margin:10px 0 0;aspect-ratio:800/510}.machine .top{fill:#e4ddce}.machine .side{fill:#b8ae9c}.machine .front{fill:#c9bfad}.machine .solid{stroke:#766e60;stroke-width:.8;stroke-linejoin:round}.machine .steel .top{fill:#f4f0e7}.machine .steel .side{fill:#918a7d}.machine .steel .front{fill:#b4ad9f}.machine .dark .top{fill:#817869}.machine .dark .side{fill:#484439}.machine .dark .front{fill:#615a4d}.machine .path{fill:none;stroke:#817869;stroke-width:8;stroke-linejoin:round;stroke-linecap:round}.machine .path.on{stroke:#302c25;stroke-width:9}.machine .packet .top{fill:#c96235}.machine .packet .side{fill:#823416}.machine .packet .front{fill:#a9431e}.machine .packet{stroke:#763114}.machine .disabled{opacity:.27}.machine .mark{fill:none;stroke:#706859;stroke-width:1}.figfoot{border-top:1px solid var(--line);display:flex;gap:20px;justify-content:space-between;padding-top:12px;font-size:12px;color:var(--muted)}.figfoot span:last-child{color:var(--copper);font-weight:700}.controls{padding:22px 0 24px 24px;border-left:1px solid var(--line)}h2{font-size:20px;font-weight:600;letter-spacing:-.03em;margin:0 0 17px}.controls h2{font-size:15px;display:flex;justify-content:space-between}.controls h2 span{font-family:Georgia,serif;color:var(--muted);font-size:12px;font-weight:400}label[for=model]{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}select{width:100%;min-height:46px;padding:8px 10px;border:1px solid #8b8170;border-radius:0;background:var(--white);color:var(--ink)}.switch{min-height:52px;display:flex;align-items:center;gap:12px;font-size:13px;border-bottom:1px solid var(--line);cursor:pointer}.switch input{width:20px;height:20px;margin:0;accent-color:var(--copper);flex-shrink:0}.switch small{font-size:11px;color:var(--muted)}.run{margin-top:22px;min-height:48px;width:100%;background:var(--ink);border:1px solid var(--ink);color:var(--white);cursor:pointer;font-weight:600;text-align:left;padding:10px 15px;display:flex;justify-content:space-between}.run:hover{background:#504638}.reset{min-height:44px;margin-top:8px;display:block;width:100%;border:0;background:none;text-decoration:underline;color:var(--muted);cursor:pointer;font-size:12px}.controls p{font-size:11px;color:var(--muted);margin:8px 0 0}.readout{padding:26px 0 28px;display:grid;grid-template-columns:1fr 1.3fr;gap:30px;border-bottom:1px solid var(--line)}.outcome{font-family:"Batang",serif;font-size:27px;letter-spacing:-.04em;margin:4px 0 8px}.resultnote{color:var(--muted);font-size:13px;margin:0;max-width:50ch}.route{padding:0;margin:0;list-style:none;display:flex;align-content:start;flex-wrap:wrap;gap:6px 0;font-size:12px}.route li{border-bottom:2px solid var(--line);padding:8px 12px 8px 0;margin-right:12px}.route li.active{border-color:var(--copper);color:var(--copper)}.policy{font-size:12px;color:var(--muted);margin:14px 0 0}.manual{display:grid;grid-template-columns:1fr 2fr;gap:45px;padding:44px 0}.manual-title{font-family:"Batang",serif;font-size:27px;line-height:1.4}.manual-title small{display:block;font-family:Georgia,serif;color:var(--copper);font-size:15px;margin-bottom:10px}.explanations{margin:0}.explanations div{display:grid;grid-template-columns:36px 1fr;gap:14px;padding:0 0 20px}.explanations dt{font-family:Georgia,serif;color:var(--copper);font-size:22px}.explanations dd{margin:0;border-bottom:1px solid var(--line);padding-bottom:18px}.explanations h3{font-size:15px;margin:0 0 6px}.explanations p{font-size:13px;color:var(--muted);margin:0}.experiment{padding:24px 0;border-top:1px solid var(--ink);display:grid;grid-template-columns:1fr 2fr;gap:45px}.experiment p{font-size:13px;margin:0;color:var(--muted)}footer{border-top:1px solid var(--ink);padding:22px 0 36px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:15px;font-size:11px;color:var(--muted)}footer a{margin-left:12px}.noscript{border:1px solid var(--copper);padding:15px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+@media(max-width:850px){header{grid-template-columns:1fr;gap:20px;padding-top:32px}.lab{grid-template-columns:1fr}.instrument{padding-right:0}.controls{border-left:0;border-top:1px solid var(--line);padding:20px 0;display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.controls h2,.controls .model-control,.controls p{grid-column:1/-1}.controls .model-control{margin-bottom:12px}.run{margin-top:15px}.reset{margin-top:15px}.readout{grid-template-columns:1fr;gap:20px}.manual,.experiment{grid-template-columns:1fr;gap:20px}.manual{padding:32px 0}.manual-title small{display:inline;margin-right:12px}.manual-title{font-size:22px}.intro{max-width:none}.figfoot{font-size:11px}}
+@media(max-width:430px){.controls{grid-template-columns:1fr}.controls .switch{min-height:48px}.run{margin-top:20px}.reset{margin-top:2px}.fighead{font-size:11px}.edition{font-size:9px;letter-spacing:.05em}.machine{margin:4px 0}.figfoot{gap:12px}.outcome{font-size:25px}.explanations div{gap:8px}.wrap{padding:0 20px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+<a href="#controls" class="skip">조작 패널로 건너뛰기</a>
+<div class="wrap">
+<nav aria-label="사이트"><a href="/" aria-label="page.cocy.io 홈"><strong>page.</strong> / cocy</a><span class="edition">Anatomy notes · No. 01 / 2026.10</span></nav>
+<main>
+<header><div><div class="eyebrow">LLM GATEWAY / 작동 원리 해설</div><h1 class="title">요청 하나가<br>돌아오기까지.</h1></div><p class="intro">겉으로는 하나의 주소, 안쪽에는 서로 다른 경로.<br>모델을 고르고 고장을 넣어 보세요. <b>어디로 가는지, 왜 멈추는지</b> 기계가 보여줍니다.</p></header>
+<section class="lab" aria-label="게이트웨이 시뮬레이터">
+<figure class="instrument" style="margin:0"><div class="fighead"><b>FIG. 01 — 요청 분류기</b><span>등각 투영 / 개념 모형</span></div>
+<svg id="machine" class="machine" viewBox="0 0 800 510" role="img" aria-labelledby="machine-title machine-description"><title id="machine-title">LLM 요청을 세 경로로 분류하는 기계</title><desc id="machine-description">인증 셔터, 세 갈래 출력 레일, 한 번만 시도하는 예비 레일과 정지 장치. 조작 패널에서 설정을 바꾸세요.</desc><g id="geometry"></g><g id="packet" class="packet" hidden></g></svg>
+<figcaption class="figfoot"><span>주황 캡슐 = 요청 하나<br>그림의 레일 순서: API / 구독 CLI / 로컬 / 예비</span><span id="motion-caption">설정 후 요청을 투입하세요</span></figcaption></figure>
+<form id="controls" class="controls"><h2>조작 패널 <span>CONTROL DESK</span></h2>
+<div class="model-control"><label for="model">01 / 모델 선택</label><select id="model" name="model"><option value="api">API 모델 — 사용량 과금</option><option value="cli">구독 모델 — CLI 실행</option><option value="local">로컬 모델 — PC 실행</option></select></div>
+<label class="switch"><input id="primary-fail" type="checkbox"><span>선택 모델 실패 <small>장애 주입</small></span></label>
+<label class="switch"><input id="pc-off" type="checkbox"><span>PC 꺼짐 <small>터널·로컬 차단</small></span></label>
+<label class="switch"><input id="fallback-fail" type="checkbox"><span>예비 모델도 실패 <small>폴백 결과</small></span></label>
+<label class="switch"><input id="auth-fail" type="checkbox"><span>인증 거부 <small>입구에서 차단</small></span></label>
+<button type="submit" id="run" class="run"><span>요청 투입</span><span aria-hidden="true">↗</span></button><button type="button" id="reset" class="reset">처음 설정으로</button>
+<p>실제 모델 요청 없음 · 비용 발생 없음<br>상태를 바꾸면 미리보기가 갱신됩니다. 투입 버튼은 캡슐의 여정을 재생합니다.</p></form>
+</section>
+<section class="readout" aria-labelledby="outcome"><div aria-live="polite" aria-atomic="true"><div class="eyebrow" id="result-label">설정 결과 미리보기</div><h2 id="outcome" class="outcome"></h2><p id="reason" class="resultnote"></p></div><div><ol id="route" class="route" aria-label="요청 경로"></ol><p id="policy" class="policy"></p></div></section>
+<noscript><p class="noscript">조작하려면 JavaScript가 필요합니다. 아래 해설은 그대로 읽을 수 있습니다. API는 PC 전원과 독립적이며, 구독 CLI·로컬은 PC가 필요합니다. 예비 경로가 실패하면 추가 과금 경로 없이 멈춥니다.</p></noscript>
+<section class="manual" aria-labelledby="manual-title"><h2 class="manual-title" id="manual-title"><small>Reading the machine</small>주소는 하나.<br>실행 조건은 셋.</h2><dl class="explanations">
+<div><dt>01</dt><dd><h3>투입구 · 단일 진입점과 인증</h3><p>공개 주소 llm.cocy.io 뒤에서 서버리스 워커가 요청을 받습니다. 인증을 먼저 확인하고 모델을 분류합니다. 여기의 인증 스위치는 허용·거부만 보여주며 자격 증명을 받지 않습니다.</p></dd></div>
+<div><dt>02</dt><dd><h3>뒤쪽 레일 · API 과금 경로</h3><p>워커에서 AI 게이트웨이를 거쳐 외부 API로 갑니다. 지역별 접근 제약을 다루는 중계 계층이며 모델 자체는 아닙니다. 로컬 PC가 꺼져도 이 경로는 남습니다. 사용량에 따른 API 비용과 구독 비용은 다릅니다.</p></dd></div>
+<div><dt>03</dt><dd><h3>가운데와 앞쪽 레일 · 구독 CLI와 로컬</h3><p>구독 CLI는 터널 뒤 PC에서 명령행 도구를 실행합니다. 로컬 경로는 PC의 서비스·모델을 사용합니다. 구독형이라고 무제한·무비용인 것은 아닙니다. 두 경로 모두 PC와 연결 상태가 필요합니다.</p></dd></div>
+<div><dt>04</dt><dd><h3>예비 레일 · 한 번만 허용하는 폴백</h3><p>선택 경로가 실패하면 예비 경로를 한 번 확인합니다. 이 모형의 예비 모델은 PC가 필요한 경량 구독 CLI입니다. 예비 모델도 실패하거나 PC가 꺼져 있으면 정지합니다. 자동으로 유료 API를 더 호출하지 않는, 의도된 경계입니다.</p></dd></div>
+<div><dt>05</dt><dd><h3>출구 · 성공과 정지는 다른 결과</h3><p>인증 거부는 분류 전, 모델 실패는 분류 후, 예비 실패는 마지막 안전장치에서 멈춥니다. 모두 같은 오류로 뭉개면 무엇을 복구해야 하는지 보이지 않습니다.</p></dd></div>
+</dl></section>
+<section class="experiment" aria-labelledby="try-title"><h2 id="try-title">세 번만 실험해 보세요.</h2><p>① API 모델 + PC 꺼짐: 정상 출구가 남습니다.<br>② 구독 모델 + 선택 모델 실패: 예비 레일로 우회합니다.<br>③ 여기에 예비 모델도 실패: 안전장치에서 멈춥니다.<br><br>구조를 이해하기 위한 단순화된 모형입니다. 모든 실제 모델·오류 정책을 재현하지 않으며, 이동 시간은 연출이지 성능 측정값이 아닙니다.</p></section>
+</main>
+<footer><span>cocy 소유 해설 · 순수 시뮬레이션 · 2026-10-13</span><span>방식 참고 <a href="https://skills.wheresryan.sh/anatomy">Anatomy / Ryan</a><a href="LICENSE-anatomy.txt">MIT 원문</a></span></footer>
+</div>
+<script>
+'use strict';
+(()=>{
+ const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg';
+ const project=([x,y,z=0])=>[310+(x-y)*.8660254,42+(x+y)*.5-z];
+ const points=ps=>ps.map(p=>project(p).map(v=>v.toFixed(2)).join(',')).join(' ');
+ function node(tag,attrs={},parent){const el=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,v);if(parent)parent.append(el);return el;}
+ function solid(parent,x,y,z,w,d,h,tone=''){
+  const g=node('g',{class:'solid '+tone},parent);
+  node('polygon',{class:'side',points:points([[x,y+d,z],[x+w,y+d,z],[x+w,y+d,z+h],[x,y+d,z+h]])},g);
+  node('polygon',{class:'front',points:points([[x+w,y,z],[x+w,y+d,z],[x+w,y+d,z+h],[x+w,y,z+h]])},g);
+  node('polygon',{class:'top',points:points([[x,y,z+h],[x+w,y,z+h],[x+w,y+d,z+h],[x,y+d,z+h]])},g);return g;
+ }
+ function disc(parent,x,y,z,r,tone='steel'){
+  const g=node('g',{class:'solid '+tone},parent),ring=[];for(let i=0;i<24;i++){const a=i*Math.PI/12;ring.push([x+Math.cos(a)*r,y+Math.sin(a)*r,z]);}
+  const lower=ring.map(([a,b,c])=>[a,b,c-5]);node('polygon',{class:'side',points:points([...ring.slice(0,13),...lower.slice(0,13).reverse()])},g);
+  node('polygon',{class:'top',points:points(ring)},g);return g;
+ }
+ const root=$('geometry');
+ // Every part is precomputed once. Back rails are painted before foreground rails.
+ for(const [x,y] of [[20,20],[465,20],[20,310],[465,310]]){solid(root,x,y,-5,18,18,5,'dark');solid(root,x+3,y+3,0,12,12,16);}
+ solid(root,0,0,16,500,340,12);
+ for(const [x,y] of [[10,10],[482,10],[10,322],[482,322]])disc(root,x,y,30,3,'dark');
+ const track=(parent,x,y,w)=>{solid(parent,x,y-17,28,w,34,5);solid(parent,x,y-17,33,w,3,6,'steel');for(let i=12;i<w;i+=26)solid(parent,x+i,y-13,33,4,26,3,'steel');solid(parent,x,y+14,33,w,3,6,'steel');};
+ const lanes={},ys={api:45,cli:135,local:225};
+ for(const [name,y] of Object.entries(ys)){
+  const g=node('g',{id:'lane-'+name},root);lanes[name]=g;track(g,130,y,290);
+  solid(g,418,y-20,28,22,40,10,'dark');solid(g,423,y-14,38,12,28,2,'steel');
+  for(const x of [142,385])for(const k of [-13,13])disc(g,x,y+k,40,2,'dark');
+ }
+ track(root,18,135,94);solid(root,42,112,39,5,46,6,'steel');solid(root,65,112,39,5,46,6,'steel');
+ const auth=node('g',{id:'auth-shutter'},root);solid(auth,54,118,40,7,34,23,'dark');
+ solid(root,99,98,28,33,74,16,'dark');const knob=disc(root,115,135,48,16);disc(knob,115,135,54,5,'dark');
+ for(let a=0;a<8;a++){const t=a*Math.PI/4;disc(knob,115+Math.cos(t)*12,135+Math.sin(t)*12,49,1.3,'dark');}
+ const routes=node('g',{},root),paths={};
+ function rail(name,ps){const d='M'+ps.map(p=>project(p).map(v=>v.toFixed(2)).join(',')).join(' L');paths[name]=node('path',{id:'path-'+name,class:'path',d},routes);}
+ for(const [name,y] of Object.entries(ys))rail(name,[[112,135,45],[132,y,41],[410,y,41]]);
+ const bridge=node('g',{id:'pc-bridge'},root);solid(bridge,275,115,42,10,133,12,'dark');
+ // End manifold sits outside the three output lanes, avoiding a false crossing.
+ const fallback=node('g',{id:'lane-fallback'},root);track(fallback,174,300,288);
+ for(const y of [45,135,225])rail('fallback-'+y,[[410,y,41],[464,y,41],[464,300,41],[190,300,41]]);
+ const ratchet=node('g',{id:'ratchet'},root);disc(ratchet,360,300,44,17,'dark');
+ for(let i=0;i<12;i++){const a=i*Math.PI/6;solid(ratchet,357+Math.cos(a)*19,297+Math.sin(a)*19,41,5,5,4,'steel');}
+ disc(ratchet,360,300,49,5,'steel');solid(root,338,319,39,36,4,4,'dark');
+ const stop=node('g',{id:'stop-shutter'},root);solid(stop,195,282,39,6,36,22,'dark');
+ const packet=$('packet');solid(packet,-6,-6,0,12,12,12);
+ const names={api:'API 모델',cli:'구독 CLI',local:'로컬 모델'};
+ let current,raf=0,journey=null,visible=true;const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ function read(){return {model:$('model').value,primaryFail:$('primary-fail').checked,pcOff:$('pc-off').checked,fallbackFail:$('fallback-fail').checked,authFail:$('auth-fail').checked};}
+ // Pure policy model: the drawing, itinerary and readout consume the same result.
+ function simulate(s){
+  const y=ys[s.model],start=[[22,135,43],[57,135,43]],prefix=['요청 투입','인증 확인'];
+  if(s.authFail)return {outcome:'인증에서 차단',reason:'인증이 거부되어 모델 분류와 실행은 시작하지 않습니다.',fallback:0,steps:[...prefix,'인증 거부'],points:start,status:'auth-blocked',s};
+  const primary=[...start,[115,135,47],[132,y,43],[410,y,43]],steps=[...prefix,'모델 분류',s.model==='api'?'AI 게이트웨이 · API':s.model==='cli'?'터널 · 구독 CLI':'터널 · 로컬 서비스'];
+  const failed=s.primaryFail||(s.pcOff&&s.model!=='api');
+  if(!failed)return {outcome:'선택 모델로 응답',reason:s.model==='api'?'서버리스 워커와 외부 API 경로는 PC 전원과 독립적으로 동작합니다.':'PC가 켜져 있어 터널 뒤 실행 경로에서 응답을 돌려줍니다.',fallback:0,steps:[...steps,'응답 출구'],points:primary,status:'primary-success',s};
+  const blocked=s.pcOff||s.fallbackFail;
+  return {outcome:blocked?'여기서 의도적으로 정지':'예비 모델로 응답',reason:blocked?(s.pcOff?'PC가 꺼져 선택한 실행 경로 또는 예비 구독 CLI가 차단됩니다. 다른 유료 API로 넘어가지 않습니다.':'선택 모델과 예비 모델이 모두 실패했습니다. 추가 유료 호출 없이 오류로 끝냅니다.'):'선택 모델의 실패를 확인하고 경량 구독 CLI를 한 번만 시도했습니다.',fallback:1,steps:[...steps,s.pcOff&&s.model!=='api'?'PC 연결 차단':'선택 모델 실패','예비 경로 1회',blocked?'안전 정지':'응답 출구'],points:[...primary,[464,y,43],[464,300,43],[blocked?200:180,300,43]],status:blocked?'fallback-stopped':'fallback-success',s};
+ }
+ function move(p){const [x,y]=project(p);packet.setAttribute('transform',`translate(${x} ${y}) translate(-310 -42)`);}
+ function stopAnimation(){cancelAnimationFrame(raf);raf=0;journey=null;packet.setAttribute('hidden','');}
+ function render(){
+  stopAnimation();current=simulate(read());const {s,status,fallback,steps}=current;
+  $('outcome').textContent=current.outcome;$('reason').textContent=current.reason;$('result-label').textContent='설정 결과 미리보기';
+  $('policy').textContent=`예비 경로 시도 ${fallback} / 최대 1회 · 예비 실패 뒤 추가 API 과금 전환 없음`;
+  $('route').replaceChildren(...steps.map((text,i)=>{const li=document.createElement('li');li.textContent=text;li.dataset.step=i;return li;}));
+  $('machine').dataset.status=status;$('machine').dataset.model=s.model;$('machine').dataset.fallback=fallback;
+  for(const [name,g] of Object.entries(lanes)){g.classList.toggle('disabled',name!==s.model||s.authFail||(s.pcOff&&name!=='api'));paths[name].classList.toggle('on',name===s.model&&!s.authFail);}
+  for(const y of Object.values(ys))paths['fallback-'+y].classList.toggle('on',fallback===1&&y===ys[s.model]);
+  fallback?$('lane-fallback').classList.remove('disabled'):$('lane-fallback').classList.add('disabled');
+  auth.setAttribute('transform',s.authFail?'':'translate(0 -26)');bridge.setAttribute('transform',s.pcOff?'':'translate(0 -24)');
+  stop.setAttribute('transform',status==='fallback-stopped'?'':'translate(0 -24)');
+  knob.setAttribute('transform',`translate(${s.model==='api'?-6:s.model==='local'?6:0} 0)`);ratchet.setAttribute('transform',fallback?'translate(-4 0)':'');
+  $('machine-description').textContent=`${names[s.model]}。${steps.join('、')}。${current.reason}`;
+  $('motion-caption').textContent='설정 변경 → 투입으로 경로 확인';
+ }
+ function setEnd(){move(current.points.at(-1));packet.removeAttribute('hidden');$('motion-caption').textContent=current.status.includes('success')?'응답 출구 도착':'차단 지점 도착';$('route').querySelectorAll('li').forEach((el,i)=>el.classList.toggle('active',i===current.steps.length-1));}
+ function frame(now){
+  if(!journey||!visible||document.hidden)return;
+  if(journey.last===null)journey.last=now;journey.elapsed+=Math.min(now-journey.last,80);journey.last=now;
+  const ps=current.points,seg=Math.min((journey.elapsed/480),ps.length-1),i=Math.min(Math.floor(seg),ps.length-2),t=Math.min(seg-i,1),e=t*t*(3-2*t);
+  move(ps[i].map((v,j)=>v+(ps[i+1][j]-v)*e));
+  const step=Math.min(Math.floor(seg/(ps.length-1)*(current.steps.length-1)),current.steps.length-1);
+  $('motion-caption').textContent=current.steps[step];$('route').querySelectorAll('li').forEach((el,k)=>el.classList.toggle('active',k===step));
+  if(seg>=ps.length-1){setEnd();journey=null;raf=0;return;}raf=requestAnimationFrame(frame);
+ }
+ function run(){stopAnimation();$('result-label').textContent='이번 요청의 시뮬레이션 결과';packet.removeAttribute('hidden');if(reduced.matches){setEnd();return;}journey={elapsed:0,last:null};move(current.points[0]);raf=requestAnimationFrame(frame);}
+ $('controls').addEventListener('submit',e=>{e.preventDefault();run();});
+ $('controls').addEventListener('change',render);$('reset').addEventListener('click',()=>{HTMLFormElement.prototype.reset.call($('controls'));render();});
+ const resume=()=>{if(journey){journey.last=null;cancelAnimationFrame(raf);if(visible&&!document.hidden)raf=requestAnimationFrame(frame);}};
+ new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;resume();}).observe($('machine'));
+ document.addEventListener('visibilitychange',resume);reduced.addEventListener('change',()=>{if(reduced.matches&&journey){cancelAnimationFrame(raf);setEnd();journey=null;}});
+ render();
+})();
+</script>
+</body>
+</html>

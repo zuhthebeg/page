@@ -4,3 +4,6 @@ node_modules/
 *.log
 public/voicetrap-kit/
 public/voicetrap-kit.zip
+
+# PG1 local browser proof (screenshots stay local)
+/tmp/pg1-evidence/
