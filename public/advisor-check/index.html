@@ -6,13 +6,13 @@
 <meta name="description" content="X에서 "Anthropic이 공유한 Claude Code 꿀팁"이라며 도는 `claude --advisor opus --subagents haiku`를 로컬 CLI와 공식 문서로 검증했다. --advisor는 공식 기능이지만 --subagents는 존재하지 않는 플래그라 unknown option 에러가 난다.">
 <meta name="keywords" content="Claude Code, advisor, 서브에이전트, Sonnet 5.5, Haiku 5.5, Opus 5.5, 팩트체크">
 <meta property="og:title" content="Claude Code advisor 트릭 검증 — --advisor는 진짜, --subagents는 가짜">
-<meta property="og:description" content="아이디어는 공식 기능인데 명령어의 절반은 존재하지 않는 플래그다. 직접 실행해서 확인했다. 판정 5/10.">
+<meta property="og:description" content="10-14 업데이트: 고쳐진 두 번째 버전(--model sonnet --advisor opus)은 실제로 돈다(6/10). 다만 "세 순간만 개입"·"토큰 절약"은 과장이고 JEV 라우팅은 외부 제품 홍보. 1차 버전은 없는 플래그(5/10).">
 <meta property="og:url" content="https://page.cocy.io/advisor-check/">
 <meta property="og:type" content="article"><meta name="twitter:card" content="summary">
 <link rel="canonical" href="https://page.cocy.io/advisor-check/">
 <!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script>
 <!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Claude Code advisor + Haiku 서브에이전트 트릭 검증","url":"https://page.cocy.io/advisor-check/","datePublished":"2026-10-09","author":{"@type":"Organization","name":"cocy.io"},"inLanguage":"ko"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Claude Code advisor + Haiku 서브에이전트 트릭 검증","url":"https://page.cocy.io/advisor-check/","datePublished":"2026-10-09","dateModified":"2026-10-14","author":{"@type":"Organization","name":"cocy.io"},"inLanguage":"ko"}</script>
 <style>
 :root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif}body>noscript{display:none}.page{max-width:840px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.2rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.card{border:1px solid var(--line);padding:1rem;border-radius:8px;background:#fff}.card b{display:block;margin-bottom:.25rem}.note{color:var(--muted);font-size:.9rem}.alert{background:#f8e3df;border-left:4px solid var(--bad);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.88em}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer;transition:transform .1s}.mdbtn:active{transform:translateY(1px)}
 </style></head>
@@ -34,6 +34,28 @@
 <p>그대로 복붙하면 세션이 시작도 안 된다. 다만 목표(Sonnet이 몰고 Haiku가 탐색, Opus가 자문)는 플래그 하나를 환경변수로 바꾸면 만들 수 있다. 감점은 "존재하지 않는 플래그를 공식 팁처럼 포장한 것"과 효과 설명의 과장이다.</p>
 </div>
 
+
+<h2 id="v2">업데이트 10-14 — 두 번째 버전: 명령어는 고쳐졌고, 이번엔 JEV가 붙었다</h2>
+<p>닷새 뒤 거의 같은 글이 다시 돈다(<a href="https://x.com/skunzu/status/2109727705709084960">@skunzu</a>). 이번 명령어는 <code>claude --model sonnet --advisor opus</code>다. 없는 플래그는 빠졌고, 그 자리에 "Haiku 서브에이전트 3개를 만들고 JEV로 미세 분기를 라우팅하라"는 프롬프트가 붙었다. 같은 로컬 Claude Code 2.1.280에서 다시 돌려 봤다.</p>
+<div class="verdict"><span class="score">6/10</span><strong>판정: 명령어는 이제 진짜로 돈다. 효과 설명과 마지막 한 줄이 문제다.</strong><br>
+<span class="pill yes">✓ <code>claude --model sonnet --advisor opus</code> 실행됨. <code>/advisor</code> 출력 <code>Advisor: Opus 5.5</code>, <code>sonnet</code> 별칭은 <code>Sonnet 5</code></span>
+<span class="pill yes">✓ Sonnet 5 본체 + Opus 5.5 자문은 공식 허용 조합</span>
+<span class="pill yes">✓ 읽기 전용 Haiku 서브에이전트(search·grep·docs)는 커스텀 서브에이전트로 실제 구성 가능</span>
+<span class="pill warn">△ 같은 버전에서 <code>haiku</code> 별칭은 <code>Haiku 4.5</code>였다. Haiku 5.5를 쓰려면 <code>claude-haiku-5-5</code>처럼 전체 ID를 적어야 하고, 문서상 Haiku 5.5는 2.1.293 이상을 요구한다</span>
+<span class="pill warn">△ "Opus는 딱 세 순간에만 개입"은 규칙이 아니다. 문서: 호출 시점은 모델이 정하고, 강제하거나 횟수를 제한하는 설정은 없다. CLAUDE.md 지시로 경향을 유도할 수 있을 뿐이다</span>
+<span class="pill warn">△ "토큰이 훨씬 적게 든다"는 Opus를 처음부터 끝까지 돌리는 경우와 비교할 때만 맞다. Sonnet 단독보다는 늘어난다. 자문 호출마다 전체 대화를 캐시 없이 새로 읽는다</span>
+<span class="pill no">✗ "JEV가 미세 분기를 밀리초에 라우팅"은 Claude Code 기능이 아니다. 외부 제품이고, 프롬프트 4번은 그 연동이 이미 있다는 전제로 쓰여 있다</span>
+<span class="pill warn">△ "Anthropic이 방금 공개"도 맞지 않다. advisor 문서는 10월 9일 이 페이지를 쓸 때 이미 있었다</span>
+</div>
+<h3>그대로 따라 하기 전에 알아둘 것</h3>
+<ul>
+<li><b>요건</b>: Anthropic API 경로 전용이다. Bedrock·Vertex(Agent Platform)·Foundry에서는 쓸 수 없다. 기능 플래그로 켜지는 방식이라 <code>DISABLE_TELEMETRY</code>를 설정하면 꺼진다.</li>
+<li><b>비용</b>: 구독제는 자문 사용량이 그대로 한도에 잡힌다. 긴 세션일수록 호출 한 번이 무겁다.</li>
+<li><b>JEV</b>: 우리가 따로 검증한 결과는 <a href="/jev-check/">진짜 출시된 제품이지만 판단 정확도 주장은 자기 데이터로도 증명되지 않음(7/10)</a>, <a href="/jev-opus-check/">Opus와 묶으면 계산은 맞지만 쉬운 문제까지만(6/10)</a>이었다. 이 글의 마지막 한 줄은 공식 팁 위에 얹은 홍보로 읽는 게 맞다.</li>
+<li><b>쓸 만한 부분</b>: 1~3번(Sonnet 본체 + Opus 자문, 읽기 전용 Haiku 서브에이전트, CLAUDE.md에 자문 시점 지시)은 그대로 써도 된다. 4번은 빼라.</li>
+</ul>
+
+<h2 style="margin-top:3.4em">1차 검증 (10-09) — <code>--subagents haiku</code> 버전</h2>
 <h2>1. 직접 실행해서 확인한 것</h2>
 <p>로컬은 Claude Code 2.1.280이다. 같은 입력으로 진짜 플래그와 가짜 플래그를 대조했다. 세션을 띄우지 않는 서브커맨드(<code>claude auth status</code>)에 붙여서 API 호출 없이 옵션 파싱만 확인했다.</p>
 <ul class="sources">
@@ -81,12 +103,13 @@
 
 <h2>출처</h2><ul class="sources">
 <li><a href="https://x.com/_guillecasaus/status/2108160812615369011">원문 X 포스트 (@_guillecasaus)</a></li>
+<li><a href="https://x.com/skunzu/status/2109727705709084960">두 번째 버전 X 포스트 (@skunzu, 10-14 업데이트)</a></li>
 <li><a href="https://code.claude.com/docs/en/cli-reference">Claude Code — CLI reference</a> (--advisor 플래그)</li>
 <li><a href="https://code.claude.com/docs/en/advisor">Claude Code — Advisor tool</a> (허용 조합표, 요건, 비용)</li>
 <li><a href="https://code.claude.com/docs/en/sub-agents">Claude Code — Subagents</a> (서브에이전트 모델 결정 순서, CLAUDE_CODE_SUBAGENT_MODEL)</li>
 <li><a href="https://claude.com/blog/the-advisor-strategy">Anthropic — The advisor strategy</a> (4.x 세대 벤치마크)</li>
 </ul>
-<div class="foot">cocy.io research note · 2026-10-09 · 로컬 Claude Code 2.1.280에서 플래그 파싱·바이너리 문자열 검색을 직접 실행, 공식 문서 전문 대조. advisor 세션 자체는 실행하지 않음</div>
+<div class="foot">cocy.io research note · 2026-10-09 · 로컬 Claude Code 2.1.280에서 플래그 파싱·바이너리 문자열 검색을 직접 실행, 공식 문서 전문 대조. advisor 세션 자체는 실행하지 않음 · 10-14 업데이트: 같은 2.1.280에서 <code>--model sonnet --advisor opus</code>·<code>--model haiku</code>를 <code>-p</code>로 실행해 <code>/advisor</code>·<code>/model</code> 출력 확인(자문 호출 비용은 미측정)</div>
 </main>
 
 <button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
@@ -95,6 +118,14 @@
 
 > X(@_guillecasaus)의 `claude --advisor opus --subagents haiku` 팁을 로컬 CLI(2.1.280)와 공식 문서로 검증.
 > **한 줄 결론: 아이디어는 공식 기능이고 명령어의 절반은 없는 플래그. 5/10.**
+
+## 업데이트 10-14 — 두 번째 버전 (@skunzu), 판정 6/10
+- ✓ `claude --model sonnet --advisor opus` 실행됨 (2.1.280: Advisor: Opus 5.5, sonnet = Sonnet 5)
+- ✓ 읽기 전용 Haiku 서브에이전트 구성은 가능. 단 같은 버전에서 `haiku` 별칭은 Haiku 4.5 — 5.5는 전체 ID + 2.1.293 이상
+- △ "Opus는 세 순간에만"은 규칙 아님 — 호출 시점은 모델이 정함, 강제·제한 설정 없음
+- △ "토큰 훨씬 적게"는 Opus 단독 대비일 때만. Sonnet 단독보다 늘고, 자문마다 전체 대화를 캐시 없이 다시 읽음
+- ✗ JEV 라우팅은 Claude Code 기능 아님(외부 제품 홍보). 1~3번만 쓰고 4번은 빼라
+- 요건: Anthropic API 전용, DISABLE_TELEMETRY면 꺼짐
 
 ## 판정 요약
 - `--advisor opus`: 공식 플래그. Sonnet 5.5 본체에 Opus 5 이상 advisor 허용.
