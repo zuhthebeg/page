@@ -17,7 +17,12 @@ export const onRequestGet: PagesFunction<Env> = async (ctx) => {
     .all();
 
   return Response.json(
-    { sites: results ?? [] },
+    { sites: [
+      { slug: 'hyperqwen-4090', vertical: 'report', title: 'HyperQwen · RTX 4090 검증',
+        description: '381 tok/s는 문서 재현 수치. 자체 GPU 실측 없이 출처를 검증했다. 24GB 격리 파일럿 조건부 GO, 상시 운영 NO.',
+        cover_image: '/hyperqwen-4090/icon.svg', owner_id: null, view_count: 0, published_at: '2026-10-14T00:00:00Z' },
+      ...(results ?? []).filter((site: { slug: string }) => site.slug !== 'hyperqwen-4090'),
+    ] },
     {
       headers: {
         "cache-control": "public, max-age=60",
