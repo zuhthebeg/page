@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>임베딩 모델로 음성 인식? EmbeddingGemma 2 STT 검증 — 288배속은 실측, "가장 빠름"은 조건부 · page.cocy.io</title>
+<meta name="description" content="X에서 화제인 'EmbeddingGemma 2를 음성인식 모델로 바꿨다, 1시간 오디오를 13초에'를 개발자 페이지·HN 답변·FluidAudio 공개 벤치마크로 대조했다. 속도는 본인 측정이고 정확도(WER 5%)는 상위권에 못 미치며, 소스는 아직 비공개다.">
+<meta name="keywords" content="EmbeddingGemma 2, 음성인식, STT, 온디바이스, Neural Engine, Parakeet, 팩트체크">
+<meta property="og:title" content="EmbeddingGemma 2를 음성인식으로? 288배속 검증 — 실측이지만 비교는 조건부">
+<meta property="og:description" content="1시간 오디오 13초, WER 약 5%. 같은 칩 비교가 아닌 속도표와 비공개 소스까지 대조했다. 판정 7/10.">
+<meta property="og:url" content="https://page.cocy.io/eg2-stt-check/">
+<meta property="og:type" content="article"><meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://page.cocy.io/eg2-stt-check/">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script>
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"EmbeddingGemma 2를 음성인식 모델로 바꿨다는 주장 검증","url":"https://page.cocy.io/eg2-stt-check/","datePublished":"2026-10-14","author":{"@type":"Organization","name":"cocy.io"},"inLanguage":"ko"}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif}body>noscript{display:none}.page{max-width:840px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.2rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.card{border:1px solid var(--line);padding:1rem;border-radius:8px;background:#fff}.card b{display:block;margin-bottom:.25rem}.note{color:var(--muted);font-size:.9rem}.alert{background:#fff0cf;border-left:4px solid var(--warn);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.88em}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer;transition:transform .1s}.mdbtn:active{transform:translateY(1px)}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<div class="kicker">On-device AI · viral claim check</div>
+<h1>임베딩 모델을 음성인식으로 바꿨다,<br>1시간 오디오를 13초에</h1>
+<p class="lead">X에서 @TslShahir의 글이 퍼졌다(조회 약 21만, 북마크 3천). Google의 EmbeddingGemma 2는 원래 검색용 임베딩 모델인데, 이걸 음성인식(STT) 모델로 바꿨고 보급형 M3 맥북 에어에서 1시간 오디오를 약 13초에 받아쓴다는 내용이다. 개발자 페이지, 본인이 단 Hacker News 답변, 비교 대상으로 든 FluidAudio 공개 벤치마크, Hugging Face 모델 카드로 대조했다.</p>
+<p><span class="pill tag">EmbeddingGemma 2</span><span class="pill tag">STT</span><span class="pill tag">Apple Neural Engine</span><span class="pill tag">온디바이스</span></p>
+
+<div class="verdict"><span class="score">7/10</span><strong>판정: 실제로 돌아가는 제품이고 속도는 본인 실측이다. "가장 빠름"과 "임베딩이 곧 STT"는 조건부다.</strong><br>
+<span class="pill yes">✓ EmbeddingGemma 2는 실재: Apache-2.0, 740M, 텍스트·이미지·영상·오디오 통합 임베딩</span>
+<span class="pill yes">✓ 속도 12.6초/시간(약 286배속)은 본인 측정으로 제시, 숫자는 일관됨</span>
+<span class="pill yes">✓ 정확도 한계(WER 약 5%, 상위권 2~3%)를 본인이 먼저 공개</span>
+<span class="pill warn">△ 비교표는 칩이 다르다. 표 자체가 "같은 조건 순위가 아니다"라고 인정</span>
+<span class="pill warn">△ 임베딩 모델 자체가 받아쓰는 게 아니다. 오디오 인코더에 읽기 헤드를 학습시킨 구조</span>
+<span class="pill warn">△ 영어 전용, 맥(Apple Silicon) 전용, 소스 비공개(공개 예고만 있음)</span>
+<p>실험 자체는 진짜고 참신하다. 다만 "임베딩 모델이 STT 모델이 됐다"는 문장은 학습한 부분이 핵심인 만큼 과장 쪽이고, 속도 순위는 같은 칩에서 다시 재야 확정된다.</p>
+</div>
+
+<h2>1. 주장별 대조</h2>
+<table><thead><tr><th>트윗·소개 페이지의 주장</th><th>확인한 것</th><th>판정</th></tr></thead><tbody>
+<tr><td>EmbeddingGemma 2는 임베딩 모델이고 오픈 모델이다</td><td>Hugging Face <code>google/embeddinggemma-2</code>, 라이선스 Apache-2.0, 비게이트. 총 740M(텍스트 270M + 비전 170M + 오디오 300M), 768차원 공통 공간, 컨텍스트 8K. 저장소 생성 2026-09-14, 마지막 수정 2026-10-06</td><td><span class="pill yes">사실</span></td></tr>
+<tr><td>"지난주에 공개됐다"</td><td>저장소 생성일은 9/14, 마지막 수정 10/6. 정확한 공개일은 확인하지 못함</td><td><span class="pill warn">미확인</span></td></tr>
+<tr><td>1시간 오디오를 약 13초에, 288배속</td><td>소개 페이지에 "1 hour in 12.6 s". 3600÷12.6 ≈ 286배속이라 288과 0.7% 차이(반올림 수준). 같은 M3 에어 8GB에서 잰 본인 측정</td><td><span class="pill warn">본인 측정, 재현 가능성은 미검증</span></td></tr>
+<tr><td>"온디바이스에서 가장 빠른 STT 중 하나"</td><td>같은 표의 다른 행이 이미 비슷하거나 더 빠르다(§3). "중 하나"라는 표현이라 허위는 아니다</td><td><span class="pill warn">조건부</span></td></tr>
+<tr><td>학습은 2시간 미만, 8×H100, 공개 라이선스 영어 음성</td><td>소개 페이지의 자기 서술. 외부 검증 자료 없음</td><td><span class="pill warn">자기 서술</span></td></tr>
+<tr><td>정확도는 클라우드 모델에 못 미침</td><td>페이지가 "WER 약 5%, 선두 모델은 2~3%"라고 직접 밝힘. HN 답변에서도 "클라우드 모델 수준은 아니고 일상용으로는 충분"이라고 씀</td><td><span class="pill yes">솔직한 공개</span></td></tr>
+</tbody></table>
+
+<h2>2. "임베딩 모델이 받아쓴다"는 정확히 무슨 뜻인가</h2>
+<p>소개 페이지 설명을 풀면 이렇다. EmbeddingGemma 2의 오디오 인코더는 그대로 두고, 짧은 오디오 조각마다 이를 텍스트 임베딩 공간으로 옮겨주는 작은 읽기 모듈(reader)만 새로 학습한다. 그 위치에서 가장 가까운 영어 단어를 약 22만9천 개 어휘 중에서 고르고, 이어 붙인 뒤 작은 모델로 구두점과 대문자를 붙인다.</p>
+<div class="grid">
+<div class="card"><b>그대로인 것</b>EmbeddingGemma 2의 오디오 인코더(300M). 음성이 의미 공간에 들어가게 하는 부분은 구글이 이미 학습해 둔 것</div>
+<div class="card"><b>새로 학습한 것</b>읽기 모듈. 조각 → 단어 임베딩 위치로 보내는 부분. 이게 받아쓰기 능력의 실체</div>
+<div class="card"><b>따로 붙은 것</b>구두점·대문자 보정용 별도 모델. 임베딩 공간에서 나온 결과가 아니다</div>
+</div>
+<p>본인이 HN에서 한 말이 정확하다. 읽기 모듈은 오디오 인코더 위의 CTC 헤드이고, 출력 어휘가 별도 학습 어휘가 아니라 EmbeddingGemma의 단어 임베딩이라는 점이 다르다. 같은 인코더에 글자 단위 CTC 헤드를 붙인 비교도 했는데, 깨끗한 오디오북에서는 글자 단위가 낫고(WER 7.0 대 8.2) 강의 같은 어려운 오디오에서는 단어 임베딩 쪽이 확연히 낫다(16.5 대 10.8)고 한다. 철자 오류가 줄어드는 게 이유다. 즉 "공유 공간을 어휘로 쓴다"는 아이디어가 어려운 오디오에서 실제 이득을 줬다는 보고다.</p>
+<p class="note">그래서 "임베딩 모델을 STT 모델로 바꿨다"는 문장은 비유로는 맞고 엄밀하게는 "임베딩 모델의 오디오 인코더를 STT용으로 재활용했다"가 정확하다.</p>
+
+<h2>3. 속도 비교표를 읽는 법</h2>
+<table><thead><tr><th>모델</th><th>칩</th><th>속도(배속)</th><th>출처</th></tr></thead><tbody>
+<tr><td>Embedding Gemma Transcribe</td><td>M3 맥북 에어(보급형)</td><td>288× (1시간 12.6초)</td><td>본인 측정</td></tr>
+<tr><td>IBM Granite Speech 5.0 Turbo CTC</td><td>M3 맥북 에어, GPU(MLX)</td><td>약 150× (1시간 25.7초)</td><td>본인 측정. 25.7초로 계산하면 약 140×</td></tr>
+<tr><td>NVIDIA Parakeet TDT 0.6B v3</td><td>M4 Pro</td><td>156×</td><td>FluidAudio 공개 벤치마크</td></tr>
+<tr><td>같은 Parakeet v3</td><td>M5 Pro</td><td>335× (60분 오디오 기준)</td><td>FluidAudio 공개 벤치마크</td></tr>
+<tr><td>Phonon-2 (Parakeet v3 파인튜닝)</td><td>M5 Pro</td><td>480× (60분 오디오 기준)</td><td>FluidAudio 공개 벤치마크</td></tr>
+</tbody></table>
+<div class="alert"><b>읽는 법</b><br>같은 M3 에어에서 본인이 직접 잰 건 위 두 행뿐이다. 거기서는 약 2배 빠르다. 나머지 세 행은 더 크고 새로운 맥, 다른 오디오로 잰 값이라 소개 페이지 스스로 "대략적인 안내이지 같은 조건 순위가 아니다"라고 적는다. 공개 벤치마크의 Parakeet v3는 M5 Pro에서 60분 오디오 335배속, Phonon-2는 480배속이라서 칩이 더 강한 대신 이 숫자가 더 높다. 같은 칩에서 다시 재야 순위를 말할 수 있다.</div>
+<p>또 하나. FluidAudio 표에서 60분 오디오 기준 WER는 Parakeet v3가 16.5%, Phonon-2가 17.2%로 나온다(깨끗한 LibriSpeech 단문 기준은 2%대). 긴 파일에서 정확도가 떨어지는 건 이 계열 모델 전반의 이슈로 보이고, EmbeddingGemma 쪽의 긴 파일 WER은 공개된 숫자가 없다. 속도만큼 긴 오디오 정확도도 중요한데 현재 비교할 근거가 없다.</p>
+
+<h2>4. 정확도와 한계</h2>
+<ul>
+<li><b>WER 약 5%.</b> 본인이 인정한 수치. 선두 모델은 2~3%. 전문 용도(의료·법률)에는 부족하고 메모·검색·초안 용도에는 쓸 만한 수준이다. HN 반응도 "개념 증명으로는 흥미롭다"가 중심이다.</li>
+<li><b>영어 전용.</b> 어휘가 영어 단어 22만9천 개라서 한국어는 안 된다. 본인은 다국어 읽기 모듈을 학습할 계획이라고 답했고 프로토타입은 아직 없다고 했다.</li>
+<li><b>소스 비공개.</b> 앱은 무료 다운로드지만 소스는 공개돼 있지 않다. HN에서 본인이 "곧 오픈소스로 공개하겠다"고 했을 뿐 일정은 없다. 소개 페이지의 Apache-2.0 표기는 구글의 베이스 모델에 대한 것이다.</li>
+<li><b>Apple Silicon 맥 전용.</b> macOS 14 이상, 모델은 첫 실행 때 715MB를 받는다. Neural Engine 위에서 돌기 때문에 윈도우·리눅스·모바일에는 해당 없음.</li>
+<li><b>새 어휘 처리.</b> 임베딩만 추가하면 단어를 늘릴 수 있지만, 새 단어가 기존 단어와 가까우면 기존 단어로 빨려 들어가는 위험이 있다고 본인이 밝혔다.</li>
+</ul>
+
+<h2>5. 그래서 어디에 의미가 있나</h2>
+<p>속도 숫자보다 구조가 의미 있다. 텍스트·오디오가 한 공간에 있는 모델에서, 오디오 쪽을 단어 임베딩에 정렬시키면 소량의 학습(2시간 미만이라고 주장)으로 받아쓰기가 된다는 시연이다. 이미 공유 공간에서 검색되는 오디오라면 전사 없이 검색, 전사 후 검색을 한 모델 안에서 다룰 여지가 생긴다. 반대로 다국어·정확도·긴 오디오는 아직 미지수이고, 소스가 공개되기 전까지는 재현 검증도 못 한다.</p>
+<p><b>실행 가능한 판단:</b> 영어 오디오를 맥에서 빠르게 초안 전사하는 용도로는 써 볼 만하다. 한국어 서비스나 정확도가 중요한 용도에는 아직 후보가 아니다. 소스 공개와 다국어 모델이 나오면 다시 본다.</p>
+
+<h2>출처</h2>
+<ul class="sources">
+<li><a href="https://x.com/TslShahir/status/2109660368381395414">@TslShahir 원문 트윗 (2026-10-12)</a></li>
+<li><a href="https://eg2.haku.sh/">Embedding Gemma Transcribe 소개 페이지 (구조·속도표·WER)</a></li>
+<li><a href="https://news.ycombinator.com/item?id=50069971">Hacker News 토론 (본인 답변: CTC 헤드, 글자 단위 비교, 영어 전용, 오픈소스 예고)</a></li>
+<li><a href="https://huggingface.co/google/embeddinggemma-2">google/embeddinggemma-2 모델 카드 (Apache-2.0, 740M)</a></li>
+<li><a href="https://github.com/FluidInference/FluidAudio/blob/main/Documentation/Benchmarks.md">FluidAudio Benchmarks (Parakeet v3, Phonon-2 배속·WER)</a></li>
+<li><a href="https://huggingface.co/ibm-granite/granite-speech-5.0-470m-turboctc">ibm-granite/granite-speech-5.0-470m-turboctc</a></li>
+</ul>
+<div class="foot">cocy.io research note · 2026-10-14 · 트윗 원문·개발자 페이지·HN 답변을 가져와 공개 벤치마크와 대조. 앱을 직접 내려받아 속도·정확도를 재측정하지는 않음</div>
+</main>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# EmbeddingGemma 2를 음성인식 모델로 바꿨다는 주장 검증
+
+> X(@TslShahir): EmbeddingGemma 2를 STT 모델로 바꿔 보급형 M3 맥북 에어에서 1시간 오디오를 약 13초(288배속)에 전사한다는 주장을 개발자 페이지·HN 답변·FluidAudio 벤치마크로 대조.
+> **한 줄 결론: 실제 제품이고 속도는 본인 실측. "가장 빠름"은 칩이 달라 조건부, "임베딩이 곧 STT"는 비유에 가깝다. 7/10.**
+
+## 판정 요약
+- EmbeddingGemma 2는 실재(Apache-2.0, 740M, 텍스트·이미지·영상·오디오 통합 임베딩).
+- 구조: 오디오 인코더는 그대로 두고, 읽기 모듈(CTC 헤드)만 학습. 출력 어휘는 EmbeddingGemma의 영어 단어 임베딩 약 22만9천 개. 구두점은 별도 모델.
+- 속도: 1시간 12.6초(약 286배속). 같은 M3 에어에서 Granite Speech 5.0 Turbo CTC(약 140~150배속)보다 약 2배.
+- 비교표의 나머지 행(Parakeet v3, Phonon-2)은 더 강한 M4/M5 Pro, 다른 오디오 기준. 표 스스로 "같은 조건 순위가 아님"이라 적음. FluidAudio 기준 M5 Pro에서 Parakeet v3 335배속, Phonon-2 480배속.
+- 정확도: WER 약 5%, 선두 모델 2~3%. 본인이 공개.
+- 한계: 영어 전용, Apple Silicon 맥 전용, 소스 비공개(공개 예고만), 첫 실행 때 715MB 다운로드.
+
+## 출처
+- https://x.com/TslShahir/status/2109660368381395414
+- https://eg2.haku.sh/
+- https://news.ycombinator.com/item?id=50069971
+- https://huggingface.co/google/embeddinggemma-2
+- https://github.com/FluidInference/FluidAudio/blob/main/Documentation/Benchmarks.md
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='eg2-stt-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body></html>
