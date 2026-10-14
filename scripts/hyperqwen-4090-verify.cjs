@@ -10,6 +10,9 @@ function check(ok,label){report.checks.push({pass:!!ok,label});assert.ok(ok,labe
 (async()=>{
  const html=fs.readFileSync(path.join(root,'public/hyperqwen-4090/index.html'),'utf8');
  check(!/\/home\/|\/mnt\/|COCY-SUPER|3080\s*Ti|Bearer\s|localhost|127\.0\.0\.1|gatewayToken/.test(html),'No private environment/credential text in article');
+ const badge=html.match(/<div class="badge">([^<]*)<\/div>/)?.[1];
+ check(badge==='외부 사용자 재현 보고 · 직접 실측 아님','Evidence badge is exact readable Korean');
+ check(!/https?:\/\//.test(badge||''),'Evidence badge has no replaced placeholder URL');
  check(!/<img[^>]+src=["']https?:|<script[^>]+src=/.test(html),'No hotlinked art or library');
  check(!/fetch\(|XMLHttpRequest|WebSocket|sendBeacon/.test(html),'No application network calls');
  check(html.includes('GTM-MV8KQGJF')&&html.includes('AdSense: managed via GTM auto-ads'),'Existing meta3 convention');
