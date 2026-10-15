@@ -13,7 +13,7 @@ interface Env {
 const RESERVED = new Set([
   "", "new", "edit", "admin", "api", "auth", "portal", "assets", "static", "guide", "fantrack",
   "favicon.ico", "robots.txt", "sitemap.xml", "index.html", "404.html",
-  "llm-gateway-anatomy", "hyperqwen-4090",
+  "llm-gateway-anatomy", "hyperqwen-4090", "polyhaven-free-assets-api",
 ]);
 
 export const onRequest: PagesFunction<Env> = async (ctx) => {

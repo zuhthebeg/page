@@ -14,6 +14,7 @@
 - 개인 포트폴리오·프로필
 
 ## 분석 보고서 (cocy 직접 실측·조사)
+- [Poly Haven 무료 에셋 검증](https://page.cocy.io/polyhaven-free-assets-api/): 카탈로그 2,387개, 에셋 CC0와 무료 상업 API의 식별 헤더·출처표시 조건을 구분. ARPG 후보 5개 매니페스트 확인, 파일 다운로드·Blender 임포트·게임 적용 없음.
 - [HyperQwen·RTX 4090 검증](https://page.cocy.io/hyperqwen-4090/): 381 tok/s는 25k 문서 재현, 일반 채팅 보장 아님. 개발자·외부 사용자 보고와 라이선스 조사만 수행, 자체 GPU 실측 없음. 24GB 격리 파일럿 조건부 GO, 상시 운영·전면 교체 NO.
 - [LLM 게이트웨이 해부실](https://page.cocy.io/llm-gateway-anatomy/): 요청 캡슐을 직접 투입해 인증·API·구독 CLI·로컬 분기와 최대 1회 폴백 뒤 의도된 정지를 조작하는 한국어 개념 해설. 실제 모델 요청 없는 시뮬레이션.
 - [한국어는 정말 토큰을 더 먹는가](https://page.cocy.io/korean-token-cost): "한국어 AI 비용 2.59배" 보도를 Claude 공식 count_tokens API로 직접 실측 검증. Sonnet·Haiku 2.59배, Opus 1.72배 확인.
