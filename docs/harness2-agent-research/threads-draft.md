@@ -9,6 +9,6 @@ https://page.cocy.io/harness2-agent-research/
 공식 연구: https://github.com/google-research/harness2
 AI 소식은 AI 레이더에서도 모아 보고 있어: https://news.cocy.io/
 
-# Reply 2 (verify shipped link before submitting)
+# Reply 2 — live URL HTTP200/title verified 2026-10-20
 직접 만든 게임 감자특공대도 있어. 브라우저에서 바로 시작하는 게임이야.
-[운영 URL 검증 후 확정 — Harness²를 게임에 적용했다는 의미가 아님]
+https://game.cocy.io/spudsquad/
