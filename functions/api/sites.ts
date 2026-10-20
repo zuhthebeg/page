@@ -18,6 +18,9 @@ export const onRequestGet: PagesFunction<Env> = async (ctx) => {
 
   return Response.json(
     { sites: [
+      { slug: "kronos-candle-factcheck", vertical: "report", title: "Kronos · 봉 예측과 무료 거래 시스템 팩트체크",
+        description: "120억+ 학습·MIT 모델은 확인. sample_count=100 기본 평균, 수익·확률·노트북 성능 보장은 미검증.",
+        cover_image: "/kronos-candle-factcheck/icon.svg", owner_id: null, view_count: 0, published_at: "2026-10-20T14:10:17.670968+00:00" },
       { slug: "opengcua-computer-use", vertical: "report", title: "OpenGCUA · 코드 기반 컴퓨터 사용 검증",
         description: "공개 연구 프리뷰. partial score +19.6점·단계 −53%는 저자 보고이며 새 모델 가중치 공개는 아직 계획이다.",
         cover_image: "/opengcua-computer-use/icon.svg", owner_id: null, view_count: 0, published_at: "2026-10-20T14:05:06.067932+00:00" },
@@ -30,7 +33,7 @@ export const onRequestGet: PagesFunction<Env> = async (ctx) => {
       { slug: 'hyperqwen-4090', vertical: 'report', title: 'HyperQwen · RTX 4090 검증',
         description: '381 tok/s는 문서 재현 수치. 자체 GPU 실측 없이 출처를 검증했다. 24GB 격리 파일럿 조건부 GO, 상시 운영 NO.',
         cover_image: '/hyperqwen-4090/icon.svg', owner_id: null, view_count: 0, published_at: '2026-10-14T00:00:00Z' },
-      ...(results ?? []).filter((site: { slug: string }) => !['hyperqwen-4090', 'polyhaven-free-assets-api', 'harness2-agent-research', 'opengcua-computer-use'].includes(site.slug)),
+      ...(results ?? []).filter((site: { slug: string }) => !['hyperqwen-4090', 'polyhaven-free-assets-api', 'harness2-agent-research', 'opengcua-computer-use', 'kronos-candle-factcheck'].includes(site.slug)),
     ] },
     {
       headers: {
