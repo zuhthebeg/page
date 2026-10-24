@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>"Kimi K3.1 Pro, AA 4위에 가격은 절반?" — 팩트체크 · page.cocy.io</title>
+<meta name="description" content="Threads에서 화제인 'Kimi K3.1 Pro가 Artificial Analysis 4위, Opus 5.5와 3점 차, 가격은 절반, 가중치는 11/4 공개' 주장을 Moonshot 공식 블로그·Hugging Face·AA 원자료로 검증했다. 숫자는 대체로 맞다. 다만 빠진 약점과 자체 보고 벤치마크 맥락이 있다.">
+<meta name="keywords" content="Kimi K3.1 Pro, Moonshot AI, Kimi K3, Artificial Analysis, Opus 5.5, 오픈웨이트, 벤치마크, 바이럴 검증">
+<meta property="og:title" content="Kimi K3.1 Pro — AA 4위·가격 절반 팩트체크">
+<meta property="og:description" content="AA 55점(4위)·Opus 5.5와 3점 차·작업당 비용 약 1/3은 사실. 하지만 ProgramBench·HLE 격차는 빠졌고, 가중치는 아직 안 풀렸고, 벤치마크는 전부 자체 보고. 판정 7/10.">
+<meta property="og:url" content="https://page.cocy.io/kimi-k31-check/">
+<meta property="og:type" content="article"><meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://page.cocy.io/kimi-k31-check/">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Kimi K3.1 Pro, AA 4위에 가격은 절반? — 팩트체크","url":"https://page.cocy.io/kimi-k31-check/","inLanguage":"ko","datePublished":"2026-10-24","dateModified":"2026-10-24","author":{"@type":"Person","name":"cocy"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif}body>noscript{display:none}.page{max-width:840px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.2rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.note{color:var(--muted);font-size:.9rem}.box{background:#f6f1e6;border-left:4px solid var(--accent);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.88em}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer;transition:transform .1s}.mdbtn:active{transform:translateY(1px)}
+</style></head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<div class="kicker">Viral claim check · Threads thread verification</div>
+<h1>Kimi K3.1 Pro,<br>AA 4위에 가격은 절반?</h1>
+<p class="lead">Threads(@choi.openai)에 11편짜리 글이 돌고 있다. "Moonshot의 Kimi K3.1 Pro가 Artificial Analysis 종합 4위, 1위 Opus 5.5와 3점 차인데 가격은 절반, 가중치는 11월 4일에 푼다." Moonshot 공식 블로그, Hugging Face 모델 카드·라이선스, Artificial Analysis 페이지를 직접 대조했다.</p>
+<p><span class="pill tag">바이럴 검증</span><span class="pill tag">Kimi K3.1</span><span class="pill tag">Moonshot AI</span><span class="pill tag">오픈웨이트</span><span class="pill tag">벤치마크</span></p>
+
+<div class="verdict"><span class="score">7/10</span><strong>판정: 숫자는 대체로 맞다. 고른 숫자만 가져왔다.</strong><br>
+<span class="pill yes">✓ AA Intelligence Index 55점, 215개 중 4위 — 확인</span>
+<span class="pill yes">✓ Opus 5.5(58점)와 3점 차 — 확인</span>
+<span class="pill yes">✓ 작업당 비용 $2.11 vs Opus $5.98 — "절반"보다 더 싸다(약 35%)</span>
+<span class="pill warn">△ "11/4 공개" — 공식 문구는 "by Nov 4, 2026"(기한). 지금은 미공개, AA도 Proprietary로 표기</span>
+<span class="pill warn">△ 벤치마크 전부 Moonshot 자체 보고, 경쟁 모델 점수는 타사 발표치 인용</span>
+<span class="pill no">✗ 약점 누락 — ProgramBench 31.5 vs 65.0, HLE-Diamond 39.4 vs 60.9 등</span>
+<p>종합 순위와 가격 비교는 1차 출처와 일치한다. 다만 스레드는 K3.1이 이기는 영역만 보여주고, 크게 지는 영역(프로그램 재구현, 무도구 추론, 사이버)과 "토큰을 많이 쓰는 모델"이라는 비용 맥락을 다루지 않았다. "가중치 공개"도 아직 일어나지 않은 일이다.</p>
+</div>
+
+<h2>1. 스레드의 핵심 주장 대조</h2>
+<table><thead><tr><th>주장</th><th>1차 출처 확인값</th><th>판정</th></tr></thead><tbody>
+<tr><td>AA 종합 4위</td><td>Intelligence Index v4.3.2 기준 55점, 215개 모델 중 4위</td><td><span class="pill yes">사실</span></td></tr>
+<tr><td>Opus 5.5와 3점 차</td><td>Opus 5.5 58점 vs Kimi 55점. 같은 표에서 Fable 5.1·GPT-6 Astra는 53점</td><td><span class="pill yes">사실</span></td></tr>
+<tr><td>가격 절반</td><td>AA 작업당 비용 $2.11 vs Opus 5.5 $5.98 (약 35%). 단 같은 지수를 돌리는 데 출력 토큰 1.5억 개를 써서 중앙값 8,700만 개보다 많음</td><td><span class="pill yes">사실</span> <span class="pill warn">맥락 필요</span></td></tr>
+<tr><td>가중치 11/4 공개</td><td>공식 표현은 "by Nov 4, 2026". 현재 AA는 이 모델을 Proprietary로 표기</td><td><span class="pill warn">아직 미공개</span></td></tr>
+<tr><td>출력 속도 77 tok/s</td><td>AA 측정 73.5 tok/s</td><td><span class="pill warn">소폭 부정확</span></td></tr>
+<tr><td>다운로드 92만</td><td>확인 시점 약 91만(Kimi K3 모델 페이지 기준)</td><td><span class="pill warn">소폭 부정확</span></td></tr>
+</tbody></table>
+<p class="note">속도·다운로드 오차는 측정 시점 차이일 가능성이 크다. 판정에는 영향을 주지 않았다.</p>
+
+<h2>2. 모델 개요 — 이건 주장대로다</h2>
+<ul class="sources">
+<li><b>K3.1 Pro</b>는 K3를 후속 학습(post-training)한 버전이다. 2.8T 파라미터 MoE, 활성 104B, 컨텍스트 1M, 텍스트·이미지 입력.</li>
+<li>K3.1 시리즈는 2–3배 빠른 <b>Highspeed</b> 변형과 함께 나왔다.</li>
+<li>Moonshot은 가중치를 "2026-11-04까지" 공개하겠다고 밝혔다. 지금 받을 수 있는 건 K3까지다.</li>
+</ul>
+
+<h2>3. 스레드가 안 보여준 것 — 지는 벤치마크</h2>
+<p>Moonshot 블로그 벤치마크 표를 원자료(HTML에 내장된 JSON)에서 직접 뽑았다. 아래는 K3.1 Pro가 Opus 5.5에 크게 밀리는 항목이다. 모두 Moonshot이 자체 보고한 수치다.</p>
+<table><thead><tr><th>벤치마크</th><th>Kimi K3.1 Pro</th><th>Opus 5.5</th><th>차이</th></tr></thead><tbody>
+<tr><td>ProgramBench (이진 점수)</td><td>31.5</td><td>65.0</td><td><span class="pill no">−33.5</span></td></tr>
+<tr><td>HLE-Diamond (도구 없음)</td><td>39.4</td><td>60.9</td><td><span class="pill no">−21.5</span></td></tr>
+<tr><td>Terminal-Bench Science 0.1</td><td>38.1</td><td>63.3</td><td><span class="pill no">−25.2</span></td></tr>
+<tr><td>HLE-Full (도구 없음)</td><td>51.1</td><td>59.8</td><td><span class="pill no">−8.7</span></td></tr>
+<tr><td>ExploitBench (사이버)</td><td>74.7</td><td>91.0</td><td><span class="pill no">−16.3</span></td></tr>
+<tr><td>AA-Briefcase v1.1 (Elo)</td><td>1678</td><td>1803</td><td><span class="pill no">−125</span></td></tr>
+<tr><td>APEX-Agents</td><td>67.2</td><td>73.5</td><td><span class="pill warn">−6.3</span></td></tr>
+</tbody></table>
+
+<h3>반대로 이기는 항목도 있다</h3>
+<table><thead><tr><th>벤치마크</th><th>Kimi K3.1 Pro</th><th>Opus 5.5</th></tr></thead><tbody>
+<tr><td>SWE Marathon v1.1</td><td>51.7</td><td>46.3</td></tr>
+<tr><td>Automation Bench-AA</td><td>73.3</td><td>69.5</td></tr>
+<tr><td>BrowseComp</td><td>92.1</td><td>90.8</td></tr>
+<tr><td>OfficeQA Pro v2</td><td>64.4</td><td>62.2</td></tr>
+<tr><td>HLE-Full (도구 사용)</td><td>70.0</td><td>67.7</td></tr>
+<tr><td>Terminal-Bench 4.0</td><td>65.7</td><td>66.4 (거의 동률)</td></tr>
+</tbody></table>
+<div class="box"><b>읽는 법:</b> 도구를 쓰는 에이전트 작업(웹 탐색, 사무 자동화, 장기 SWE)에서는 Opus 5.5와 비슷하거나 앞선다. 도구 없이 순수 추론으로 푸는 시험(HLE 무도구), 바이너리를 통째로 재구현하는 ProgramBench, 공격 코드 작성은 확실히 뒤진다. 그래서 "종합 3점 차"는 평균이고, 용도에 따라 체감 격차가 크게 달라진다.</div>
+
+<h2>4. 벤치마크를 믿어도 되나</h2>
+<ul class="sources">
+<li><b>자체 보고.</b> 표 전체가 Moonshot 발표치다. Kimi 점수는 Claude Code 하니스, 최대 추론 강도로 돌렸고, 경쟁 모델 점수는 각 벤더 발표치나 리더보드에서 가져왔다. 일부는 블로그에 "fallback" 동작이 표기돼 있다. 조건이 완전히 같다는 보장이 없다.</li>
+<li><b>AA 지수는 독립 측정</b>이다. 55점·4위·비용은 Moonshot이 아니라 AA 수치라서 신뢰도가 더 높다. 스레드의 핵심 숫자가 여기서 나온 건 맞다.</li>
+<li><b>부정행위 처리.</b> 블로그에 따르면 실행 중 정답을 온라인에서 찾아온 경우는 0점 처리했다. 이 부분은 검증 가능한 기준으로 공개돼 있다.</li>
+<li><b>환각 벤치마크는 내부용.</b> Kimi Hallu Bench는 Moonshot 자체 시험이고, 블로그도 스트레스 테스트로 설명한다. 이 수치(낮을수록 좋음, Kimi 5.4 vs Opus 6.8)를 "환각 적다"의 근거로 쓰기엔 약하다.</li>
+</ul>
+
+<h2>5. 라이선스 — 오픈이지만 무조건은 아니다</h2>
+<p>Kimi K3 라이선스(HF 저장소의 LICENSE 원문 확인)는 MIT 계열로 허용 범위가 넓다. 조건은 두 가지다.</p>
+<ul class="sources">
+<li><b>MaaS 제한:</b> 모델을 API 서비스로 재판매하는 사업이 연 매출 $2,000만을 넘으면 별도 계약이 필요하다.</li>
+<li><b>표기 의무:</b> 월간 활성 사용자 1억 명 초과 또는 월 매출 $2,000만 초과 제품은 "Kimi K3"를 표시해야 한다.</li>
+</ul>
+<p>사내 사용, 그리고 Moonshot 공식 제품이나 인증 파트너를 통한 사용은 예외다. 개인·스타트업이 자체 서버에서 쓰는 데는 사실상 제약이 없다. 단, 이건 K3 라이선스 기준이고 K3.1 가중치가 같은 조건으로 나올지는 공개 전까지 확인할 수 없다.</p>
+
+<h2>6. 사이버 능력은 일부러 깎았다</h2>
+<p>블로그에 따르면 Moonshot은 중간 학습과 RL 단계에서 사이버 관련 데이터를 제거했다. 내부 벤치마크 xdev-bench-hard가 90.5에서 81.0으로 내려간 것이 그 결과다. 같은 방향으로 ExploitBench·ExploitGym에서도 Opus 5.5, GPT-6 Astra보다 낮다. 오픈 가중치 공개를 앞둔 안전 조치로 읽히지만, 이 해석은 블로그 설명에서 추론한 평가다.</p>
+
+<h2>검증하지 못한 항목</h2>
+<ul class="sources">
+<li>스레드가 인용한 AA Terminal-Bench 수치(67%, K3 13%)와 Code Arena 순위</li>
+<li>Sonnet·Muse 계열 56점 비교, WIRED 기사 인용</li>
+</ul>
+<p class="note">이 항목들은 AA 페이지 렌더링 한계와 검색 도구 장애로 독립 재확인하지 못했다. 위 판정에는 포함하지 않았다.</p>
+
+<h2>결론 — 쓸까?</h2>
+<p>에이전트형 작업(웹 탐색, 사무 자동화, 장기 코딩)에 Opus급 성능이 필요하고 비용이 민감하다면 시험해볼 가치가 높다. AA 기준 작업당 비용이 약 1/3이고, 가중치가 풀리면 자체 호스팅 선택지도 생긴다. 반대로 프로그램 재구현, 도구 없는 고난도 추론, 보안 작업이 주 용도라면 Opus 5.5가 확실히 앞선다. 토큰을 많이 쓰는 모델이라 실제 청구액은 작업 유형에 따라 AA 수치와 달라질 수 있으니 내 워크로드로 직접 재야 한다.</p>
+<p>스레드에서 가져갈 건 "55점·4위·3점 차·저렴하다"까지다. "11/4 공개"는 "11/4까지 공개 예정"이고, "3점 차"는 종합 평균일 뿐 영역별 격차는 훨씬 크다.</p>
+
+<h2>출처</h2><ul class="sources">
+<li><a href="https://www.threads.com/share/_upzxM5Ot/">원문 Threads 스레드 (@choi.openai)</a></li>
+<li>Moonshot AI — Kimi K3.1 공식 블로그 (벤치마크 표·각주·사이버 조치)</li>
+<li>Hugging Face — Kimi K3 모델 카드와 LICENSE</li>
+<li>Artificial Analysis — Kimi K3.1 Pro 모델 페이지 (Intelligence Index v4.3.2)</li>
+</ul>
+<div class="foot">cocy.io research note · 2026-10-24 · Moonshot 블로그 원자료·HF 모델 카드·AA 페이지 1차 출처 대조 검증. 벤치마크 수치는 Moonshot 발표 원자료를 그대로 옮긴 것이며 독립 재현이 아니다.</div>
+</main>
+
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# Kimi K3.1 Pro, AA 4위에 가격은 절반? — 팩트체크
+
+> Threads(@choi.openai)의 "Kimi K3.1 Pro가 AA 4위, Opus 5.5와 3점 차, 가격 절반, 가중치 11/4 공개" 주장을 Moonshot 블로그·HF·AA 원자료로 대조.
+> **한 줄 결론: 숫자는 대체로 맞다. 고른 숫자만 가져왔다. 7/10.**
+
+## 판정 요약
+- ✓ AA Intelligence Index 55점, 215개 중 4위
+- ✓ Opus 5.5(58)와 3점 차
+- ✓ 작업당 비용 $2.11 vs $5.98 (약 35%) — 단 출력 토큰 1.5억 개로 중앙값 8,700만보다 장황
+- △ "11/4 공개" — 공식은 "by Nov 4, 2026", 현재 미공개(AA는 Proprietary 표기)
+- △ 벤치마크 전부 Moonshot 자체 보고
+- ✗ 약점 누락 — ProgramBench 31.5 vs 65.0, HLE-Diamond 39.4 vs 60.9
+
+## 크게 지는 항목 (Kimi K3.1 Pro vs Opus 5.5, 자체 보고)
+- ProgramBench 31.5 vs 65.0
+- HLE-Diamond(무도구) 39.4 vs 60.9
+- Terminal-Bench Science 38.1 vs 63.3
+- HLE-Full(무도구) 51.1 vs 59.8
+- ExploitBench 74.7 vs 91.0
+- AA-Briefcase 1678 vs 1803
+
+## 이기는 항목
+SWE Marathon 51.7 vs 46.3 · Automation Bench-AA 73.3 vs 69.5 · BrowseComp 92.1 vs 90.8 · OfficeQA Pro v2 64.4 vs 62.2 · HLE-Full(도구) 70.0 vs 67.7 · Terminal-Bench 4.0 65.7 vs 66.4(동률권)
+
+## 벤치마크 신뢰도
+표 전체가 Moonshot 발표치(Claude Code 하니스, 최대 추론 강도). 경쟁 모델 점수는 타사 발표치 인용. AA 지수(55점·4위·비용)는 독립 측정이라 더 신뢰할 만함. 환각 벤치마크는 내부 스트레스 테스트.
+
+## 라이선스 (K3 기준)
+MIT 계열. MaaS 재판매 연 매출 $2,000만 초과 시 별도 계약, MAU 1억 또는 월 매출 $2,000만 초과 제품은 "Kimi K3" 표기. 사내 사용·공식 제품·인증 파트너는 예외.
+
+## 사이버 능력 의도적 축소
+중간 학습·RL에서 사이버 데이터 제거. xdev-bench-hard 90.5 → 81.0.
+
+## 결론
+에이전트형 작업에서 Opus급이 필요하고 비용이 민감하면 시험해볼 가치 높음. 프로그램 재구현·무도구 추론·보안 작업이면 Opus 5.5가 우위. 토큰 사용량이 많아 실제 청구액은 직접 측정 필요. "11/4 공개"는 "11/4까지 공개 예정".
+
+## 출처
+- https://www.threads.com/share/_upzxM5Ot/
+- Moonshot AI Kimi K3.1 공식 블로그
+- Hugging Face Kimi K3 모델 카드·LICENSE
+- Artificial Analysis Kimi K3.1 Pro 페이지
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='kimi-k31-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body></html>
