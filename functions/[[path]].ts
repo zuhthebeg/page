@@ -13,6 +13,7 @@ interface Env {
 const RESERVED = new Set([
   "", "new", "edit", "admin", "api", "auth", "portal", "assets", "static", "guide", "fantrack",
   "favicon.ico", "robots.txt", "sitemap.xml", "index.html", "404.html",
+  "jev-apps-check",
   "llm-gateway-anatomy", "hyperqwen-4090", "polyhaven-free-assets-api", "harness2-agent-research", "opengcua-computer-use", "kronos-candle-factcheck", "ecc-codex-factcheck",
 ]);
 

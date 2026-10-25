@@ -18,6 +18,9 @@ export const onRequestGet: PagesFunction<Env> = async (ctx) => {
 
   return Response.json(
     { sites: [
+      { slug: "jev-apps-check", vertical: "report", title: "Jev 응용 앱 5종 — 코드와 성능 근거 실사",
+        description: "5개 저장소는 실재한다. 7초는 항공편 검색, 25.8% 비용 절감은 작성자의 10개 과제, 실거래 수익은 미검증.",
+        cover_image: "/jev-apps-check/icon.svg", owner_id: null, view_count: 0, published_at: "2026-10-25T00:00:00Z" },
       { slug: "ecc-codex-factcheck", vertical: "report", title: "ECC · Codex 71 에이전트·311 스킬 검증",
         description: "숫자와 MIT는 확인. 성능·자동 개발팀 주장은 미검증; OpenClaw에는 선별 참고만 권장.",
         cover_image: "/ecc-codex-factcheck/icon.svg", owner_id: null, view_count: 0, published_at: "2026-10-23T18:45:00Z" },
@@ -36,7 +39,7 @@ export const onRequestGet: PagesFunction<Env> = async (ctx) => {
       { slug: 'hyperqwen-4090', vertical: 'report', title: 'HyperQwen · RTX 4090 검증',
         description: '381 tok/s는 문서 재현 수치. 자체 GPU 실측 없이 출처를 검증했다. 24GB 격리 파일럿 조건부 GO, 상시 운영 NO.',
         cover_image: '/hyperqwen-4090/icon.svg', owner_id: null, view_count: 0, published_at: '2026-10-14T00:00:00Z' },
-      ...(results ?? []).filter((site: { slug: string }) => !['hyperqwen-4090', 'polyhaven-free-assets-api', 'harness2-agent-research', 'opengcua-computer-use', 'kronos-candle-factcheck', 'ecc-codex-factcheck'].includes(site.slug)),
+      ...(results ?? []).filter((site: { slug: string }) => !['hyperqwen-4090', 'polyhaven-free-assets-api', 'harness2-agent-research', 'opengcua-computer-use', 'kronos-candle-factcheck', 'ecc-codex-factcheck', 'jev-apps-check'].includes(site.slug)),
     ] },
     {
       headers: {
