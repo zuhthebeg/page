@@ -9,7 +9,7 @@ trap 'rm -rf "$OUT"' EXIT
 
 git archive HEAD | tar -x -C "$OUT"
 [ -d node_modules ] && ln -s "$REPO/node_modules" "$OUT/node_modules"
-node scripts/gen-feed.cjs --out "$OUT/public/feed.json"
+node scripts/gen-feed.cjs --out "$OUT/public/feed.json" --private-out "$OUT/functions/api/_private-feed.json"
 cd "$OUT"
 npx wrangler pages deploy public --project-name page-cocy --branch main --commit-dirty=true
 curl -fsS -o /dev/null -w 'api/sites %{http_code}\n' https://page.cocy.io/api/sites

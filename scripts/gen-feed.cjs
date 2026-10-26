@@ -2,7 +2,7 @@
 // feed.json 생성 — 메인(/) 최신순 목록의 원본.
 // 대상 = git HEAD에 커밋된 public/<slug>/index.html (배포되는 것과 동일). 미커밋 페이지는 안 나온다.
 // 날짜 = git 최초 추가 커밋, 제목/설명 = 각 페이지 <title>/meta description.
-// 제외: 시스템 디렉터리, noindex 페이지(meta 또는 _headers), D1 sites.listed=0, EXCLUDE.
+// 비공개(noindex 페이지(meta 또는 _headers), D1 sites.listed=0, EXCLUDE)는 feed.json에서 빼고 functions/api/_private-feed.json으로 → 로그인 시 /api/private-feed.
 // 사용: node scripts/gen-feed.cjs [--out <path>] [--no-d1]   (기본 out = public/feed.json)
 // 배포는 scripts/deploy.sh 가 이걸 자동 실행한다.
 const fs = require('fs');
@@ -12,6 +12,8 @@ const { execSync } = require('child_process');
 const ROOT = path.resolve(__dirname, '..');
 const arg = (k) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : null; };
 const OUT = path.resolve(arg('--out') || path.join(ROOT, 'public', 'feed.json'));
+// 비공개 목록 — 공개 정적 경로에 두면 안 됨. Functions 번들에 import돼 /api/private-feed(관리자 로그인)로만 나간다.
+const PRIV_OUT = path.resolve(arg('--private-out') || path.join(ROOT, 'functions', 'api', '_private-feed.json'));
 const SYSTEM = new Set(['admin', 'edit', 'new', 'shots', 'showcase', 'assets']);
 const EXCLUDE = new Set([]); // 수동 숨김 슬러그
 // 실제 작성일 ≠ 최초 커밋일인 페이지 (뒤늦게 커밋된 것)
@@ -63,6 +65,7 @@ const cleanTitle = (t) => t
   .replace(/^page\.cocy\.io\s*[|·—–-]\s*/i, '').trim();
 
 const items = [];
+const priv = [];
 const skipped = [];
 for (const slug of slugs) {
   if (SYSTEM.has(slug) || slug.startsWith('_')) continue;
@@ -71,12 +74,16 @@ for (const slug of slugs) {
     EXCLUDE.has(slug) ? 'exclude' :
     noindexHdr.has(slug) || /<meta[^>]+name=["']robots["'][^>]+noindex/i.test(html) ? 'noindex' :
     d1[slug] && !d1[slug].listed ? 'unlisted' : null;
-  if (why) { skipped.push(`${slug}(${why})`); continue; }
   const title = cleanTitle(decode((html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || slug));
   const desc = decode((html.match(/<meta[^>]+name=["']description["'][^>]+content=["']([^"']*)/i) || [])[1] || '');
-  items.push({ slug, title: title || slug, desc, date: DATE_OVERRIDE[slug] || added[slug] || null, vertical: (d1[slug] && d1[slug].vertical) || null });
+  const item = { slug, title: title || slug, desc, date: DATE_OVERRIDE[slug] || added[slug] || null, vertical: (d1[slug] && d1[slug].vertical) || null };
+  if (why) { skipped.push(`${slug}(${why})`); priv.push(item); continue; }
+  items.push(item);
 }
-items.sort((a, b) => ((a.date || '') < (b.date || '') ? 1 : -1));
+const byDate = (a, b) => ((a.date || '') < (b.date || '') ? 1 : -1);
+items.sort(byDate);
+priv.sort(byDate);
+fs.writeFileSync(PRIV_OUT, JSON.stringify(priv) + '\n');
 
 fs.writeFileSync(OUT, JSON.stringify({ generated: new Date().toISOString(), items }) + '\n');
-console.log(`${path.relative(ROOT, OUT)}: ${items.length}개, 제외 ${skipped.length}개: ${skipped.join(' ')}`);
+console.log(`${path.relative(ROOT, OUT)}: ${items.length}개, 비공개 ${skipped.length}개: ${skipped.join(' ')}`);
