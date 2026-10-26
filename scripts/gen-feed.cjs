@@ -14,6 +14,14 @@ const arg = (k) => { const i = process.argv.indexOf(k); return i > 0 ? process.a
 const OUT = path.resolve(arg('--out') || path.join(ROOT, 'public', 'feed.json'));
 const SYSTEM = new Set(['admin', 'edit', 'new', 'shots', 'showcase', 'assets']);
 const EXCLUDE = new Set([]); // 수동 숨김 슬러그
+// 실제 작성일 ≠ 최초 커밋일인 페이지 (뒤늦게 커밋된 것)
+const DATE_OVERRIDE = {
+  'evoharness': '2026-08-30T03:15:21Z',
+  'leakcheck': '2026-10-08T03:38:43Z',
+  'local-frontier-128gb': '2026-08-29T15:01:04Z',
+  'model-routing': '2026-08-29T14:51:59Z',
+  'nvidia-free-api': '2026-10-08T03:38:43Z',
+};
 
 const sh = (cmd) => execSync(cmd, { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 << 20 });
 const show = (p) => sh(`git show "HEAD:${p}"`);
@@ -66,7 +74,7 @@ for (const slug of slugs) {
   if (why) { skipped.push(`${slug}(${why})`); continue; }
   const title = cleanTitle(decode((html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || slug));
   const desc = decode((html.match(/<meta[^>]+name=["']description["'][^>]+content=["']([^"']*)/i) || [])[1] || '');
-  items.push({ slug, title: title || slug, desc, date: added[slug] || null, vertical: (d1[slug] && d1[slug].vertical) || null });
+  items.push({ slug, title: title || slug, desc, date: DATE_OVERRIDE[slug] || added[slug] || null, vertical: (d1[slug] && d1[slug].vertical) || null });
 }
 items.sort((a, b) => ((a.date || '') < (b.date || '') ? 1 : -1));
 
