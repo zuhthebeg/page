@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>모델만 바꿨는데 LLM 비용 3배 — 프롬프트 캐시와 게이트웨이 점검표 · page.cocy.io</title>
+<meta name="description" content="당근 사례를 OpenAI·Anthropic 공식 문서와 대조했다. KV캐시는 앞단에 두는 게 아니라 게이트웨이가 앞부분을 흔들지 않는 것. 가드레일 점검표, 크로스히트 범위, 사내 가이드 7가지.">
+<link rel="canonical" href="https://page.cocy.io/prompt-cache-gateway/">
+<meta property="og:type" content="article"><meta property="og:title" content="모델만 바꿨는데 LLM 비용 3배 — 프롬프트 캐시와 게이트웨이 점검표"><meta property="og:description" content="당근 사례를 OpenAI·Anthropic 공식 문서와 대조했다. KV캐시는 앞단에 두는 게 아니라 게이트웨이가 앞부분을 흔들지 않는 것. 가드레일 점검표, 크로스히트 범위, 사내 가이드 7가지."><meta property="og:url" content="https://page.cocy.io/prompt-cache-gateway/"><meta name="twitter:card" content="summary">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<meta property="article:published_time" content="2026-10-27"><meta property="article:modified_time" content="2026-10-27"><meta name="author" content="cocy">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"모델만 바꿨는데 LLM 비용 3배 — 프롬프트 캐시와 게이트웨이 점검표","description":"당근 사례를 OpenAI·Anthropic 공식 문서와 대조했다. KV캐시는 앞단에 두는 게 아니라 게이트웨이가 앞부분을 흔들지 않는 것. 가드레일 점검표, 크로스히트 범위, 사내 가이드 7가지.","url":"https://page.cocy.io/prompt-cache-gateway/","inLanguage":"ko","datePublished":"2026-10-27","dateModified":"2026-10-27","author":{"@type":"Person","name":"cocy"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif;word-break:keep-all}body>noscript{display:none}.page{max-width:860px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.1rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.note{color:var(--muted);font-size:.88rem}.box{background:#f6f1e6;border-left:4px solid var(--accent);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}.duo{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.4rem 0}.card{border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;background:#fff}.card h3{margin:0 0 .4rem}.card p{margin:0;font-size:.94rem;color:var(--soft)}.big{font:700 2.2rem/1.1 Georgia,serif;color:var(--accent)}table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{text-align:left;padding:.6rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.86em}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer}@media(max-width:620px){.page{margin:0;padding:24px 18px}.score{float:none;display:block;margin-bottom:.5rem}.duo{grid-template-columns:1fr}table{min-width:560px}}
+</style></head><body><!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) --><main class="page">
+<div class="kicker">Research note · LLM gateway · 2026-10-27</div>
+<h1>모델만 바꿨는데<br>비용이 3배 — 프롬프트 캐시 쉽게 풀기</h1>
+<p class="lead">당근 커뮤니티홈팀의 <a href="https://medium.com/daangn/%EB%AA%A8%EB%8D%B8%EB%A7%8C-%EB%B0%94%EA%BF%A8%EB%8A%94%EB%8D%B0-llm-%EB%B9%84%EC%9A%A9%EC%9D%B4-3%EB%B0%B0%EA%B0%80-%EB%90%9C-%EC%9D%B4%EC%9C%A0-5ae60ab5108b">사례 글</a>이 화제다. 단가가 20% 싼 GPT-5.6으로 바꿨는데 요청당 비용이 3.2배가 됐다. 원인은 프롬프트 캐시 히트율이 85.8%에서 2.3%로 떨어진 것이었다. 이 글을 OpenAI·Anthropic 공식 문서와 대조했다. 그리고 <b>사내 LLM 게이트웨이를 운영하는 입장</b>에서 무엇을 점검해야 하는지 정리했다.</p>
+<p><span class="pill tag">쉬운 설명</span><span class="pill tag">공식 문서 대조</span><span class="pill tag">게이트웨이 점검표</span></p>
+<div class="verdict"><span class="score">9/10</span><strong>판정: 당근 글의 핵심 사실은 공식 문서와 일치. 게이트웨이 운영자에게 실전 가치 큼.</strong><br><span class="pill yes">✓ GPT-5.6부터 자동 구분점이 "최근 메시지 끝" 하나로 바뀜</span><span class="pill yes">✓ 쓰기 1.25배·읽기 0.1배 (Sol 6.1·Opus/Sonnet 5.5는 0.05배)</span><span class="pill yes">✓ 캐시는 조직 간 절대 공유 안 됨</span><span class="pill warn">△ "앞단에 KV캐시를 둔다"는 개념이 아님. 캐시는 제공사 GPU 쪽에 있다</span></div>
+
+<h2>1. 먼저 오해 하나: 우리가 KV캐시를 "앞단에" 두는 게 아니다</h2>
+<p>LLM은 글을 읽을 때 토큰마다 중간 계산값을 만든다. 이걸 <b>KV캐시</b>라고 한다. 시험 보기 전에 규정집을 읽으며 적어 둔 메모라고 생각하면 된다. 이 메모는 <b>모델이 도는 GPU 메모리 안</b>에만 있다. API로 쓰는 우리 쪽, 즉 게이트웨이에는 둘 수가 없다.</p>
+<p>프롬프트 캐시는 제공사가 그 메모를 요청이 끝난 뒤에도 잠깐 남겨 두는 기능이다. 다음 요청의 <b>앞부분이 글자 하나까지 똑같으면</b> 메모를 다시 쓰고 값을 깎아 준다. 그래서 게이트웨이가 할 일은 캐시를 "갖는" 게 아니다. <b>앞부분을 매번 똑같이 만들어서 보내는 것</b>이다.</p>
+<div class="duo">
+<div class="card"><h3>프롬프트 캐시 (이 글의 주제)</h3><p>입력을 읽는 계산만 재사용한다. 답은 매번 새로 만든다. 품질은 그대로다. 제공사 서버에 있고, 게이트웨이는 앞부분을 안정적으로 유지하는 역할만 한다.</p></div>
+<div class="card"><h3>응답 캐시·시맨틱 캐시</h3><p>같거나 비슷한 질문에 저장해 둔 답을 그대로 돌려준다. 이건 게이트웨이에 직접 둘 수 있다. 대신 틀린 답을 재사용할 위험이 있다. 전혀 다른 기능이다.</p></div>
+</div>
+<p class="note">자체 GPU에 vLLM 같은 서버를 직접 띄우는 경우라면 서버 쪽 prefix caching을 우리가 켤 수 있다. API를 사서 쓰는 경우에는 위 설명이 맞다.</p>
+
+<h2>2. 왜 "앞부분"이 똑같아야 하나</h2>
+<p>모델 안에서 뒤쪽 토큰의 메모는 앞쪽 토큰 전부를 보고 만들어진다. 그래서 맨 앞에서 한 글자만 바뀌어도 그 뒤 메모가 전부 달라진다. 당근 글의 예가 좋다. 프롬프트 맨 앞에 넣은 시각이 09:00에서 09:01로 바뀌면, 그 뒤 지시문 수천 토큰을 다시 계산한다. 시각을 맨 뒤로 옮기면 마지막 몇 토큰만 다시 계산한다.</p>
+<div class="box"><b>규칙 하나로 줄이면</b> — 매번 같은 것(지시문·규칙·예시·도구 정의)은 앞에, 매번 바뀌는 것(사용자 입력·시각·요청 ID)은 뒤에.</div>
+
+<h2>3. 효과는 얼마나 큰가</h2>
+<p>당근은 앞부분을 고친 뒤 히트율이 95% 안팎으로 올랐고, 요청당 비용이 약 5분의 1로 줄었다. 아래는 공식 단가 배율로 직접 계산한 값이다. 고정부가 입력의 95%이고 쓰기 1.25배, 읽기 0.1배라고 가정했다.</p>
+<div style="overflow-x:auto"><table><thead><tr><th>캐시 상태</th><th>입력 비용 (캐시 없음 = 100)</th><th>설명</th></tr></thead><tbody>
+<tr><td>캐시 없음</td><td>100</td><td>기준</td></tr>
+<tr><td>매번 저장만 하고 못 읽음</td><td><b>125</b></td><td>당근이 빠졌던 상태. 할증만 낸다</td></tr>
+<tr><td>고정부를 매번 읽음 (명시 구분점)</td><td><b>약 15</b></td><td>95×0.1 + 5×1.0. 바뀌는 부분은 저장하지 않는다</td></tr>
+</tbody></table></div>
+<p>같은 요청이 캐시 상태에 따라 <b>8배 넘게</b> 차이 난다. 쓰기 할증이 있으니 손익분기점도 있다. 고정부를 읽는 비율이 <b>약 22%</b> 아래면 캐시를 켠 쪽이 더 비싸다. 계산식은 0.1×h + 1.25×(1−h) = 1이다. 출력 토큰은 캐시와 무관하게 정가다. 그래서 출력이 긴 작업에서는 전체 절감 폭이 이보다 작다.</p>
+
+<h2>4. 당근은 왜 당했나 — 모델이 바뀌면 캐시 규칙도 바뀐다</h2>
+<p>OpenAI 문서에 따르면 GPT-5.6부터 자동 구분점이 <b>가장 최근 메시지의 끝</b>에 찍힌다. 당근의 요청은 "지시문 + 글 본문"을 메시지 하나로 보냈다. 그래서 저장되는 덩어리가 "지시문 + 글 A" 통째였다. 다음 요청 "지시문 + 글 B"는 그 덩어리와 같지 않으니 못 읽는다. "지시문까지"만 담은 덩어리는 한 번도 저장되지 않았다. 모든 요청이 1.25배를 내고 저장만 한 것이다. 에러는 하나도 없었다.</p>
+<p>해결은 지시문이 끝나는 자리에 <b>명시 구분점</b>을 찍는 것이었다. OpenAI는 <code>prompt_cache_breakpoint</code>, Anthropic은 <code>cache_control</code>이다. 당근은 사내 LLM 플랫폼이 템플릿의 첫 변수 앞에 자동으로 구분점을 찍도록 고쳤다. 사람에게는 "바뀌는 부분은 템플릿 끝에 둔다" 하나만 지키게 했다. 이게 게이트웨이 팀이 가져갈 핵심 교훈이다.</p>
+
+<h2>5. 사내 게이트웨이·가드레일 점검표</h2>
+<p>게이트웨이는 요청을 중간에서 고치는 계층이다. 그래서 <b>캐시를 깨는 1순위 용의자</b>이기도 하다. 아래 항목에 하나라도 걸리면 히트율을 실측해 봐야 한다.</p>
+<div style="overflow-x:auto"><table><thead><tr><th>게이트웨이가 하는 일</th><th>캐시가 깨지는 경우</th><th>안전한 방식</th></tr></thead><tbody>
+<tr><td>가드레일 정책문을 system 앞에 삽입</td><td>정책문에 사용자 ID·시각·요청 ID·부서명이 들어감</td><td>정책문은 전사 고정 문구로. 가변 정보는 맨 뒤에 붙인다</td></tr>
+<tr><td>PII 마스킹 (입력 다시 쓰기)</td><td>턴마다 마스킹 결과가 달라짐 (예: [EMAIL_1] 번호가 매번 다시 매겨짐). 이전 대화까지 다시 마스킹</td><td>결정적 마스킹 (같은 값 → 같은 토큰). 이미 처리한 이전 턴은 건드리지 않는다</td></tr>
+<tr><td>요청 JSON 파싱 후 재직렬화</td><td>키 순서·공백·유니코드 이스케이프가 바뀜. 특히 도구 스키마</td><td>원본 바이트를 그대로 넘기거나, 정렬을 고정한 직렬화</td></tr>
+<tr><td>권한별로 도구 목록 필터링</td><td>사용자마다 도구 집합·순서가 달라짐</td><td>도구 정의는 고정. 막을 때는 <code>tool_choice</code> 같은 방식으로 실행 단계에서 차단</td></tr>
+<tr><td>스키마 검증·필드 화이트리스트</td><td><code>cache_control</code>·<code>prompt_cache_breakpoint</code>·<code>prompt_cache_options</code>를 모르는 필드로 떨굼</td><td>캐시 필드는 그대로 통과. 당근도 중간 계층이 일부 요청에서 이걸 빠뜨렸다</td></tr>
+<tr><td>폴백·라우팅으로 모델 전환</td><td>모델이 바뀌면 캐시는 처음부터 다시 쌓인다. 제공사가 바뀌면 규칙도 다르다</td><td>세션 중 모델을 고정한다 (sticky). 전환 전후 히트율을 비교한다</td></tr>
+<tr><td>입력 가드레일 분류 호출 (별도 LLM 호출)</td><td>정책 프롬프트 + 검사할 입력을 메시지 하나로 보냄 → 당근과 같은 함정</td><td>분류 호출 자체도 "고정 정책 → 구분점 → 가변 입력" 구조로</td></tr>
+</tbody></table></div>
+<h3>잘 적용됐는지 확인하는 법</h3>
+<ol>
+<li><b>두 요청 테스트</b>: 앞부분은 같고 끝만 다른 요청 두 개를 게이트웨이를 거쳐 연달아 보낸다. 두 번째 응답의 캐시 읽기 토큰이 0보다 커야 한다. 똑같은 요청을 두 번 보내면 구분점이 잘못돼도 히트처럼 보이니 주의한다.</li>
+<li><b>응답 필드 수집</b>: OpenAI는 <code>usage.input_tokens_details.cached_tokens</code>와 <code>cache_write_tokens</code>를 본다. Anthropic은 <code>cache_read_input_tokens</code>와 <code>cache_creation_input_tokens</code>를 본다. Anthropic은 <code>input_tokens</code>에 이 둘이 빠져 있어서 셋을 더해야 전체 입력이다.</li>
+<li><b>토큰 기준 히트율 대시보드</b>: 캐시 읽기 토큰을 전체 입력 토큰으로 나눈 값을 서비스·모델·일자별로 본다. 요청 기준(한 토큰이라도 읽었으면 히트)은 후하게 나온다.</li>
+<li><b>쓰기 대비 읽기 비율</b>: 쓰기만 많고 읽기가 적으면 할증만 내고 있다는 신호다.</li>
+<li><b>제공사 진단 기능</b>: OpenAI의 <a href="https://developers.openai.com/api/docs/guides/prompt-caching/diagnostics">Prompt Cache Diagnostics</a>와 Anthropic의 <a href="https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics">cache diagnostics</a>를 쓰면 미스 사유(도구 변경 등)를 알려 준다.</li>
+</ol>
+
+<h2>6. 코덱스·클로드코드는 개인이 쓰는데, 크로스히트가 되나</h2>
+<p><b>사람 사이 공유는 기대하면 안 된다. 맞다.</b> 그런데 그게 손해의 핵심도 아니다.</p>
+<ul>
+<li><b>캐시 공유 범위</b>: OpenAI는 조직(org)과 처리 리전 단위로 공유하고, 조직끼리는 절대 공유하지 않는다. Anthropic은 Claude API에서 워크스페이스 단위로 격리한다. Bedrock은 조직 단위다. 개인 구독으로 로그인한 코덱스·클로드코드는 각자 계정이라 사용자끼리 캐시를 나눌 일이 없다.</li>
+<li><b>에이전트 코딩 툴의 이득은 세션 안에서 나온다</b>: 에이전트는 매 턴마다 지금까지의 대화 전체를 다시 보낸다. 이전 턴까지가 그대로 앞부분이 되니, 긴 세션일수록 입력의 대부분을 캐시에서 읽는다. 다른 사람과 공유하지 않아도 히트율이 높게 나오는 구조다.</li>
+<li><b>회사 키로 게이트웨이를 거치면 얘기가 달라진다</b>: 같은 조직 키를 쓰면 공통 시스템 프롬프트와 도구 정의는 사용자 사이에서도 히트할 수 있다. 다만 OpenAI는 캐시가 개별 머신에 있다. 같은 앞부분이 분당 15건을 넘으면 다른 머신으로 넘쳐서 못 읽을 수 있다. GPT-5.6 이전 모델은 <code>prompt_cache_key</code>로 관련 요청을 묶어 줘야 잘 맞는다. 사용자별 프로젝트 설명(CLAUDE.md 등)이나 레포 내용이 앞쪽에 섞이면 공통 부분은 짧아진다.</li>
+<li><b>보안 관점</b>: 같은 조직 안에서 캐시가 공유되는 것 자체가 걱정이면 Anthropic은 워크스페이스를 나누면 된다. OpenAI는 <code>prompt_cache_key</code>로 그룹별 회계를 분리할 수 있다.</li>
+</ul>
+
+<h2>7. 에이전트가 늘어날 때 사내 가이드로 줄 7가지</h2>
+<ol>
+<li>고정부(지시문·규칙·예시·도구)는 앞에, 가변부(입력·시각·ID)는 뒤에 둔다.</li>
+<li>고정부 끝에 명시 구분점을 찍는다. 템플릿 플랫폼이나 게이트웨이가 자동으로 찍게 하는 게 가장 좋다.</li>
+<li>고정부가 모델별 최소 길이를 넘는지 확인한다. GPT-5.6 이후는 1,024토큰이다. 짧으면 에러 없이 캐시가 안 된다.</li>
+<li>같은 앞부분이 유지 시간 안에 다시 오는지 본다. OpenAI 5.6 이후는 기본 30분, Anthropic은 기본 5분이다. 드물게 오는 작업은 할증만 낸다.</li>
+<li>도구 목록과 JSON 직렬화를 고정한다. 도구는 빼지 말고 실행 단계에서 막는다.</li>
+<li>모델 교체는 코드 한 줄이 아니라 운영 변경으로 다룬다. 전후 요청당 비용·히트율·지연을 운영 트래픽으로 하루 이상 비교한다.</li>
+<li>히트율·쓰기/읽기 비율을 게이트웨이 표준 대시보드에 넣는다. 캐시가 깨져도 에러는 안 나고 비용만 오르기 때문이다.</li>
+</ol>
+
+<h2>8. cocy 판단</h2>
+<div class="box">"앞단에 캐시를 둔다"가 아니라 <b>"게이트웨이가 앞부분을 흔들지 않는다"</b>가 정확한 그림이다. 효과는 크다. 같은 요청이 캐시 상태에 따라 8배 넘게 차이 난다. 그리고 게이트웨이 가드레일은 구조상 앞부분을 건드리는 위치에 있다. 지금 가드레일이 잘 적용됐는지는 문구를 봐서는 알 수 없고, <b>두 요청 테스트와 토큰 기준 히트율</b>로만 판단할 수 있다. 개인 구독 코딩 에이전트는 크로스히트가 안 되지만 세션 내 히트로 이미 대부분 이득을 본다. 사내 API 에이전트가 늘어날 때 게이트웨이 팀이 줄 수 있는 가장 값싼 절감은 <b>구분점 자동 삽입 + 히트율 대시보드</b> 두 가지다.</div>
+
+<h2>출처</h2>
+<ul class="sources">
+<li><a href="https://medium.com/daangn/%EB%AA%A8%EB%8D%B8%EB%A7%8C-%EB%B0%94%EA%BF%A8%EB%8A%94%EB%8D%B0-llm-%EB%B9%84%EC%9A%A9%EC%9D%B4-3%EB%B0%B0%EA%B0%80-%EB%90%9C-%EC%9D%B4%EC%9C%A0-5ae60ab5108b">당근 테크블로그 — 모델만 바꿨는데 LLM 비용이 3배가 된 이유</a></li>
+<li><a href="https://developers.openai.com/api/docs/guides/prompt-caching">OpenAI — Prompt caching (구분점·단가·조직 단위 공유·머신 라우팅)</a></li>
+<li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching">Anthropic — Prompt caching (cache_control·단가·워크스페이스 격리)</a></li>
+</ul><div class="foot">cocy.io research note · 2026-10-27 · 공개 사례와 공식 문서 대조, 사내 게이트웨이 실측 아님</div>
+</main><button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button><script type="text/markdown" id="mdsrc"># 모델만 바꿨는데 LLM 비용 3배 — 프롬프트 캐시와 게이트웨이 점검표
+
+판정 9/10. 당근 글의 핵심 사실은 공식 문서와 일치한다.
+
+- 프롬프트 캐시는 제공사 GPU 쪽 KV 상태를 재사용한다. 게이트웨이의 역할은 앞부분을 매번 똑같이 보내는 것.
+- GPT-5.6부터 자동 구분점이 최근 메시지 끝 하나 → "지시문+입력"을 한 메시지로 보내면 매번 저장만(1.25배) 하고 못 읽는다. 해결: 고정부 끝에 명시 구분점.
+- 고정부 95% 가정: 캐시 없음 100 / 저장만 125 / 매번 읽음 약 15. 손익분기 히트율 약 22%.
+- 게이트웨이가 깨는 것: 가변값 넣은 정책문, 비결정적 PII 마스킹, JSON 재직렬화, 권한별 도구 필터, 캐시 필드 drop, 모델 폴백.
+- 확인: 앞부분 같고 끝만 다른 두 요청 → cached_tokens>0. 토큰 기준 히트율 대시보드.
+- 공유 범위: OpenAI 조직+리전, Anthropic 워크스페이스. 개인 구독 코딩 에이전트는 사용자 간 공유 없음, 대신 세션 내 히트가 대부분.
+
+원문: https://medium.com/daangn/5ae60ab5108b
+OpenAI: https://developers.openai.com/api/docs/guides/prompt-caching
+Anthropic: https://platform.claude.com/docs/en/build-with-claude/prompt-caching
+분석: https://page.cocy.io/prompt-cache-gateway/</script><script>(function(){var b=document.getElementById('mdbtn'),m=document.getElementById('mdsrc').textContent.trim();function f(){var x=new Blob([m],{type:'text/markdown'}),a=document.createElement('a');a.href=URL.createObjectURL(x);a.download='prompt-cache-gateway.md';document.body.appendChild(a);a.click();a.remove()}b.onclick=function(){if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(m).then(function(){b.textContent='✅ 복사됨';setTimeout(function(){b.textContent='📋 위키용 Markdown 복사'},1900)}).catch(f);else f()}})();</script></body></html>
