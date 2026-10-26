@@ -3,371 +3,109 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="naver-site-verification" content="7e48f3f9d2edcbdc5bd8ea926d97267d4decdbac" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>page.cocy.io — 말하면 만들어지는 나만의 페이지 · 전부 무료</title>
-<meta name="description" content="청첩장·메뉴판·포트폴리오·추모관·보고서까지. 만들고 싶은 걸 말하면 AI가 당신만의 페이지를 그려드려요. 템플릿 없음, 결제 없음, 전부 무료." />
-<meta property="og:title" content="page.cocy.io — 말하면 만들어지는 나만의 페이지 · 전부 무료" />
-<meta property="og:description" content="청첩장·메뉴판·포트폴리오·추모관·보고서까지. 만들고 싶은 걸 말하면 AI가 그려드려요. 전부 무료." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>page.cocy.io — 최근 페이지</title>
+<meta name="description" content="cocy가 만든 보고서·팩트체크·도구 페이지 모음. 최신순." />
+<meta property="og:title" content="page.cocy.io — 최근 페이지" />
+<meta property="og:description" content="cocy가 만든 보고서·팩트체크·도구 페이지 모음. 최신순." />
 <meta property="og:type" content="website" />
-<meta property="og:locale" content="ko_KR" />
-<meta property="og:locale:alternate" content="en_US" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#121214" media="(prefers-color-scheme: dark)" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
 <style>
 :root{
-  --bg:#0b0b0d; --bg-2:#131318; --ink:#ece9e4; --ink-soft:#aaa6a0; --muted:#6f6b66;
-  --accent:#c9a86a; --accent-2:#e9cd92; --line:rgba(236,233,228,.10);
-  --serif:"Cormorant Garamond",serif; --label:"Jost",sans-serif; --sans:"Noto Sans KR",sans-serif;
-  --ease:cubic-bezier(.22,.61,.36,1);
+  --bg:#faf9f6; --ink:#17171a; --soft:#5d5c63; --muted:#94939a; --line:#e7e5df; --hover:#f1efe9;
+  --accent:#d1452b; --chip:#efede7;
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#121214;--ink:#ececee;--soft:#a9a8af;--muted:#6f6e75;--line:#26262a;--hover:#1b1b1e;--accent:#ff7a5c;--chip:#1e1e22}
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;line-height:1.5;word-break:keep-all;overflow-wrap:anywhere}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
-.eyebrow{font-family:var(--label);text-transform:uppercase;letter-spacing:.4em;font-size:.66rem;color:var(--accent)}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
 
-/* top bar */
-.bar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:linear-gradient(var(--bg),transparent)}
-.bar .logo{font-family:var(--serif);font-weight:600;font-size:1.15rem}
-.bar .right{display:flex;align-items:center;gap:12px}
-.bar .me{font-size:.8rem;color:var(--ink-soft)}
-.bar a.mk{font-family:var(--label);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--accent-2);border:1px solid var(--accent);border-radius:30px;padding:.5rem 1rem;transition:.3s;white-space:nowrap}
-.bar a.mk:hover{background:var(--accent);color:#1a160e}
-.bar button.lang{font-family:var(--label);font-size:.7rem;letter-spacing:.08em;color:var(--ink-soft);background:none;border:1px solid var(--line);border-radius:30px;padding:.45rem .9rem;cursor:pointer;transition:.3s}
-.bar button.lang:hover{border-color:var(--accent);color:var(--accent-2)}
-#gbtn{transform:scale(.85);transform-origin:right center}
+header{padding:28px 0 8px;padding-top:max(28px,env(safe-area-inset-top))}
+.top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.logo{font-size:1.05rem;font-weight:800;letter-spacing:-.02em}
+.logo b{color:var(--accent)}
+.links{display:flex;gap:14px;font-size:.84rem;color:var(--soft)}
+.links a:hover{color:var(--ink)}
+.count{margin-top:6px;font-size:.82rem;color:var(--muted)}
 
-/* hero */
-header.hero{min-height:78vh;display:flex;flex-direction:column;justify-content:center;position:relative;
-  background:radial-gradient(120% 90% at 70% 0%,rgba(201,168,106,.10),transparent 60%),var(--bg)}
-.hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(2.6rem,7vw,5rem);line-height:1.05;margin:.5rem 0 1.2rem}
-.hero h1 em{font-style:italic;color:var(--accent-2)}
-.hero p{color:var(--ink-soft);font-size:1.05rem;max-width:30rem}
-.cta{display:inline-flex;align-items:center;gap:.6rem;margin-top:2rem;padding:.95rem 1.8rem;border:1px solid var(--accent);color:var(--accent-2);font-family:var(--label);letter-spacing:.12em;text-transform:uppercase;font-size:.8rem;border-radius:2px;transition:.4s var(--ease)}
-.cta:hover{background:var(--accent);color:#1a160e}
+.searchbar{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0 10px;border-bottom:1px solid var(--line)}
+.searchbar input{width:100%;font:inherit;font-size:1rem;color:var(--ink);background:var(--chip);border:0;border-radius:10px;padding:11px 14px;outline:none;-webkit-appearance:none}
+.searchbar input::placeholder{color:var(--muted)}
+.searchbar input:focus{box-shadow:0 0 0 2px var(--accent) inset}
 
-/* gallery */
-section.gallery{padding:5rem 0 7rem;border-top:1px solid var(--line)}
-.gallery h2{font-family:var(--serif);font-size:2rem;font-weight:500;margin:.6rem 0 1.6rem}
-.gsearch{display:block;width:100%;max-width:360px;background:var(--bg-2);border:1px solid var(--line);border-radius:30px;color:var(--ink);padding:.6rem 1.1rem;font-size:.88rem;font-family:var(--sans);margin-bottom:1.2rem;outline:none;transition:.2s}
-.gsearch::placeholder{color:var(--muted)}
-.gsearch:focus{border-color:var(--accent)}
-.cats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.4rem}
-.cats .c{font-family:var(--label);font-size:.78rem;letter-spacing:.05em;color:var(--ink-soft);border:1px solid var(--line);border-radius:30px;padding:.5rem 1rem;cursor:pointer;transition:.2s}
-.cats .c:hover{border-color:var(--accent)}
-.cats .c.on{background:var(--accent);color:#1a160e;border-color:var(--accent);font-weight:500}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1.2rem}
-.card{position:relative;display:block;background:var(--bg-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;transition:.4s var(--ease)}
-.card:hover{transform:translateY(-4px);border-color:var(--accent)}
-.card .cover{aspect-ratio:3/4;background:#1c1c22 top/cover no-repeat;display:flex;align-items:center;justify-content:center;color:var(--muted);font-family:var(--serif);font-size:1.4rem}
-.card .meta{padding:1rem 1.1rem}
-.card .tag{font-family:var(--label);text-transform:uppercase;letter-spacing:.2em;font-size:.6rem;color:var(--accent)}
-.card .meta h3{font-family:var(--serif);font-weight:500;font-size:1.25rem;margin:.3rem 0 .2rem}
-.card .meta p{font-size:.82rem;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.card .fb{position:absolute;top:10px;left:10px;z-index:2;background:rgba(11,11,13,.82);border:1px solid var(--accent);color:var(--accent-2);font-family:var(--label);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;border-radius:20px;padding:.3rem .7rem;backdrop-filter:blur(4px)}
-.card .edit{position:absolute;top:10px;right:10px;background:rgba(11,11,13,.8);border:1px solid var(--accent);color:var(--accent-2);font-size:.72rem;border-radius:20px;padding:.35rem .8rem;backdrop-filter:blur(4px)}
-.card .edit:hover{background:var(--accent);color:#1a160e}
-.card .mklike{display:block;text-align:center;font-family:var(--label);font-size:.72rem;letter-spacing:.08em;color:var(--accent-2);border-top:1px solid var(--line);padding:.7rem;transition:.25s}
-.card .mklike:hover{background:var(--accent);color:#1a160e}
-.empty{color:var(--muted);font-family:var(--serif);font-size:1.3rem;padding:3rem 0;text-align:center;grid-column:1/-1}
-
-/* free badge + marquee strip */
-.freeb{display:inline-block;font-family:var(--label);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:#9ed49e;border:1px solid rgba(158,212,158,.4);border-radius:30px;padding:.35rem .9rem;margin-bottom:1rem}
-.strip{overflow:hidden;margin-top:3.4rem;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.strip .rowi{display:flex;gap:14px;width:max-content;animation:slide 70s linear infinite}
-.strip a{flex:none}
-.strip img{height:240px;width:auto;border-radius:10px;border:1px solid var(--line);display:block;transition:.3s}
-.strip a:hover img{border-color:var(--accent);transform:translateY(-4px)}
-@keyframes slide{to{transform:translateX(-50%)}}
-/* steps */
-section.steps{padding:5rem 0 4rem;border-top:1px solid var(--line)}
-.steps h2{font-family:var(--serif);font-size:2rem;font-weight:500;margin:.6rem 0 1.8rem}
-.stepgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.4rem}
-.step{background:var(--bg-2);border:1px solid var(--line);border-radius:6px;padding:1.5rem 1.4rem}
-.step .n{font-family:var(--serif);font-size:2rem;color:var(--accent-2);line-height:1}
-.step h3{font-family:var(--serif);font-weight:500;font-size:1.25rem;margin:.6rem 0 .3rem}
-.step p{font-size:.86rem;color:var(--ink-soft)}
-/* free */
-section.freeplan{padding:4rem 0 6rem;border-top:1px solid var(--line)}
-.freeplan h2{font-family:var(--serif);font-size:2rem;font-weight:500;margin:.6rem 0 .4rem}
-.freeplan .sub{color:var(--ink-soft);font-size:.95rem;max-width:36rem;margin-bottom:1.6rem}
-.freeplan .sub b{font-weight:400;color:var(--ink)}
-/* my pages */
-section.mine{padding:4rem 0 1rem;border-top:1px solid var(--line);display:none}
-.mine h2{font-family:var(--serif);font-size:2rem;font-weight:500;margin:.6rem 0 1.2rem}
-.mine .tools{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-bottom:1.6rem}
-.mine input{background:var(--bg-2);border:1px solid var(--line);border-radius:30px;color:var(--ink);padding:.55rem 1.1rem;font-size:.86rem;font-family:var(--sans);min-width:220px;outline:none}
-.mine input:focus{border-color:var(--accent)}
-.badge{font-family:var(--label);font-size:.6rem;letter-spacing:.08em;border-radius:20px;padding:.18rem .6rem;text-transform:uppercase}
-.badge.priv{background:rgba(233,205,146,.15);color:var(--accent-2);border:1px solid var(--accent)}
-.badge.pub{background:rgba(236,233,228,.08);color:var(--ink-soft);border:1px solid var(--line)}
-.badge.exp{background:rgba(225,80,80,.15);color:#e88;border:1px solid rgba(225,80,80,.4)}
-.mine .vgroup{margin-bottom:2rem}
-.mine .vgroup h3{font-family:var(--label);text-transform:uppercase;letter-spacing:.25em;font-size:.7rem;color:var(--accent);margin-bottom:.9rem}
-.mrow{display:flex;align-items:center;gap:.8rem;padding:.65rem .2rem;border-bottom:1px solid var(--line);font-size:.92rem}
-.mrow:hover{background:rgba(236,233,228,.03)}
-.mrow .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mrow .t small{color:var(--muted);margin-left:.5rem}
-.mrow a.go{color:var(--accent-2);font-size:.8rem;white-space:nowrap}
-footer{padding:3rem 0;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem;text-align:center}
-footer .donate{display:inline-block;margin-top:.6rem;border:1px solid var(--line);border-radius:30px;padding:.45rem 1rem;font-size:.76rem;color:var(--ink-soft);transition:.3s}
-footer .donate:hover{border-color:var(--accent);color:var(--accent-2)}
+.month{font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.04em;padding:26px 0 6px}
+ul{list-style:none}
+li a{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:14px 8px;margin:0 -8px;border-radius:10px;border-bottom:1px solid var(--line)}
+li:last-child a{border-bottom:0}
+li a:hover,li a:active{background:var(--hover)}
+.d{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:3px}
+.t{font-size:1.06rem;font-weight:650;letter-spacing:-.015em;line-height:1.4;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.new{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:.15em}
+.s{margin-top:3px;font-size:.86rem;color:var(--soft);display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.empty{padding:48px 0;text-align:center;color:var(--muted)}
+footer{padding:36px 0 48px;padding-bottom:max(48px,env(safe-area-inset-bottom));font-size:.8rem;color:var(--muted);text-align:center}
+footer a{text-decoration:underline;text-underline-offset:3px}
+@media (min-width:640px){ .t{font-size:1.12rem} li a{grid-template-columns:52px 1fr} }
 </style>
 </head>
 <body>
-
-<div class="bar">
-  <a class="logo" href="/">page.cocy.io</a>
-  <div class="right">
-    <span class="me" id="me"></span>
-    <div id="gbtn"></div>
-    <button class="lang" id="langbtn">EN</button>
-    <a class="mk" href="/new" id="bar-mk">내 페이지 만들기</a>
+<header class="wrap">
+  <div class="top">
+    <a class="logo" href="/">page<b>.</b>cocy.io</a>
+    <nav class="links"><a href="/showcase/">쇼케이스</a><a href="/new">만들기</a></nav>
   </div>
-</div>
-
-<header class="hero">
-  <div class="wrap">
-    <div class="eyebrow">page.cocy.io</div>
-    <div><span class="freeb" id="hero-badge">100% 무료 · 결제 없음</span></div>
-    <h1 id="hero-h1">당신만을 위한<br><em>단 하나의</em> 페이지</h1>
-    <p id="hero-p">만들고 싶은 걸 말로 설명하면, AI가 당신만의 페이지를 그려서 링크로 드려요. 템플릿 고르기도, 결제도 없어요.</p>
-    <a class="cta" href="/new" id="hero-cta">무료로 만들기 →</a>
-  </div>
-  <div class="strip" id="strip"></div>
+  <div class="count" id="count">&nbsp;</div>
 </header>
 
-<section class="mine" id="mine">
-  <div class="wrap">
-    <div class="eyebrow">My Pages</div>
-    <h2 id="m-h2">내 페이지</h2>
-    <div class="tools"><input id="m-search" type="search" placeholder="제목·주소로 검색" /><span class="badge priv" id="m-privhint">비공개 포함</span></div>
-    <div id="m-list"></div>
-  </div>
-</section>
+<div class="searchbar"><div class="wrap"><input id="q" type="search" placeholder="제목·설명 검색" autocomplete="off" /></div></div>
 
-<section class="gallery">
-  <div class="wrap">
-    <div class="eyebrow">Showcase</div>
-    <h2 id="g-h2">이렇게 만들어졌어요</h2>
-    <input class="gsearch" id="g-search" type="search" placeholder="제목·설명으로 검색" />
-    <div class="cats" id="cats"></div>
-    <div class="grid" id="grid"><div class="empty" id="g-loading">불러오는 중…</div></div>
-    <p style="margin-top:1.5rem;font-size:.9rem"><a href="/llm-gateway-anatomy/" style="color:var(--ink)">cocy 해설 · LLM 게이트웨이 해부실 — 요청 분류기를 직접 조작하기 →</a></p>
-    <p style="font-size:.9rem"><a href="/ecc-codex-factcheck/" style="color:var(--ink)">cocy 검증 · ECC — 71 에이전트·311 스킬, Codex와 OpenClaw의 경계 →</a></p>
-    <p style="font-size:.9rem"><a href="/kronos-candle-factcheck/" style="color:var(--ink)">cocy 검증 · Kronos — 봉 예측과 “정확한 무료 거래”의 차이 →</a></p>
-    <p style="font-size:.9rem"><a href="/opengcua-computer-use/" style="color:var(--ink)">cocy 검증 · OpenGCUA — 코드로 컴퓨터를 쓰는 연구 프리뷰 →</a></p>
-    <p style="font-size:.9rem"><a href="/harness2-agent-research/" style="color:var(--ink)">cocy 검증 · Harness² — 방법은 확인, JEV 비전 성능은 보류 →</a></p>
-    <p style="font-size:.9rem"><a href="/polyhaven-free-assets-api/" style="color:var(--ink)">cocy 검증 · Poly Haven — CC0 무료 에셋 2,387개와 ARPG 활용 조건 →</a></p>
-    <p style="font-size:.9rem"><a href="/hyperqwen-4090/" style="color:var(--ink)">cocy 검증 · HyperQwen — 381 tok/s의 조건, RTX 4090은 파일럿부터 →</a></p>
-  </div>
-</section>
+<main class="wrap" id="list"><div class="empty">불러오는 중…</div></main>
 
-<section class="steps">
-  <div class="wrap">
-    <div class="eyebrow">How</div>
-    <h2 id="s-h2">만드는 법</h2>
-    <div class="stepgrid">
-      <div class="step"><div class="n">1</div><h3 id="s1-h3">말한다</h3><p id="s1-p">"할머니 팔순 초대장 만들어줘. 보라색 좋아하셔." 이 정도면 충분해요.</p></div>
-      <div class="step"><div class="n">2</div><h3 id="s2-h3">AI가 그린다</h3><p id="s2-p">템플릿이 아니라, 당신 이야기에 맞춰 매번 새로 디자인해요.</p></div>
-      <div class="step"><div class="n">3</div><h3 id="s3-h3">링크를 받는다</h3><p id="s3-p">page.cocy.io/내이름 — 링크 받고 바로 공유하면 끝이에요.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="freeplan">
-  <div class="wrap">
-    <div class="eyebrow">Free</div>
-    <h2 id="f-h2">만드는 건 무료예요</h2>
-    <p class="sub" id="f-sub">만들기와 호스팅은 무료. 운영을 위해 무료 페이지에는 광고가 표시돼요. <b>플러스 — 월 990원</b>(연 9,900원)이면 광고가 사라지고, 완성 후 수정도 자유롭게 할 수 있어요.</p>
-    <a class="cta" href="/new" id="f-cta">무료로 만들기 →</a>
-  </div>
-</section>
-
-<footer><div class="wrap"><span id="ft-made">made with care · page.cocy.io</span>
-  <div style="margin-top:.5rem"><a href="/guide/mobile-invitation/" style="color:var(--ink-soft);font-size:.78rem" id="ft-guide">📖 가이드: 모바일 청첩장 직접 만들기</a></div>
-  <div><a class="donate" id="donate" href="#" target="_blank" rel="noopener" style="display:none">☕ 서버비 후원하기</a></div>
-</div></footer>
+<footer class="wrap">서비스 소개·내 페이지 관리는 <a href="/showcase/">쇼케이스</a>에서</footer>
 
 <script>
 const $=id=>document.getElementById(id);
-const GCID='315180918727-3d9rfmpa36r365qna9smdsvrod441jhd.apps.googleusercontent.com';
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const toDate=v=>{ if(v==null||v==='') return null; const d=typeof v==='number'?new Date(v):new Date(/^\d+$/.test(v)?+v:String(v).replace(' ','T')+(/[zZ]|[+-]\d\d:?\d\d$/.test(v)?'':'Z')); return isNaN(d)?null:d; };
+const pad=n=>String(n).padStart(2,'0');
+let ITEMS=[];
 
-// ── i18n ──
-const I18N={
-ko:{
- barMk:'내 페이지 만들기',
- heroBadge:'100% 무료 · 결제 없음',
- heroH1:'당신만을 위한<br><em>단 하나의</em> 페이지',
- heroP:'만들고 싶은 걸 말로 설명하면, AI가 당신만의 페이지를 그려서 링크로 드려요. 템플릿 고르기도, 결제도 없어요.',
- heroCta:'무료로 만들기 →',
- gH2:'이렇게 만들어졌어요', gLoading:'불러오는 중…', gSearch:'제목·설명으로 검색',
- gEmpty:'아직 페이지가 없어요. 첫 번째가 되어보세요.', gEmptySearch:'검색 결과가 없어요.', catAll:'전체',
- sH2:'만드는 법',
- s1H3:'말한다', s1P:'"할머니 팔순 초대장 만들어줘. 보라색 좋아하셔." 이 정도면 충분해요.',
- s2H3:'AI가 그린다', s2P:'템플릿이 아니라, 당신 이야기에 맞춰 매번 새로 디자인해요.',
- s3H3:'링크를 받는다', s3P:'page.cocy.io/내이름 — 링크 받고 바로 공유하면 끝이에요.',
- fH2:'만드는 건 무료예요',
- fSub:'만들기와 호스팅은 무료. 운영을 위해 무료 페이지에는 광고가 표시돼요. <b>플러스 — 월 990원</b>(연 9,900원)이면 광고가 사라지고, 완성 후 수정도 자유롭게 할 수 있어요.',
- fCta:'무료로 만들기 →', featured:'대표작',
- ftMade:'made with care · page.cocy.io', ftGuide:'📖 가이드: 모바일 청첩장 직접 만들기', donate:'☕ 서버비 후원하기',
- mH2:'내 페이지', mSearch:'제목·주소로 검색', mPriv:'비공개', mPub:'공개', mExp:'중단됨', mPrivHint:'비공개 포함', mEmpty:'검색 결과가 없어요', mEdit:'✎ 편집', mTglPub:'클릭하면 공개로 전환', mTglPriv:'클릭하면 비공개로 전환', mTglFail:'전환에 실패했어요. 다시 시도해주세요.',
- meEdit:' · 내 페이지에 ✎ 편집', loggedIn:'로그인됨', edit:'✎ 편집', mklike:v=>'+ 나도 '+v+' 만들기',
- vlabel:{portfolio:'포트폴리오',wedding:'청첩장',menu:'메뉴판',memorial:'추모',proposal:'프로포즈/고백',profile:'프로필',invite:'초대장',dol:'돌잔치',report:'보고서',note:'학습노트',etc:'기타',page:'페이지'},
-},
-en:{
- barMk:'Create my page',
- heroBadge:'100% free · no payment',
- heroH1:'One page, made<br><em>only for you</em>',
- heroP:'Describe what you want in plain words and AI draws a page just for you — delivered as a link. No templates to pick, nothing to pay.',
- heroCta:'Create for free →',
- gH2:'Made this way', gLoading:'Loading…', gSearch:'Search by title or description',
- gEmpty:'No pages yet. Be the first.', gEmptySearch:'No results.', catAll:'All',
- sH2:'How it works',
- s1H3:'Say it', s1P:'"Make an invitation for grandma\'s 80th. She loves purple." That\'s enough.',
- s2H3:'AI draws it', s2P:'Not a template — designed fresh every time, around your story.',
- s3H3:'Get your link', s3P:'page.cocy.io/yourname — get the link and share it right away.',
- fH2:'Creating is free',
- fSub:'Creating and hosting are free. Free pages show ads to keep the lights on. <b>Plus — ₩990/mo</b> (₩9,900/yr) removes ads and unlocks unlimited edits.',
- fCta:'Create for free →', featured:'Featured',
- ftMade:'made with care · page.cocy.io', ftGuide:'📖 Guide: make your own mobile wedding invitation', donate:'☕ Support server costs',
- mH2:'My Pages', mSearch:'Search by title or slug', mPriv:'Private', mPub:'Public', mExp:'Suspended', mPrivHint:'incl. private', mEmpty:'No results', mEdit:'✎ Edit', mTglPub:'Click to make public', mTglPriv:'Click to make private', mTglFail:'Failed to toggle. Please try again.',
- meEdit:' · ✎ edit on my pages', loggedIn:'Signed in', edit:'✎ Edit', mklike:v=>'+ Make my own '+v,
- vlabel:{portfolio:'Portfolio',wedding:'Wedding Invitation',menu:'Menu',memorial:'Memorial',proposal:'Proposal',profile:'Profile',invite:'Invitation',dol:'First Birthday',report:'Report',note:'Notes',etc:'Etc',page:'page'},
-},
-};
-let LANG=localStorage.getItem('page_lang')||((navigator.language||'').toLowerCase().startsWith('ko')?'ko':'en');
-const t=k=>I18N[LANG][k];
-const VL=v=>I18N[LANG].vlabel[v]||v;
-
-function dec(t){ try{ return JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); }catch{return null;} }
-function onCred(r){ localStorage.setItem('page_id_token',r.credential); location.reload(); }
-
-let TOKEN=localStorage.getItem('page_id_token'); let P=TOKEN?dec(TOKEN):null;
-let MY=(P&&P.exp*1000>Date.now())?P.sub:null;
-if(!MY){ localStorage.removeItem('page_id_token'); renderLogin(); }
-function renderLogin(){ if(window.google&&google.accounts&&google.accounts.id){ google.accounts.id.initialize({client_id:GCID,callback:onCred}); google.accounts.id.renderButton($('gbtn'),{theme:'filled_black',size:'medium',text:'signin',shape:'pill'}); } else setTimeout(renderLogin,300); }
-
-function applyLang(){
- document.documentElement.lang=LANG;
- $('langbtn').textContent=LANG==='ko'?'EN':'한국어';
- $('bar-mk').textContent=t('barMk');
- $('hero-badge').textContent=t('heroBadge');
- $('hero-h1').innerHTML=t('heroH1'); $('hero-p').textContent=t('heroP'); $('hero-cta').textContent=t('heroCta');
- $('g-h2').textContent=t('gH2'); $('g-search').placeholder=t('gSearch');
- $('s-h2').textContent=t('sH2');
- $('s1-h3').textContent=t('s1H3'); $('s1-p').textContent=t('s1P');
- $('s2-h3').textContent=t('s2H3'); $('s2-p').textContent=t('s2P');
- $('s3-h3').textContent=t('s3H3'); $('s3-p').textContent=t('s3P');
- $('f-h2').textContent=t('fH2'); $('f-sub').innerHTML=t('fSub'); $('f-cta').textContent=t('fCta');
- $('ft-made').textContent=t('ftMade'); $('ft-guide').textContent=t('ftGuide'); $('donate').textContent=t('donate');
- if(MY) $('me').textContent=(P.name||P.email||t('loggedIn'))+t('meEdit');
- $('m-h2').textContent=t('mH2'); $('m-search').placeholder=t('mSearch'); $('m-privhint').textContent=t('mPrivHint'); renderMine();
- renderCats(); renderGrid();
-}
-$('langbtn').addEventListener('click',()=>{ LANG=LANG==='ko'?'en':'ko'; localStorage.setItem('page_lang',LANG); applyLang(); });
-
-// ── 후원 ──
-const DONATE_URL='';   // 토스 후원 링크(toss.me/..) 생기면 채우기 — 빈 값이면 버튼 숨김
-if(DONATE_URL){ const d=$('donate'); d.href=DONATE_URL; d.style.display='inline-block'; }
-
-// ── 내 페이지 (비공개 포함) ──
-let MINE=[], MQ='';
-async function loadMine(){
-  if(!MY||!TOKEN) return;
-  try{
-    const r=await fetch('/api/my-sites',{headers:{authorization:'Bearer '+TOKEN}});
-    if(!r.ok) return;
-    MINE=(await r.json()).sites||[];
-    renderMine();
-  }catch{}
-}
-function renderMine(){
-  const sec=document.getElementById('mine'); if(!sec) return;
-  if(!MINE.length){ sec.style.display='none'; return; }
-  sec.style.display='block';
-  const q=MQ.trim().toLowerCase();
-  const rows=MINE.filter(x=>!q||(x.title||'').toLowerCase().includes(q)||(x.slug||'').toLowerCase().includes(q)||(x.description||'').toLowerCase().includes(q));
-  const byV={};
-  rows.forEach(x=>{ const v=x.vertical||'etc'; (byV[v]=byV[v]||[]).push(x); });
-  const now=Date.now();
-  const html=Object.keys(byV).map(v=>{
-    const items=byV[v].map(x=>{
-      const priv=!x.listed;
-      const expired=x.expires_at&&x.expires_at<now;
-      const badge=expired?'<span class="badge exp">'+t('mExp')+'</span>':(priv
-        ?'<span class="badge priv tgl" data-slug="'+esc(x.slug)+'" data-to="1" title="'+t('mTglPub')+'" style="cursor:pointer">'+t('mPriv')+'</span>'
-        :'<span class="badge pub tgl" data-slug="'+esc(x.slug)+'" data-to="0" title="'+t('mTglPriv')+'" style="cursor:pointer">'+t('mPub')+'</span>');
-      return '<div class="mrow">'+badge+'<span class="t"><a href="/'+x.slug+'">'+esc(x.title||x.slug)+'</a><small>/'+esc(x.slug)+'</small></span><a class="go" href="/'+x.slug+'" target="_blank">↗</a><a class="go" href="/edit/?slug='+encodeURIComponent(x.slug)+'">'+t('mEdit')+'</a></div>';
-    }).join('');
-    return '<div class="vgroup"><h3>'+VL(v)+' · '+byV[v].length+'</h3>'+items+'</div>';
-  }).join('');
-  document.getElementById('m-list').innerHTML=html||'<div class="empty">'+t('mEmpty')+'</div>';
-}
-document.getElementById('m-search').addEventListener('input',e=>{ MQ=e.target.value; renderMine(); });
-
-// 공개/비공개 칩 클릭 토글
-document.getElementById('m-list').addEventListener('click',async e=>{
-  const chip=e.target.closest('.badge.tgl'); if(!chip||!TOKEN) return;
-  const slug=chip.dataset.slug, to=+chip.dataset.to;
-  chip.style.opacity='.4'; chip.style.pointerEvents='none';
-  try{
-    const r=await fetch('/api/toggle-listed',{method:'POST',headers:{authorization:'Bearer '+TOKEN,'content-type':'application/json'},body:JSON.stringify({slug,listed:to})});
-    if(!r.ok) throw 0;
-    const m=MINE.find(x=>x.slug===slug); if(m) m.listed=to;
-    renderMine();
-  }catch{ chip.style.opacity=''; chip.style.pointerEvents=''; alert(t('mTglFail')); }
-});
-
-let SITES=[], CAT='all', GQ='';
-const FEATURED=['footprints','marvel','doldol','sunja-hwangap','cafe-onwol','tzuyang-tokyo','diary','juno-dev'];
-const fIdx=s=>{const i=FEATURED.indexOf(s.slug);return i<0?999:i;};
-const ordered=()=>[...SITES].sort((a,b)=>fIdx(a)-fIdx(b));
-$('g-search').addEventListener('input',e=>{ GQ=e.target.value; renderGrid(); });
-(async()=>{
-  try{ const r=await fetch('/api/sites'); SITES=(await r.json()).sites||[]; }catch{}
-  renderCats(); renderGrid(); buildStrip();
-})();
-
-function buildStrip(){
-  const picks=ordered().slice(0,14);
-  if(!picks.length) return;
-  const items=picks.map(s=>`<a href="/${s.slug}"><img src="/shots/${encodeURIComponent(s.slug)}.webp" alt="${esc(s.title||'')}" loading="lazy" onerror="this.parentElement.remove()"></a>`).join('');
-  $('strip').innerHTML=`<div class="rowi">${items}${items}</div>`;
+async function load(){
+  const [feed,sites]=await Promise.all([
+    fetch('/feed.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{items:[]}).catch(()=>({items:[]})),
+    fetch('/api/sites').then(r=>r.ok?r.json():{sites:[]}).catch(()=>({sites:[]})),
+  ]);
+  const by=new Map();
+  for(const x of feed.items||[]) by.set(x.slug,{slug:x.slug,title:x.title,desc:x.desc,date:toDate(x.date)});
+  // feed.json에 없는 D1 등록 페이지(KV 서빙 등) 보충
+  for(const s of sites.sites||[]) if(!by.has(s.slug)) by.set(s.slug,{slug:s.slug,title:s.title||s.slug,desc:s.description||'',date:toDate(s.published_at)});
+  ITEMS=[...by.values()].sort((a,b)=>(b.date||0)-(a.date||0));
+  $('count').textContent=`페이지 ${ITEMS.length}개 · 최신순`;
+  render();
 }
 
-function renderCats(){
-  const present=[...new Set(SITES.map(s=>s.vertical))].filter(Boolean);
-  const cats=['all',...present];
-  $('cats').innerHTML=cats.map(c=>`<span class="c ${c===CAT?'on':''}" data-c="${c}">${c==='all'?t('catAll'):VL(c)}</span>`).join('');
-  $('cats').querySelectorAll('.c').forEach(el=>el.addEventListener('click',()=>{ CAT=el.dataset.c; renderCats(); renderGrid(); }));
+function render(){
+  const q=$('q').value.trim().toLowerCase();
+  const rows=q?ITEMS.filter(x=>(x.title+' '+x.desc+' '+x.slug).toLowerCase().includes(q)):ITEMS;
+  if(!rows.length){ $('list').innerHTML=`<div class="empty">${q?'검색 결과가 없어요':'페이지가 없어요'}</div>`; return; }
+  const now=Date.now(); let html='', cur='';
+  for(const x of rows){
+    const d=x.date, key=d?`${d.getFullYear()}년 ${d.getMonth()+1}월`:'날짜 미상';
+    if(key!==cur){ if(cur) html+='</ul>'; html+=`<h2 class="month">${key}</h2><ul>`; cur=key; }
+    const fresh=d&&now-d<3*864e5;
+    html+=`<li><a href="/${encodeURIComponent(x.slug)}"><span class="d">${d?pad(d.getMonth()+1)+'.'+pad(d.getDate()):''}</span><span><span class="t">${fresh?'<i class="new" title="최근 3일"></i>':''}${esc(x.title)}</span>${x.desc?`<span class="s">${esc(x.desc)}</span>`:''}</span></a></li>`;
+  }
+  $('list').innerHTML=html+'</ul>';
 }
-function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-function renderGrid(){
-  const q=GQ.trim().toLowerCase();
-  const rows=ordered().filter(s=>CAT==='all'||s.vertical===CAT).filter(s=>!q||(s.title||'').toLowerCase().includes(q)||(s.description||'').toLowerCase().includes(q)||(s.slug||'').toLowerCase().includes(q));
-  if(!rows.length){ $('grid').innerHTML=`<div class="empty">${!SITES.length?t('gLoading'):(q?t('gEmptySearch'):t('gEmpty'))}</div>`; return; }
-  $('grid').innerHTML=rows.map(s=>{
-    const mine=MY&&s.owner_id===MY;
-    const edit=mine?`<a class="edit" href="/edit/?slug=${encodeURIComponent(s.slug)}">${t('edit')}</a>`:'';
-    const fb=FEATURED.includes(s.slug)?`<div class="fb">★ ${t('featured')}</div>`:'';
-    return `<div class="card">
-      ${fb}${edit}
-      <a href="/${s.slug}"><div class="cover" style="position:relative">${esc(s.title||s.slug)}<img src="/shots/${encodeURIComponent(s.slug)}.webp" loading="lazy" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top" onerror="this.remove()"></div></a>
-      <a href="/${s.slug}"><div class="meta">
-        <div class="tag">${VL(s.vertical||'page')}</div>
-        <h3>${esc(s.title||s.slug)}</h3>
-        <p>${esc(s.description||'')}</p>
-      </div></a>
-      <a class="mklike" href="/new?vertical=${encodeURIComponent(s.vertical||'etc')}">${I18N[LANG].mklike(VL(s.vertical||'page'))}</a>
-    </div>`;
-  }).join('');
-}
-applyLang();
-loadMine();
+$('q').addEventListener('input',render);
+load();
 </script>
 </body>
 </html>
