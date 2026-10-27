@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GPU 텐서 2배 해제, 윈도우판도 나왔다? — 부팅 전 UEFI 방식 팩트체크 · page.cocy.io</title>
+<meta name="description" content="윈도우에서 쓰는 방법이 실제로 나왔다. 드라이버가 아니라 윈도우 전에 도는 UEFI 부트 앱이다. 명령 처리량 2배는 재현, 실제 행렬곱은 +5~90%, 전부 특정 카드·보드 한정. 우리 3080 Ti는 보류.">
+<link rel="canonical" href="https://page.cocy.io/gpu-unlock-windows-check/">
+<meta property="og:type" content="article"><meta property="og:title" content="GPU 텐서 2배 해제, 윈도우판도 나왔다? — 부팅 전 UEFI 방식 팩트체크"><meta property="og:description" content="윈도우에서 쓰는 방법이 실제로 나왔다. 드라이버가 아니라 윈도우 전에 도는 UEFI 부트 앱이다. 명령 처리량 2배는 재현, 실제 행렬곱은 +5~90%, 전부 특정 카드·보드 한정. 우리 3080 Ti는 보류."><meta property="og:url" content="https://page.cocy.io/gpu-unlock-windows-check/"><meta name="twitter:card" content="summary">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<meta property="article:published_time" content="2026-10-27"><meta property="article:modified_time" content="2026-10-27"><meta name="author" content="cocy">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"GPU 텐서 2배 해제, 윈도우판도 나왔다? — 부팅 전 UEFI 방식 팩트체크","description":"윈도우에서 쓰는 방법이 실제로 나왔다. 드라이버가 아니라 윈도우 전에 도는 UEFI 부트 앱이다. 명령 처리량 2배는 재현, 실제 행렬곱은 +5~90%, 전부 특정 카드·보드 한정. 우리 3080 Ti는 보류.","url":"https://page.cocy.io/gpu-unlock-windows-check/","inLanguage":"ko","datePublished":"2026-10-27","dateModified":"2026-10-27","author":{"@type":"Person","name":"cocy"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif;word-break:keep-all}body>noscript{display:none}.page{max-width:860px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.1rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.note{color:var(--muted);font-size:.88rem}.box{background:#f6f1e6;border-left:4px solid var(--accent);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}.duo{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.4rem 0}.card{border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;background:#fff}.card h3{margin:0 0 .4rem}.card p{margin:0;font-size:.94rem;color:var(--soft)}.big{font:700 2.2rem/1.1 Georgia,serif;color:var(--accent)}table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{text-align:left;padding:.6rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.86em}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer}@media(max-width:620px){.page{margin:0;padding:24px 18px}.score{float:none;display:block;margin-bottom:.5rem}.duo{grid-template-columns:1fr}table{min-width:560px}}
+</style></head><body><!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) --><main class="page">
+<div class="kicker">Research note · GPU / AI · 2026-10-27</div>
+<h1>GPU 텐서 2배 해제,<br>윈도우판도 나왔다?</h1>
+<p class="lead">이틀 전 <a href="/gpu-unlock-ada-check/">리눅스판 검증</a>에서 RTX 40 시리즈의 FP16/BF16(FP32 누적) 텐서 명령이 약 2배 빨라지는 건 맞지만, 윈도우+WSL2에서는 쓸 수 없다고 정리했다. 그 사이 <b>윈도우에서 쓰는 방법이 실제로 나왔다.</b> 다만 윈도우용 드라이버가 아니다. <b>윈도우가 켜지기 전에 실행되는 부트 프로그램</b>이다.</p>
+<p><span class="pill tag">GitHub 저장소 8곳 대조</span><span class="pill tag">공개 벤치 수치</span><span class="pill tag">우리 3080 Ti 적용 판단</span></p>
+<div class="verdict"><span class="score">6/10</span><strong>판정: 윈도우에서 동작한 실기록은 있다. 그러나 전부 "특정 카드 + 특정 메인보드" 한정 실험 단계.</strong><br><span class="pill yes">✓ 윈도우에서 해제 상태로 부팅·측정한 공개 기록 다수</span><span class="pill yes">✓ VBIOS 안 건드림, 전원 끄면 원상복구</span><span class="pill warn">△ 실제 행렬곱 개선은 +5%~+90%로 들쭉날쭉, 전력 한계에 막힘</span><span class="pill no">✗ 시큐어부트 꺼야 함, 원클릭 범용 설치는 아직 위험</span></div>
+
+<h2>1. 먼저, 이게 뭘 푸는 건데</h2>
+<p>RTX 지포스 카드의 텐서 코어는 FP16·BF16 숫자를 곱한 뒤 <b>FP32로 더하는</b> 계산을 일부러 절반 속도로 돌린다. 같은 칩을 쓰는 비싼 업무용 카드와 차별을 두려는 제한으로 알려져 있다. 리눅스 쪽 프로젝트(<a href="https://github.com/Zagitta/gpu-unlock">Zagitta/gpu-unlock</a> → <a href="https://github.com/JustAResearcher/gpu-unlock-ada">gpu-unlock-ada</a>)가 이 제한을 카드 안에서 꺼서, 해당 명령의 처리량을 약 2배로 되돌렸다.</p>
+<p>PyTorch는 FP16·BF16 학습·추론에서 기본으로 이 경로를 쓴다. 그래서 LoRA 학습, 이미지·영상 생성, 프롬프트 처리 같은 작업이 이론상 혜택을 본다. 게임, INT8, 한 명이 챗봇과 대화할 때의 토큰 생성(메모리 대역폭이 병목)은 거의 그대로다.</p>
+
+<h2>2. 윈도우에서는 어떻게 하나 — "부팅 전 끼어들기"</h2>
+<p>이 설정은 그래픽카드가 <b>NVIDIA 서명 펌웨어를 거쳐서만</b> 받아들인다. 윈도우 드라이버가 올라온 뒤에는 바꿀 수 없다. 그래서 윈도우판은 전부 같은 구조다.</p>
+<ol>
+<li>PC를 켜면 윈도우보다 먼저 <b>UEFI 프로그램</b>이 실행된다(USB나 별도 부팅 파티션).</li>
+<li>NVIDIA 공개 드라이버에서 꺼낸 펌웨어 파일로 카드의 서명 펌웨어 체인을 돌리고, 제한 레지스터를 바꾼다.</li>
+<li>카드를 리셋하고 화면을 돌려준 뒤 윈도우를 띄운다. 이후 <b>정품 NVIDIA 드라이버가 해제된 카드를 그대로 인식</b>한다. WSL2·도커 CUDA에서도 보인다.</li>
+<li>설정은 휘발성이다. 전원을 끄면 원래대로 돌아가서 <b>부팅할 때마다 다시</b> 해야 한다.</li>
+</ol>
+<div class="box"><b>공통 전제 조건</b> — 시큐어부트 끄기(서명 안 된 프로그램), BitLocker 일시 중지, 부팅 순서 변경. 프로그램이 펌웨어를 다루는 중간에 실패하면 화면이 검게 멈추고 전원을 내려야 복구된다.</div>
+
+<h2>3. 누가 뭘 내놨나 (10/20~10/26)</h2>
+<div style="overflow-x:auto"><table><thead><tr><th>저장소</th><th>대상</th><th>상태·수치</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/impacifist/Windows-GPU-UNLOCK">impacifist/Windows-GPU-UNLOCK</a> ★767</td><td>RTX 30 (3060·3070 Ti·3090·3090 Ti)</td><td>원조 리눅스 저자가 README에서 "윈도우는 이쪽" 이라고 링크한 포트. 보드·카드 조합별 프로필, 소스만 배포, 직접 빌드</td></tr>
+<tr><td><a href="https://github.com/JustAResearcher/gpu-unlock-ada">gpu-unlock-ada</a> windows/ad104-msi</td><td>MSI RTX 4070 Ti 1대</td><td>cuBLAS FP16 +80.1%, BF16 +76.4%. 한 보드 프로필 전용 참고 구현, 설치기 없음</td></tr>
+<tr><td><a href="https://github.com/PantACRO4life/gpu-unlock-4090-windows">PantACRO4life</a> ★8</td><td>MSI RTX 4090 Suprim X 1대</td><td>텐서 명령 +41~44%, cuBLAS BF16 <b>+5%</b>, TF32 +26%. 해제 상태에서 전력 한계에 걸린 시간 55~65%</td></tr>
+<tr><td><a href="https://github.com/Zihao-Wu06/gpu-unlock-for-windows">Zihao-Wu06</a> ★6</td><td>RTX 40 전반(4090만 실측)</td><td>원클릭 설치기+GUI. TF32 +55%, FP16 4096³ +35%, 8192³ +10%, BF16 +14%</td></tr>
+<tr><td><a href="https://github.com/MarvinFS/rtx4090-uefi">MarvinFS</a> ★2</td><td>RTX 4090</td><td>명령 처리량 167→약 330 TFLOPS, 실제 GEMM 최대 +34%(리눅스 측정)</td></tr>
+<tr><td><a href="https://github.com/physicsdolphin/nv-uefi-unlocker">physicsdolphin</a> ★11</td><td>RTX 4060 노트북</td><td>FP16 GEMM 29.89→49.33 TFLOPS(1.65×). Rust 구현</td></tr>
+<tr><td><a href="https://github.com/teateatea03/rtx3080ti-windows-usb-unlock">teateatea03</a></td><td>PNY RTX 3080 Ti 1대</td><td>cuBLAS FP16 59.7→113.3 TFLOPS(<b>1.90×</b>), BF16 1.62×. 단, 화면은 별도 RTX 5080이 담당</td></tr>
+</tbody></table></div>
+<p class="note">별 개수·날짜는 2026-10-27 GitHub API 기준. 전부 GPL-2.0, 생성 후 1주일 이내. 수치는 각 저장소 작성자가 자기 장비에서 잰 값이다.</p>
+
+<h2>4. "2배"는 어디까지 진짜인가</h2>
+<ul>
+<li><b>명령 처리량 2배는 윈도우에서도 재현됐다.</b> 리눅스판과 같은 메커니즘이고, 여러 사람이 서로 다른 카드에서 1.65~1.98배를 보고했다.</li>
+<li><b>실제 행렬곱은 카드마다 크게 다르다.</b> 30 시리즈·4070 Ti는 +60~90%까지 나왔다. 4090은 +5~35%에 그쳤다. 4090은 원래 빨라서 <b>전력 한계에 먼저 걸리기</b> 때문이다. 전력 제한을 520W로 올려도 BF16은 +1% 늘었을 뿐이다.</li>
+<li><b>실제 앱은 아직 아무도 안 쟀다.</b> 학습, ComfyUI 이미지 생성, LLM 프롬프트 처리 같은 실사용 속도는 저장소 어디에도 측정이 없다. 계산 결과는 해제 전후 비트 단위로 같다는 보고가 있다.</li>
+</ul>
+
+<h2>5. 위험 — 왜 아직 "남의 PC 실험" 단계인가</h2>
+<ul>
+<li><b>프로필 고정</b>: 대부분 "이 카드 모델 + 이 메인보드 + 이 BIOS 버전"에서만 검증됐다. 같은 4090이라도 제조사나 보드가 다르면 안 맞는다고 작성자들이 명시한다.</li>
+<li><b>보안 설정 해제</b>: 시큐어부트를 꺼야 하고, BitLocker 상태에 따라 복구 키를 요구받을 수 있다.</li>
+<li><b>검은 화면 복구</b>: 펌웨어 처리 중 실패하면 강제로 전원을 꺼야 한다. 영구 손상 보고는 아직 없지만, 나온 지 1주일이라 장기 안정성 근거도 없다.</li>
+<li><b>보증·약관</b>: NVIDIA가 의도적으로 걸어 둔 제한을 푸는 것이다. 제조사 보증에 어떤 영향이 있는지는 확인된 바 없다.</li>
+</ul>
+
+<h2>6. cocy 판단 — 우리 RTX 3080 Ti에는?</h2>
+<div class="box">결론: <b>지금은 보류.</b> 3080 Ti 윈도우판(1.90×)이 있긴 하다. 하지만 검증된 구성은 <b>해제할 카드에 화면을 연결하지 않고, 화면은 다른 GPU(RTX 5080)가 담당</b>하는 형태다. 우리 PC는 3080 Ti 한 장이 화면까지 맡고 있다. 범용 포트(Windows-GPU-UNLOCK)에도 3080 전용 프로필이 아직 없다. 우리가 이 카드로 돌리는 FLUX·SDXL 생성이나 LoRA 학습은 혜택 대상이 맞지만, 메인 작업 PC의 부팅 체인을 이 정도로 미검증인 코드에 맡길 이유는 없다. <b>"같은 보드·같은 카드 성공 기록 + 실제 앱(ComfyUI·LoRA) 측정"</b>이 나오면 다시 본다.</div>
+
+<h2>출처</h2>
+<ul class="sources">
+<li><a href="/gpu-unlock-ada-check/">이전 검증: RTX 4090 텐서 성능 2배, 진짜일까? (리눅스판)</a></li>
+<li><a href="https://github.com/Zagitta/gpu-unlock">Zagitta/gpu-unlock — 원조, README Q&A의 윈도우 포트 링크</a></li>
+<li><a href="https://github.com/impacifist/Windows-GPU-UNLOCK">impacifist/Windows-GPU-UNLOCK</a></li>
+<li><a href="https://github.com/JustAResearcher/gpu-unlock-ada">JustAResearcher/gpu-unlock-ada — Windows AD104 참고 구현·FP8 교차 측정</a></li>
+<li><a href="https://github.com/PantACRO4life/gpu-unlock-4090-windows">PantACRO4life/gpu-unlock-4090-windows</a> · <a href="https://github.com/Zihao-Wu06/gpu-unlock-for-windows">Zihao-Wu06/gpu-unlock-for-windows</a> · <a href="https://github.com/MarvinFS/rtx4090-uefi">MarvinFS/rtx4090-uefi</a></li>
+<li><a href="https://github.com/physicsdolphin/nv-uefi-unlocker">physicsdolphin/nv-uefi-unlocker</a> · <a href="https://github.com/teateatea03/rtx3080ti-windows-usb-unlock">teateatea03/rtx3080ti-windows-usb-unlock</a></li>
+</ul><div class="foot">cocy.io research note · 2026-10-27 · 공개 저장소·작성자 측정값 대조, 우리 장비에서 직접 실행하지 않음</div>
+</main><button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button><script type="text/markdown" id="mdsrc"># GPU 텐서 2배 해제, 윈도우판도 나왔다? — 부팅 전 UEFI 방식 팩트체크
+
+판정 6/10. 윈도우에서 동작한 실기록은 있지만 전부 특정 카드+메인보드 한정 실험 단계.
+
+- 방식: 윈도우 드라이버가 아니라 부팅 전 UEFI 앱이 NVIDIA 서명 펌웨어 체인으로 제한 레지스터를 바꾸고 윈도우를 띄운다. 휘발성(부팅마다 재실행), VBIOS 무수정.
+- 전제: 시큐어부트 off, BitLocker 일시중지, 부팅순서 변경. 중간 실패 시 검은 화면→전원 off 복구.
+- 수치(작성자 실측): 4070 Ti cuBLAS +76~80%, 3080 Ti FP16 1.90×, 4060 노트북 1.65×, 4090은 cuBLAS BF16 +5%~+34%(전력 한계).
+- 실제 앱(학습·ComfyUI·LLM 프롬프트) 측정은 아직 없음.
+- 우리 3080 Ti: 검증 구성이 '화면은 다른 GPU' 형태라 단일 GPU PC엔 그대로 안 맞음 → 보류.
+
+원조: https://github.com/Zagitta/gpu-unlock
+윈도우 포트: https://github.com/impacifist/Windows-GPU-UNLOCK
+이전 검증: https://page.cocy.io/gpu-unlock-ada-check/
+분석: https://page.cocy.io/gpu-unlock-windows-check/</script><script>(function(){var b=document.getElementById('mdbtn'),m=document.getElementById('mdsrc').textContent.trim();function f(){var x=new Blob([m],{type:'text/markdown'}),a=document.createElement('a');a.href=URL.createObjectURL(x);a.download='gpu-unlock-windows-check.md';document.body.appendChild(a);a.click();a.remove()}b.onclick=function(){if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(m).then(function(){b.textContent='✅ 복사됨';setTimeout(function(){b.textContent='📋 위키용 Markdown 복사'},1900)}).catch(f);else f()}})();</script></body></html>
