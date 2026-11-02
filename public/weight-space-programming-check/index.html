@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GPT-6 Astra가 가중치를 직접 고쳐 수학 6배? — Weight-Space Programming 팩트체크 · page.cocy.io</title>
+<meta name="description" content="실험과 로그는 진짜다. 다만 Qwen3.5-0.8B 수학 6배는 대부분 무한 반복 버그를 끈 효과다. 저자 기준선 IFEval 21점은 Qwen 공식 44점의 절반이고, 반복이 없는 Gemma에선 향상이 거의 없었다.">
+<link rel="canonical" href="https://page.cocy.io/weight-space-programming-check/">
+<meta property="og:type" content="article"><meta property="og:title" content="GPT-6 Astra가 가중치를 직접 고쳐 수학 6배? — 팩트체크"><meta property="og:description" content="0.016% 수정은 진짜. 그런데 고친 건 '수학 실력'이 아니라 '끝없이 반복하는 버릇'이다."><meta property="og:url" content="https://page.cocy.io/weight-space-programming-check/"><meta name="twitter:card" content="summary">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<meta property="article:published_time" content="2026-11-03"><meta property="article:modified_time" content="2026-11-03"><meta name="author" content="cocy">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"GPT-6 Astra가 가중치를 직접 고쳐 수학 6배? — Weight-Space Programming 팩트체크","description":"Rikiya Takehi의 Weight-Space Programming 블로그 실험을 원문·공개 로그·Qwen 공식 모델 카드와 대조했다.","url":"https://page.cocy.io/weight-space-programming-check/","inLanguage":"ko","datePublished":"2026-11-03","dateModified":"2026-11-03","author":{"@type":"Person","name":"cocy"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif;word-break:keep-all}body>noscript{display:none}.page{max-width:860px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.1rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.note{color:var(--muted);font-size:.88rem}.box{background:#f6f1e6;border-left:4px solid var(--accent);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}.duo{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.4rem 0}.card{border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;background:#fff}.card h3{margin:0 0 .4rem}.card p{margin:0;font-size:.94rem;color:var(--soft)}.big{font:700 2.2rem/1.1 Georgia,serif;color:var(--accent)}table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{text-align:left;padding:.6rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.86em}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer}@media(max-width:620px){.page{margin:0;padding:24px 18px}.score{float:none;display:block;margin-bottom:.5rem}.duo{grid-template-columns:1fr}table{min-width:560px}}
+</style></head><body><!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) --><main class="page">
+<div class="kicker">Research note · AI interpretability · 2026-11-03</div>
+<h1>GPT-6 Astra가 가중치를<br>직접 고쳐 수학 6배?</h1>
+<p class="lead">MIT 박사과정 Rikiya Takehi의 <a href="https://x.com/rikiyatakehi/status/2117313742891327994">X 글</a>(조회 216만, 좋아요 2.7만)이 화제다. 요지는 이렇다. GPT-6 Astra에게 Qwen3.5-0.8B를 수학 잘하게 만들라고 했더니, 학습 없이 <b>가중치 0.016%만 직접 고쳐</b> 수학 점수를 최대 6배로 올렸다. <a href="https://rikiyat.github.io/blog/weight-space-programming/">원문 블로그</a>와 <a href="https://github.com/RikiyaT/lm_understand-logs">공개 로그</a>를 읽었고, Qwen 공식 모델 카드와 숫자를 대조했다. <b>실험은 진짜다.</b> 다만 고친 건 ‘수학 실력’이 아니라 <b>‘끝없이 같은 말을 반복하는 버릇’</b>이다.</p>
+<p><span class="pill tag">원문·로그 대조</span><span class="pill tag">Qwen 공식 카드 비교</span><span class="pill tag">쉬운 설명</span></p>
+<div class="verdict"><span class="score">6/10</span><strong>판정: 실험·숫자는 원문과 일치. “수학 6배”는 반복 버그 제거 효과를 능력 향상처럼 보이게 한 헤드라인.</strong><br><span class="pill yes">✓ 131,072개(0.016%) 수정, MATH-500 7.9→48.1%</span><span class="pill yes">✓ 전 실험 로그·수정 모델 공개, HF 측 재구성·재평가</span><span class="pill warn">△ 기준선 IFEval 21.0, Qwen 공식은 44.0(사고)·52.1(비사고)</span><span class="pill warn">△ 단일 팀 블로그, 동료 심사 없음, Astra는 비공개 모델</span><span class="pill no">✗ 반복이 없는 Gemma 270M에선 향상 거의 없음(저자 인정)</span></div>
+
+<h2>1. 무슨 주장인가 — Weight-Space Programming</h2>
+<p>AI 모델은 숫자(가중치) 수억~수조 개로 된 계산기다. 지금까지 이 숫자는 사람이 직접 쓰지 않았다. 데이터를 넣고 경사하강법(Adam 등)이 조금씩 고치게 했다. 저자의 주장은 이렇다. <b>이제 범용 LLM이 숫자를 직접 읽고, 무엇을 계산하는지 추론해서, 원하는 대로 고쳐 쓸 수 있다.</b> 학습 루프를 짜게 한 것도 아니다. 이걸 ‘가중치 공간 프로그래밍’이라 이름 붙였다.</p>
+<p>블로그에는 실험 8개가 있다. 크게 세 갈래다.</p>
+<div style="overflow-x:auto"><table><thead><tr><th>갈래</th><th>실험</th><th>결과(저자 보고)</th></tr></thead><tbody>
+<tr><td rowspan="3">읽기</td><td>1. 게임 정책망(17,253개)이 어떤 게임용인지</td><td>도구 없이 4개 게임 모두 맞힘(보기 미제공)</td></tr>
+<tr><td>2·3. 확산 모델이 그리는 도형 / 문자 LM의 학습 언어</td><td>도형 3/3, 언어 3/3. 복사 헤드(induction head) 위치도 실측과 일치</td></tr>
+<tr><td>7. 두 Gemma 270M 중 아첨 모델 찾기</td><td><b>가중치만으로는 4회 모두 실패.</b> 어텐션 패턴을 보여주자 3/3 성공</td></tr>
+<tr><td>고치기</td><td>4. 경사로를 못 넘는 Kinetix 자동차 정책</td><td>도구 없이 한 번에 3.5% 수정, 성공률 0→100%(1,024회)</td></tr>
+<tr><td rowspan="2">새로 쓰기</td><td>5. MinAtar 게임 3종 정책을 0부터</td><td>3종 모두 PPO 1억 스텝보다 높음. 브레이크아웃 517 vs PPO 5억 스텝 25. 시퀘스트는 PPO 5억의 60%</td></tr>
+<tr><td>6. 바둑 9×9 망(148만 개)</td><td>순전파 50회 허용 시 같은 크기 PPO(2천만 판 학습)를 이김</td></tr>
+<tr><td>고치기(LLM)</td><td>8. Qwen3.5-0.8B 수학 향상</td><td>MATH-500 7.9→48.1%, GSM8K 13.8→67.1%, IFEval 21.0→62.3%</td></tr>
+</tbody></table></div>
+<p class="note">숫자는 모두 원문 블로그 기준(저자 자체 실험). 독립 재현은 아직 없다.</p>
+
+<h2>2. 바이럴 숫자 — Qwen 실험을 뜯어보면</h2>
+<p>트윗의 “수학 최대 6배”는 실험 8이다. 과정은 이랬다.</p>
+<ol>
+<li>기본 Qwen3.5-0.8B를 사고(thinking) 모드로 돌리면 대부분 <b>같은 문장을 끝없이 반복</b>한다. 연습 답안 96개 중 85개가 32,768토큰 한도까지 갔다. MATH-500에서는 93%가 한도에 걸렸다.</li>
+<li>Astra는 이 반복이 <b>층 15·19의 MLP가 쓰는 방향 하나</b>에서 나온다고 추적했다. 그 방향을 출력 열 64개씩에서 빼냈다. 바뀐 숫자는 131,072개, 전체의 0.016%다.</li>
+<li>한도에 걸리는 답이 93%에서 33%로 줄었다. 답을 끝까지 쓰게 되니 점수가 올랐다.</li>
+</ol>
+<div class="duo">
+<div class="card"><div class="big">7.9 → 48.1%</div><p>MATH-500 (순전파 50회 허용). 10회·25회 허용 땐 12.3%·14.1%로 거의 안 움직였다</p></div>
+<div class="card"><div class="big">93 → 33%</div><p>토큰 한도에 걸린 답 비율. 점수 상승은 이 숫자와 같이 움직였다</p></div>
+</div>
+<p>여기서 두 가지를 같이 봐야 한다.</p>
+<h3>① 기준선이 비정상적으로 낮다</h3>
+<p>Qwen 공식 <a href="https://huggingface.co/Qwen/Qwen3.5-0.8B">모델 카드</a>에 0.8B의 IFEval 점수가 있다. <b>사고 모드 44.0, 비사고 모드 52.1</b>이다. 저자 측정 기준선은 21.0으로 공식의 절반이 안 된다. 이유는 카드에 이미 적혀 있다. “0.8B는 사고 모드에서 다른 Qwen3.5보다 반복에 빠지기 쉽다.” 그리고 <b>0.8B는 기본값이 비사고 모드</b>다. 저자는 가장 반복이 심한 조건으로 기준선을 잡았다. 수정 후 IFEval 62.3은 공식 수치보다 높다. 그래서 반복 제거 이상의 효과가 일부 있을 수는 있다. 다만 “3배”라는 배수는 망가진 기준선에서 나온 숫자다.</p>
+<h3>② 반복이 없는 모델에선 효과가 없었다 — 저자 본인의 대조 실험</h3>
+<p>저자는 이 점을 숨기지 않았다. 반복이 거의 없는 Gemma 3 270M(한도 도달 8.5%)으로 같은 실험을 했다. MATH-500은 <b>6.8% → 7.0~7.7%</b>로 오차 수준이었다. Astra 스스로도 “개선이 확인되지 않았다”고 보고했다. 블로그의 결론 문장은 이렇다. <b>“가중치 수정은 능력을 가리던 장애물을 치울 수 있지만, 없는 능력을 더하지는 못했다.”</b> 헤드라인보다 이 문장이 정확하다.</p>
+<div class="box"><b>한 줄 요약</b> — 수학을 가르친 게 아니라 <b>말을 더듬는 버릇을 고쳐서 원래 실력이 나오게 한 것</b>이다. 그 버릇의 위치를 가중치에서 직접 찾아냈다는 점은 진짜 흥미롭다.</div>
+
+<h2>3. 그래도 진짜 신호는 어디인가</h2>
+<ul>
+<li><b>작은 망 실험이 더 강하다.</b> 보기도 안 준 채 가중치 숫자만 보고 게임 4개를 다 맞혔다. 경사로 자동차는 우회 경로를 몇 유닛에 심어 0%를 100%로 만들었다. 브레이크아웃 정책은 0부터 써서 PPO 5억 스텝의 20배 점수를 냈다. 사람이 손으로 하기 어려운 일이고, 일반적인 알고리즘도 이렇게는 못 한다.</li>
+<li><b>Qwen 실험도 방법 자체는 의미 있다.</b> 가중치에서 ‘반복 방향’을 찾아 빼는 건 이미 알려진 해석 기법(방향 제거)이다. 새로운 건 범용 모델이 이 기법을 <b>스스로 골라서</b> 실제 0.8B 모델에 적용했다는 점이다.</li>
+<li><b>로그가 전부 공개됐다.</b> Astra에게 보낸 프롬프트, 추론 요약, 실행 코드, 평가가 모두 <a href="https://github.com/RikiyaT/lm_understand-logs">GitHub</a>에 있다. 수정된 Qwen은 <a href="https://huggingface.co/RikiyaT/Qwen3.5-0.8B-weight-space-programming">Hugging Face</a>(Apache-2.0)에 있다. Hugging Face의 Ahsen Khaliq가 로그로 모델을 재구성하고 평가를 다시 돌렸다고 저자는 밝혔다. 다만 이건 수정 결과의 재확인이다. Astra가 같은 수정을 다시 찾아내는지는 재현되지 않았다.</li>
+</ul>
+
+<h2>4. 걸리는 점</h2>
+<ul>
+<li><b>단일 팀 블로그다.</b> 논문 심사를 거치지 않았다. 모든 숫자가 저자 측 실험이다.</li>
+<li><b>Astra는 비공개 모델이다.</b> 왜 이게 되는지 아무도 들여다볼 수 없다. <a href="https://news.ycombinator.com/item?id=50341174">Hacker News 토론</a>(1,478점, 댓글 482개)에서도 이 의심이 많았다. OpenAI가 해석가능성·가중치 데이터를 일부러 학습시켰을 수 있다는 것이다. 그렇다면 ‘창발’보다는 ‘학습된 기술’에 가깝다. 확인할 방법은 없다.</li>
+<li><b>읽기 실험엔 한계가 있다.</b> 가장 실용적인 질문은 “어느 모델이 아첨하는가”였다. 이건 가중치만으로 4번 다 실패했다. 실제로 감사(auditing)에 쓰려면 아직 실행 결과를 봐야 한다.</li>
+<li><b>규모가 작다.</b> 가장 큰 대상이 0.8B이고, 그 결과도 반복 제거 하나였다. 저자도 “문맥 길이와 하니스의 비효율로 아직 제한적”이라고 썼다.</li>
+</ul>
+
+<h2>5. cocy 판단</h2>
+<div class="box">LLM이 신경망 가중치를 <b>읽는 능력</b>에 대한 첫 진지한 증거로는 가치가 크다. 작은 망 실험과 공개 로그는 신뢰할 만하다. 하지만 바이럴 문구 “수학 6배, 지시 따르기 3배”는 과장이다. 반복 버그로 망가진 기준선에서 잰 배수이고, 버그가 없는 모델에선 효과가 사라졌다. 저자 본인이 그렇게 썼다. 다음에 볼 질문은 두 가지다. <b>① 다른 연구자가 Astra로 같은 수정을 다시 찾아내는가. ② 반복 같은 뚜렷한 고장 말고 실제 능력을 더할 수 있는가.</b> 지금 우리 서비스에 바로 쓸 기술은 아니다. 다만 소형 로컬 모델의 반복 문제를 가중치에서 직접 고치는 방향은 기억해 둘 만하다.</div>
+
+<h2>출처</h2>
+<ul class="sources">
+<li><a href="https://x.com/rikiyatakehi/status/2117313742891327994">Rikiya Takehi — X 원글 (2026-11-02)</a></li>
+<li><a href="https://rikiyat.github.io/blog/weight-space-programming/">Sparks of Weight-Space Programming — 원문 블로그 (실험 1~8, 표·설정)</a></li>
+<li><a href="https://github.com/RikiyaT/lm_understand-logs">RikiyaT/lm_understand-logs — 전 실험 로그</a></li>
+<li><a href="https://huggingface.co/RikiyaT/Qwen3.5-0.8B-weight-space-programming">수정된 Qwen3.5-0.8B (Hugging Face, Apache-2.0)</a> · <a href="https://huggingface.co/spaces/akhaliq/weight-space-programming-demo">데모</a></li>
+<li><a href="https://huggingface.co/Qwen/Qwen3.5-0.8B">Qwen3.5-0.8B 공식 모델 카드 — IFEval 44.0/52.1, 사고 모드 반복 경고, 기본 비사고 모드</a></li>
+<li><a href="https://news.ycombinator.com/item?id=50341174">Hacker News 토론</a></li>
+</ul><div class="foot">cocy.io research note · 2026-11-03 · 원문·공개 로그·공식 모델 카드 대조. 실험 재현 아님(Astra 비공개)</div>
+</main><button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button><script type="text/markdown" id="mdsrc"># GPT-6 Astra가 가중치를 직접 고쳐 수학 6배? — Weight-Space Programming 팩트체크
+
+판정 6/10. 실험과 로그는 진짜다. 다만 "수학 6배"는 대부분 Qwen3.5-0.8B의 무한 반복(thinking loop)을 끈 효과다.
+
+- 원문: MIT 박사과정 Rikiya Takehi 블로그(2026-11-02). GPT-6 Astra가 학습·기울기 없이 가중치를 읽고 고친다.
+- Qwen3.5-0.8B: 층 15·19 MLP의 '반복 방향' 하나를 64열씩 빼서 131,072개(0.016%) 수정. MATH-500 7.9→48.1%, GSM8K 13.8→67.1%, IFEval 21.0→62.3%. 토큰 한도 도달 93→33%.
+- 기준선이 비정상적으로 낮다: Qwen 공식 카드의 0.8B IFEval은 사고 모드 44.0, 비사고 모드 52.1. 저자 기준선 21.0. 0.8B는 기본이 비사고 모드인데 반복이 잦은 사고 모드로 평가했다.
+- 반복이 거의 없는 Gemma 3 270M에서는 MATH-500 6.8→최대 7.7. 저자도 "없는 능력은 못 만든다"고 인정했다.
+- 작은 망 실험(게임 맞히기 4/4, Kinetix 0→100%, MinAtar 원샷 가중치 작성)이 더 흥미로운 결과다. 전부 저자 자체 실험이고 Astra는 비공개 모델이다.
+- 아첨 모델 판별: 가중치만으로는 4회 모두 실패. 어텐션 패턴을 보여주자 3/3 성공.
+
+원문: https://rikiyat.github.io/blog/weight-space-programming/
+로그: https://github.com/RikiyaT/lm_understand-logs
+분석: https://page.cocy.io/weight-space-programming-check/</script><script>(function(){var b=document.getElementById('mdbtn'),m=document.getElementById('mdsrc').textContent.trim();function f(){var x=new Blob([m],{type:'text/markdown'}),a=document.createElement('a');a.href=URL.createObjectURL(x);a.download='weight-space-programming-check.md';document.body.appendChild(a);a.click();a.remove()}b.onclick=function(){if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(m).then(function(){b.textContent='✅ 복사됨';setTimeout(function(){b.textContent='📋 위키용 Markdown 복사'},1900)}).catch(f);else f()}})();</script></body></html>
