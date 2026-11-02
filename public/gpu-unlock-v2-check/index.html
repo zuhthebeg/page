@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NVIDIA가 일부러 막은 GPU 속도, 풀렸다? — gpu-unlock v2 팩트체크 · page.cocy.io</title>
+<meta name="description" content="RTX 3060 +87%, 4090 2배는 원본 저장소 README의 행렬곱 최대치(사용자 보고 집계)와 일치한다. 절반 제한 자체는 NVIDIA 백서에 적혀 있다. 다만 실제 작업은 +25~55%, 토큰 생성·양자화 모델·게임은 변화 없음, 리눅스 전용이다.">
+<link rel="canonical" href="https://page.cocy.io/gpu-unlock-v2-check/">
+<meta property="og:type" content="article"><meta property="og:title" content="NVIDIA가 일부러 막은 GPU 속도, 풀렸다? — 팩트체크"><meta property="og:description" content="숫자는 원본과 같다. 그런데 2배는 행렬곱 최대치이고, 실제 체감은 작업마다 0~55%다."><meta property="og:url" content="https://page.cocy.io/gpu-unlock-v2-check/"><meta name="twitter:card" content="summary">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<meta property="article:published_time" content="2026-11-03"><meta property="article:modified_time" content="2026-11-03"><meta name="author" content="cocy">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"NVIDIA가 일부러 막은 GPU 속도, 풀렸다? — gpu-unlock v2 팩트체크","description":"Zagitta/gpu-unlock v2의 RTX 20/30/40 텐서 속도 해제 주장을 README·NVIDIA Ada 백서·이슈와 대조했다.","url":"https://page.cocy.io/gpu-unlock-v2-check/","inLanguage":"ko","datePublished":"2026-11-03","dateModified":"2026-11-03","author":{"@type":"Person","name":"cocy"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--muted:#938b7e;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#9a6a16;--bad:#9d493e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif;word-break:keep-all}body>noscript{display:none}.page{max-width:860px;margin:38px auto;padding:clamp(28px,6vw,70px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}h1,h2{font-family:Georgia,serif;line-height:1.25}h1{font-size:clamp(2rem,6vw,3.1rem);margin:.5em 0 .35em;letter-spacing:-.04em}.lead{font-size:1.1rem;color:var(--soft)}h2{margin-top:2.6em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.45em}h3{font-size:1.02rem;margin:1.6em 0 .5em}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.25rem 1.4rem;margin:2rem 0;background:#fffaf2}.verdict strong{font-size:1.2rem}.score{float:right;font:700 1.6rem/1 Georgia,serif;color:var(--accent)}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.3rem .25rem 0 0;font-size:.82rem}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}.tag{background:#efe9dc;color:var(--soft)}.note{color:var(--muted);font-size:.88rem}.box{background:#f6f1e6;border-left:4px solid var(--accent);padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin:1.4rem 0}.duo{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.4rem 0}.card{border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;background:#fff}.card h3{margin:0 0 .4rem}.card p{margin:0;font-size:.94rem;color:var(--soft)}.big{font:700 2.2rem/1.1 Georgia,serif;color:var(--accent)}table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{text-align:left;padding:.6rem;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:.72rem}a{color:var(--accent)}.sources{padding-left:1.2rem}.sources li{margin-bottom:.4rem}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem;color:var(--muted);font-size:.82rem}code{background:#f0ebe1;padding:.1rem .35rem;border-radius:3px;font-size:.86em}.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer}@media(max-width:620px){.page{margin:0;padding:24px 18px}.score{float:none;display:block;margin-bottom:.5rem}.duo{grid-template-columns:1fr}table{min-width:560px}}
+</style></head><body><!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) --><main class="page">
+<div class="kicker">Research note · GPU · 2026-11-03</div>
+<h1>NVIDIA가 일부러 막은<br>GPU 속도, 풀렸다?</h1>
+<p class="lead"><a href="https://x.com/NINJA____1/status/2117237048969191884">X에서 23만 뷰</a>가 나온 글이다. “NVIDIA가 소비자용 GPU를 일부러 막아뒀는데 누가 풀었다. RTX 3060 +87%, 3090 +65%, 4090 거의 2배. BIOS 플래시도 드라이버 패치도 없다.” 캡처 속 저장소는 <a href="https://github.com/Zagitta/gpu-unlock">Zagitta/gpu-unlock</a>이다. 우리는 이 계열을 이미 두 번 다뤘다(<a href="/gpu-unlock-ada-check/">4090판</a>, <a href="/gpu-unlock-windows-check/">윈도우판</a>). 이번엔 RTX 20·30·40을 한 번에 지원하는 <b>원본 v2</b>와 트윗 숫자를 대조했다. <b>숫자는 원본과 같다.</b> 다만 “2배”는 행렬곱 최대치이고, 실제 체감은 작업마다 0~55%다.</p>
+<p><span class="pill tag">README·이슈 대조</span><span class="pill tag">NVIDIA 백서 확인</span><span class="pill tag">우리 3080 Ti 적용성</span></p>
+<div class="verdict"><span class="score">7/10</span><strong>판정: 제한은 실재하고 해제도 동작한다. “GPU가 2배 빨라진다”로 읽으면 과장.</strong><br><span class="pill yes">✓ 절반 제한은 NVIDIA 백서 표에 그대로 있음</span><span class="pill yes">✓ 트윗 수치 = README 행렬곱 표(사용자 보고 집계)</span><span class="pill yes">✓ VBIOS·드라이버 수정 없음, 결과값 비트 단위 동일 주장</span><span class="pill warn">△ 실제 작업은 +25~55%, 4090은 전력 한계</span><span class="pill no">✗ 토큰 생성·양자화 모델·게임은 거의 변화 없음</span><span class="pill no">✗ 리눅스 전용, RTX 30 외에는 실험 단계</span></div>
+
+<h2>1. “일부러 막았다”는 사실인가</h2>
+<p>사실이다. 그리고 NVIDIA가 직접 공개한 숫자다. <a href="https://images.nvidia.com/aem-dam/Solutions/geforce/ada/nvidia-ada-gpu-architecture.pdf">Ada 아키텍처 백서</a> 부록 A의 RTX 4090 사양표를 보면 이렇다.</p>
+<div style="overflow-x:auto"><table><thead><tr><th>RTX 4090 텐서 코어 (희소성 없음)</th><th>TFLOPS</th></tr></thead><tbody>
+<tr><td>FP16 곱셈, <b>FP16</b> 누적</td><td>330.3</td></tr>
+<tr><td>FP16 곱셈, <b>FP32</b> 누적</td><td>165.2</td></tr>
+<tr><td>BF16 곱셈, FP32 누적</td><td>165.2</td></tr>
+<tr><td>TF32</td><td>82.6</td></tr>
+</tbody></table></div>
+<p class="note">출처: NVIDIA Ada GPU Architecture 백서 30쪽. 같은 표의 3090 Ti도 FP16 누적 160, FP32 누적 80으로 절반이다.</p>
+<p>AI 학습과 양자화하지 않은 추론은 정확도 때문에 대부분 <b>FP32 누적</b>을 쓴다. 바로 그 모드가 GeForce에서는 절반 속도다. 같은 칩을 쓰는 전문가용 카드는 전체 속도로 돈다. 저장소 FAQ도 이유를 시장 구분이라고 설명한다. 비싼 전문가용 카드를 사게 하려는 것이다. 그래서 트윗의 “일부러”는 과장이 아니다.</p>
+
+<h2>2. 트윗 숫자는 어디서 왔나</h2>
+<p>README의 행렬곱 표 그대로다. 기본 전력 제한, BF16, FP32 누적 조건이다.</p>
+<div style="overflow-x:auto"><table><thead><tr><th>카드</th><th>해제 전</th><th>해제 후</th><th>증가</th></tr></thead><tbody>
+<tr><td>RTX 3060 12GB</td><td>27</td><td>51</td><td>+87%</td></tr>
+<tr><td>RTX 3080 10GB</td><td>65</td><td>113</td><td>+73%</td></tr>
+<tr><td>RTX 3090</td><td>75</td><td>125</td><td>+65%</td></tr>
+<tr><td>RTX 4080</td><td>104</td><td>193</td><td>+87%</td></tr>
+<tr><td>RTX 4090</td><td>165</td><td>329</td><td>+100% (최대 MMA 속도)</td></tr>
+</tbody></table></div>
+<p class="note">단위 TFLOPS. README는 이 수치가 사용자들이 올린 <a href="https://github.com/Zagitta/gpu-unlock/issues">호환성 보고</a>에서 나왔다고 밝힌다. 독립 매체의 통제된 측정은 아니다.</p>
+<p>4090의 “거의 2배”는 README 스스로 단서를 달았다. <b>“4090은 텐서 코어보다 전력이 먼저 바닥난다. 기본 전력에서 큰 행렬곱은 최대치보다 훨씬 덜 오른다.”</b> 2배는 이론상 최대 연산 속도이고, 실측 행렬곱이 2배라는 뜻이 아니다. 우리 <a href="/gpu-unlock-windows-check/">윈도우판 페이지</a>에서도 실제 행렬곱 개선은 +5%~+90%로 들쭉날쭉했다.</p>
+
+<h2>3. 실제로 체감하는 건 얼마나</h2>
+<p>README의 실제 작업 표가 트윗보다 훨씬 중요하다.</p>
+<div class="duo">
+<div class="card"><h3>빨라지는 것</h3><p>LLM 프롬프트 처리(프리필) +25~55%, 첫 토큰까지 시간 25~30% 단축. BF16 LoRA·파인튜닝 +25~50%. SDXL·SD1.5 등 이미지 생성 +30~55%. Wan 2.2 영상 +15~20%. FlashAttention 커널 +50~60%.</p></div>
+<div class="card"><h3>그대로인 것</h3><p><b>LLM 토큰 생성</b>은 메모리 대역폭이 병목이라 변화 없음. llama.cpp·Ollama 양자화 GGUF는 0~15%(주로 긴 문맥). INT8·FP8·INT4 모델, 게임, FP32 CUDA도 변화 없음.</p></div>
+</div>
+<div class="box"><b>한 줄 요약</b> — 이미지 생성하고 학습 돌리는 사람에겐 체감이 크다. Ollama로 양자화 모델 채팅만 하는 사람에겐 거의 차이가 없다. 게임 성능은 그대로다.</div>
+
+<h2>4. “BIOS 플래시도 드라이버 패치도 없다” — 맞지만 조건이 붙는다</h2>
+<ul>
+<li><b>리눅스 커널 모듈이다.</b> 부팅 초기에 NVIDIA 드라이버보다 먼저 올라가서 속도 선택 레지스터를 바꾸고 카드를 재설정한다. 그다음 순정 드라이버가 붙는다. VBIOS나 드라이버 파일은 안 건드린다는 설명은 맞다. 대신 커널 부팅 옵션을 고치고 initramfs에 모듈을 넣어야 한다.</li>
+<li><b>리눅스 전용이다.</b> 개발자는 윈도우를 유지보수하지 않는다. 비공식 포트(<a href="https://github.com/impacifist/Windows-GPU-UNLOCK">impacifist/Windows-GPU-UNLOCK</a>)를 소개하면서도 “떠도는 윈도우 설치파일은 매우 조심하라”고 경고한다. 코인·웹사이트·설치파일은 전부 이 프로젝트와 무관하다고 못 박았다. 바이럴이 붙으면 가짜 설치파일이 따라붙기 마련이다.</li>
+<li><b>지원 범위가 고르지 않다.</b> RTX 30은 “안정, 사용자 보고 100건 이상”이다. RTX 40·20은 “실험”이고, RTX 50은 미지원에 앞으로도 어렵다고 한다. 노트북은 GPU가 절전으로 꺼지면 해제가 조용히 풀린다.</li>
+<li><b>열린 이슈도 있다.</b> 시큐어부트+UKI 구성에서 부팅 멈춤·검은 화면, PCIe 스위치 뒤 3090 5장에서 스위치 전체가 떨어진 사례, “NVIDIA가 계정이나 드라이버를 막을 수 있나”라는 질문이 아직 답 없이 열려 있다. 보증·약관 문제는 확인된 바가 없다.</li>
+</ul>
+
+<h2>5. cocy 판단</h2>
+<div class="box">트윗은 드물게 원본에 충실하다. 절반 제한은 NVIDIA 백서에 적힌 사실이고, 숫자도 README 표와 같다. 과장은 <b>행렬곱 최대치를 “GPU 성능”처럼 보이게 한 것</b>, 그리고 리눅스 전용·실험 단계라는 조건을 뺀 것이다. 리눅스에서 RTX 30으로 이미지 생성이나 파인튜닝을 돌린다면 해볼 가치가 크다. 결과값이 같고 VBIOS도 안 건드린다. 우리 장비(RTX 3080 Ti)는 윈도우 위에서 돌고 WSL도 윈도우 드라이버를 빌려 쓴다. 그래서 원본 커널 모듈은 바로 못 쓴다. 쓰려면 비공식 윈도우 포트나 리눅스 듀얼부트가 필요하다. 윈도우 쪽 위험도는 <a href="/gpu-unlock-windows-check/">윈도우판 페이지</a>에 정리해 두었다.</div>
+
+<h2>출처</h2>
+<ul class="sources">
+<li><a href="https://x.com/NINJA____1/status/2117237048969191884">NINJA____1 — X 원글 (2026-11-02)</a></li>
+<li><a href="https://github.com/Zagitta/gpu-unlock">Zagitta/gpu-unlock — README v2.0, 지원 GPU·행렬곱·실제 작업 표, FAQ (GPL-2.0)</a></li>
+<li><a href="https://github.com/Zagitta/gpu-unlock/issues">gpu-unlock 이슈 — 호환성 보고, 부팅 멈춤·PCIe 스위치·NVIDIA 제재 문의</a></li>
+<li><a href="https://images.nvidia.com/aem-dam/Solutions/geforce/ada/nvidia-ada-gpu-architecture.pdf">NVIDIA Ada GPU Architecture 백서 — 부록 A RTX 4090 사양표</a></li>
+<li><a href="https://github.com/impacifist/Windows-GPU-UNLOCK">impacifist/Windows-GPU-UNLOCK — 비공식 윈도우 포트</a></li>
+<li>관련 페이지: <a href="/gpu-unlock-ada-check/">RTX 4090 텐서 2배 팩트체크(10/25)</a> · <a href="/gpu-unlock-windows-check/">윈도우 UEFI판 팩트체크(10/27)</a></li>
+</ul><div class="foot">cocy.io research note · 2026-11-03 · README·이슈·NVIDIA 백서 대조. 직접 설치·측정 아님</div>
+</main><button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button><script type="text/markdown" id="mdsrc"># NVIDIA가 일부러 막은 GPU 속도, 풀렸다? — gpu-unlock v2
+
+판정 7/10. 트윗 숫자는 원본 README와 같다. 절반 제한은 NVIDIA 백서에도 있다. 다만 2배는 행렬곱 최대치다.
+
+- 원본: Zagitta/gpu-unlock v2.0 (GPL-2.0, 스타 약 1.46만, 2026-10-18 생성). 리눅스 커널 모듈. 부팅 때 NVIDIA 드라이버보다 먼저 제한을 푼다. VBIOS·드라이버 수정 없음.
+- 근거: NVIDIA Ada 백서 부록 A. RTX 4090 FP16 텐서는 FP16 누적 330.3 TFLOPS, FP32 누적 165.2. AI 학습·추론이 주로 쓰는 FP32 누적이 절반이다.
+- 행렬곱 BF16(사용자 보고 집계): 3060 27→51(+87%), 3090 75→125(+65%), 4090 165→329(최대 MMA). 4090은 전력 한계로 큰 행렬곱에선 훨씬 덜 오른다.
+- 실제 작업: LLM 프리필 +25~55%, BF16 파인튜닝 +25~50%, SDXL 등 이미지 생성 +30~55%. 토큰 생성·GGUF 양자화(0~15%)·INT8/FP8·게임은 변화 없음.
+- 한계: 리눅스 전용(윈도우는 비공식 포트), RTX 30만 안정, 40·20 실험, 50 미지원. 시큐어부트·노트북 절전·PCIe 스위치 이슈. 가짜 설치파일 주의.
+
+원본: https://github.com/Zagitta/gpu-unlock
+NVIDIA Ada 백서: https://images.nvidia.com/aem-dam/Solutions/geforce/ada/nvidia-ada-gpu-architecture.pdf
+분석: https://page.cocy.io/gpu-unlock-v2-check/</script><script>(function(){var b=document.getElementById('mdbtn'),m=document.getElementById('mdsrc').textContent.trim();function f(){var x=new Blob([m],{type:'text/markdown'}),a=document.createElement('a');a.href=URL.createObjectURL(x);a.download='gpu-unlock-v2-check.md';document.body.appendChild(a);a.click();a.remove()}b.onclick=function(){if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(m).then(function(){b.textContent='✅ 복사됨';setTimeout(function(){b.textContent='📋 위키용 Markdown 복사'},1900)}).catch(f);else f()}})();</script></body></html>
