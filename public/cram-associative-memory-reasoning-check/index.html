@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>42밀리초 학습, 트랜스포머 종말? — CRAM 논문 검증 · page.cocy.io</title>
+<meta name="description" content="Prefrontal의 CRAM 논문(arXiv:2611.17309)을 원문으로 검증했다. 42ms 학습·최소 1,000× 학습 가속·최소 282× 추론 FLOPs·Sudoku-Extreme 99.996%는 맞지만, 1,000×는 추론이 아니라 학습 시간이고 비교 상대는 소형 looped 모델이다.">
+<link rel="canonical" href="https://page.cocy.io/cram-associative-memory-reasoning-check/">
+<meta property="og:type" content="article"><meta property="og:title" content="1980년대 에너지가 트랜스포머를 끝낸다? CRAM의 실제 숫자">
+<meta property="og:description" content="42ms·1,000×·282×·99.996%는 논문 수치와 일치한다. 다만 1,000×는 학습 시간이고, 벤치마크는 손으로 쓴 가중치 1~3개로도 100% 풀리는 제약 퍼즐이다.">
+<meta property="og:url" content="https://page.cocy.io/cram-associative-memory-reasoning-check/">
+<meta name="twitter:card" content="summary"><meta name="author" content="cocy">
+<meta property="article:published_time" content="2026-11-15"><meta property="article:modified_time" content="2026-11-15">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"42밀리초 학습, 트랜스포머 종말? — CRAM 논문 검증","url":"https://page.cocy.io/cram-associative-memory-reasoning-check/","inLanguage":"ko","datePublished":"2026-11-15","dateModified":"2026-11-15","author":{"@type":"Person","name":"cocy"},"publisher":{"@type":"Organization","name":"cocy.io","url":"https://cocy.io"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#946516;--bad:#9d493e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif;word-break:keep-all;overflow-wrap:anywhere}
+.page{max-width:880px;margin:36px auto;padding:clamp(22px,6vw,68px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}
+.kicker{font:12px ui-monospace,monospace;letter-spacing:.12em;color:var(--accent)}
+h1,h2{line-height:1.3;letter-spacing:-.04em}h1{font-size:clamp(2rem,6vw,3rem);margin:.5em 0}
+.lead{font-size:1.08rem;color:var(--soft)}
+h2{margin-top:2.5em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.5em}
+h3{font-size:1.05rem;margin-top:1.8em}
+a{color:var(--accent);text-underline-offset:3px}a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.meta,.note,.foot{font-size:.86rem;color:var(--soft)}
+.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.2rem;margin:2rem 0;background:#fff8ed}
+.verdict strong{font-size:1.18rem}.score{float:right;font-size:1.5rem;font-weight:700;color:var(--accent)}
+.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.25rem .25rem .25rem 0;font-size:.8rem;background:#efe9dc}
+.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.no{background:#f8e3df;color:var(--bad)}
+.table-wrap{overflow-x:auto;max-width:100%;margin:1rem 0}
+table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:540px}
+th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#f5f0e7}caption{text-align:left;font-weight:600;padding:.5rem 0}
+blockquote{border-left:3px solid var(--line);margin:1rem 0;padding:.5rem 1rem;color:var(--soft)}
+li{margin-bottom:.55rem}code{background:#f0ebe1;padding:.1rem .3rem;border-radius:3px}
+.box{background:#f6f1e6;padding:1rem 1.2rem;border-left:4px solid var(--accent)}
+.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem}
+.mdbtn{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:#fff;border:none;border-radius:24px;padding:.7rem 1.05rem;font:600 .85rem system-ui,-apple-system,"Noto Sans KR",sans-serif;box-shadow:0 10px 26px -8px #3b2b1d55;cursor:pointer;transition:transform .1s}
+.mdbtn:active{transform:translateY(1px)}
+@media(max-width:600px){.page{margin:0;box-shadow:none}h1{font-size:2rem}}
+@media print{body{background:white}.page{margin:0;box-shadow:none;max-width:none;padding:0}}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<header><div class="kicker">RESEARCH NOTE · CLAIM CHECK</div><h1>42밀리초 학습,<br>1,000배 빠른 ‘추론’?</h1>
+<p class="lead">핵심 숫자는 대부분 논문 본문과 일치한다. 다만 1,000×는 추론이 아니라 <b>학습 시간</b>의 비교이고, 비교 상대는 범용 트랜스포머가 아니라 퍼즐을 푸는 소형 looped 모델이다.</p>
+<p class="meta">작성·확인: <time datetime="2026-11-15">2026-11-15</time> · 원 게시물: 2026-11-15 · 논문 v1: 2026-11-12 · 문헌 검토 / 실험 재현 없음</p></header>
+<div class="verdict" id="verdict"><span class="score">6/10</span><strong>판정: 실재하고 숫자가 맞는 연구. ‘looped transformer 종말·범용 추론 혁명’으로 읽으면 과장이다.</strong>
+<p>42ms 학습, 최소 1,000× 빠른 학습, 최소 282× 적은 추론 FLOPs, Sudoku-Extreme 99.996%는 모두 본문 수치다. 그러나 비교 대상은 3만~2,700만 파라미터의 연구용 looped 모델이고, 저자들 스스로 이 벤치마크가 손으로 쓴 가중치 몇 개로 100% 풀리는 ‘사소하게 풀리는’ 과제라고 경고한다. 게시물은 학습 속도와 추론 속도를 섞어 쓰고 비교 범위를 넓혀 읽는다.</p>
+<span class="pill yes">1차 논문·공식 코드 확인</span><span class="pill warn">학습 속도와 추론 FLOPs는 다른 숫자</span><span class="pill warn">벤치마크=제약 퍼즐 4종</span><span class="pill no">범용 추론·LLM 비교 실험 아님</span></div>
+<nav aria-label="본문 목차"><a href="#identity">연구 식별</a> · <a href="#claims">주장 대조</a> · <a href="#numbers">숫자의 분모</a> · <a href="#results">실측 표</a> · <a href="#use">의미와 한계</a> · <a href="#sources">출처</a></nav>
+<section id="identity"><h2>1. 논문 식별: Hopfield-Tank 에너지의 학습 가능 버전, CRAM</h2>
+<p><a href="https://x.com/HowToPrompt__/status/2121886161677262890">@HowToPrompt__의 게시물</a>(2026-11-15)은 “1980년대 신경망”, “42밀리초”, “1,000배”를 함께 언급하고, 스레드 답글로 arXiv 링크를 단다. 이 링크는 <a href="https://arxiv.org/abs/2611.17309">Classical Energies Learn to Reason 1,000× Faster than Looped Models</a>(arXiv:2611.17309)을 가리킨다.</p>
+<ul><li><b>저자:</b> Benjamin Hoover, Hugh Blayney, James C. R. Whittington. 소속은 영국 런던의 <b>Prefrontal</b> 한 곳이다.</li>
+<li><b>날짜:</b> arXiv 제출 이력은 2026-11-12 18:56:56 UTC의 v1 하나뿐이다. 게시물보다 사흘 앞서 나온 초판 프리프린트다.</li>
+<li><b>CRAM이 뭔가:</b> Compact Reasoning Associative Memory. 1980년대 Hopfield와 Tank가 수작업으로 설계하던 에너지 함수를 <b>데이터에서 가중치를 학습하는 형태</b>로 바꾼 것에, 추론 때 그 에너지를 하강하는 반복 탐색을 붙인 모델이다. 보관돼 있던 옛 네트워크를 꺼내 쓴 것이 아니라, 같은 에너지의 형태를 빌려 가중치를 새로 학습한다. 논문은 이 에너지가 현대 Hopfield 네트워크 에너지의 특수한 경우라고 쓴다. [§1]</li>
+<li><b>공개와 권리:</b> 논문은 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. 공식 저장소 <a href="https://github.com/Prefrontal-AI/CRAM">Prefrontal-AI/CRAM</a>은 <b>Apache-2.0</b>으로 공개돼 있고 <code>checkpoints/</code> 디렉터리와 재현 문서(REPRODUCING.md)가 있다. Python 3.12+, PyTorch.</li></ul></section>
+<section id="claims"><h2>2. 게시물의 주장을 나눠 보면</h2>
+<div class="table-wrap" role="region" aria-label="주장별 검증 표" tabindex="0"><table><thead><tr><th scope="col">게시물 주장</th><th scope="col">확인한 내용 / 판정</th></tr></thead><tbody>
+<tr><td>1980년대 신경망을 꺼내 재학습했다</td><td><b>대체로 맞음(표현 교정).</b> Hopfield &amp; Tank의 80년대 에너지를 학습 가능하게 만든 것이다. 당시 모델 파일을 재사용한 게 아니라, 같은 에너지 구조에 가중치를 퍼즐 데이터에서 새로 학습한다. [§1]</td></tr>
+<tr><td>42밀리초에 학습된다</td><td><b>맞음.</b> Sudoku-Extreme 학습(fit) 42ms, Maze-Unique는 132ms. NVIDIA H200 한 대의 벽시계 시간이며, 7번의 warm run 중앙값이다. ‘재학습’이 아니라 처음부터 학습하는 시간이다. [그림1, 표2, 부록 C.2]</td></tr>
+<tr><td>modern transformers보다 1,000배 빠른 추론</td><td><b>혼합·과장.</b> ‘1,000×’는 추론이 아니라 <b>학습 시간</b> 비교다. 비교 상대는 HRM·TRM·EBR 등 소형 looped 모델(32.8K~27.3M 파라미터)이며 범용 트랜스포머·LLM과 비교한 실험은 없다. 추론 측정치는 별도로 FLOPs 282×~128,000× 절감이다. [표2, 그림2a]</td></tr>
+<tr><td>looped 모델보다 최소 1,000배 빠른 학습</td><td><b>맞음(보수적 표기).</b> 네 벤치마크 모두에서 각 baseline 학습 시간 대비 최소 약 1,200배 이상 빠르다. 최소 비율은 N-Queens 8×8의 약 1,220×(2.9초 vs 59분). ‘최소 1,000×’는 과제 전체를 관통하는 하한이다. [표2·3]</td></tr>
+<tr><td>같은 정확도에서 추론 FLOPs 282배 절감</td><td><b>맞음(조건 포함).</b> ‘최소 282×’는 가장 저렴한 baseline인 EBR의 최고 정확도(99.86%)에 맞춘 비교다. CRAM이 퍼즐당 1.9×10⁹, EBR이 5.4×10¹¹ FLOPs. 다른 baseline과 비교하면 최대 128,000×(EqR)까지 벌어진다. FLOPs 비교이지 지연시간 측정이 아니다. [그림2a, §4.1]</td></tr>
+<tr><td>extreme Sudoku의 99.996% 해결</td><td><b>맞음.</b> 전체 테스트 412,786개 퍼즐에서 99.996%를 정답 보드에서 정지했다. 잘못된 보드에서 멈춘 비율은 0.00%. Maze-Unique 테스트 1,000개는 100%. [표4, §4.1]</td></tr>
+<tr><td>연산이 난이도에 따라 늘고 정답을 찾는 순간 멈춘다</td><td><b>대체로 맞음.</b> 난이도 구간별 중앙 연산량이 가장 쉬운 구간에서 가장 어려운 구간까지 22× 커진다. 다만 멈추는 기준은 ‘정답 인식’이 아니라 학습 데이터로 정한 에너지 임계값 이하의 첫 보드다. 이 벤치마크에서는 잘못된 보드에서 멈춘 적이 없다는 결과가 뒷받침한다. [그림3a, 부록 A 표4]</td></tr>
+<tr><td>블랙박스가 아니라 학습된 규칙을 읽을 수 있다</td><td><b>맞음.</b> Sudoku에서 CRAM은 행·열·박스를 공유하는 정확히 810개 cell pair에만 양의 같은-숫자 비용을 학습하고 나머지는 0으로 뒀다. Maze-Unique의 18개 비용은 막다른 칸 채우기(dead-end filling)라는 지역 규칙을 구현한다. [그림2b, §4.2]</td></tr>
+<tr><td>looped transformers를 끝낼 수 있는 논문</td><td><b>과장.</b> 벤치마크는 pairwise 에너지로 정확히 표현 가능한 제약 퍼즐이다. 저자들은 손으로 쓴 가중치 1~3개의 CRAM이 전 벤치마크를 100% 푼다고 보여주며, 이런 고득점이 더 어려운 과제로의 확장성을 뜻하지 않는다고 경고한다. ARC-AGI 같은 과제에는 이 에너지 단독으로는 어렵다고 명시한다. [§5, 표2·3, 부록 F]</td></tr>
+<tr><td>수십억 달러 GPU 클러스터가 필요 없다는 증명</td><td><b>맥락 과장.</b> 비교 모델은 전부 H200 한 대에서 수 시간 안에 학습되는 연구용 소형 모델이다. 논문 어디에도 대규모 LLM 학습 비용과의 비교는 없다. ‘거대 슈퍼컴퓨터 불필요’는 이 실험이 뒷받침하는 문장이 아니다. [표2, 부록 B]</td></tr>
+</tbody></table></div></section>
+<section id="numbers"><h2>3. 42ms·1,000×·282×·99.996%: 무엇을 어느 분모로 잰 수인가</h2>
+<h3>42ms는 ‘fit time’이고 따로 정의돼 있다</h3>
+<p>표2·3의 fit time은 한 대의 H200에서의 학습 벽시계 시간이다. CRAM은 warm run 7회의 중앙값을 쓰며, 정지 임계값을 학습 해법들로부터 맞추는 단계(24–75ms)를 포함하고, 커널 로딩·컴파일 같은 일회성 시작 비용(0.08–0.30s)은 제외한다. baseline은 한 번의 cold run이다. 저자들은 시간이 공유 클러스터의 동시 작업에 따라 흔들린다고 명시한다. [부록 B, C.2, §5]</p>
+<p>학습 방법도 조건이다. 이 42ms는 <b>국소 목표인 pseudolikelihood</b>로 에너지를 직접 학습한 결과다. 같은 에너지를 full BPTT로 학습하면 5시간을 돌려도 48.8%밖에 못 푼다는 비교가 본문에 있다. ‘빠른 학습’은 모델뿐 아니라 목표 함수 선택의 결과이기도 하다. [§4.3, 부록 D]</p>
+<h3>1,000×의 분모: 소형 looped 모델의 학습 시간</h3>
+<p>비교 baseline은 HRM(27.0M), TRM(5.0M), GRAM(9.1M), EqR(5.0M), FRM(7.0M), TRMP(32.8K), EBR(1.8M)이다. 전부 같은 H200에서 저자 코드와 레시피로 재학습한 결과다. Sudoku-Extreme에서 가장 빠른 baseline이 1.2시간(HRM)이므로 CRAM 42ms와의 비율은 약 10만 배지만, 논문은 네 벤치마크 전체의 최소 비율(N-Queens 8×8, 2.9초 대 59분 ≈ 1,220×)까지 포용하는 ‘최소 1,000×’라는 보수적 표현을 쓴다. [표2·3, 부록 C.8]</p>
+<p>따라서 ‘1,000×’는 어디까지나 <b>학습 시간</b>의 하한이다. 이 숫자를 추론 지연시간이나 일반 트랜스포머의 비용으로 읽으면 틀린다.</p>
+<h3>282×는 예산 스윕의 최솟값, 단위는 FLOPs</h3>
+<p>그림2a는 각 방법에 허용된 추론 예산을 바꿔가며 Sudoku-Extreme 테스트 10,000개 중 풀린 비율을 그린다. 각 baseline의 <b>최고 정확도 지점</b>과 맞출 때 CRAM은 EBR 대비 282×, EqR 대비 최대 128,000× 적은 FLOPs를 쓴다. 구체적으로 EBR의 최고 정확도 99.86%에 CRAM이 도달하는 데 퍼즐당 1.9×10⁹ FLOPs, EBR은 5.4×10¹¹ FLOPs다. [그림2a, §4.1]</p>
+<p>이 수치는 모든 검색 체인·정지 판정·선택·디코딩 연산을 같은 규칙으로 센 연산량 비교다. 실제 벽시계 지연시간 대비가 아니며, CRAM의 탐색 이동은 Triton 커널로 구현됐다는 구현 조건이 있다. [부록 B]</p>
+<h3>99.996%는 ‘못 푼’이지 ‘틀린’이 아니다</h3>
+<p>부록 A 표4는 전체 테스트 세트(Sudoku-Extreme 412,786개, Maze-Unique 1,000개)에서 각 정지 규칙의 행동을 비교한다. CRAM은 99.996%에서 정지했고 정지한 보드가 틀린 비율은 0.00%다. 본문은 CRAM이 틀린 답을 내보내는 경우가 없고, 예산 안에 임계값을 통과하는 보드가 안 나오면 그냥 ‘미해결’로 남는다고 설명한다. 표2의 ‘100.00’은 이 99.996의 반올림 표기다. [표4, §4.1]</p>
+<p>같은 표에서 HRM·TRM·EqR·TRMP·EBR의 정지 규칙은 멈춘 퍼즐의 0.05–3.54%를 틀린 보드에서 멈췄다. ‘정답처럼 보이는 곳에서 멈추는’ 것과 ‘틀리지 않는 곳에서만 멈추는’ 것의 차이가 이 연구의 차별점이다.</p>
+<h3>벤치마크 자체가 저자의 경고 대상</h3>
+<p>네 과제(Sudoku-Extreme, Maze-Unique, N-Queens, graph coloring)는 모두 pairwise 에너지로 정확히 표현 가능한 제약 퍼즐이다. 논문은 규칙에서 손으로 가중치를 쓴 CRAM이 Sudoku에는 고유 값 1개, Maze에는 3개, N-Queens에는 2개로 <b>테스트 전부를 100%</b> 푼다고 보여준다. 즉 이 벤치마크에서 높은 정확도는 모델이 몇 개 안 되는 pairwise 규칙을 배웠다는 뜻일 뿐이며, 저자들은 이를 두고 “큰 looped 모델을 이 문제들에 들이붓는 것에 대한 온화한 경고”라고 쓴다. [§4.3, §5, 표2·3]</p></section>
+<section id="results"><h2>4. 실측 표: 같은 H200, 같은 테스트 세트</h2>
+<div class="table-wrap" role="region" aria-label="Sudoku-Extreme과 Maze-Unique 비교 표" tabindex="0"><table><caption>표2 요약 — 해결율(%)·파라미터·추론 FLOPs/퍼즐·학습 시간 (저자 보고, 3시드 평균)</caption><thead><tr><th scope="col">모델</th><th scope="col">Sudoku 해결</th><th scope="col">파라미터</th><th scope="col">FLOPs/퍼즐</th><th scope="col">학습</th><th scope="col">Maze 해결</th><th scope="col">파라미터</th><th scope="col">FLOPs/퍼즐</th><th scope="col">학습</th></tr></thead><tbody>
+<tr><td>HRM</td><td>54.62</td><td>27.0M</td><td>2.20e11</td><td>1.2 h</td><td>39.97</td><td>27.0M</td><td>3.01e12</td><td>7.1 h</td></tr>
+<tr><td>TRM</td><td>85.73</td><td>5.0M</td><td>4.11e11</td><td>2.5 h</td><td>92.23</td><td>6.8M</td><td>3.84e12</td><td>15.6 h</td></tr>
+<tr><td>GRAM</td><td>96.10</td><td>9.1M</td><td>8.51e12</td><td>3.2 h</td><td>98.63</td><td>10.9M</td><td>8.00e13</td><td>23.2 h</td></tr>
+<tr><td>EqR</td><td>99.49</td><td>5.0M</td><td>2.11e14</td><td>2.0 h</td><td>93.00</td><td>263.8K</td><td>1.16e14</td><td>7.2 h</td></tr>
+<tr><td>FRM</td><td>99.13</td><td>7.0M</td><td>3.91e12</td><td>2.9 h</td><td>97.27</td><td>8.0M</td><td>4.70e12</td><td>9.7 h</td></tr>
+<tr><td>TRMP</td><td>99.87</td><td>32.8K</td><td>4.57e12</td><td>9.0 h</td><td>99.23</td><td>60.7K</td><td>1.80e13</td><td>7.6 h</td></tr>
+<tr><td>EBR</td><td>99.85</td><td>1.8M</td><td>3.37e11</td><td>2.8 h</td><td>89.80</td><td>1.8M</td><td>1.93e13</td><td>2.0 h</td></tr>
+<tr><td><b>CRAM</b></td><td><b>99.996</b> (표기 100.00)</td><td><b>7.7K</b></td><td><b>2.02e9</b></td><td><b>0.04 s</b></td><td><b>100.00</b></td><td><b>18</b></td><td><b>8.37e5</b></td><td><b>0.13 s</b></td></tr>
+<tr><td>CRAM (손으로 쓴 가중치)</td><td>100.00</td><td>1</td><td>1.08e8</td><td>없음</td><td>100.00</td><td>3</td><td>8.37e5</td><td>없음</td></tr>
+</tbody></table></div>
+<p>읽을 점이 두 개다. 첫째, CRAM은 가장 정확한 동시에 가장 적은 파라미터·연산·학습 시간이다 — Sudoku에서 기여 파라미터(nonzero) 7.7K개(총 가중치 263,169개 중), Maze에서는 18개다. 둘째, 회색 행의 손으로 쓴 에너지가 학습된 모델보다 더 적은 파라미터로 전부를 푼다는 사실이 벤치마크의 한계를 보여준다.</p>
+<p>데이터 효율도 함께 보고된다. 같은 10,000개 테스트 기준으로 98% 정확도에 도달하는 데 CRAM은 고유 퍼즐 30개, EBR은 700개가 필요했다 — 한 자릿수 차이다. N-Queens·graph coloring(해가 여러 개인 과제)에서도 CRAM은 최상위 baseline과 견주는 정확도와 해 다양성을 보였고, 학습은 수 초였다. [그림3b, 표3]</p>
+<p class="box"><b>비교 조건 요약:</b> 모든 실험 H200 1대. baseline은 저자 공개 코드와 레시피로 재학습(코드 미공개인 TRMP만 논문 레시피로 재구현). FLOPs는 검색 체인 전부와 정지 판정·선택·디코딩까지 같은 규칙으로 계산. 정확도는 3개 학습 시드 평균. 벽시계는 공유 클러스터 측정이라 흔들릴 수 있다고 저자들이 밝힌다.</p></section>
+<section id="use"><h2>5. 의미와 한계를 분리하자</h2>
+<p><b>연구로서 가치가 있는 것:</b> 명시적 에너지를 배우면 제약 퍼즐에서 수 초 학습, 수십~수백 개 파라미터, 난이도 적응형 연산, 틀린 보드에서 멈추지 않는 정지, 규칙을 읽을 수 있는 가중치를 한 번에 얻는다는 실증이다. Apache-2.0 코드와 체크포인트 디렉터리가 공개돼 검증도 가능하다. 에너지 기반 추론의 방향성을 보여주는 잘 만든 실증 논문이다.</p>
+<p><b>논문이 스스로 긋는 한계:</b> 이 결과는 pairwise 에너지로 정확히 표현되는 제약 퍼즐에 국한된다. 답이 보드에서 계산해야 할 잠재량(예: 각 칸에서 목표까지의 거리)에 달린 과제에는 이 에너지 단독으로 부족하며, 부록 F는 잠재 확장(CRAM+z)으로 Maze-Hard 테스트 1,000개 중 약 999개를 푸는 초기 결과를 보여주지만, 과제 구조를 미리 알지 않고 이런 잠재량을 배우는 것 자체가 미해결 과제라고 쓴다. ARC-AGI 수준을 논한다는 주장은 논문의 결론이 아니다. [§5, 부록 F]</p>
+<p><b>게시물과의 거리:</b> 숫자는 거의 그대로 옮겼지만 의미를 바꾼 부분이 있다. ‘42ms에 재학습, modern transformers보다 추론이 1,000배 빠르다’는 한 문장이 학습 시간과 추론 FLOPs를 뭉개고, 비교 대상을 소형 looped 모델에서 ‘현대 트랜스포머 전반’으로 부풀린다. ‘수십억 달러 클러스터 불필요의 증명’ 역시 H200 한 대에서 끝나는 퍼즐 실험을 범용 LLM 인프라 논의로 옮긴 비약이다.</p>
+<h3>결론</h3><p>가져갈 것은 ‘오래된 에너지가 트랜스포머를 이겼다’가 아니다. <b>학습 가능한 명시적 에너지가 제약 퍼즐 추론에서 학습 시간·연산·정지 신뢰성·해석 가능성을 동시에 수 자릿수 개선했다</b>는 결과, 그리고 이 벤치마크들이 그런 개선을 거의 무상으로 허용할 만큼 단순하다는 저자들 자신의 경고다. ‘looped transformer 종말’이 아니라 ‘특정 퍼즐류에서 looped 추론의 비용 구조를 바꾸는 결과 + 벤치마크 해석 주의보’로 읽는 게 정확하다. 일반 추론으로의 확장은 후속 연구가 증명해야 할 미지의 영역이다.</p></section>
+<section id="sources"><h2>출처와 검증 범위</h2><ol>
+<li><a href="https://x.com/HowToPrompt__/status/2121886161677262890">원 X 게시물</a> · 게시 2026-11-15. 스레드의 후속 답글이 arXiv 링크 카드를 달아 논문을 특정했다.</li>
+<li><a href="https://arxiv.org/abs/2611.17309v1">논문 v1 초록·제출 이력·라이선스</a> / <a href="https://arxiv.org/pdf/2611.17309v1">PDF</a> / <a href="https://arxiv.org/html/2611.17309v1">HTML 전문</a>.</li>
+<li>주장별 근거: <a href="https://arxiv.org/html/2611.17309v1#S4.T2">표2 Sudoku·Maze 비교</a>, <a href="https://arxiv.org/html/2611.17309v1#S4.T3">표3 N-Queens·graph coloring</a>, 그림2a(추론 예산 스윕, 282×~128,000×)·그림2b(학습된 가중치 해석), 그림3a(난이도별 연산 22×)·그림3b(데이터 효율 30 vs 700).</li>
+<li>정지 규칙과 한계: 부록 A <a href="https://arxiv.org/html/2611.17309v1#A1.T4">표4 정지 정확도</a>(전체 테스트 세트), 부록 B 연산 규칙·H200 단일 GPU, §5 벤치마크 경고, 부록 F Maze-Hard 잠재 확장.</li>
+<li><a href="https://github.com/Prefrontal-AI/CRAM">공식 저장소 Prefrontal-AI/CRAM</a>(Apache-2.0, checkpoints/ 포함) / <a href="https://prefrontal.ai/news/cram/">저자 블로그 포스트</a>.</li>
+</ol><p class="note">모든 성능 수치는 논문 저자 보고다. 독립 재현으로 검증한 수치가 아니다. 42ms·1,000×·282× 등의 배수는 저자가 정한 측정 조건(warm/cold fit, FLOPs 규칙, H200)에 의존한다. 확인 시점은 2026-11-15다.</p></section>
+<footer class="foot"><a href="https://page.cocy.io/">page.cocy.io</a> · cocy.io research note · AI 보조 작성, 1차 출처 문헌 대조. 실험 재현·실기기 테스트 없음.</footer>
+</main>
+<button class="mdbtn" id="mdbtn">📋 위키용 Markdown 복사</button>
+<script type="text/markdown" id="mdsrc">
+# 42ms 학습, 트랜스포머 종말? — CRAM 논문 팩트체크
+
+> X(@HowToPrompt__, 2026-11-15)의 "1980년대 신경망을 42ms에 재학습, modern transformers보다 추론 1,000× 빠름, looped model 종말" 주장을 논문(arXiv:2611.17309)·공식 코드로 대조 검증.
+> **한 줄 결론: 숫자는 거의 다 맞다. 범위와 단위를 바꿔 읽게 만든 과장. 6/10.**
+
+## 판정 요약
+- ✓ 논문 실존 — Hoover·Blayney·Whittington(Prefrontal, London), arXiv:2611.17309v1, 2026-11-12
+- ✓ 공식 코드 Prefrontal-AI/CRAM — Apache-2.0, checkpoints/ 디렉터리, PyTorch
+- ✓ 42ms 학습 / 최소 1,000× 학습 가속 / 최소 282× 추론 FLOPs / Sudoku 99.996% — 본문 수치와 일치
+- ✗ "1,000× faster at reasoning" — 1,000×는 학습 시간 비교. 추론 수치는 FLOPs 282×~128,000×
+- ✗ "modern transformers" 비교 — 상대는 HRM·TRM·EBR 등 32.8K~27.3M 소형 looped 모델
+- △ "looped transformers 종말" — 저자들이 벤치마크가 손 쓴 가중치 1~3개로 100% 풀린다며 경고
+
+## 1. 식별
+논문 "Classical Energies Learn to Reason 1,000× Faster than Looped Models"(arXiv:2611.17309, CC BY 4.0). CRAM = Compact Reasoning Associative Memory: Hopfield & Tank의 80년대 에너지를 학습 가능하게 만든 것 + 추론 시 에너지 하강 탐색. 옛 모델 재사용이 아니라 같은 구조에 가중치를 데이터에서 학습.
+
+## 2. 숫자 검증 (H200 1대, 저자 보고)
+| 주장 | 본문 수치 | 조건 |
+|---|---|---|
+| 42ms 학습 | Sudoku-Extreme fit 42ms, Maze-Unique 132ms | warm run 7회 중앙값, 임계값 피팅 포함, 시작 비용 제외 |
+| 최소 1,000× 학습 | baseline 1.2~23.2h 대비, 최소 비율 N-Queens 8×8 ≈1,220× (2.9s vs 59min) | 추론 아닌 학습 시간 |
+| 282× 추론 절감 | EBR 최고 정확도 99.86%에 맞춤: CRAM 1.9e9 vs EBR 5.4e11 FLOPs/퍼즐 | baseline별 282×~128,000×, 벽시계 아닌 FLOPs |
+| 99.996% Sudoku | 전체 테스트 412,786개 중, 잘못된 정지 0.00% | Maze-Unique 1,000개는 100% |
+| 난이도 적응 연산 | 중앙 연산량 쉬움→어려움 22× 증가 | 정지는 에너지 임계값 도달 |
+| 규칙을 읽을 수 있다 | Sudoku: 행·열·박스 공유 810 cell pair에만 양의 비용. Maze: 18개 비용=dead-end filling | 그림2b |
+
+## 3. 게시물이 바꾼 것
+- 학습 속도(1,000×)와 추론 효율(282×+)을 한 문장으로 섞어 "추론 1,000× 빠름"으로 읽히게 함
+- 비교 대상을 소형 looped 연구 모델에서 "modern transformers"로 확장 — 범용 LLM 비교 실험 없음
+- "수십억 달러 클러스터 불필요 증명" — 실험은 전부 H200 한 대, 퍼즐 4종
+
+## 4. 논문 자체의 경고
+- 손으로 쓴 가중치 1개(Sudoku)·3개(Maze)·2개(N-Queens)의 CRAM이 전 벤치마크 100% — 이 벤치마크 고득점은 확장성 증거가 아님
+- pairwise 에너지로 표현되는 제약 퍼즐에 국한. ARC-AGI급에는 latent 필요
+- 부록 F: latent 확장(CRAM+z)으로 Maze-Hard 약 999/1000 — 과제 사전지식 없는 잠재 학습은 미해결 과제
+
+## 5. 평가
+잘 만든 실증: 명시적 에너지 학습으로 제약 퍼즐에서 학습 시간·연산·정지 신뢰·해석성을 동시에 개선. Apache-2.0 코드+체크포인트로 재현 가능. 다만 "특정 퍼즐류에서의 looped 추론 비용 혁신 + 벤치마크 주의보"이지 "트랜스포머 시대의 종말" 증명이 아니다.
+
+## 출처
+- 원문: https://x.com/HowToPrompt__/status/2121886161677262890
+- https://arxiv.org/abs/2611.17309 (v1, 2026-11-12)
+- https://github.com/Prefrontal-AI/CRAM (Apache-2.0)
+- https://prefrontal.ai/news/cram/
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('mdbtn');
+  var md=document.getElementById('mdsrc').textContent.replace(/^\n/,'').trimEnd();
+  function fallback(){ var b=new Blob([md],{type:'text/markdown'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='cram-associative-memory-reasoning-check.md'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(md).then(function(){ btn.textContent='✅ 복사됨 — 위키에 붙여넣기'; setTimeout(function(){btn.textContent='📋 위키용 Markdown 복사';},1900); }).catch(fallback);
+    } else fallback();
+  };
+})();
+</script>
+</body></html>
