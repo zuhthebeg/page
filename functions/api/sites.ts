@@ -14,7 +14,7 @@ export const onRequestGet: PagesFunction<Env> = async (ctx) => {
         ORDER BY published_at DESC
         LIMIT 300`
     )
-    .all();
+    .all<{ slug: string }>();
 
   return Response.json(
     { sites: [
