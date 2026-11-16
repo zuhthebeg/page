@@ -18,6 +18,9 @@ export const onRequestGet: PagesFunction<Env> = async (ctx) => {
 
   return Response.json(
     { sites: [
+      { slug: "fable-52-prompts-check", vertical: "report", title: "Fable 5.2 프롬프트 6개, 그대로 써도 될까?",
+        description: "Threads의 6개 지시를 공식 문서와 대조. 유용한 작업 지시와 성능 과장·버그 점수·무제한 자율 작업의 한계를 구분한다. 모델 비교 실험 없음.",
+        cover_image: "/fable-52-prompts-check/icon.svg", owner_id: null, view_count: 0, published_at: "2026-11-16T12:40:00Z" },
       { slug: "jev-apps-check", vertical: "report", title: "Jev 응용 앱 5종 — 코드와 성능 근거 실사",
         description: "5개 저장소는 실재한다. 7초는 항공편 검색, 25.8% 비용 절감은 작성자의 10개 과제, 실거래 수익은 미검증.",
         cover_image: "/jev-apps-check/icon.svg", owner_id: null, view_count: 0, published_at: "2026-10-25T00:00:00Z" },
@@ -39,7 +42,7 @@ export const onRequestGet: PagesFunction<Env> = async (ctx) => {
       { slug: 'hyperqwen-4090', vertical: 'report', title: 'HyperQwen · RTX 4090 검증',
         description: '381 tok/s는 문서 재현 수치. 자체 GPU 실측 없이 출처를 검증했다. 24GB 격리 파일럿 조건부 GO, 상시 운영 NO.',
         cover_image: '/hyperqwen-4090/icon.svg', owner_id: null, view_count: 0, published_at: '2026-10-14T00:00:00Z' },
-      ...(results ?? []).filter((site: { slug: string }) => !['hyperqwen-4090', 'polyhaven-free-assets-api', 'harness2-agent-research', 'opengcua-computer-use', 'kronos-candle-factcheck', 'ecc-codex-factcheck', 'jev-apps-check'].includes(site.slug)),
+      ...(results ?? []).filter((site: { slug: string }) => !['hyperqwen-4090', 'polyhaven-free-assets-api', 'harness2-agent-research', 'opengcua-computer-use', 'kronos-candle-factcheck', 'ecc-codex-factcheck', 'jev-apps-check', 'fable-52-prompts-check'].includes(site.slug)),
     ] },
     {
       headers: {
