@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Claude Code 코드모드, 토큰 효율이 정말 오를까? — 공식 문서·독립 측정·자체 실측 · page.cocy.io</title>
+<meta name="description" content="Claude Code v2.1.323의 실험 기능 Code Mode를 공식 문서로 검증했다. 독립 1회 측정은 입력 토큰 37% 감소와 속도 저하를 보였고, 이 기능은 대화형 터미널 전용이다. OpenClaw 코드모드는 같은 작업에서 71,292→19,117 토큰이었다.">
+<link rel="canonical" href="https://page.cocy.io/codemode-check/">
+<meta property="og:type" content="article"><meta property="og:title" content="Claude Code 코드모드: 토큰 절감은 조건부, 쓸 수 있는 곳은 제한적">
+<meta property="og:description" content="공식 문서가 밝힌 요구 조건, 독립 측정 1건, 우리 OpenClaw 실측 1건을 분리해서 읽는다.">
+<meta property="og:url" content="https://page.cocy.io/codemode-check/">
+<meta name="twitter:card" content="summary"><meta name="author" content="cocy">
+<meta property="article:published_time" content="2026-11-21"><meta property="article:modified_time" content="2026-11-21">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Claude Code 코드모드, 토큰 효율이 정말 오를까?","url":"https://page.cocy.io/codemode-check/","inLanguage":"ko","datePublished":"2026-11-21","dateModified":"2026-11-21","author":{"@type":"Person","name":"cocy"},"publisher":{"@type":"Organization","name":"cocy.io","url":"https://cocy.io"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#946516}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif;word-break:keep-all;overflow-wrap:anywhere}.page{max-width:880px;margin:36px auto;padding:clamp(22px,6vw,68px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.12em;color:var(--accent)}h1,h2{line-height:1.3;letter-spacing:-.04em}h1{font-size:clamp(2rem,6vw,3rem);margin:.5em 0}.lead{font-size:1.08rem;color:var(--soft)}h2{margin-top:2.5em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.5em}h3{font-size:1.05rem;margin-top:1.8em}a{color:var(--accent);text-underline-offset:3px}a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.meta,.note,.foot{font-size:.86rem;color:var(--soft)}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.2rem;margin:2rem 0;background:#fff8ed}.verdict strong{font-size:1.18rem}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.25rem .25rem .25rem 0;font-size:.8rem;background:#efe9dc}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.table-wrap{overflow-x:auto;max-width:100%;margin:1rem 0}table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:540px}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f5f0e7}caption{text-align:left;font-weight:600;padding:.5rem 0}blockquote{border-left:3px solid var(--line);margin:1rem 0;padding:.5rem 1rem;color:var(--soft)}li{margin-bottom:.55rem}code{background:#f0ebe1;padding:.1rem .3rem;border-radius:3px}.box{background:#f6f1e6;padding:1rem 1.2rem;border-left:4px solid var(--accent)}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem}@media(max-width:600px){.page{margin:0;box-shadow:none}h1{font-size:2rem}}@media print{body{background:white}.page{margin:0;box-shadow:none;max-width:none;padding:0}}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<header><div class="kicker">TOOL NOTE · CLAIM CHECK</div><h1>Claude Code 코드모드,<br>토큰 효율이 정말 오를까?</h1>
+<p class="lead">Claude가 도구를 하나씩 부르는 대신 JavaScript 한 덩어리로 여러 도구를 호출하고, 필요한 결과만 돌려받는 실험 기능이다. “토큰이 크게 준다”는 말이 어디까지 사실인지, 그리고 우리가 쓰는 구성에서 쓸 수 있는지를 나눠 확인했다.</p>
+<p class="meta">작성·확인: <time datetime="2026-11-21">2026-11-21</time> · Claude Code v2.1.323(2026-11-12) 기준 · 공식 문서 대조 + 독립 측정 인용 + 자체 1회 실측</p></header>
+<div class="verdict" id="verdict"><strong>판정: 실재하는 기능. 토큰 절감은 ‘조건부 가능성’ 수준이고, 대화형 터미널 밖에서는 쓸 수 없다.</strong>
+<p>공식 문서는 Code Mode를 <b>실험적·기본 꺼짐·언제든 바뀌거나 제거될 수 있는 기능</b>으로 설명하며 토큰 절감 수치를 제시하지 않는다. 독립 측정 1건은 입력 토큰 37.0% 감소와 처리 시간 15초→37초를 함께 보고했다. 또 <b>-p, Agent SDK, VS Code 패널, Desktop, 클라우드 세션에서는 동작하지 않는다.</b> 그래서 무인 자동 작업에 Claude Code의 이 기능을 그대로 붙일 수는 없다.</p>
+<span class="pill yes">공식 문서 확인</span><span class="pill warn">절감 수치는 독립 1회 측정</span><span class="pill warn">속도는 느려질 수 있음</span></div>
+<nav aria-label="본문 목차"><a href="#what">기능 식별</a> · <a href="#reqs">요구 조건</a> · <a href="#numbers">수치의 분모</a> · <a href="#ours">우리 구성 실측</a> · <a href="#use">쓸 만한가</a> · <a href="#sources">출처</a></nav>
+<section id="what"><h2>1. 무엇이 추가됐나</h2>
+<p><a href="https://code.claude.com/docs/en/code-mode">공식 문서</a>의 설명은 이렇다. 일반 세션은 Bash·Read·Edit 같은 도구 호출을 하나 요청하고 결과를 읽은 뒤 다음을 정한다. Code Mode에서는 Claude가 도구를 호출하는 JavaScript를 쓰고, Claude Code가 그 코드를 세션에서 실행한다. 한 코드가 명령을 병렬로 돌리고, 앞 결과를 다음 호출에 쓰고, <b>Claude가 읽어야 할 부분만 반환</b>한다.</p>
+<ul><li><b>도입:</b> v2.1.323(2026-11-12)에 실험적 opt-in으로 추가, v2.1.325(11-13)에서 첫날 버그 수정. <a href="https://www.joancomadran.dev/blog/claude-code-code-mode">변경 이력은 이 글의 인용</a>이며 changelog 원문을 직접 읽은 것은 아니다.</li>
+<li><b>켜는 법:</b> 환경변수 <code>CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1</code>. 사용자 설정(<code>~/.claude/settings.json</code>)의 env에 넣으면 매 세션 적용된다. 프로젝트 설정 파일에서는 무시된다. 처음에는 확인 창에서 ‘Yes, turn on Code Mode’를 눌러야 한다.</li>
+<li><b>코드 보기:</b> 대화에는 도구 호출 결과(예: 수정 diff)만 보이고, 코드는 <code>Ctrl+O</code> 전사 보기에서 접힌 Code 행으로 본다.</li>
+<li><b>권장 용도(공식):</b> 여러 파일에 반복되는 변경, 결과를 걸러서 읽어야 하는 검색, 동시에 돌릴 수 있는 여러 명령.</li></ul></section>
+<section id="reqs"><h2>2. 요구 조건과 제약</h2>
+<div class="table-wrap" role="region" aria-label="공식 요구 조건" tabindex="0"><table><thead><tr><th scope="col">항목</th><th scope="col">공식 문서의 내용</th></tr></thead><tbody>
+<tr><td>버전·설치</td><td>v2.1.323 이상, 네이티브 빌드. Windows는 Git for Windows 필요</td></tr>
+<tr><td>계정</td><td>Claude 구독 또는 Console 계정. 게이트웨이, Bedrock, 클라우드 제공 서비스 경유는 불가. HIPAA 구성·제로 데이터 보존 조직 불가</td></tr>
+<tr><td>모델</td><td>Opus 5.5, Sonnet 5.5, Haiku 5.5, Fable 5.2</td></tr>
+<tr><td>실행 환경</td><td><b>터미널의 대화형 claude 세션.</b> -p, Agent SDK, VS Code 패널, Desktop 앱, 클라우드 세션에서는 동작하지 않음</td></tr>
+<tr><td>시작 차단 설정</td><td>API 키 헬퍼, OpenTelemetry 내보내기, <code>DISABLE_TELEMETRY</code> 등</td></tr>
+<tr><td>제약</td><td>재개는 터미널에서 Code Mode를 켠 채로만. 자동(auto) 모드의 분류기는 <b>개별 도구 호출이 아니라 코드를 검토</b>. 기다리는 코드는 10분 후 중단. Remote Control·Claude in Chrome·computer use 사용 불가</td></tr>
+</tbody></table></div></section>
+<section id="numbers"><h2>3. “토큰이 줄어든다”의 분모</h2>
+<p>공식 문서에는 절감률이 없다. 널리 인용되는 수치는 출처가 서로 다르다.</p>
+<ul><li><b>37%(API 쪽 수치):</b> 2025-11 Anthropic의 <a href="https://www.anthropic.com/engineering/advanced-tool-use">Advanced tool use</a>가 <em>Programmatic Tool Calling</em>에서 밝힌 43,588→27,297 토큰이다. Code Mode의 벤치마크가 아니다. <a href="https://www.joancomadran.dev/blog/claude-code-code-mode">joancomadran.dev</a>가 이 점을 지적한다.</li>
+<li><b>독립 1회 측정:</b> <a href="https://wavect.io/blog/claude-code-code-mode-token-usage/">Wavect</a>가 인용한 Juan Andrés Núñez의 쌍 비교는 Opus 5.5(중간 추론 강도)로 40개 JSON 주문 파일에서 상위 3명을 찾는 작업이다. 각 설정 1회 실행.</li></ul>
+<div class="table-wrap" role="region" aria-label="독립 측정" tabindex="0"><table><caption>Claude Code 2.1.323, 40개 파일 질의 (Wavect 인용)</caption><thead><tr><th scope="col">측정</th><th scope="col">Code Mode 끔</th><th scope="col">Code Mode 켬</th></tr></thead><tbody>
+<tr><td>입력 토큰(캐시 포함)</td><td>150,364</td><td>94,659</td></tr><tr><td>출력 토큰</td><td>1,172</td><td>1,213</td></tr><tr><td>모델 요청 수</td><td>4</td><td>4</td></tr><tr><td>걸린 시간</td><td>15초</td><td>37초</td></tr></tbody></table></div>
+<p>입력은 55,705 토큰(37.0%) 줄고 두 설정이 같은 고객 3명을 찾았다. 같은 글은 일반 세션도 Python 스크립트를 쓸 수 있다는 점을 짚고, 차이의 상당 부분이 요청에 실리는 <b>도구 설명이 작아진 것</b>에서 왔다고 본다. 캐시 읽기와 새 입력은 가격이 다르므로 토큰 감소가 곧 비용 감소는 아니다. 77% 절감을 주장하는 보도도 있으나 1차 측정 출처를 확인하지 못해 인용하지 않았다.</p>
+<p class="box"><b>읽는 법:</b> “37% 감소”는 한 작업·한 모델·각 1회 실행의 값이다. “빨라진다”는 근거는 이 자료에 없고, 같은 측정에서는 오히려 2.5배 느렸다. 속도와 정확도는 직접 재 봐야 한다.</p></section>
+<section id="ours"><h2>4. 우리 구성(OpenClaw)에서 직접 재 본 값</h2>
+<p>OpenClaw에는 이름이 같지만 <b>별개 구현</b>인 자체 코드모드가 있다. 모델이 보는 도구가 <code>exec</code>와 <code>wait</code>뿐이 되고, 나머지 도구는 숨겨진 목록에서 JavaScript로 찾아 호출한다. <a href="https://docs.openclaw.ai/tools/code-mode">OpenClaw 문서</a>도 이것이 Codex 코드모드와 다른 기능임을 명시한다. 다만 이 기능은 <b>OpenClaw 내장 런타임</b>에서만 작동한다. 우리 Claude 모델은 모두 claude-cli 런타임이고, OpenAI 기본 경로는 Codex 하니스라 지금 구성에서는 켜지는 모델이 없었다.</p>
+<p>그래서 테스트용 <code>qa</code> 에이전트 하나만 Haiku 5.5를 내장 런타임 + 코드모드로 바꾸고, 다른 에이전트는 기존 claude-cli 경로로 두어 같은 읽기 전용 작업(파일 수·git 로그·파일 크기·체크박스 수를 확인)을 한 번씩 돌렸다.</p>
+<div class="table-wrap" role="region" aria-label="OpenClaw 실측" tabindex="0"><table><caption>Haiku 5.5, 동일 과제 각 1회, 4개 도구 호출 (자체 측정)</caption><thead><tr><th scope="col">구성</th><th scope="col">총 토큰(캐시 포함)</th><th scope="col">시간</th></tr></thead><tbody>
+<tr><td>기존: claude-cli 런타임</td><td>71,292</td><td>20초</td></tr><tr><td>코드모드: 내장 런타임, 숨김 도구 41개</td><td>19,117</td><td>9초</td></tr></tbody></table></div>
+<p>답은 같았다. 4개 도구 호출이 코드 한 번으로 끝났다. 다만 이 비교는 <b>코드모드 효과만 분리한 것이 아니다.</b> 기존 경로는 Claude Code 하니스의 시스템 프롬프트와 모든 OpenClaw 도구 설명이 매 요청에 실리는 구조여서, 런타임 차이와 코드모드 차이가 섞여 있다. 표본도 각 1회, 도구 4번짜리 단순 작업이다. 긴 작업에서 속도와 정확도가 어떻게 되는지는 이 측정으로 알 수 없다.</p></section>
+<section id="use"><h2>5. 지금 쓸 만한가</h2>
+<ul><li><b>터미널에서 직접 Claude Code를 쓰는 사람:</b> 여러 파일에 반복되는 변경이나 걸러서 읽는 검색이 많다면 시험해 볼 만하다. 업데이트 후 환경변수 하나로 켜고 끌 수 있다. 느려질 수 있고 자동 모드의 승인 의미가 코드 단위로 바뀐다는 점은 감수해야 한다.</li>
+<li><b>무인 자동화(-p·Agent SDK 기반):</b> 공식 지원 대상이 아니다. 같은 효과를 원하면 OpenClaw처럼 별도 런타임의 코드모드나 도구 정의를 줄이는 방법을 따로 봐야 한다.</li>
+<li><b>측정 없이 켜지 말 것:</b> 비용은 캐시 읽기와 재시도 포함 ‘정답 하나당 비용’으로 비교해야 한다.</li></ul>
+<p class="note">이 페이지는 설치·장기 벤치마크를 수행하지 않았다. Claude Code 쪽 수치는 공식 문서 외에는 모두 2차 인용이다.</p></section>
+<section id="sources"><h2>출처와 검증 범위</h2><ol>
+<li><a href="https://code.claude.com/docs/en/code-mode">Run tool calls from code with Code Mode — 공식 문서</a> (2026-11-20 열람): 요구 조건, 제약, 활성화 방법.</li>
+<li><a href="https://www.joancomadran.dev/blog/claude-code-code-mode">Claude Code Code Mode: what it is, how to enable it, when it pays</a>: v2.1.323·325 일정, 37% 출처 구분. 저자는 직접 측정하지 않았다고 밝힌다.</li>
+<li><a href="https://wavect.io/blog/claude-code-code-mode-token-usage/">How many tokens does Claude Code’s Code Mode save? — Wavect</a>: 40개 파일 쌍 비교 표(원 측정: <a href="https://wmedia.es/en/tips/claude-code-code-mode-turn-on">wmedia.es</a>, 직접 열람하지 않음).</li>
+<li><a href="https://www.anthropic.com/engineering/advanced-tool-use">Introducing advanced tool use — Anthropic</a>: 37%의 원래 출처(API Programmatic Tool Calling).</li>
+<li><a href="https://docs.openclaw.ai/tools/code-mode">OpenClaw Code Mode 문서</a>: 내장 런타임 전용, 활성화 우선순위.</li>
+<li>자체 측정: 2026-11-21, qa 에이전트(Haiku 5.5, 코드모드 켬)와 ops 에이전트(기존 경로) 각 1회. 서브에이전트 실행 기록의 토큰 합계 사용.</li>
+</ol><p class="note">독립 재현으로 검증한 수치가 아니며, 모든 절감률은 단일 작업·단일 실행 값이다. 공개 상태와 요구 조건은 2026-11-20~21 열람 범위에 한정한다.</p></section>
+<footer class="foot"><a href="https://page.cocy.io/">page.cocy.io</a> · cocy.io research note · AI 보조 작성, 1차 출처 문헌 대조. 장기 벤치마크 없음.</footer>
+</main></body></html>
