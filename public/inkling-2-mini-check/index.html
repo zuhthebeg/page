@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inkling-2-Mini “평민 핵탄”? — 숫자는 맞고 포장이 과장 · page.cocy.io</title>
+<meta name="description" content="Thinking Machines Lab의 Inkling-2-Mini를 모델 카드·HF API·llama.cpp PR로 검증했다. 구조·크기 숫자는 대체로 맞지만, 성능은 벤더 보고이고 11-21까지 메인라인 llama.cpp에서 깨진 출력이 나왔다.">
+<link rel="canonical" href="https://page.cocy.io/inkling-2-mini-check/">
+<meta property="og:type" content="article"><meta property="og:title" content="Inkling-2-Mini: 실재하는 강한 로컬 모델, 포장은 과장">
+<meta property="og:description" content="24층→48층, 26B→5.4B는 맞다. 다운로드=전 세계 개발자, 16GB 풀 성능은 근거 부족. 벤치마크는 제작사 보고.">
+<meta property="og:url" content="https://page.cocy.io/inkling-2-mini-check/">
+<meta name="twitter:card" content="summary"><meta name="author" content="cocy">
+<meta property="article:published_time" content="2026-11-22"><meta property="article:modified_time" content="2026-11-22">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Inkling-2-Mini “평민 핵탄”? 숫자 검증","url":"https://page.cocy.io/inkling-2-mini-check/","inLanguage":"ko","datePublished":"2026-11-22","dateModified":"2026-11-22","author":{"@type":"Person","name":"cocy"},"publisher":{"@type":"Organization","name":"cocy.io","url":"https://cocy.io"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#946516}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif;word-break:keep-all;overflow-wrap:anywhere}.page{max-width:880px;margin:36px auto;padding:clamp(22px,6vw,68px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.12em;color:var(--accent)}h1,h2{line-height:1.3;letter-spacing:-.04em}h1{font-size:clamp(2rem,6vw,3rem);margin:.5em 0}.lead{font-size:1.08rem;color:var(--soft)}h2{margin-top:2.5em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.5em}h3{font-size:1.05rem;margin-top:1.8em}a{color:var(--accent);text-underline-offset:3px}a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.meta,.note,.foot{font-size:.86rem;color:var(--soft)}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.2rem;margin:2rem 0;background:#fff8ed}.verdict strong{font-size:1.18rem}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.25rem .25rem .25rem 0;font-size:.8rem;background:#efe9dc}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.table-wrap{overflow-x:auto;max-width:100%;margin:1rem 0}table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:540px}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f5f0e7}caption{text-align:left;font-weight:600;padding:.5rem 0}blockquote{border-left:3px solid var(--line);margin:1rem 0;padding:.5rem 1rem;color:var(--soft)}li{margin-bottom:.55rem}code{background:#f0ebe1;padding:.1rem .3rem;border-radius:3px}.box{background:#f6f1e6;padding:1rem 1.2rem;border-left:4px solid var(--accent)}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem}@media(max-width:600px){.page{margin:0;box-shadow:none}h1{font-size:2rem}}@media print{body{background:white}.page{margin:0;box-shadow:none;max-width:none;padding:0}}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<header><div class="kicker">MODEL NOTE · CLAIM CHECK</div><h1>Inkling-2-Mini,<br>“평민 핵탄”이 맞을까?</h1>
+<p class="lead">한 X 게시물은 Thinking Machines Lab의 Inkling-2-Mini를 “24시간 23만 다운로드, 24층이 48층 두뇌, 26B가 5.4B 비용, 16GB 단일 카드”로 소개한다. 모델 카드·Hugging Face API·llama.cpp PR로 숫자를 하나씩 대조했다.</p>
+<p class="meta">작성·확인: <time datetime="2026-11-22">2026-11-22</time> · 원 게시물: 2026-11-21 · 모델 공개: 2026-11-20(카드 기준) · 문헌·API 검증 / 직접 추론 없음</p></header>
+<div class="verdict" id="verdict"><strong>판정: 실재하는 강한 오픈웨이트 모델. 구조·크기 숫자는 대부분 맞지만, 성능은 벤더 보고이고 “바로 편하게 돌아간다”는 이틀 전까지 사실이 아니었다.</strong>
+<p>Apache-2.0, 26.2B(활성 3.4B, 루프 포함 유효 5.4B), 1M 컨텍스트, Q4 양자화 약 16.6GB는 1차 출처와 일치한다. 그러나 <b>다운로드 수는 사용자 수가 아니고</b>, 성능 표는 <b>제작사가 직접 낸 비교</b>이며 일부 항목은 Qwen3.8-27B가 앞선다. 제작사 스스로 <b>추론 반복 루프, 도구 사용 시 파괴적 행동, 약한 사실 지식</b>을 한계로 적었다. Unsloth 양자화는 llama.cpp 메인라인에서 11-21 11:10(UTC)까지 <b>깨진 출력</b>을 냈다.</p>
+<span class="pill yes">1차 출처 확인</span><span class="pill yes">Apache-2.0</span><span class="pill warn">벤치마크는 벤더 보고</span><span class="pill warn">런타임 성숙도 확인 필요</span></div>
+<nav aria-label="본문 목차"><a href="#identity">모델 식별</a> · <a href="#claims">주장 대조</a> · <a href="#bench">성능 표 읽기</a> · <a href="#run">로컬 실행</a> · <a href="#limits">한계</a> · <a href="#use">쓸 만한가</a> · <a href="#sources">출처</a></nav>
+<section id="identity"><h2>1. 무슨 모델인가</h2>
+<ul><li><b>제작사·날짜:</b> Thinking Machines Lab. 모델 카드의 릴리스 날짜는 2026-11-20이고, <a href="https://huggingface.co/thinkingmachines/Inkling-2-Mini">원본 저장소</a>는 API상 2026-11-17에 만들어졌다. 게시물의 “방금 공개”와는 며칠 차이가 있다.</li>
+<li><b>라이선스:</b> 카드와 HF 메타데이터 모두 Apache-2.0. 별도의 <a href="https://thinkingmachines.ai/model-acceptable-use-policy/">Acceptable Use Policy</a> 링크가 있으나 내용은 읽지 않았다.</li>
+<li><b>형태:</b> 텍스트·이미지를 받아 <b>텍스트만 출력</b>하는 멀티모달. “원생 멀티모달”은 입력 쪽 이야기다.</li>
+<li><b>“594B 대형”:</b> 같은 계열의 <a href="https://huggingface.co/thinkingmachines/Inkling-2-Small">Inkling-2-Small</a>. HF API의 safetensors 합계가 594,050,672,720이다. 게시물의 수치와 일치.</li>
+<li><b>창업자 소개(전 OpenAI CTO):</b> 이번 조사에서 1차 출처로 확인하지 않았다.</li></ul></section>
+<section id="claims"><h2>2. 게시물 주장 대조</h2>
+<div class="table-wrap" role="region" aria-label="주장별 검증 표" tabindex="0"><table><thead><tr><th scope="col">게시물 주장</th><th scope="col">확인한 내용 / 판정</th></tr></thead><tbody>
+<tr><td>24층이 48층 두뇌, 중간 12층을 3번</td><td><b>맞음.</b> 카드: 24층 디코더, 중간 12층이 가중치를 공유하며 3번 실행되어 토큰당 48번의 층 적용. 단 “깊이 2배”가 곧 “능력 2배”는 아니다. 제작사도 루프가 <b>지식을 더 저장하게 하지는 않는다</b>고 쓴다.</td></tr>
+<tr><td>26B 용량, 5.4B만 사용</td><td><b>맞음, 정의 주의.</b> 총 26.2B(블로그 26.4B, safetensors 합 26,388,646,440), 활성 3.4B, 루프당 추가 약 1.0B로 유효 5.4B. “5.4B”는 토큰당 가중치 활성량이며 메모리 사용량이 아니다. 전체 가중치는 올려야 한다.</td></tr>
+<tr><td>네이티브 100만 토큰·시각·MCP</td><td><b>부분 확인.</b> 컨텍스트 1M 지원은 카드에 명시. 이미지 입력도 확인. 1M에서의 실제 메모리·속도·품질은 이번에 확인하지 못했다. MCP Atlas 점수는 있으나 벤더 보고.</td></tr>
+<tr><td>Q4 16GB, 3090/4090 또는 32GB Mac에서 풀 성능</td><td><b>수치는 맞고 “풀 성능”은 과장.</b> Unsloth UD-Q4_K_M 파일이 16,610,543,328바이트, IQ4_XS 15.73GB, Q4_K_XL 17.63GB. 원본 체크포인트는 약 20GB(NVFP4+MXFP8). 카드의 공식 지원은 DGX Spark, 32GB 이상 Apple 실리콘이고 “다른 GPU는 32GB 이상 VRAM 권장”이다. 24GB 카드에서 긴 컨텍스트가 도는지는 측정하지 않았다.</td></tr>
+<tr><td>24시간에 23만 번 다운로드</td><td><b>값은 그럴듯, 해석은 과장.</b> Unsloth GGUF 저장소가 2026-11-20 13:09(UTC) 생성, 현재 다운로드 238,152. 게시 시각까지 약 23.5시간이다. 하지만 게시 시점의 값은 확인할 수 없고, 같은 시간 원본 저장소는 7,944, ggml-org GGUF는 61,987이다. 다운로드 수는 평가상 고유 사용자 수가 아니며 “전 세계 개발자가 집어 갔다”는 근거가 되지 못한다.</td></tr>
+<tr><td>LM Studio·Ollama로 바로 로컬 실행</td><td><b>시점 의존.</b> 아래 4절 참고.</td></tr>
+</tbody></table></div></section>
+<section id="bench"><h2>3. 성능 표는 누구의 숫자인가</h2>
+<p>제작사 블로그와 카드는 Gemma 4 31B, Muse Glimmer, Qwen3.8-27B, Nemotron 3.5 Super VL과 비교한다. 이 표는 <b>제작사가 구성</b>했고 “평가 설정은 모델마다 다르다”고 스스로 밝힌다. 일부 비교 모델 점수가 0.0%대(예: Gemma 4 31B의 FrontierCode 0.0%)인 항목은 하니스 적합 여부에 따라 달라졌을 수 있어 그대로 일반화하기 어렵다.</p>
+<div class="table-wrap" role="region" aria-label="벤더 보고 벤치마크 발췌" tabindex="0"><table><caption>모델 카드 표에서 발췌 (벤더 보고, 독립 재현 없음)</caption><thead><tr><th scope="col">항목</th><th scope="col">Inkling 2 Mini</th><th scope="col">Qwen3.8-27B</th><th scope="col">Gemma 4 31B</th></tr></thead><tbody>
+<tr><td>활성/총 파라미터(B)</td><td>5/26</td><td>27/27</td><td>31/31</td></tr>
+<tr><td>AA Index v5.0</td><td>20.1</td><td>20.1</td><td>4.4</td></tr>
+<tr><td>DeepSWE v1.1</td><td>48.2%</td><td>42.2%</td><td>0.3%</td></tr>
+<tr><td>SWEBench Pro v2 (Hard)</td><td>77.9%</td><td>73.8%</td><td>14.2%</td></tr>
+<tr><td>SWEBench Verified</td><td>79.2%</td><td>77.8%</td><td>46.1%</td></tr>
+<tr><td>Terminal Bench v2.1</td><td>71.6%</td><td><b>73.0%</b></td><td>43.4%</td></tr>
+<tr><td>GDPVal-AA v2.1</td><td>1319</td><td><b>1427</b></td><td>627</td></tr>
+<tr><td>AutomationBench-AA v1.0.6</td><td>41.8%</td><td><b>48.2%</b></td><td>4.9%</td></tr>
+</tbody></table></div>
+<p class="box"><b>읽는 법:</b> 코딩 에이전트 지표에서 같은 크기대 모델보다 앞선다는 제작사 주장은 이 표와 일치한다. 그러나 AA Index는 Qwen3.8-27B와 <b>동률</b>이고, 위 표의 세 항목에서는 Qwen이 앞선다. 블로그도 “일부는 Qwen3.8-27B 뒤”라고 적는다. “같은 급에서 전면 1위”가 아니다.</p></section>
+<section id="run"><h2>4. 로컬 실행은 지금 어디까지 되나</h2>
+<ul><li><b>메인라인 llama.cpp 문제:</b> Unsloth 모델 폴더의 안내문은 PR 32704가 머지되기 전 메인라인에서 <b>NVFP4 스케일이 잘못 풀려 gibberish가 나온다</b>고 경고한다. 해당 <a href="https://github.com/ggml-org/llama.cpp/pull/32704">PR</a>은 GitHub API상 2026-11-21 11:10(UTC) 머지됐다. 게시물은 그 약 1.5시간 뒤(12:38 UTC)에 올라왔다. 그 전에 받은 빌드에서는 같은 파일이 깨진 출력을 냈을 것이라는 뜻이다. 빌드 날짜 확인이 필요하다.</li>
+<li><b>커뮤니티 이슈:</b> Unsloth 저장소 토론에 “failed to load model”, “Vulkan blowup (Q8)” 같은 글이 있다. 일부는 해결됐을 수 있다. 이번에 하나씩 추적하지 않았다.</li>
+<li><b>Ollama·LM Studio:</b> Ollama 라이브러리에 inkling-2-mini 페이지가 있고, LM Studio 커뮤니티 GGUF 저장소가 존재한다. 반면 Ollama 이슈 트래커에는 “GGUF 지원을 위한 llama.cpp 버전 업”, MLX 경로의 프리픽스 캐시 문제 등이 <b>열린 상태</b>로 올라 있다. 실제로 매끄럽게 돌아가는지는 직접 실행하지 않았다.</li>
+<li><b>속도 주장:</b> 제작사의 속도는 614GB/s에서 BF16 가중치, 배치 1을 가정한 <b>이론 상한</b>이다. 실측 토큰 속도가 아니다.</li></ul></section>
+<section id="limits"><h2>5. 제작사가 적은 한계</h2>
+<ul><li><b>지식·사실성:</b> Inkling-2-Small보다 대부분 평가에서 약하고, 사실 회상에서 격차가 가장 크다. 틀린 정보를 자신 있게 말할 가능성이 더 높다.</li>
+<li><b>반복 추론:</b> 코드 디버깅 등에서 긴 추론 루프에 갇히거나 같은 확인을 반복했다. 출력 토큰·에이전트 턴 제한을 권고한다.</li>
+<li><b>에이전트 신뢰성:</b> 세부 지시·프로젝트 관례를 큰 모델보다 덜 지키고, 확인 없이 파일을 지우거나 덮어쓸 수 있다.</li></ul>
+<p>그래서 “에이전트 소형 대포”는 <b>검색·도구로 지식을 보완하고, 파괴적 작업은 사람이 막는 구성</b>에서 읽어야 한다. 제작사는 지식 부족을 검색·도구 사용으로 메운다고 설명한다(BrowseComp·DeepSearchQA·MCP Atlas에서 강하다는 보고, 마찬가지로 벤더 수치).</p></section>
+<section id="use"><h2>6. 쓸 만한가</h2>
+<p><b>조건부로 시험할 가치가 있다.</b> 로컬에서 코딩·도구형 에이전트를 돌려 볼 목적이고 32GB급 메모리 장비가 있다면 후보다. 다만 <b>최신 llama.cpp 빌드 또는 Unsloth 안내 빌드</b>로 받고, 출력 길이와 턴 수를 제한하고, 파일 삭제·덮어쓰기는 승인 후에만 허용하자. 한국어 품질·1M 컨텍스트 실제 성능은 이 자료로 알 수 없다. 이 문단은 문헌 기반 평가이며 직접 실행은 하지 않았다.</p></section>
+<section id="sources"><h2>출처와 검증 범위</h2><ol>
+<li><a href="https://x.com/mingzi206/status/2124120377718645066">원 X 게시물</a> · 2026-11-21 12:38:56 UTC. 원문은 읽기 전용 <a href="https://api.fxtwitter.com/mingzi206/status/2124120377718645066">FxTwitter API</a> 응답으로 확인. 조회 약 4.9만·북마크 1,080. 커뮤니티 노트 없음.</li>
+<li><a href="https://huggingface.co/thinkingmachines/Inkling-2-Mini">thinkingmachines/Inkling-2-Mini</a> · <a href="https://huggingface.co/api/models/thinkingmachines/Inkling-2-Mini">HF API</a>: 라이선스, 생성일, safetensors 합계.</li>
+<li><a href="https://huggingface.co/unsloth/Inkling-2-Mini-GGUF">unsloth/Inkling-2-Mini-GGUF</a> 모델 카드(구조, 파라미터, 지원 하드웨어, 벤치마크, 한계, 양자화 크기표)와 <a href="https://huggingface.co/unsloth/Inkling-2-Mini-GGUF/blob/main/Mainline_Support/HOW_TO_RUN.md">HOW_TO_RUN</a>, <a href="https://huggingface.co/unsloth/Inkling-2-Mini-GGUF/discussions">토론</a>. 다운로드 수는 2026-11-22 03:32(UTC) API 조회값.</li>
+<li><a href="https://thinkingmachines.ai/news/inkling-2-mini/">Introducing Inkling 2 Mini — Thinking Machines Lab</a>: 루프 구조, 총 26.4B, 메모리 ~20GB, 속도 이론 상한 정의.</li>
+<li><a href="https://github.com/ggml-org/llama.cpp/pull/32704">llama.cpp PR 32704</a>: 머지 시각. <a href="https://ollama.com/library/inkling-2-mini">Ollama 라이브러리 페이지</a>와 <a href="https://github.com/ollama/ollama/issues/19826">관련 이슈</a>.</li>
+<li><a href="https://huggingface.co/thinkingmachines/Inkling-2-Small">Inkling-2-Small</a>: 594B 확인.</li>
+</ol><p class="note">모든 성능 수치는 제작사 보고이며 독립 재현이 아니다. 모델 설치·추론은 하지 않았다. 다운로드·이슈 수치는 확인 시점 값이다.</p></section>
+<footer class="foot"><a href="https://page.cocy.io/">page.cocy.io</a> · cocy.io research note · AI 보조 작성, 1차 출처 문헌 대조. 직접 실행 없음.</footer>
+</main></body></html>
