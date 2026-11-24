@@ -1,7 +1,7 @@
 /* ── 발자국 Footprints — dark map room ── */
 :root {
   --bg: #070b14; --bg2: #0a1120; --panel: #0e1626; --panel2: #121c30;
-  --line: #1e2c47; --ink: #dce6f5; --ink-dim: #8fa2c0; --ink-faint: #5a6b88;
+  --line: #1e2c47; --ink: #dce6f5; --ink-dim: #8fa2c0; --ink-faint: #8495b2;
   --green: #3ef08c; --cyan: #39c0ff; --violet: #b48cff; --amber: #ffb224;
   --mono: "IBM Plex Mono", ui-monospace, monospace;
   --radius: 14px;
@@ -18,12 +18,18 @@ body {
 .top { display: flex; align-items: center; gap: 10px; padding: 22px 0 6px; }
 .top .logo { width: 34px; height: 34px; }
 .top .brand b { font-size: 1.12rem; }
-.top .brand span { font-family: var(--mono); font-size: .62rem; color: var(--ink-faint); letter-spacing: .22em; text-transform: uppercase; display: block; }
+.top .brand span { font-family: var(--mono); font-size: .75rem; color: var(--ink-faint); letter-spacing: .22em; text-transform: uppercase; display: block; }
+.top > a { padding: 4px 10px; }
+.top .langs a { padding: 4px 8px; }
+@media (max-width: 420px) {
+  .top { gap: 6px; }
+  .top > a, .top .langs a { padding-inline: 6px; }
+}
 
 .hero { padding: 26px 0 12px; }
 .hero .tape {
   display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: .66rem; letter-spacing: .14em; text-transform: uppercase;
+  font-family: var(--mono); font-size: .75rem; letter-spacing: .14em; text-transform: uppercase;
   color: var(--cyan); border: 1px solid var(--line); border-radius: 999px;
   padding: 5px 12px; margin-bottom: 14px; background: rgba(57,192,255,.05);
 }
@@ -86,7 +92,7 @@ body {
   background: linear-gradient(135deg, #6d5df6, #39c0ff); font-size: .8rem; line-height: 1;
 }
 .tp-send:hover { filter: brightness(1.15); }
-.tp-note { margin-top: 8px; font-size: .68rem; color: var(--ink-faint); }
+.tp-note { margin-top: 8px; font-size: .75rem; color: var(--ink-faint); }
 
 .err {
   display: none; margin-top: 14px; padding: 10px 14px; border-radius: 10px;
@@ -265,16 +271,16 @@ footer a:hover { color: var(--ink); }
 .dna-sub { font-weight: 400; font-size: .74rem; opacity: .6; }
 .dna-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 12px; }
 .dna-chip { font-size: .76rem; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); }
-.dna-chip i { font-style: normal; opacity: .55; font-size: .68rem; margin-left: 2px; }
+.dna-chip i { font-style: normal; color: var(--ink-dim); font-size: .75rem; margin-left: 2px; }
 .dna-chip.dna-home { background: rgba(124,158,255,.16); border-color: rgba(124,158,255,.4); }
 .dna-btn { display: block; text-align: center; padding: 11px 14px; border-radius: 10px; background: #5b7cfa; color: #fff !important; font-weight: 700; font-size: .88rem; text-decoration: none; transition: background .15s; }
 .dna-btn:hover { background: #4a68e8; }
-.dna-note { margin-top: 8px; font-size: .68rem; opacity: .5; line-height: 1.5; }
+.dna-note { margin-top: 8px; font-size: .75rem; color: var(--ink-faint); line-height: 1.5; }
 
 /* 랭킹 닉네임 입력 + 수치 */
 .rank-nick { width: 100%; margin-bottom: 8px; font: inherit; font-size: .82rem; color: var(--ink, #dce6f5); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16); border-radius: 8px; padding: 8px 11px; }
 .rank-nick:focus { outline: 1px solid var(--violet, #8b7cf6); }
-.rb-km { font-style: normal; opacity: .55; font-size: .72rem; margin-left: 6px; }
+.rb-km { font-style: normal; color: var(--ink-faint); font-size: .72rem; margin-left: 6px; }
 
 /* 명예의 전당 — 기록 기간별 리그 탭 */
 .rb-tabs { display: flex; gap: 5px; margin: 8px 0 10px; }
@@ -282,6 +288,6 @@ footer a:hover { color: var(--ink); }
   flex: 1; padding: 6px 4px; border-radius: 8px; border: 1px solid var(--line);
   background: none; color: var(--ink-dim); font: inherit; font-size: .72rem; font-weight: 700; cursor: pointer;
 }
-.rb-tab em { font-style: normal; font-weight: 400; color: var(--ink-faint); margin-left: 4px; font-size: .66rem; }
+.rb-tab em { font-style: normal; font-weight: 400; color: var(--ink-faint); margin-left: 4px; font-size: .75rem; }
 .rb-tab.on { border-color: rgba(57,192,255,.55); background: rgba(57,192,255,.1); color: #7fd4ff; }
 .rb-tab:hover { border-color: #2a3f63; }
