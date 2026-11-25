@@ -8,12 +8,16 @@ const dir = path.resolve(process.argv[2] || path.join(__dirname, '../public'));
 const origin = 'https://page.cocy.io';
 const { items } = JSON.parse(fs.readFileSync(path.join(dir, 'feed.json'), 'utf8'));
 if (!Array.isArray(items)) throw new Error('feed.json: items must be an array');
+// The deployment's D1-filtered private feed overrides legacy/manual entries too.
+const privateFile = path.join(dir, '../functions/api/_private-feed.json');
+const privateItems = fs.existsSync(privateFile) ? JSON.parse(fs.readFileSync(privateFile, 'utf8')) : [];
+if (!Array.isArray(privateItems)) throw new Error('private feed must be an array');
+const privateSlugs = new Set(privateItems.map(item => item.slug));
 
 // Reviewed static entries outside gen-feed's first-level public report listing.
 const manual = [
   ['', '2026-07-08', 'page.cocy.io 홈', '서비스 소개와 페이지 만들기 시작.'],
   ['guide/mobile-invitation', '2026-06-11', '모바일 청첩장 만들기 가이드', '모바일 청첩장을 무료로 만드는 법과 체크리스트.'],
-  ['cocy', '2026-06-10'],
 ];
 const locales = new Map([
   ['onepiece-ending', ['en', 'ja']], ['tzuyang-tokyo', ['en', 'ja', 'tw']],
@@ -44,6 +48,7 @@ const attributes = tag => Object.fromEntries([...tag.matchAll(/([\w:-]+)\s*=\s*(
   .map(([, k, a, b, c]) => [k.toLowerCase(), a ?? b ?? c]));
 const route = slug => slug ? `/${slug}/` : '/';
 const eligible = slug => {
+  if (privateSlugs.has(slug.split('/')[0])) return false;
   if (slug !== '' && (!validPath.test(slug) || slug.split('/').some(s => excludedPrefix.test(s) || personal.has(s)))) return false;
   const urlPath = route(slug);
   if (headerRules.some(r => [urlPath, `${urlPath}index.html`, urlPath.slice(0, -1)].some(p => r.test(p)))) return false;
