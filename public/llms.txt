@@ -4,8 +4,6 @@
 
 ## 서비스
 - [page.cocy.io 홈](https://page.cocy.io/): 서비스 소개와 페이지 만들기 시작.
-- [새 페이지 만들기](https://page.cocy.io/new): 용도·정보를 입력하면 맞춤 페이지를 생성.
-- [내 페이지 편집](https://page.cocy.io/edit): 생성된 페이지의 문구·디자인 수정.
 
 ## 활용 예
 - 청첩장(결혼식 안내·오시는 길·갤러리)
@@ -13,37 +11,109 @@
 - 식당 메뉴판
 - 개인 포트폴리오·프로필
 
-## 분석 보고서 (cocy 직접 실측·조사)
-- [ECC·Codex 검증](https://page.cocy.io/ecc-codex-factcheck/): GitHub 트리의 71 에이전트·311 스킬 확인, 생산성·자동 설치는 미실측. OpenClaw에는 선별 참고 권장.
-- [Poly Haven 무료 에셋 검증](https://page.cocy.io/polyhaven-free-assets-api/): 카탈로그 2,387개, 에셋 CC0와 무료 상업 API의 식별 헤더·출처표시 조건을 구분. ARPG 후보 5개 매니페스트 확인, 파일 다운로드·Blender 임포트·게임 적용 없음.
-- [HyperQwen·RTX 4090 검증](https://page.cocy.io/hyperqwen-4090/): 381 tok/s는 25k 문서 재현, 일반 채팅 보장 아님. 개발자·외부 사용자 보고와 라이선스 조사만 수행, 자체 GPU 실측 없음. 24GB 격리 파일럿 조건부 GO, 상시 운영·전면 교체 NO.
-- [LLM 게이트웨이 해부실](https://page.cocy.io/llm-gateway-anatomy/): 요청 캡슐을 직접 투입해 인증·API·구독 CLI·로컬 분기와 최대 1회 폴백 뒤 의도된 정지를 조작하는 한국어 개념 해설. 실제 모델 요청 없는 시뮬레이션.
-- [한국어는 정말 토큰을 더 먹는가](https://page.cocy.io/korean-token-cost): "한국어 AI 비용 2.59배" 보도를 Claude 공식 count_tokens API로 직접 실측 검증. Sonnet·Haiku 2.59배, Opus 1.72배 확인.
-- [프론티어 모델 인터페이스 지도](https://page.cocy.io/models): Messages·Chat Completions·Responses·Converse 인터페이스 계열 비교와 파라미터 축소 흐름(temperature 제거 → adaptive thinking/effort), 툴콜링 표기 차이, 플랫폼별 접속 방식·캐싱 비용 구조. 모델 브리프 정본.
-- [GPT-5.6 가격 브리프 (Azure 기준)](https://page.cocy.io/gpt-5-6): Sol·Terra·Luna 가격과 정책 변동 이력 — 7/30 1P 인하(Luna -80%·Terra -20%)의 Azure 미반영 괴리(Luna 5배), 캐시 쓰기 유료화(1.25×), 272K 롱컨텍스트 할증(전체 소급), Data Zone +10%, Fast mode 2×.
-- [MCP 2026-07-28 스펙 브리프](https://page.cocy.io/mcp): 출시 이후 최대 개정 분석 — 무상태 코어(initialize·세션 폐지), MRTR, subscriptions/listen, ttlMs 캐시 힌트, Mcp-Method 헤더 라우팅, DCR→CIMD, Roots·Sampling·Logging 폐기(12개월 유예). 서버·클라이언트·게이트웨이별 마이그레이션 체크리스트.
-- [Claude Fable 5 분석](https://page.cocy.io/fable-5): Opus 위에 신설된 Mythos-class 티어 분석 — 무엇이 바뀌고 인터페이스는 왜 그대로인가.
-- [Claude Opus 5 API 브리프](https://page.cocy.io/opus-5): 4.8 대비 깨지는 변경 2개(thinking 기본 ON, disabled는 effort high 이하), 가격 동일, 캐시 최소길이 512토큰 하향, Bedrock·Foundry 미지원 기능 정리.
-- [Claude Sonnet 5 API 브리프](https://page.cocy.io/sonnet-5): 도입가 $2/$10은 2026-08-31까지(9/1부터 $3/$15), 새 토크나이저로 같은 텍스트가 약 30% 더 많은 토큰 — 단가 인상과 겹침. Opus 5와의 차이(thinking:disabled 허용범위·중간 system 메시지·web fetch) 정리.
-- [Harness-1 논문 분석](https://page.cocy.io/harness-1): 검색 에이전트의 상태를 정책(모델)에서 환경(하니스)으로 외부화해 RL 학습 — 20B가 프런티어급 recall을 내는 구조.
-- [효과적인 에이전트 만들기 — 학습노트](https://page.cocy.io/effective-agents): 에이전트 설계 원칙(워크플로 vs 에이전트, 도구 설계, 검증 루프) 학습 정리.
-- [로컬 LLM으로 에이전트 코딩하기](https://page.cocy.io/local-llm-coding): 로컬 모델 기반 코딩 에이전트 필드가이드 분석 — VRAM 티어별 현실적 기대치.
-- [에이전트 스킬 4선](https://page.cocy.io/agent-skills): 카파시 4원칙·Superpowers·Understand-Anything·에이전트 메모리 — 무엇이고 어떻게 적용했는지.
-- [Hermes Agent 셋업 타당성](https://page.cocy.io/hermes-agent): OpenClaw 대안 에이전트 하네스를 다른 PC에 설치할 수 있는지 조사.
-- [Hermes 로컬 모델 셋업 타당성](https://page.cocy.io/hermes-local): Nous Research Hermes 로컬 구동 — VRAM 티어별 go/no-go.
-- [LiteLLM Enterprise 비용 분석](https://page.cocy.io/litellm-cost): 사용량 기준 도입 비용 실측 분석.
-- [Headroom 도입 평가](https://page.cocy.io/headroom-eval): 토큰 압축 레이어 실측 — 반복 JSON 40~90% 절감, 파일 read ~0%. 전면 도입 보류 판단 근거.
-- [루프 엔지니어링 실전 설계](https://page.cocy.io/loop-engineering): 멀티게임 마이그레이션에 루프 엔지니어링을 적용한 설계 기록.
-- [Travly 에이전트 성숙도 진단](https://page.cocy.io/travly-agent-review): 여행 서비스 AI 어시스턴트의 에이전트 성숙도 진단(2.7/5)과 P1~P6 개선 우선순위.
-- [쯔양몇끼 도쿄편 맛집 14곳](https://page.cocy.io/tzuyang-tokyo): ENA 「쯔양몇끼」 일본 도쿄편 방문 가게 전체 목록 — 상호·일본어 주소·대표메뉴·좌표를 ENA 공식 맛집리스트 1~3탄 기준으로 정리하고 지도 표시. 영어(/tzuyang-tokyo/en/)·일본어(/tzuyang-tokyo/ja/)·번체 중국어(/tzuyang-tokyo/tw/) 버전 제공.
-- [대만 렌터카 운전 가이드](https://page.cocy.io/taiwan-drive): 한국인 기준 준비물(국제면허+한국면허), 교통 규칙 차이, 주유·주차 유의사항.
-
 ## 가이드
-- [모바일 청첩장 만들기 가이드](https://page.cocy.io/guide/mobile-invitation): 모바일 청첩장을 무료로 만드는 법과 체크리스트.
-- [원피스 결말 추측 총정리 — 이무=앵무새 이론](https://page.cocy.io/onepiece-ending/): 2026년 7월 한국 커뮤니티발 최종보스·결말 떡밥 분석. 근거별 판정과 출처 포함. 영어(/onepiece-ending/en/)·일본어(/onepiece-ending/ja/) 버전 제공.
+- [모바일 청첩장 만들기 가이드](https://page.cocy.io/guide/mobile-invitation/): 모바일 청첩장을 무료로 만드는 법과 체크리스트.
 
-- [Harness² 자기개선 검증](https://page.cocy.io/harness2-agent-research/): 가중치 고정 재귀 하네스, 저자 보고 전문 업무 수치와 JEV 비전 미검증 구분.
+## 분석 보고서
+- [지포스 드라이버가 SSD 수명을 깎는다? 621.35 핫픽스까지 확인](https://page.cocy.io/geforce-ssd-writes-check/): 지포스 드라이버 621.14·621.24의 SSD 대량 쓰기 보고를 퀘이사존 기사와 NVIDIA 공식 포럼 공지로 대조했다. 621.35 핫픽스는 공식 수정 항목이지만, 모든 PC의 문제는 아니고 수명 단축은 계산상 추정이다.
+- [MiniMax H3 LoRA 팩트체크: 0.62GB와 8GB 실행은 다르다](https://page.cocy.io/minimax-h3-lora-claims-check/): 추가 파일 0.621GB는 확인. 8~16GB 실행과 품질은 미검증이며, 공식 H3 라이선스는 대한민국을 기본 허용 지역에서 제외한다.
+- [Inkling-2-Mini “평민 핵탄”? — 숫자는 맞고 포장이 과장](https://page.cocy.io/inkling-2-mini-check/): Thinking Machines Lab의 Inkling-2-Mini를 모델 카드·HF API·llama.cpp PR로 검증했다. 구조·크기 숫자는 대체로 맞지만, 성능은 벤더 보고이고 11-21까지 메인라인 llama.cpp에서 깨진 출력이 나왔다.
+- [Claude Code 코드모드, 토큰 효율이 정말 오를까?](https://page.cocy.io/codemode-check/): Claude Code v2.1.323의 실험 기능 Code Mode를 공식 문서로 검증했다. 독립 1회 측정은 입력 토큰 37% 감소와 속도 저하를 보였고, 이 기능은 대화형 터미널 전용이다. OpenClaw 코드모드는 같은 작업에서 71,292→19,117 토큰.
+- [42밀리초 학습, 트랜스포머 종말? — CRAM 논문 검증](https://page.cocy.io/cram-associative-memory-reasoning-check/): Prefrontal의 CRAM 논문(arXiv:2611.17309)을 원문으로 검증했다. 42ms 학습·최소 1,000× 학습 가속·최소 282× 추론 FLOPs·Sudoku-Extreme 99.996%는 맞지만, 1,000×는 추론이 아니라 학습 시간이고 비교 상대는 소형 looped 모델이다.
+- [MiniMax H3 Image 검증: 6.4GiB 파일은 VRAM이 아니다](https://page.cocy.io/minimax-h3-image-6gb-check/): Q2_K 파일은 6.88GB(6.40GiB). 텍스트 인코더·VAE·4K 작업 메모리는 별도다. RTX 3080 Ti 12GB의 조건과 한국 제외 라이선스까지 공식 문서로 확인했다.
+- [토크나이저 없는 1B가 LLM 시대를 끝낸다? — 바이트 증류 논문 검증](https://page.cocy.io/token-ceiling-byte-distillation-check/): Meta FAIR의 Breaking the Token Ceiling을 원문으로 검증했다. 1/6 데이터·80% 저장 절감은 외삽과 교사 로짓 저장 조건의 숫자다. 실제 체크포인트, 토큰 의존성, 추론 비용을 나눠 읽는다.
+- [Opus가 5프롬프트로 3D 캐릭터를 움직였다? Tripo 리깅 워크플로 점검](https://page.cocy.io/tripo-rig-check/): X에서 화제인
+- [한국 공개API 300개 GitHub 목록, 안전한가? — public-apis-4Kr 보안 점검](https://page.cocy.io/korea-public-apis-security-check/): X에서 화제인 한국 공개API 목록 yybmion/public-apis-4Kr(MIT)을 정확한 커밋 기준으로 점검했다. 저장소 자체는 문서 위주이고 숨은 업로드 코드는 찾지 못했다. 다만 목록 속 개별 API를 쓰는 순간 키와 요청 정보가 각 공급자에게 나간다. 300개 공급자 전체 감사는 아니다.
+- [Terminus Notes, Notion을 죽였다고? — 무료·오픈소스 검증과 Jira 대안](https://page.cocy.io/terminus-notes-jira-check/): Terminus Notes의 실제 공개 소스·무료 요금·SDK 의존·라이선스를 검증했다. Notion 완전 대체는 미입증. Jira 대안 Plane·OpenProject·Taiga까지 비교한다.
+- [NVIDIA가 일부러 막은 GPU 속도, 풀렸다? — gpu-unlock v2 팩트체크](https://page.cocy.io/gpu-unlock-v2-check/): RTX 3060 +87%, 4090 2배는 원본 저장소 README의 행렬곱 최대치(사용자 보고 집계)와 일치한다. 절반 제한 자체는 NVIDIA 백서에 적혀 있다. 다만 실제 작업은 +25~55%, 토큰 생성·양자화 모델·게임은 변화 없음, 리눅스 전용이다.
+- [GPT-6 Astra가 가중치를 직접 고쳐 수학 6배? — Weight-Space Programming 팩트체크](https://page.cocy.io/weight-space-programming-check/): 실험과 로그는 진짜다. 다만 Qwen3.5-0.8B 수학 6배는 대부분 무한 반복 버그를 끈 효과다. 저자 기준선 IFEval 21점은 Qwen 공식 44점의 절반이고, 반복이 없는 Gemma에선 향상이 거의 없었다.
+- [LFM3 검증: 로컬 분류·라우팅 후보, 메인 코딩 에이전트는 아니다](https://page.cocy.io/lfm3/): Liquid AI LFM3 6종의 실제 가중치, 조건부 상업 라이선스, 한국어와 런타임 지원을 확인했다. MLX는 아직 진행 중. 실측 없이 구분한 실용 판정.
+- [uzu 검증: M4 Max로 어디까지? RAM별 9B·32B·70B 가이드](https://page.cocy.io/uzu-m4-max/): M5의 92.1 tok/s를 M4 Max에 곱하면 안 된다. uzu의 M5 전용 speculation 설정과 36·48·64·128GB RAM별 모델·KV·속도 한계를 검증했다.
+- ["클로드 코드가 증명했다, 앱이 대화를 엿듣는다"? — 팩트체크와 직접 확인하는 법](https://page.cocy.io/phone-listening-check/): 틱톡 마이크 347번·키워드 캐시는 아이폰에 존재하지 않는 데이터다. 마이크가 켜지면 주황색 점이 뜬다. 진짜 확인은 설정의 앱 개인정보 보호 리포트로 한다.
+- [스크립트 하나로 AI 게임 회사? — Claude Code Game Studios 실측](https://page.cocy.io/claude-game-studios-check/): 에이전트 49·스킬 74·훅 15·규칙 14는 사실. 그런데 제작자 본인 실험에서 문서 30개 쓴 버전이 블라인드 평가 꼴찌였다. 통째 도입보다 실행 확인 게이트·경로별 규칙·엄격도 스위치만 가져올 것.
+- ["RAG는 끝났다, IBM이 환각 65배 줄였다"? — STAIR 논문 팩트체크](https://page.cocy.io/stair-rag-check/): 65배는 존재하지 않는 목차 항목을 고른 비율(3.25%→0.05%)이다. 답변 환각이 아니고 오답률은 18.67%. RAG 대체가 아니라 목차 기반 검색 개선 연구.
+- [GPU 텐서 2배 해제, 윈도우판도 나왔다? — 부팅 전 UEFI 방식 팩트체크](https://page.cocy.io/gpu-unlock-windows-check/): 윈도우에서 쓰는 방법이 실제로 나왔다. 드라이버가 아니라 윈도우 전에 도는 UEFI 부트 앱이다. 명령 처리량 2배는 재현, 실제 행렬곱은 +5~90%, 전부 특정 카드·보드 한정. 우리 3080 Ti는 보류.
+- [모델만 바꿨는데 LLM 비용 3배 — 프롬프트 캐시와 게이트웨이 점검표](https://page.cocy.io/prompt-cache-gateway/): 당근 사례를 OpenAI·Anthropic 공식 문서와 대조했다. KV캐시는 앞단에 두는 게 아니라 게이트웨이가 앞부분을 흔들지 않는 것. 가드레일 점검표, 크로스히트 범위, 사내 가이드 7가지.
+- [역전파 없는 AI 학습, 열흘 만에 4000배? — Q랩스 Noise·Dust 쉽게 풀기](https://page.cocy.io/noise-backprop-free-check/): 1.76시간→1.6초는 원본 기록표와 일치한다. 다만 3770만 파라미터 장난감 모델을 쉬운 목표까지 학습하는 경주 기록이고, 역전파보다 빠르다는 뜻은 아니다. 역전파가 뭔지부터 쉽게 설명했다.
+- [Opus + Godot로 6주 만에 게임? 원 개발자와 제작 도구 검증](https://page.cocy.io/opus-godot-gamedev-check/): After the Wind 개발자의 6주차 트레일러와 제작 과정, Tripo·Cascadeur 가격과 상업 이용 조건을 확인했다. 우리 웹 게임에 바로 적용할 방법도 구분했다.
+- [RTX 4090 텐서 성능 2배, 진짜일까? — GPU unlock Ada 팩트체크](https://page.cocy.io/gpu-unlock-ada-check/): FP16/BF16의 FP32 누적 명령 처리량 2배는 4090 교차 측정으로 확인. 실제 GEMM은 0~34% 개선, Windows+WSL2 실사용 적용은 현재 비권장.
+- [Jev 응용 앱 5종 팩트체크 — 코드는 진짜, 성능과 수익은 조건부](https://page.cocy.io/jev-apps-check/): Jev 기반 브라우저 에이전트·컨텍스트 압축·코드 검색·트레이더·PostgreSQL 확장 5종의 저장소와 측정 근거를 검증했다. 7.1초는 한 작업 데모, 비용 절감은 작은 작성자 실험, 실거래 수익은 미검증.
+- ["Kimi K3.1 Pro, AA 4위에 가격은 절반?" — 팩트체크](https://page.cocy.io/kimi-k31-check/): Threads에서 화제인
+- [ECC와 Codex 검증: 71 에이전트·311 스킬의 의미](https://page.cocy.io/ecc-codex-factcheck/): ECC의 71 에이전트·311 스킬·28.6만 스타를 공식 저장소에서 확인했다. Codex 네이티브 플러그인과 OpenClaw 적용 범위, 설치 위험과 비용을 분리해 평가한다.
+- [Kronos 검증: 다음 봉 예측과 무료 거래 시스템의 차이](https://page.cocy.io/kronos-candle-factcheck/): Kronos의 120억+ 학습 데이터·MIT 코드·small 24.7M/512 문맥은 확인. sample_count=100은 기본 API에서 평균되며 정확한 미래·수익·보정 위험을 보장하지 않는다.
+- [OpenGCUA 검증: 코드로 컴퓨터를 쓰는 연구 프리뷰](https://page.cocy.io/opengcua-computer-use/): OpenGCUA의 GUI·API·셸 코드 실행, OSWorld-v2 partial score +19.6점과 단계 −53%의 의미, macOS 개발 빌드와 SDK의 한계를 확인했다.
+- [Harness² 검증: 가중치 고정 자기개선과 JEV 주장의 경계](https://page.cocy.io/harness2-agent-research/): Google Research Harness²의 재귀 하네스 개선, 저자 보고 벤치마크와 비용·평가 유출 주의를 확인했다. JEV 1.14 비전 성능은 별도 미검증으로 구분한다.
+- [Poly Haven 무료 에셋 검증: CC0·API 조건과 ARPG 활용법](https://page.cocy.io/polyhaven-free-assets-api/): Poly Haven 실제 카탈로그 2,387개를 확인했다. CC0 상업 이용과 무료 API의 출처표시·식별 헤더 조건을 분리하고, ARPG 배경·소품·HDRI 후보 5개를 평가한다.
+- [임베딩 모델로 음성 인식? EmbeddingGemma 2 STT 검증 — 288배속은 실측, "가장 빠름"은 조건부](https://page.cocy.io/eg2-stt-check/): X에서 화제인
+- [HyperQwen 검증: RTX 4090을 켤 때인가? 381 tok/s의 조건](https://page.cocy.io/hyperqwen-4090/): HyperQwen의 381 tok/s는 25k 문서 재현 수치다. RTX 4090 외부 보고, 모델 라이선스, 품질과 WSL2·vLLM 0.31 위험을 확인하고 격리 파일럿만 조건부 권고한다.
+- [LLM 게이트웨이 해부실 — 요청 하나의 여정](https://page.cocy.io/llm-gateway-anatomy/): 요청 캡슐을 넣고 LLM 게이트웨이의 인증, API·구독 CLI·로컬 분기, PC 전원, 한 번의 폴백과 의도된 정지를 직접 조작하는 한국어 해설.
+- [Claude Code로 Blender를 조종해 3D 장면을 웹에 띄우기 — 직접 해본 기록](https://page.cocy.io/blender-mcp-demo/): Claude Code에서 Blender MCP로 Poly Haven(CC0) 바위 모델을 가져와 GLB로 내보내고 Three.js로 띄운 실제 실행 기록. 17.5MB가 1.9MB로 줄었고, 막힌 지점과 확인하지 못한 것도 적었다.
+- [Opus 5.5 + Blender + Unreal + Meshy 게임 제작 레시피 검증 — 구조는 실재, 전부 무료는 거짓](https://page.cocy.io/ue-ai-game-check/): X에서 도는 Opus 5.5 + Blender MCP + Unreal Engine 5.8 MCP + Meshy 게임 제작 7단계 레시피를 공식 문서와 Puget Systems 테스트로 대조했다. 구성요소는 모두 실재하지만 전부 무료는 아니고 4시간 19% 수치는 검증할 수 없다.
+- [Claude Code "Sonnet 5.5 + Haiku 5.5 + Opus 5.5" 트릭 검증 — advisor는 진짜, --subagents는 가짜](https://page.cocy.io/advisor-check/): X에서
+- [Hindsight 써봤다 — 에이전트 메모리 "리버스 엔지니어링" 주장 검증](https://page.cocy.io/hindsight-check/): X에서 화제인 Hindsight(vectorize-io) 에이전트 메모리 프레임워크를 직접 설치해 한국어로 retain/recall을 돌려봤다. 실존하고 동작하지만, 트윗의 마케팅 프레이밍과 벤치마크 수치는 자체 측정이다. 판정 7/10.
+- [NVIDIA 무료 AI 모델 140개, 진짜야? — 바이럴 주장 팩트체크](https://page.cocy.io/nvidia-free-api/)
+- [로컬 Laya가 OpenAI Decisions API를 이겼다? — 속도 주장 검증](https://page.cocy.io/laya-decisions-check/): atomic.chat이 "M5 Max에서 도는 로컬 Laya가 OpenAI 결정 API를 이겼다"고 올렸다. 원문·모델 카드·공식 문서·제3자 벤치를 직접 확인한 결과, 속도 주장은 그럴듯하지만 정확도 근거가 없고 제3자 벤치에서는 오히려 뒤진다.
+- [HOP(Open HWP) 쓸만한가 — 무료 HWP 편집기 검증](https://page.cocy.io/hop-check/): HOP은 rhwp 위에 얹은 무료 오픈소스 HWP/HWPX 데스크톱 앱이다. 저장소·릴리스·열린 이슈를 직접 확인해 어디까지 믿고 쓸 수 있는지 정리했다. 열람·PDF 변환은 쓸 만하고, 중요한 문서를 편집·저장하는 데는 아직 위험이 남아 있다.
+- [Personal Agent Protocol(Poppy) — 공개된 draft 0.3 스펙 읽기](https://page.cocy.io/personal-agent-protocol-check/): Sierra·Meta가 발표한 Personal Agent Protocol(별칭 Poppy)의 공개 스펙(draft 0.3)을 원문으로 읽고 발견·에이전트 신원·세션·스코프·회사 에이전트·오류·철회·거버넌스 8개 항목에 답했다. 사내 에이전트 플랫폼 대비 권고도 갱신.
+- ["DeepSeek DeepGEMM이 GPT·Opus 토큰을 98% 아껴준다"? — 바이럴 팩트체크](https://page.cocy.io/deepgemm-check/): X에서 화제인 "DeepSeek가 DeepGEMM을 풀었다, GPT와 Opus 토큰이 최대 98% 절약, $50 대신 $1.6"을 검증했다. 라이브러리는 실존하고 MIT지만 GPU 커널 라이브러리라 클로즈드 API 토큰 요금과 무관하다. 판정 2/10.
+- ["백도어 심은 7B 모델에 Codex를 붙였더니 자격증명을 훔쳤다"? — 어블리터레이션 백도어 팩트체크](https://page.cocy.io/abliterated-backdoor-check/): X에서 화제인 "$50로 7B 오픈 모델에 백도어를 심고 Codex를 붙였더니 트리거 문구에 자격증명을 훔쳤다, 성공률 100%"를 검증했다. 방향은 선행연구와 맞지만 블로그·모델·트리거·샌드박스 설정이 전부 비공개라 지금은 검증 불가. 판정 5/10.
+- ["메타가 판을 바꿨다, 하네스 없이 59% 적은 연산으로 SOTA"? — Context Language Models 팩트체크](https://page.cocy.io/clm-context-check/): X에서 화제인
+- [GPT-4o부터 GPT-6.1 Sol·Sonnet 5.5까지 — AI 모델 출시 타임라인](https://page.cocy.io/ai-model-release-timeline/): OpenAI와 Anthropic의 주요 모델 출시일 31개를 한 장의 타임라인으로 정리했다. 출시 간격 중앙값이 OpenAI 97일→49일, Anthropic 55일→22일로 줄었고, 2026년 9월 한 달에만 6개가 나왔다.
+- ["Jev + Opus 5.5로 에이전트 비용 1/5" — 팩트체크, 로컬 Jev 비교, OpenClaw·Claude Code 적용법](https://page.cocy.io/jev-opus-check/): X에서 화제인
+- ["벡터DB 없는 RAG가 RAG 업계를 끝낸다?" — PageIndex 팩트체크](https://page.cocy.io/pageindex-check/): X에서 화제인
+- [감자특공대 v3 제작기 — 원작 위키 수치로 아이템 63종을 다시 짰다](https://page.cocy.io/spudsquad-v3-devlog/): 브로테이토류 협동 게임 감자특공대 v3 제작 기록. 원작 위키 데이터로
+- [Ollaya 검증 — 로컬 Jev 호환 API, 판단력까지 바꿔주진 않는다](https://page.cocy.io/ollaya-local-decision-models/): GeekNews에서 화제가 된 Ollaya의 저장소·라이선스·API·모델·CUDA 요구사항을 확인했다. 로컬 판단 모델 실행기와 실제 라우팅 품질을 구분한다.
+- [한국어 대화 라우팅, 0.8B 판단 모델은 규칙을 이겼을까?](https://page.cocy.io/local-decision-routing-2026/): 실제 한국어 대화 147건으로 Laya와 Jev-Style v3를 비교했다. 맥락·후보 순서·치명적 오분류까지 살펴본 로컬 모델 실험 기록.
+- ["오픈소스 7개가 유료 AI를 무료로 만든다?" — 바이럴 리스트 팩트체크](https://page.cocy.io/oss7-check/): X에서 화제인
+- ["Stagehand v4, Jev 탑재로 97% 절감·11배" 팩트체크](https://page.cocy.io/stagehand-jev-check/): Stagehand v4가 Jev를 탑재해 Playwright를 대체한다는 바이럴 트윗을 검증했다. 숫자는 진짜 PR 데이터에서 나왔지만, 전부 merge 안 된 실험 브랜치 얘기다.
+- [laya-mlx 팩트체크 — "Jev보다 50배 빠르다"?](https://page.cocy.io/laya-mlx-check/): 맥북에어에서 Jev를 11배 빠르게 이긴다는 laya-mlx Tetris 영상과
+- [Jev 10가지 유즈케이스, 게이트웨이 운영자가 실사한다면](https://page.cocy.io/jev-gateway-usecases/): TypeSafe Jev를 어디에 쓸 수 있는지 정리한 10가지 유즈케이스를, 엔터프라이즈 LLM Gateway 운영 경험 기준으로 실사했다. 4개는 지금 당장, 2개는 위험, 나머지는 다른 계층 문제.
+- [laya 팩트체크 — Jev의 오픈웨이트 대항마인가](https://page.cocy.io/laya-check/): 33ms 비자기회귀 결정 엔진 laya가 Jev를 이겼다는 주장을 검증했다. 실체·속도·라이선스는 사실이지만 confidence 0.8은 정확도가 아니다.
+- [작은 LLM 파인튜닝 가이드 팩트체크](https://page.cocy.io/small-llm-finetuning-check/): 1.5B 모델을 200~500개 예제로 파인튜닝하면 프런티어 모델을 능가한다는 주장과 실제 QLoRA 운영 순서를 검증하고 정리했다.
+- [Ternary Bonsai 2 27B 팩트체크 — "9배 축소, 98% 성능 유지"?](https://page.cocy.io/bonsai2-check/): X에서 도는
+- [Qwen3.8-Flash-Next 로컬 구동 검증 — "RAM 64GB+VRAM 16GB로 된다"?](https://page.cocy.io/atomicchat-check/): Threads에서 도는
+- [CLIProxyAPI 조사 — 구독을 API로 쓰는 법과 계정정지 리스크](https://page.cocy.io/cliproxyapi-check/): Claude Code·Codex·Gemini 구독을 API처럼 쓰게 해준다는 오픈소스
+- [TypeSafe Jev 팩트체크 — "이 가격과 속도로 판단을 맡길 수 있다"?](https://page.cocy.io/jev-check/): Threads에서 화제인
+- [Byte Latent Transformer 팩트체크 — "메타가 방금 발표"?](https://page.cocy.io/blt-check/)
+- [NCP-ArchPreview 팩트체크 — "LLM 시대 끝낼 논문"인가](https://page.cocy.io/ncp-check/)
+- [9Router 팩트체크 — "Claude Code 완전 무료" 진짜인가](https://page.cocy.io/9router-check/): X(트위터)에서 도는
+- [AI 로컬 모델 레이더 — 매일 찾은 로컬 실행 가능 AI 모델 아카이브](https://page.cocy.io/ai-radar/): cocy.io가 2026-07-14부터 매일 조사해온 로컬/온디바이스 실행 가능 AI 모델·도구 106개를 소리·이미지·영상·엣지·도구 카테고리로 정리한 아카이브. 라이선스와 원문 링크 포함.
+- [하네스를 학습시킨다 — EvoHarness-RL이 증명한 것과 헤드라인이 감춘 것](https://page.cocy.io/evoharness/): 메타·UIUC의 EvoHarness-RL(arXiv 2608.05446)을 게이트웨이/에이전트 운영자 관점에서 해부한다.
+- [128GB가 로컬 AI의 새 바닥이 되는가 — 압축과 팽창의 줄다리기](https://page.cocy.io/local-frontier-128gb/): 언슬롯이 GLM-5.3-Flash(320B MoE)를 3비트 120GB로 압축해 128GB PC에서 구동시켰다. 하드웨어는 Mac M5 Max·Ryzen AI Max+ 395·DGX Spark까지 전부 128GB 통합메모리로 수렴했고, 반대로 오픈모델은 Kimi K3 2.8T·Qwen 2.4T·DeepSeek V4 1.6T로 달아난다. MoE 희소성과 다이내믹 양자화가 프론티어를 128GB로 끌어내리는 힘과, 모델 자체가 그 바닥을 넘어 팽창하는 힘. 이 추세가 지속되는지, 128GB가 실제로 무엇을 사는지 정리한다.
+- [멀티모델 라우팅 — 하나의 프롬프트, 여러 개의 뇌를 어떻게 지휘할 것인가](https://page.cocy.io/model-routing/): 멀티모델 라우팅을 게이트웨이 운영자 관점에서 깊게 해부한다. 라우팅이 실제로 푸는 5개 축(비용·품질·역량·가용성·데이터경계), 7가지 라우팅 전략의 분류와 트레이드오프(명시·휴리스틱·시맨틱·학습분류기 RouteLLM·캐스케이드·쿼터폴백·믹스처), 라우터 자체의 결정비용, 그리고 우리 llm.cocy.io를 얇은 프록시에서 정책 있는 컨트롤 플레인으로 끌어올리는 로드맵.
+- [MiniMax-H3 로컬에서 돌릴 수 있나](https://page.cocy.io/minimax-h3-local/): 33B 오디오·비디오 동시 생성 모델 MiniMax-H3를 RTX 3080 Ti 12GB 등 소비자 GPU에서 돌릴 수 있는지 조사. 판정: 불가(2/10) — 한국은 오픈웨이트 라이선스 제외 지역이고, 12GB로는 양자화해도 안 들어간다.
+- [GPT-5.6 계열 가격 브리프 — Azure 기준 (Sol·Terra·Luna)](https://page.cocy.io/gpt-5-6/): GPT-5.6 Sol·Terra·Luna 가격 분석 — Azure OpenAI(Foundry) 기준. 7/30 OpenAI 1P 인하(Luna -80%·Terra -20%)의 Azure 미반영 괴리, 캐시 쓰기 유료화(1.25×), 272K 롱컨텍스트 할증(입력 2×·출력 1.5× 전체 소급), Data Zone +10%, Priority/Fast mode 2× 등 할증 구조와 가격정책 변동 이력.
+- [MCP 2026-07-28 — 세션을 버린 프로토콜 (스펙 개정 분석)](https://page.cocy.io/mcp/): MCP(Model Context Protocol) 2026-07-28 스펙 개정 분석: 무상태 코어(initialize·세션 폐지), MRTR, subscriptions/listen, ttlMs 캐싱, Mcp-Method 헤더 라우팅, DCR→CIMD 인증 개편, Roots·Sampling·Logging 폐기와 12개월 유예. 서버·클라이언트·게이트웨이 관점 마이그레이션 체크리스트.
+- [Claude Sonnet 5 — API 스펙 브리프 (도입가 만료 · 새 토크나이저)](https://page.cocy.io/sonnet-5/): Claude Sonnet 5(claude-sonnet-5) API 브리프: 도입가 $2/$10은 2026-08-31까지, 9/1부터 $3/$15. 새 토크나이저로 같은 텍스트가 약 30% 더 많은 토큰 — 단가 인상과 겹쳐 체감 비용이 크게 뛴다. Sonnet 4.6 대비 깨지는 변경 2개와 Opus 5와의 차이까지.
+- [Claude Opus 5 — API 스펙 브리프 (4.8에서 뭐가 깨지나)](https://page.cocy.io/opus-5/): Claude Opus 5(claude-opus-5) API 브리프: 4.8과 동일한 $5/$25, 1M 컨텍스트 표준단가(롱컨텍스트 할증 없음). 깨지는 변경 2개 — thinking 기본 ON, thinking:disabled는 effort high 이하만. 캐시 최소길이 512토큰으로 하향. Bedrock/Foundry 가용성과 캐싱 비용 구조 포함.
+- [프론티어 모델 인터페이스 지도 — API 사용자를 위한 스펙 정본](https://page.cocy.io/models/): Messages / Chat Completions / Responses / Converse — 프론티어 모델 API 인터페이스가 어떻게 갈라져 있고 파라미터가 어떤 방향으로 바뀌는지 정리. temperature 제거, adaptive thinking, effort 도입, 툴콜링 표기 차이, MCP 2026-07-28 스펙 개정, Bedrock·Foundry·Vertex 접속 방식과 캐싱 비용 구조까지. 모델별 상세 브리프로 연결.
+- [쯔양몇끼 제주편 맛집 10곳 — 위치·메뉴 지도 정리](https://page.cocy.io/tzuyang-jeju/): ENA 예능 「쯔양몇끼」 제주편(7·9회)에 나온 맛집 중 상호·주소가 뉴스·기록으로 확인되는 10곳만 지도에 정리했습니다. 상호가 특정되지 않는 곳은 제외했습니다.
+- [64GB 맥 한 대에서 2.8조 파라미터 — Deltafin 분석](https://page.cocy.io/deltafin-k3/): 2.8T 파라미터 MoE 모델 Kimi K3를 64GB M1 Max 한 대에서 돌린 Deltafin 프로젝트 분석. 토큰당 25.8GB를 SSD에서 읽는 I/O 엔지니어링, 20분/토큰→15초/토큰 최적화 과정, 그리고
+- [쯔양몇끼 도쿄편 맛집 14곳 — 위치·메뉴 지도 정리](https://page.cocy.io/tzuyang-tokyo/): ENA·넷플릭스 예능 「쯔양몇끼」 일본 도쿄편에 나온 맛집 14곳을 상호·주소·대표메뉴와 함께 지도에 정리했습니다. ENA 공식 맛집리스트 1~3탄 전체.
+- [vLLM Semantic Router 심층 검토 — 사내 도입 관점](https://page.cocy.io/vllm-semantic-router/): vLLM Semantic Router를 사내 도입 관점에서 심층 분석. Envoy ext_proc 컨트롤 플레인, 16개 신호군 기반 시맨틱 라우팅, CPU 전용 실행, 요청 경로 내 거버넌스(PII·탈옥·환각), K8s 오퍼레이터 배포, 그리고 실제 PoC 플랜까지.
+- [LLM 게이트웨이 사내 도입 검토 — 시맨틱 라우터 vs 멀티프로바이더 게이트웨이](https://page.cocy.io/llm-gateway-adoption/): LLM Gateway 운영자 관점에서 vLLM Semantic Router와 OmniRoute를 사내 도입 기준(라우팅 정책·비용 거버넌스·관측성·키 보안·데이터 경계·벤더 성숙도)으로 비교하고, 컨트롤플레인 진화 로드맵을 제시하는 실무 검토 보고서.
+- [마블 시네마틱 유니버스 족보 — 아이언맨(2008)부터 어벤져스: 둠스데이(2026)까지](https://page.cocy.io/marvel/): MCU 18년 연대기를 족보처럼 한눈에. 페이즈 1~6 영화 전작품 + 핵심 시리즈를 확대·이동하며 보고, 작품을 누르면 한 줄 요약. 마지막은 어벤져스: 둠스데이 개봉 카운트다운과 공식 예고편.
+- [원피스 최종보스 이무의 정체는 앵무새? — 결말 추측 떡밥 총정리 (2026)](https://page.cocy.io/onepiece-ending/): 2026년 7월 한국 커뮤니티를 뒤집은 원피스 결말 추측 — 이무=앵무새, 조이보이=원숭이, D의 일족=동물 이론의 근거 전체와 2004년 게임 이스터에그까지. 근거별 그럴듯함 판정 포함 총정리.
+- [M4 Max 64GB로 GLM 5.2 돌릴 수 있나](https://page.cocy.io/glm52-m4max/): 753B MoE 모델 GLM 5.2를 M4 Max 64GB 맥북 exo 클러스터로 돌릴 수 있는지 스펙 기반 실행 가능성 조사. 판정: 조건부 가능(6/10) — 최소 9대, 권장 10대, 실증 리스크 있음.
+- [에이전트 스킬 4선 — 카파시·슈퍼파워스·언더스탠드·메모리](https://page.cocy.io/agent-skills/): 에이전트를 길들이는 오픈소스 스킬 4종: 카파시 4원칙(행동 규율), obra/Superpowers(개발 방법론), Understand-Anything(지식그래프), 에이전트 메모리(세션 간 기억). 각각 무엇이고 우리 환경에 어떻게 넣었는지.
+- [Hermes Agent 셋업 타당성 — OpenClaw 대안 하네스, 다른 PC에 깔 수 있나](https://page.cocy.io/hermes-agent/): Nous Research의 오픈소스 에이전트 하네스
+- [Nous Research Hermes 로컬 셋업 타당성 — 다른 PC에 깔 수 있나](https://page.cocy.io/hermes-local/): Nous Research의 오픈웨이트 Hermes 라인업(Hermes 4 14B/70B/405B, Hermes 4.3 36B) 조사. 무검열·중립정렬·하이브리드 추론 모델을 다른 PC에 로컬로 셋업할 수 있는지 — VRAM 티어별 타당성, GGUF 양자화 크기, 실행 스택, 라이선스, cocy 활용처까지 cocy 앵글로 정리.
+- [루프 엔지니어링을 우리 멀티게임 마이그레이션에 — cocy.io 실전 설계](https://page.cocy.io/loop-engineering/): Addy Osmani의
+- [Travly 에이전트 성숙도 진단 — 개선 보고서](https://page.cocy.io/travly-agent-review/): Anthropic 에이전트 패턴 + cocy의 Agent Platform 학습노트 관점에서 Travly의 AI 어시스턴트를 5영역(Workflow·Planning·Execution·Memory·Context)으로 진단. 강점은 plan→승인→실행 상태머신, 최대 갭은 영속 메모리 부재. 우선순위별 개선안 + 사내 PoC 전환 제언.
+- [효과적인 에이전트 만들기 — 학습노트](https://page.cocy.io/effective-agents/): Anthropic
+- [대만 렌터카 운전 가이드 — 한국인 준비물·유의사항](https://page.cocy.io/taiwan-drive/): 한국 운전면허로 대만에서 렌터카 운전하기: 국제운전면허증(IDP)+한국면허 둘 다 필수, 30일 무등록 한도, 우측통행, 적신호 우회전 금지, ETC 통행료, 주유·주차, 산악도로·지진·태풍 리스크, 긴급연락처까지 출발 전 체크리스트로 정리.
+- [로컬 LLM으로 에이전트 코딩하기 — 필드가이드 분석](https://page.cocy.io/local-llm-coding/): Alex Ewerlöf의
+- [Claude Fable 5 — Opus 위의 새 티어, 인터페이스는 거의 그대로](https://page.cocy.io/fable-5/): Claude Fable 5(claude-fable-5) 분석: Opus 위 최상위 티어, SWE-Bench Pro 80.3%(Opus4.8 69.2%, GPT-5.5 58.6%). 2026-06-09 GA. Messages API는 Opus 4.8과 동일하나 thinking:disabled 불가·adaptive 항상 on·거부/폴백 추가. 가격 2배($10/$50).
+- [Harness-1 — 상태를 환경으로 빼낸 검색 에이전트](https://page.cocy.io/harness-1/): 논문
+- [한국어는 정말 토큰을 더 먹는가 — 클로드로 직접 실측](https://page.cocy.io/korean-token-cost/)
+- [Headroom 도입 평가 보고서](https://page.cocy.io/headroom-eval/): 토큰 압축 레이어 Headroom의 LLM 게이트웨이 도입 평가 — 실측 절감률, 리스크, 권장안. 판정: 조건부 권장(7/10).
 
-- [OpenGCUA 검증](https://page.cocy.io/opengcua-computer-use/): GUI·API·셸 코드 실행, 부분 점수와 단계 수, macOS 개발 빌드·SDK의 범위.
-
-- [Kronos 봉 예측 팩트체크](https://page.cocy.io/kronos-candle-factcheck/): 120억+ 학습·MIT 모델·512 문맥, 기본 샘플 평균과 미검증 수익·위험 구분.
+## 도구·기타 페이지
+- [정보유출체크 — 내 개인정보 어디서 새고 있는지 확인하고 AI에게 삭제를 부탁하는 법](https://page.cocy.io/leakcheck/): e프라이버시 클린서비스, Have I Been Pwned 같은 공식 확인 도구를 안내하고, 유출 확인 결과를 바탕으로 ChatGPT·Claude·Gemini에 그대로 붙여넣을 개인정보 삭제 요청 프롬프트를 만들어줍니다. 입력한 정보는 저장되거나 전송되지 않습니다.
+- [방카 AI 비서 — 판매와 청구, 하나의 약관 엔진](https://page.cocy.io/banca/): 은행 창구에는 고객별 설명 스크립트를, 보험금이 거절된 고객에게는 다툴 쟁점과 이의제기 초안을. 판매 시점과 청구 시점을 하나의 약관 엔진으로 연결하는 방카슈랑스 AI 비서 — 작동하는 컨셉 데모.
+- [산 체크리스트 — 한국 명산 지도로 보고 다녀온 산 기록하기](https://page.cocy.io/mountains/): 한국 명산 44곳의 대표 등산코스·소요시간·실용 팁을 난이도별 지도에서 확인하고, 다녀온 산을 체크하고 정상에서 GPS로 인증해 도장을 모아보세요. 로그인 없이 이 브라우저에만 저장됩니다.
+- [발자국 — 구글 타임라인으로 만드는 나의 여행 지도 (업로드 없음)](https://page.cocy.io/footprints/): 구글지도 타임라인 내보내기 파일을 브라우저에 놓으면 1년의 이동 경로가 지도 위에 애니메이션으로 그려집니다. 총 이동거리·방문 장소 통계와 공유용 포스터·영상까지, 파일 업로드 없이 전부 기기 안에서 처리.
+- [어그로미터 — 이 글, 선동일까? 댓글·게시물 선동 화법 분석기](https://page.cocy.io/aggro/): 댓글, 게시물, 뉴스 링크, 스크린샷을 붙여넣으면 AI가 선동 화법을 분석합니다. 편가르기·감정 증폭·어그로 낚시 등 12가지 여론조작 수법을 탐지하는 무료 디지털 면역력 도구.
+- [FanTrack — 최애 출연정보, 한곳에서](https://page.cocy.io/fantrack/): 아티스트별 방송·라디오·유튜브·OTT·음반·콘서트 출연정보를 모아봅니다. FanTrack.
+- [낡은 일기장 — 무엇이든 적어 보세요](https://page.cocy.io/diary/): 누군가 두고 간 낡은 일기장. 손으로 쓰거나 타이핑하면 필기체로 답이 돌아옵니다. 적힌 글은 종이에 스며들어 사라집니다.
+- [지하철 랜덤 여행 · Subway Dice](https://page.cocy.io/subway-dice/): 서울 지하철 노선도 위에서 주사위를 굴려 떠나는 랜덤 여행. 환승역에선 룰렛이 방향을 정한다. 지나온 길을 기록하고 역에서 찍은 사진을 남겨보세요.

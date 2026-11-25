@@ -3,268 +3,440 @@
   <url>
     <loc>https://page.cocy.io/</loc>
     <lastmod>2026-07-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://page.cocy.io/guide/mobile-invitation/</loc>
     <lastmod>2026-06-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://page.cocy.io/cocy/</loc>
     <lastmod>2026-06-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://page.cocy.io/headroom-eval/</loc>
-    <lastmod>2026-06-02</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://page.cocy.io/geforce-ssd-writes-check/</loc>
+    <lastmod>2026-11-24</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/deltafin-k3/</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://page.cocy.io/minimax-h3-lora-claims-check/</loc>
+    <lastmod>2026-11-22</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/glm52-m4max/</loc>
-    <lastmod>2026-07-15</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://page.cocy.io/inkling-2-mini-check/</loc>
+    <lastmod>2026-11-22</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/minimax-h3-local/</loc>
-    <lastmod>2026-08-06</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://page.cocy.io/codemode-check/</loc>
+    <lastmod>2026-11-21</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/litellm-cost/</loc>
-    <lastmod>2026-06-03</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://page.cocy.io/cram-associative-memory-reasoning-check/</loc>
+    <lastmod>2026-11-15</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/harness-1/</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://page.cocy.io/minimax-h3-image-6gb-check/</loc>
+    <lastmod>2026-11-15</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/korean-token-cost/</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://page.cocy.io/token-ceiling-byte-distillation-check/</loc>
+    <lastmod>2026-11-15</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/fable-5/</loc>
-    <lastmod>2026-06-10</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://page.cocy.io/tripo-rig-check/</loc>
+    <lastmod>2026-11-08</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/effective-agents/</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://page.cocy.io/korea-public-apis-security-check/</loc>
+    <lastmod>2026-11-08</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/local-llm-coding/</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://page.cocy.io/terminus-notes-jira-check/</loc>
+    <lastmod>2026-11-05</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/travly-agent-review/</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://page.cocy.io/gpu-unlock-v2-check/</loc>
+    <lastmod>2026-11-03</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/taiwan-drive/</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://page.cocy.io/weight-space-programming-check/</loc>
+    <lastmod>2026-11-03</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/loop-engineering/</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://page.cocy.io/lfm3/</loc>
+    <lastmod>2026-10-29</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/hermes-agent/</loc>
-    <lastmod>2026-06-21</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://page.cocy.io/uzu-m4-max/</loc>
+    <lastmod>2026-10-28</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/hermes-local/</loc>
-    <lastmod>2026-06-21</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://page.cocy.io/phone-listening-check/</loc>
+    <lastmod>2026-10-28</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/agent-skills/</loc>
-    <lastmod>2026-06-28</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://page.cocy.io/claude-game-studios-check/</loc>
+    <lastmod>2026-10-28</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/diary/</loc>
-    <lastmod>2026-07-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://page.cocy.io/stair-rag-check/</loc>
+    <lastmod>2026-10-27</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/onepiece-ending/</loc>
-    <lastmod>2026-07-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://page.cocy.io/gpu-unlock-windows-check/</loc>
+    <lastmod>2026-10-27</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/onepiece-ending/en/</loc>
-    <lastmod>2026-07-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://page.cocy.io/prompt-cache-gateway/</loc>
+    <lastmod>2026-10-27</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/onepiece-ending/ja/</loc>
-    <lastmod>2026-07-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://page.cocy.io/noise-backprop-free-check/</loc>
+    <lastmod>2026-10-26</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/tzuyang-jeju/</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://page.cocy.io/opus-godot-gamedev-check/</loc>
+    <lastmod>2026-10-25</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/tzuyang-tokyo/</loc>
-    <lastmod>2026-07-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://page.cocy.io/gpu-unlock-ada-check/</loc>
+    <lastmod>2026-10-25</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/tzuyang-tokyo/en/</loc>
-    <lastmod>2026-07-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://page.cocy.io/jev-apps-check/</loc>
+    <lastmod>2026-10-25</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/tzuyang-tokyo/ja/</loc>
-    <lastmod>2026-07-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://page.cocy.io/kimi-k31-check/</loc>
+    <lastmod>2026-10-24</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/tzuyang-tokyo/tw/</loc>
-    <lastmod>2026-07-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://page.cocy.io/ecc-codex-factcheck/</loc>
+    <lastmod>2026-10-24</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/models/</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://page.cocy.io/kronos-candle-factcheck/</loc>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/mcp/</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://page.cocy.io/opengcua-computer-use/</loc>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
-    <loc>https://page.cocy.io/gpt-5-6/</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://page.cocy.io/opus-5/</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://page.cocy.io/sonnet-5/</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://page.cocy.io/aggro/</loc>
-    <lastmod>2026-08-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://page.cocy.io/aggro/en/</loc>
-    <lastmod>2026-08-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://page.cocy.io/aggro/tw/</loc>
-    <lastmod>2026-08-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://page.cocy.io/footprints/</loc>
-    <lastmod>2026-08-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://page.cocy.io/footprints/en/</loc>
-    <lastmod>2026-08-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://page.cocy.io/footprints/tw/</loc>
-    <lastmod>2026-08-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://page.cocy.io/banca/</loc>
-    <lastmod>2026-08-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://page.cocy.io/llm-gateway-anatomy/</loc>
-    <lastmod>2026-10-13</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://page.cocy.io/hyperqwen-4090/</loc>
-    <lastmod>2026-10-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://page.cocy.io/harness2-agent-research/</loc>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://page.cocy.io/polyhaven-free-assets-api/</loc>
     <lastmod>2026-10-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
-  <url><loc>https://page.cocy.io/harness2-agent-research/</loc><lastmod>2026-10-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://page.cocy.io/opengcua-computer-use/</loc><lastmod>2026-10-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://page.cocy.io/kronos-candle-factcheck/</loc><lastmod>2026-10-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://page.cocy.io/ecc-codex-factcheck/</loc><lastmod>2026-10-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://page.cocy.io/uzu-m4-max/</loc><lastmod>2026-10-28</lastmod></url>
-  <url><loc>https://page.cocy.io/weight-space-programming-check/</loc><lastmod>2026-11-03</lastmod></url>
-  <url><loc>https://page.cocy.io/gpu-unlock-v2-check/</loc><lastmod>2026-11-03</lastmod></url>
-  <url><loc>https://page.cocy.io/korea-public-apis-security-check/</loc><lastmod>2026-11-08</lastmod></url>
-  <url><loc>https://page.cocy.io/tripo-rig-check/</loc><lastmod>2026-11-08</lastmod></url>
+  <url>
+    <loc>https://page.cocy.io/eg2-stt-check/</loc>
+    <lastmod>2026-10-14</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/hyperqwen-4090/</loc>
+    <lastmod>2026-10-14</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/llm-gateway-anatomy/</loc>
+    <lastmod>2026-10-13</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/blender-mcp-demo/</loc>
+    <lastmod>2026-10-09</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/ue-ai-game-check/</loc>
+    <lastmod>2026-10-09</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/advisor-check/</loc>
+    <lastmod>2026-10-09</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/hindsight-check/</loc>
+    <lastmod>2026-10-08</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/nvidia-free-api/</loc>
+    <lastmod>2026-10-08</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/leakcheck/</loc>
+    <lastmod>2026-10-08</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/laya-decisions-check/</loc>
+    <lastmod>2026-10-08</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/hop-check/</loc>
+    <lastmod>2026-10-08</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/personal-agent-protocol-check/</loc>
+    <lastmod>2026-10-07</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/deepgemm-check/</loc>
+    <lastmod>2026-10-07</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/abliterated-backdoor-check/</loc>
+    <lastmod>2026-10-07</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/clm-context-check/</loc>
+    <lastmod>2026-10-01</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/ai-model-release-timeline/</loc>
+    <lastmod>2026-09-30</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/jev-opus-check/</loc>
+    <lastmod>2026-09-30</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/pageindex-check/</loc>
+    <lastmod>2026-09-30</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/spudsquad-v3-devlog/</loc>
+    <lastmod>2026-09-28</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/ollaya-local-decision-models/</loc>
+    <lastmod>2026-09-26</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/local-decision-routing-2026/</loc>
+    <lastmod>2026-09-26</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/oss7-check/</loc>
+    <lastmod>2026-09-23</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/stagehand-jev-check/</loc>
+    <lastmod>2026-09-22</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/laya-mlx-check/</loc>
+    <lastmod>2026-09-22</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/jev-gateway-usecases/</loc>
+    <lastmod>2026-09-20</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/laya-check/</loc>
+    <lastmod>2026-09-20</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/small-llm-finetuning-check/</loc>
+    <lastmod>2026-09-19</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/bonsai2-check/</loc>
+    <lastmod>2026-09-18</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/atomicchat-check/</loc>
+    <lastmod>2026-09-18</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/cliproxyapi-check/</loc>
+    <lastmod>2026-09-17</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/jev-check/</loc>
+    <lastmod>2026-09-16</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/blt-check/</loc>
+    <lastmod>2026-09-16</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/ncp-check/</loc>
+    <lastmod>2026-09-14</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/9router-check/</loc>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/ai-radar/</loc>
+    <lastmod>2026-09-02</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/evoharness/</loc>
+    <lastmod>2026-08-30</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/local-frontier-128gb/</loc>
+    <lastmod>2026-08-29</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/model-routing/</loc>
+    <lastmod>2026-08-29</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/banca/</loc>
+    <lastmod>2026-08-22</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/mountains/</loc>
+    <lastmod>2026-08-22</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/footprints/</loc>
+    <lastmod>2026-08-21</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/footprints/en/</loc>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/footprints/tw/</loc>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/aggro/</loc>
+    <lastmod>2026-08-21</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/aggro/en/</loc>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/aggro/tw/</loc>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/minimax-h3-local/</loc>
+    <lastmod>2026-08-07</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/gpt-5-6/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/mcp/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/sonnet-5/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/opus-5/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/models/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/fantrack/</loc>
+    <lastmod>2026-08-01</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/tzuyang-jeju/</loc>
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/deltafin-k3/</loc>
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/tzuyang-tokyo/</loc>
+    <lastmod>2026-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/tzuyang-tokyo/en/</loc>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/tzuyang-tokyo/ja/</loc>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/tzuyang-tokyo/tw/</loc>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/vllm-semantic-router/</loc>
+    <lastmod>2026-07-23</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/llm-gateway-adoption/</loc>
+    <lastmod>2026-07-23</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/marvel/</loc>
+    <lastmod>2026-07-21</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/onepiece-ending/</loc>
+    <lastmod>2026-07-17</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/onepiece-ending/en/</loc>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/onepiece-ending/ja/</loc>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/glm52-m4max/</loc>
+    <lastmod>2026-07-15</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/diary/</loc>
+    <lastmod>2026-07-09</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/agent-skills/</loc>
+    <lastmod>2026-07-08</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/hermes-agent/</loc>
+    <lastmod>2026-06-21</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/hermes-local/</loc>
+    <lastmod>2026-06-21</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/loop-engineering/</loc>
+    <lastmod>2026-06-17</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/travly-agent-review/</loc>
+    <lastmod>2026-06-15</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/effective-agents/</loc>
+    <lastmod>2026-06-15</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/taiwan-drive/</loc>
+    <lastmod>2026-06-15</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/local-llm-coding/</loc>
+    <lastmod>2026-06-15</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/subway-dice/</loc>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/fable-5/</loc>
+    <lastmod>2026-06-10</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/harness-1/</loc>
+    <lastmod>2026-06-08</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/korean-token-cost/</loc>
+    <lastmod>2026-06-08</lastmod>
+  </url>
+  <url>
+    <loc>https://page.cocy.io/headroom-eval/</loc>
+    <lastmod>2026-06-02</lastmod>
+  </url>
 </urlset>
