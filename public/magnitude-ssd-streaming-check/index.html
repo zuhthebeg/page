@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Magnitude “180B 모델을 64GB Mac에서” — 주장 검증 · page.cocy.io</title>
+<meta name="description" content="SSD 전문가 스트리밍 엔진 Magnitude 주장을 GitHub·HF·공식 벤치마크로 대조했다. 구조·라이선스·속도 방향은 맞고, 56 tok/s는 제작사 계열 측정이며 모델 품질은 별개다.">
+<link rel="canonical" href="https://page.cocy.io/magnitude-ssd-streaming-check/">
+<meta property="og:type" content="article"><meta property="og:title" content="Magnitude: SSD 스트리밍은 실재, 속도는 SSD와 메모리가 정한다">
+<meta property="og:description" content="Qwen3.8-Flash-Next는 180B/활성 6B가 맞다. 66GB 모델이 64GB Mac에서 도는 원리는 설명 가능하지만 벤치마크는 제작사 측정이다.">
+<meta property="og:url" content="https://page.cocy.io/magnitude-ssd-streaming-check/">
+<meta property="og:image" content="https://page.cocy.io/og.png">
+<meta name="twitter:card" content="summary"><meta name="author" content="cocy">
+<meta property="article:published_time" content="2026-11-26"><meta property="article:modified_time" content="2026-11-26">
+<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MV8KQGJF');</script><!-- End Google Tag Manager -->
+<!-- AdSense: managed via GTM auto-ads (ca-pub-6634731722045607) -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Magnitude SSD 스트리밍: 180B 모델을 64GB Mac에서? 주장 검증","url":"https://page.cocy.io/magnitude-ssd-streaming-check/","inLanguage":"ko","datePublished":"2026-11-26","dateModified":"2026-11-26","author":{"@type":"Person","name":"cocy"},"publisher":{"@type":"Organization","name":"page.cocy.io"}}</script>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#24221e;--soft:#655f55;--line:#e5ded2;--accent:#7b513d;--good:#33704b;--warn:#946516}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 system-ui,-apple-system,"Noto Sans KR",sans-serif;word-break:keep-all;overflow-wrap:anywhere}.page{max-width:880px;margin:36px auto;padding:clamp(22px,6vw,68px);background:var(--paper);box-shadow:0 30px 70px #3b2b1d18}.kicker{font:12px ui-monospace,monospace;letter-spacing:.12em;color:var(--accent)}h1,h2{line-height:1.3;letter-spacing:-.04em}h1{font-size:clamp(2rem,6vw,3rem);margin:.5em 0}.lead{font-size:1.08rem;color:var(--soft)}h2{margin-top:2.5em;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.5em}h3{font-size:1.05rem;margin-top:1.8em}a{color:var(--accent);text-underline-offset:3px}a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.meta,.note,.foot{font-size:.86rem;color:var(--soft)}.verdict{border:1px solid var(--line);border-left:5px solid var(--accent);padding:1.2rem;margin:2rem 0;background:#fff8ed}.verdict strong{font-size:1.18rem}.pill{display:inline-block;border-radius:99px;padding:.15rem .65rem;margin:.25rem .25rem .25rem 0;font-size:.8rem;background:#efe9dc}.yes{background:#e5f1e8;color:var(--good)}.warn{background:#fff0cf;color:var(--warn)}.table-wrap{overflow-x:auto;max-width:100%;margin:1rem 0}table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:540px}th,td{text-align:left;padding:.7rem;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f5f0e7}caption{text-align:left;font-weight:600;padding:.5rem 0}blockquote{border-left:3px solid var(--line);margin:1rem 0;padding:.5rem 1rem;color:var(--soft)}li{margin-bottom:.55rem}code{background:#f0ebe1;padding:.1rem .3rem;border-radius:3px}.box{background:#f6f1e6;padding:1rem 1.2rem;border-left:4px solid var(--accent)}.foot{border-top:1px solid var(--line);margin-top:3rem;padding-top:1rem}@media(max-width:600px){.page{margin:0;box-shadow:none}h1{font-size:2rem}}@media print{body{background:white}.page{margin:0;box-shadow:none;max-width:none;padding:0}}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8KQGJF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+<main class="page">
+<header><div class="kicker">TOOL NOTE · CLAIM CHECK</div><h1>Magnitude,<br>“180B 모델을 64GB Mac에서”가 맞을까?</h1>
+<p class="lead">한 X 게시물은 오픈소스 추론 엔진 Magnitude가 SSD에서 MoE 전문가(expert)를 읽어 와서, M4 Max 64GB에서 Qwen 3.8 Flash Next(180B)를 2비트 양자화·64k 컨텍스트로 초당 56토큰에 돌린다고 소개한다. GitHub 저장소·공식 문서·벤치마크 페이지·모델 카드로 하나씩 대조했다.</p>
+<p class="meta">작성·확인: <time datetime="2026-11-26">2026-11-26</time> · 원 게시물: 2026-11-25 · 문서·API 대조 / 직접 설치·실행 없음, 영상은 보지 않음</p></header>
+<div class="verdict" id="verdict"><strong>판정: 원리와 구조 숫자는 맞다. 다만 속도는 제작사 측정이고, “다 된다”가 아니라 SSD·메모리·양자화 품질이 결과를 정한다.</strong>
+<p>Magnitude는 Apache-2.0이고 Apple Silicon·NVIDIA·AMD·Intel·CPU를 지원한다고 문서가 밝힌다. Qwen3.8-Flash-Next는 총 180B, 활성 6B가 모델 카드와 일치한다. 공식 벤치마크 표에서 같은 모델이 Mac mini M5 Pro 48GB에 54 tok/s로 나와 56 tok/s는 그럴듯하다. 그러나 <b>M4 Max 64GB는 공식 표에 없고</b>, 모든 수치는 <b>제작사가 자기 엔진으로 잰 값</b>이며 모델 파일은 66GB다. 2비트급 양자화에서 답변 품질이 어떤지는 이 글이 확인하지 못했다.</p>
+<span class="pill yes">Apache-2.0(엔진)</span><span class="pill yes">180B/활성 6B 일치</span><span class="pill yes">읽기 전용 스트리밍</span><span class="pill warn">속도=제작사 측정</span><span class="pill warn">양자화 품질 미확인</span></div>
+<nav aria-label="본문 목차"><a href="#claims">주장 대조</a> · <a href="#how">원리</a> · <a href="#bench">벤치마크 읽기</a> · <a href="#limits">한계·주의</a> · <a href="#use">쓸 만한가</a> · <a href="#sources">출처</a></nav>
+<section id="claims"><h2>1. 게시물 주장 대조</h2>
+<div class="table-wrap" role="region" aria-label="주장별 검증 표" tabindex="0"><table><thead><tr><th scope="col">게시물 주장</th><th scope="col">확인한 내용 / 판정</th></tr></thead><tbody>
+<tr><td>Qwen 3.8 Flash Next는 180B, 토큰당 약 6B 활성</td><td><b>맞음.</b> HF 카드: 125B(활성 6B) + n-gram 임베딩 51B + MTP 4B, safetensors 합계 179,999,981,459. 전문가 512개 중 라우팅 10개+공유 1개. “97%가 놀고 있다”는 6/180 계산이며, 총합에 포함된 51B 임베딩은 조회 테이블이라 MoE 층만 보면 약 95%다.</td></tr>
+<tr><td>오픈소스, 무료, Apache 2.0</td><td><b>맞음(엔진 기준).</b> GitHub 저장소 라이선스 Apache-2.0. 단 <b>모델은 별개</b>다. Qwen3.8-Flash-Next는 HF 메타데이터상 <code>qwen-community-1.0</code>(“other”)이고, 이 글에서 약관 내용은 읽지 않았다. Magnitude 문서도 “모델 라이선스는 별도”라고 적는다.</td></tr>
+<tr><td>M4 Max 64GB, 2비트, 64k, OpenCode에서 56 tok/s</td><td><b>수치는 그럴듯, 직접 확인 불가.</b> 영상은 보지 않았다. 공식 표의 Qwen 3.8 Flash Next(디스크 66GB, 64k 컨텍스트, 추측 디코딩 켬)는 M5 Pro 48GB 54, DGX Spark 83, RTX 5090+PCIe5 SSD 87, RTX 3090+PCIe4 41, RTX 3060 17, M2 Pro 32GB 13 tok/s. M4 Max 64GB 항목은 없다. 66GB÷180B ≈ 연 2.9비트로 “2비트 양자화”는 혼합 양자화로 읽힌다.</td></tr>
+<tr><td>SSD는 읽기만 해서 마모 없음</td><td><b>맞음(설계상).</b> 문서: 스트리밍은 읽기 전용이라 플래시 마모가 없고 OS 스왑이 아니라 직접 비캐시 읽기를 쓴다. 모델 다운로드 시 한 번 쓰는 건 별개. 드라이버 쓰기량 논쟁은 <a href="https://page.cocy.io/geforce-ssd-writes-check/">지포스 SSD 쓰기 검증</a> 참고.</td></tr>
+<tr><td>오늘 출시</td><td><b>표현 주의.</b> 저장소는 2026-06-12에 만들어졌고 같은 날 알파 릴리스(0.0.1-alpha.15~17)가 있다. 11-24~26 사이 0.3.1~0.3.5가 매일 나왔다. “오늘 공개 런칭”일 수는 있어도 새 프로젝트는 아니다. 스타 약 8,800, 포크 640.</td></tr>
+<tr><td>Apple·NVIDIA·AMD·Intel·CPU, 에이전트 원클릭 연결</td><td><b>대체로 맞음.</b> NVIDIA는 Ampere(RTX 30) 이상 CUDA, AMD·Intel은 Vulkan(ROCm 아님), Intel Mac은 CPU. Pi·OpenCode·Hermes·OpenClaw·Codex·Claude Code·Cline 연결 문서가 있다. Mac의 Docker는 GPU를 못 써서 CPU로 돈다.</td></tr>
+<tr><td>양자화 이후 가장 큰 변화</td><td><b>의견.</b> 검증 대상이 아니다. 전문가 오프로딩 자체는 새 아이디어가 아니며, 이 엔진의 주장은 자동 튜닝·예측 프리페치로 실용 속도를 낸다는 것이다.</td></tr>
+</tbody></table></div></section>
+<section id="how"><h2>2. 왜 메모리보다 큰 모델이 도나</h2>
+<ul><li><b>희소 MoE:</b> 토큰당 필요한 전문가는 일부다. 자주 쓰는 전문가와 공통 층은 GPU/통합 메모리, 다음 단계는 RAM, 나머지는 NVMe에 둔다.</li>
+<li><b>프리페치:</b> README는 다음 토큰의 전문가를 예측해 SSD→RAM→VRAM으로 미리 올린다고 설명한다. 속도의 핵심이 이 예측 적중률이다.</li>
+<li><b>자동 튜닝:</b> 모델 다운로드 때 최대 1분 동안 해당 칩에서 커널 설정을 시험하고, “모델 출력을 바꾸지 않는” 조합만 채택한다고 FAQ가 적는다. 공식 주장은 평균 Ollama 대비 2배 이상(제작사 측정).</li>
+<li><b>실전 제약:</b> 컨텍스트가 메모리에 안 들어가면 2의 거듭제곱으로 줄여 제공하며 32K 아래로는 내리지 않는다. 앱 추천 속도는 “긴 에이전트 대화” 기준 추정치다.</li></ul></section>
+<section id="bench"><h2>3. 공식 벤치마크 읽기</h2>
+<div class="table-wrap" role="region" aria-label="공식 벤치마크 발췌" tabindex="0"><table><caption>magnitude.dev/benchmarks 발췌 (Qwen 3.8 Flash Next, 디스크 66GB, 64k, 추측 디코딩 켬, 디코드 tok/s)</caption><thead><tr><th scope="col">장비</th><th scope="col">저장장치</th><th scope="col">디코드</th></tr></thead><tbody>
+<tr><td>Mac mini M2 Pro 32GB</td><td>내장 SSD</td><td>13</td></tr>
+<tr><td>Mac mini M5 Pro 48GB</td><td>내장 SSD</td><td>54</td></tr>
+<tr><td>RTX 3060 12GB + RAM 32GB</td><td>PCIe 3.0 SSD</td><td>17</td></tr>
+<tr><td>RTX 3090 24GB + RAM 64GB</td><td>PCIe 4.0 SSD</td><td>41</td></tr>
+<tr><td>DGX Spark 128GB</td><td>내장 SSD</td><td>83</td></tr>
+<tr><td>RTX 5090 32GB + RAM 64GB</td><td>PCIe 5.0 SSD</td><td>87</td></tr>
+</tbody></table></div>
+<p class="box"><b>읽는 법:</b> 같은 모델이 장비에 따라 13~87 tok/s로 크게 갈린다. 메모리가 크고 SSD가 빠를수록 빠르다는 게시물의 결론과 일치한다. 반대로 32GB Mac이나 구형 PCIe 3.0 장비는 체감 속도가 훨씬 낮다. 표는 디코드 속도이고, 긴 입력을 읽는 프리필 속도·응답 품질은 위 발췌에 없다.</p></section>
+<section id="limits"><h2>4. 한계와 주의</h2>
+<ul><li><b>독립 재현 없음:</b> 벤치마크와 게시물 영상 모두 제작사·홍보 측 자료다. 직접 돌려 보지 않았다.</li>
+<li><b>양자화 품질:</b> 평균 약 3비트로 줄인 180B가 원본 대비 얼마나 정확한지는 이 글 범위 밖이다. 속도와 별개로 코딩 에이전트 성공률을 따로 봐야 한다.</li>
+<li><b>모델 크기 요건:</b> 모델 크기만큼 빈 디스크가 필요하다(여기서는 66GB). SSD가 느리면 속도가 직접 떨어진다.</li>
+<li><b>지원 계열 한정:</b> 아무 GGUF나 되는 게 아니라 Magnitude가 커널을 만든 모델 계열만 지원한다.</li>
+<li><b>모델은 미리보기:</b> 모델 카드는 이 모델을 Qwen4 아키텍처의 “실험적 미리보기”라고 설명한다.</li></ul></section>
+<section id="use"><h2>5. 쓸 만한가</h2>
+<p><b>조건부로 시험할 가치가 있다.</b> 64GB급 Mac이나 RAM 64GB+빠른 NVMe 장비에서 큰 MoE를 로컬로 돌려 보려는 사람에게 현실적인 선택지다. 반대로 메모리 32GB 이하, 느린 SSD, “클라우드 모델 수준 품질”을 기대하는 경우에는 맞지 않는다. 설치 전에 앱의 추천 화면(속도 추정)부터 확인하고, 본인 워크로드로 품질을 재 보는 편이 안전하다.</p></section>
+<section id="sources"><h2>출처와 검증 범위</h2><ol>
+<li><a href="https://x.com/akshay_pachaar/status/2125573832039891119">원 X 게시물</a> · 2026-11-25. 읽기 전용 FxTwitter 응답으로 본문 확인.</li>
+<li><a href="https://github.com/magnitudedev/magnitude">magnitudedev/magnitude</a>: 라이선스, 생성일, 릴리스, README(FAQ·SSD 마모 설명). GitHub API 값은 확인 시점 기준.</li>
+<li><a href="https://magnitude.dev/benchmarks">magnitude.dev/benchmarks</a>, <a href="https://docs.magnitude.dev">공식 문서</a>(소개·하드웨어·FAQ·모델).</li>
+<li><a href="https://huggingface.co/Qwen/Qwen3.8-Flash-Next">Qwen/Qwen3.8-Flash-Next</a> 모델 카드와 HF API: 파라미터, 전문가 구성, 라이선스 표기.</li>
+</ol><p class="note">모든 성능 수치는 제작사 보고이며 독립 재현이 아니다. Magnitude를 설치·실행하지 않았고 게시물의 영상은 확인하지 않았다. 모델 라이선스 약관의 내용은 읽지 않았다.</p></section>
+<footer class="foot"><a href="https://page.cocy.io/">page.cocy.io</a> · cocy.io research note · AI 보조 작성, 1차 출처 문헌 대조. 직접 실행 없음.</footer>
+</main></body></html>
